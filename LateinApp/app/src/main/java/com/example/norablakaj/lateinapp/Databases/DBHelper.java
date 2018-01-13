@@ -11,12 +11,13 @@ import android.util.Log;
 import java.util.ArrayList;
 
 /**
- * Created by Nora Blakaj on 11.01.2018.
+ * DBHelper is used for managing the database and its tables.
+ * All queries are done in this class and called where they are needed
  */
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    //Lektion DB Stuff
+    //Creating a String for quick access to a creation command for all tables
     private static final String SQL_CREATE_ENTRIES_LEKTION =
             "CREATE TABLE "
             + LektionDB.FeedEntry.TABLE_NAME
@@ -27,41 +28,69 @@ public class DBHelper extends SQLiteOpenHelper {
             + " TEXT, "
             + LektionDB.FeedEntry.COLUMN_BESCHREIBUNG
             + " TEXT)";
-    //provides quick access to a "delete all" command
+
+    private static final String SQL_CREATE_ENTRIES_VERB =
+            "CREATE TABLE "
+                    + VerbDB.FeedEntry.TABLE_NAME
+                    + " ("
+                    + VerbDB.FeedEntry._ID
+                    + " INTEGER PRIMARY KEY, "
+                    + VerbDB.FeedEntry.COLUMN_LATEIN
+                    + " TEXT, "
+                    + VerbDB.FeedEntry.COLUMN_DEUTSCH
+                    + " TEXT, "
+                    + VerbDB.FeedEntry.COLUMN_HINWEIS
+                    + " TEXT, "
+                    + VerbDB.FeedEntry.COLUMN_VERBFORM
+                    + " TEXT, "
+                    + VerbDB.FeedEntry.COLUMN_KONJUGATION
+                    + " TEXT, "
+                    + VerbDB.FeedEntry.COLUMN_GELERNT
+                    + " INTEGER)";
+
+    private static final String SQL_CREATE_ENTRIES_NOMEN =
+            "CREATE TABLE "
+                    + NomenDB.FeedEntry.TABLE_NAME
+                    + " ("
+                    + NomenDB.FeedEntry._ID
+                    + " INTEGER PRIMARY KEY, "
+                    + NomenDB.FeedEntry.COLUMN_LATEIN
+                    + " TEXT, "
+                    + NomenDB.FeedEntry.COLUMN_DEUTSCH
+                    + " TEXT, "
+                    + NomenDB.FeedEntry.COLUMN_HINWEIS
+                    + " TEXT, "
+                    + NomenDB.FeedEntry.COLUMN_GENITIV
+                    + " TEXT, "
+                    + NomenDB.FeedEntry.COLUMN_GENUS
+                    + " TEXT, "
+                    + NomenDB.FeedEntry.COLUMN_DEKLINATION
+                    + " TEXT, "
+                    + NomenDB.FeedEntry.COLUMN_GELERNT
+                    + " INTEGER)";
+
+
+    //creating a String for quick access to a deletion command for all tables
     private static final String SQL_DELETE_ENTRIES_LEKTION =
             "DROP TABLES IF EXISTS "
-            + LektionDB.FeedEntry.TABLE_NAME;
-    //Lists all columns in a String[]
+                    + LektionDB.FeedEntry.TABLE_NAME;
+
+    private static final String SQL_DELETE_ENTRIES_VERB =
+            "DROP TABLES IF EXISTS "
+                    + VerbDB.FeedEntry.TABLE_NAME;
+
+    private static final String SQL_DELETE_ENTRIES_NOMEN =
+            "DROP TABLES IF EXISTS "
+                    + NomenDB.FeedEntry.TABLE_NAME;
+
+
+    //Lists all columns of the tables in a String[]
     private static final String[] allColumnsLektion = {
             LektionDB.FeedEntry._ID,
             LektionDB.FeedEntry.COLUMN_THEMA,
             LektionDB.FeedEntry.COLUMN_BESCHREIBUNG
     };
 
-    //Verb DB Stuff
-    private static final String SQL_CREATE_ENTRIES_VERB =
-            "CREATE TABLE "
-            + VerbDB.FeedEntry.TABLE_NAME
-            + " ("
-            + VerbDB.FeedEntry._ID
-            + " INTEGER PRIMARY KEY, "
-            + VerbDB.FeedEntry.COLUMN_LATEIN
-            + " TEXT, "
-            + VerbDB.FeedEntry.COLUMN_DEUTSCH
-            + " TEXT, "
-            + VerbDB.FeedEntry.COLUMN_HINWEIS
-            + " TEXT, "
-            + VerbDB.FeedEntry.COLUMN_VERBFORM
-            + " TEXT, "
-            + VerbDB.FeedEntry.COLUMN_KONJUGATION
-            + " TEXT, "
-            + VerbDB.FeedEntry.COLUMN_GELERNT
-            + " INTEGER)";
-    //provides quick access to a "delete all" command
-    private static final String SQL_DELETE_ENTRIES_VERB =
-            "DROP TABLES IF EXISTS "
-            + VerbDB.FeedEntry.TABLE_NAME;
-    //Lists all columns in a String[]
     private static final String[] allColumnsVerb = {
             VerbDB.FeedEntry._ID,
             VerbDB.FeedEntry.COLUMN_LATEIN,
@@ -72,32 +101,6 @@ public class DBHelper extends SQLiteOpenHelper {
             VerbDB.FeedEntry.COLUMN_GELERNT
     };
 
-    //Nomen DB Stuff
-    private static final String SQL_CREATE_ENTRIES_NOMEN =
-            "CREATE TABLE "
-            + NomenDB.FeedEntry.TABLE_NAME
-            + " ("
-            + NomenDB.FeedEntry._ID
-            + " INTEGER PRIMARY KEY, "
-            + NomenDB.FeedEntry.COLUMN_LATEIN
-            + " TEXT, "
-            + NomenDB.FeedEntry.COLUMN_DEUTSCH
-            + " TEXT, "
-            + NomenDB.FeedEntry.COLUMN_HINWEIS
-            + " TEXT, "
-            + NomenDB.FeedEntry.COLUMN_GENITIV
-            + " TEXT, "
-            + NomenDB.FeedEntry.COLUMN_GENUS
-            + " TEXT, "
-            + NomenDB.FeedEntry.COLUMN_DEKLINATION
-            + " TEXT, "
-            + NomenDB.FeedEntry.COLUMN_GELERNT
-            + " INTEGER)";
-    //provides quick access to a "delete all" command
-    private static final String SQL_DELETE_ENTRIES_NOMEN =
-            "DROP TABLES IF EXISTS "
-            + NomenDB.FeedEntry.TABLE_NAME;
-    //Lists all columns in a String[]
     private static final String[] allColumnsNomen = {
             NomenDB.FeedEntry._ID,
             NomenDB.FeedEntry.COLUMN_LATEIN,
@@ -109,24 +112,39 @@ public class DBHelper extends SQLiteOpenHelper {
             NomenDB.FeedEntry.COLUMN_GELERNT
     };
 
+    //Version of the database
     public static final int DATABASE_VERSION = 1;
 
+
+    //Name of the database file
     public static final String DATABASE_NAME= "TestDb.db";
 
-    //private static final String DATABASE_NAME = "contactsManager";
-
+    /**
+     * Constructor
+     * @param context
+     */
     public DBHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
-
     }
 
+    /**
+     * Creating all 3 Databases
+     * TODO: Maybe initialize them here too?
+     * @param db
+     */
     public void onCreate(SQLiteDatabase db){
         db.execSQL(SQL_CREATE_ENTRIES_LEKTION);
         db.execSQL(SQL_CREATE_ENTRIES_NOMEN);
         db.execSQL(SQL_CREATE_ENTRIES_VERB);
     }
 
+    /**
+     * Deleting all tables and
+     * recreating them in 'onCreate(db)'
+     * @param db Database that should be upgraded
+     * @param oldVersion old versionNr of the database
+     * @param newVersion new versionNr of the database
+     */
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         db.execSQL(SQL_DELETE_ENTRIES_LEKTION);
         db.execSQL(SQL_DELETE_ENTRIES_NOMEN);
@@ -134,6 +152,13 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+
+    /**
+     * This method is for the class 'AndroidDatabaseManager'
+     * Remove this before release
+     * @param Query
+     * @return
+     */
     public ArrayList<Cursor> getData(String Query){
         //get writable database
         SQLiteDatabase sqlDB = this.getWritableDatabase();
