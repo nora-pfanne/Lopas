@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_wörterbuch"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Wörterbuch" />
+        <item
+            android:id="@+id/nav_hilfe"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Hilfe" />
+        <item
+            android:id="@+id/nav_impressum"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Impressum" />
+    </group>
+
+    <item android:title="Entwicklermodus">
+        <menu>
+            <item
+                android:id="@+id/nav_dbhelper"
+                android:icon="@drawable/ic_menu_share"
+                android:title="DB Helper" />
+        </menu>
+    </item>
+
+</menu>
