@@ -30,6 +30,17 @@ import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+/**
+ * This class is for debugging purposes only
+ * Source: https://github.com/sanathp/DatabaseManager_For_Android
+ * TODO: privacy: can this stay in the released app
+ *
+ *
+ * This Activity is used to view and edit all used databases on the mobile device
+ *
+ */
+
 public class AndroidDatabaseManager extends Activity implements OnItemClickListener {
 
     //a static class to save cursor,table values etc which is used by functions to share data in the program.
@@ -48,7 +59,7 @@ public class AndroidDatabaseManager extends Activity implements OnItemClickListe
         public static boolean isCustomQuery;
     }
 
-// all global variables
+    // all global variables
 
     //in the below line Change the text 'yourCustomSqlHelper' with your custom sqlitehelper class name.
     //Do not change the variable name dbm
