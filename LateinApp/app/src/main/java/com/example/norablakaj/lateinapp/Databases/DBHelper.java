@@ -1,5 +1,6 @@
 package com.example.norablakaj.lateinapp.Databases;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.MatrixCursor;
@@ -152,6 +153,80 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Adds a row with the given parameters into the 'Lektion' table
+     * @param thema content for the 'Thema' column
+     * @param beschreibung content for the 'Beschreibung' column
+     */
+    public void addRowLektion(String thema, String beschreibung){
+        //retrieving the database that contains the wanted table
+        SQLiteDatabase db = getWritableDatabase();
+
+        //adds the row to the table
+        ContentValues values = new ContentValues();
+        values.put(LektionDB.FeedEntry.COLUMN_THEMA, thema);
+        values.put(LektionDB.FeedEntry.COLUMN_BESCHREIBUNG, beschreibung);
+        db.insert(LektionDB.FeedEntry.TABLE_NAME, null, values);
+
+        //closes the database connection
+        db.close();
+    }
+
+    /**
+     * Adds a row with the given parameters into the 'Verb' table
+     * @param latein content for the 'Latein' column
+     * @param deutsch content for the 'Deutsch' column
+     * @param hinweis content for the 'Hinweis' column
+     * @param verbform content for the 'Verbform' column
+     * @param konjugation content for the 'Konjugation' column
+     * @param gelernt content for the 'Gelernt?' column
+     */
+    public void addRowVerb(String latein, String deutsch, String hinweis, String verbform, String konjugation, boolean gelernt){
+        //retrieving the database that contains the wanted table
+        SQLiteDatabase db = getWritableDatabase();
+
+        //adds the row to the table
+        ContentValues values = new ContentValues();
+        values.put(VerbDB.FeedEntry.COLUMN_LATEIN, latein);
+        values.put(VerbDB.FeedEntry.COLUMN_DEUTSCH, deutsch);
+        values.put(VerbDB.FeedEntry.COLUMN_HINWEIS, hinweis);
+        values.put(VerbDB.FeedEntry.COLUMN_VERBFORM, verbform);
+        values.put(VerbDB.FeedEntry.COLUMN_KONJUGATION, konjugation);
+        values.put(VerbDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
+        db.insert(VerbDB.FeedEntry.TABLE_NAME, null, values);
+
+        //closes the database connection
+        db.close();
+    }
+
+    /**
+     * Adds a row with the given parameters into the 'Nomen' table
+     * @param latein content for the 'Latein' column
+     * @param deutsch content for the 'Deutsch' column
+     * @param hinweis content for the 'Hinweis' column
+     * @param genitiv content for the 'Genitiv' column
+     * @param genus content for the 'Genus' column
+     * @param deklination content for the 'Deklination' column
+     * @param gelernt content for the 'Gelernt?' column
+     */
+    public void addRowNomen(String latein, String deutsch, String hinweis, String genitiv, String genus, String deklination, boolean gelernt) {
+        //retrieving the database that contains the wanted table
+        SQLiteDatabase db = getWritableDatabase();
+
+        //adds the row to the table
+        ContentValues values = new ContentValues();
+        values.put(NomenDB.FeedEntry.COLUMN_LATEIN, latein);
+        values.put(NomenDB.FeedEntry.COLUMN_DEUTSCH, deutsch);
+        values.put(NomenDB.FeedEntry.COLUMN_HINWEIS, hinweis);
+        values.put(NomenDB.FeedEntry.COLUMN_GENITIV, genitiv);
+        values.put(NomenDB.FeedEntry.COLUMN_GENUS, genus);
+        values.put(NomenDB.FeedEntry.COLUMN_DEKLINATION, deklination);
+        values.put(NomenDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
+        db.insert(NomenDB.FeedEntry.TABLE_NAME, null, values);
+
+        //closes the database connection
+        db.close();
+    }
 
     /**
      * This method is for the class 'AndroidDatabaseManager'

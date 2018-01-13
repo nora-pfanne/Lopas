@@ -43,11 +43,10 @@ public class Home extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //Defining the button to be able to edit it
-        lektion1Button = (Button)findViewById(R.id.lektion1);
-        lektion2Button = (Button)findViewById(R.id.lektion2);
-        lektion3Button = (Button)findViewById(R.id.lektion3);
-        lektion4Button = (Button)findViewById(R.id.lektion4);
-
+        lektion1Button = findViewById(R.id.lektion1);
+        lektion2Button = findViewById(R.id.lektion2);
+        lektion3Button = findViewById(R.id.lektion3);
+        lektion4Button = findViewById(R.id.lektion4);
     }
 
     /**
