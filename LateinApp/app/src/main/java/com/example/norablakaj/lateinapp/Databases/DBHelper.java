@@ -9,6 +9,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
@@ -153,6 +157,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    //TODO: Combine all 3 methods into 1?
     /**
      * Adds a row with the given parameters into the 'Lektion' table
      * @param thema content for the 'Thema' column
@@ -227,6 +232,121 @@ public class DBHelper extends SQLiteOpenHelper {
         //closes the database connection
         db.close();
     }
+
+    /**
+     * Add a entry to the 'Verb' table for every row in the file
+     * the columns are split with '@param split'
+     * @param s path to the file to read
+     * @param split element where the columns are split
+     */
+    public void addFileDataToVerb(String s, String split){
+        //TODO: Add support for special characters -> ā ē ī
+        try {
+            //reading the image from the path 's'
+            InputStream in = getClass().getResourceAsStream(s);
+            //add buffer for mark/reset support
+            InputStream bIn = new BufferedInputStream(in);
+            //marks the beginning to resets to this point later
+            bIn.mark(100000000);
+
+            BufferedReader br = new BufferedReader( new InputStreamReader(bIn));
+
+            //count the total number of lines
+            int lineAmount = 0;
+            while(br.readLine() != null){
+                lineAmount++;
+            }
+
+            //reset to the beginning
+            bIn.reset();
+            br = new BufferedReader(new InputStreamReader((bIn)));
+
+            //Skip the first line with the column headings
+            br.readLine();
+
+            SQLiteDatabase db = getReadableDatabase();
+
+            //goes through every line and add its content to the table
+            String line;
+            for (int i = 0; i < lineAmount - 1; i++){
+                line = br.readLine();
+                if (line != null){
+                    String[] tokens = line.split(split);
+                    try {
+                        addRowVerb(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], Boolean.parseBoolean(tokens[5]));
+                        //TODO: Add foreign key 'Lektion'
+                    }catch (NumberFormatException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+            //closing all connections
+            db.close();
+            br.close();
+            bIn.close();
+            in.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Add a entry to the 'Verb' table for every row in the file
+     * the columns are split with '@param split'
+     * @param s path to the file to read
+     * @param split element where the columns are split
+     */
+    public void addFileDataToNomen(String s, String split){
+        //TODO: Add support for special characters -> ā ē ī
+        try {
+            //reading the image from the path 's'
+            InputStream in = getClass().getResourceAsStream(s);
+            //add buffer for mark/reset support
+            InputStream bIn = new BufferedInputStream(in);
+            //marks the beginning to resets to this point later
+            bIn.mark(100000000);
+
+            BufferedReader br = new BufferedReader( new InputStreamReader(bIn));
+
+            //count the total number of lines
+            int lineAmount = 0;
+            while(br.readLine() != null){
+                lineAmount++;
+            }
+
+            //reset to the beginning
+            bIn.reset();
+            br = new BufferedReader(new InputStreamReader((bIn)));
+
+            //Skip the first line with the column headings
+            br.readLine();
+
+            SQLiteDatabase db = getReadableDatabase();
+
+            //goes through every line and add its content to the table
+            String line;
+            for (int i = 0; i < lineAmount - 1; i++){
+                line = br.readLine();
+                if (line != null){
+                    String[] tokens = line.split(split);
+                    try {
+                        addRowNomen(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], Boolean.parseBoolean(tokens[5]));
+                        //TODO: Add foreign key 'Lektion'
+                    }catch (NumberFormatException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+            //closing all connections
+            db.close();
+            br.close();
+            bIn.close();
+            in.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * This method is for the class 'AndroidDatabaseManager'

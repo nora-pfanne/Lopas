@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import com.example.norablakaj.lateinapp.Databases.AndroidDatabaseManager;
+import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.R;
 
 public class Home extends AppCompatActivity
@@ -30,16 +31,16 @@ public class Home extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         //Defining the button to be able to edit it
@@ -47,6 +48,15 @@ public class Home extends AppCompatActivity
         lektion2Button = findViewById(R.id.lektion2);
         lektion3Button = findViewById(R.id.lektion3);
         lektion4Button = findViewById(R.id.lektion4);
+
+        //Adding entries to the 'Verb' table from 'Lektion1Verb.csv'
+        DBHelper dbHelper = new DBHelper(getApplicationContext());
+        dbHelper.addFileDataToVerb("/Vokabeln/Lektion1Verb.csv", ";");
+
+        //Adding entries to the 'Nomen' table from 'Lektion1Nomen.csv'
+        dbHelper.addFileDataToNomen("/Vokabeln/Lektion1Nomen.csv", ";");
+
+        dbHelper.close();
     }
 
     /**
@@ -54,7 +64,7 @@ public class Home extends AppCompatActivity
      */
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {

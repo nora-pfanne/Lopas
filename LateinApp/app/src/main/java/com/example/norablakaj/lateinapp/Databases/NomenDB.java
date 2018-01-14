@@ -23,5 +23,6 @@ public class NomenDB {
                                    COLUMN_GENUS = "Genus",
                                    COLUMN_DEKLINATION = "Deklination",
                                    COLUMN_GELERNT = "Gelernt";
+        //TODO: Foreign Key: Lektion
     }
 }

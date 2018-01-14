@@ -21,5 +21,6 @@ public class VerbDB {
                                    COLUMN_VERBFORM = "FirstPersSg",
                                    COLUMN_KONJUGATION = "Konjugation",
                                    COLUMN_GELERNT = "Gelernt";
+        //TODO: Foreign Key: Lektion
     }
 }
