@@ -23,7 +23,7 @@
         <activity android:name=".Activities.Lektion2" />
         <activity android:name=".Activities.Lektion3" />
         <activity android:name=".Activities.Lektion4" />
-        <activity android:name=".Databases.AndroidDatabaseManager" />
+        <activity android:name=".Activities.AndroidDatabaseManager" />
     </application>
 
 </manifest>

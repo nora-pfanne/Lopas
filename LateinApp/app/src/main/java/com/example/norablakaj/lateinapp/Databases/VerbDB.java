@@ -20,6 +20,7 @@ public class VerbDB {
                                    COLUMN_HINWEIS = "Hinweis",
                                    COLUMN_VERBFORM = "FirstPersSg",
                                    COLUMN_KONJUGATION = "Konjugation",
-                                   COLUMN_GELERNT = "Gelernt";
+                                   COLUMN_GELERNT = "Gelernt",
+                                   COLUMN_LEKTIONID = "Lektion_ID";
     }
 }
