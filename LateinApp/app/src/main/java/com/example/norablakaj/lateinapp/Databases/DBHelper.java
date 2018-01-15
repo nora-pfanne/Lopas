@@ -51,9 +51,20 @@ public class DBHelper extends SQLiteOpenHelper {
                     + VerbDB.FeedEntry.COLUMN_KONJUGATION
                     + " TEXT, "
                     + VerbDB.FeedEntry.COLUMN_GELERNT
-                    + " INTEGER)";
+                    + " INTEGER, "
+                    + VerbDB.FeedEntry.COLUMN_LEKTIONID
+                    + " INTEGER, FOREIGN KEY("
+                    + VerbDB.FeedEntry.COLUMN_LEKTIONID
+                    + ") REFERENCES "
+                    + LektionDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + LektionDB.FeedEntry._ID
+                    + "))";
+
+
 
     private static final String SQL_CREATE_ENTRIES_NOMEN =
+
             "CREATE TABLE "
                     + NomenDB.FeedEntry.TABLE_NAME
                     + " ("
@@ -72,8 +83,15 @@ public class DBHelper extends SQLiteOpenHelper {
                     + NomenDB.FeedEntry.COLUMN_DEKLINATION
                     + " TEXT, "
                     + NomenDB.FeedEntry.COLUMN_GELERNT
-                    + " INTEGER)";
-
+                    + " INTEGER, "
+                    + NomenDB.FeedEntry.COLUMN_LEKTIONID
+                    + " INTEGER, FOREIGN KEY("
+                    + NomenDB.FeedEntry.COLUMN_LEKTIONID
+                    + ") REFERENCES "
+                    + LektionDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + LektionDB.FeedEntry._ID
+                    + "))";
 
     //creating a String for quick access to a deletion command for all tables
     private static final String SQL_DELETE_ENTRIES_LEKTION =
@@ -103,7 +121,8 @@ public class DBHelper extends SQLiteOpenHelper {
             VerbDB.FeedEntry.COLUMN_HINWEIS,
             VerbDB.FeedEntry.COLUMN_VERBFORM,
             VerbDB.FeedEntry.COLUMN_KONJUGATION,
-            VerbDB.FeedEntry.COLUMN_GELERNT
+            VerbDB.FeedEntry.COLUMN_GELERNT,
+            VerbDB.FeedEntry.COLUMN_LEKTIONID
     };
 
     private static final String[] allColumnsNomen = {
@@ -114,7 +133,8 @@ public class DBHelper extends SQLiteOpenHelper {
             NomenDB.FeedEntry.COLUMN_GENITIV,
             NomenDB.FeedEntry.COLUMN_GENUS,
             NomenDB.FeedEntry.COLUMN_DEKLINATION,
-            NomenDB.FeedEntry.COLUMN_GELERNT
+            NomenDB.FeedEntry.COLUMN_GELERNT,
+            NomenDB.FeedEntry.COLUMN_LEKTIONID
     };
 
     //Version of the database
@@ -185,8 +205,9 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param verbform content for the 'Verbform' column
      * @param konjugation content for the 'Konjugation' column
      * @param gelernt content for the 'Gelernt?' column
+     * @param lektion foreign key referencing a lektion where the noun in contained
      */
-    public void addRowVerb(String latein, String deutsch, String hinweis, String verbform, String konjugation, boolean gelernt){
+    public void addRowVerb(String latein, String deutsch, String hinweis, String verbform, String konjugation, boolean gelernt, int lektion){
         //retrieving the database that contains the wanted table
         SQLiteDatabase db = getWritableDatabase();
 
@@ -198,6 +219,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(VerbDB.FeedEntry.COLUMN_VERBFORM, verbform);
         values.put(VerbDB.FeedEntry.COLUMN_KONJUGATION, konjugation);
         values.put(VerbDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
+        values.put(VerbDB.FeedEntry.COLUMN_LEKTIONID, lektion);
         db.insert(VerbDB.FeedEntry.TABLE_NAME, null, values);
 
         //closes the database connection
@@ -213,8 +235,9 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param genus content for the 'Genus' column
      * @param deklination content for the 'Deklination' column
      * @param gelernt content for the 'Gelernt?' column
+     * @param lektion foreign key referencing a lektion where the noun in contained
      */
-    public void addRowNomen(String latein, String deutsch, String hinweis, String genitiv, String genus, String deklination, boolean gelernt) {
+    public void addRowNomen(String latein, String deutsch, String hinweis, String genitiv, String genus, String deklination, boolean gelernt, int lektion) {
         //retrieving the database that contains the wanted table
         SQLiteDatabase db = getWritableDatabase();
 
@@ -227,6 +250,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(NomenDB.FeedEntry.COLUMN_GENUS, genus);
         values.put(NomenDB.FeedEntry.COLUMN_DEKLINATION, deklination);
         values.put(NomenDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
+        values.put(NomenDB.FeedEntry.COLUMN_LEKTIONID, lektion);
         db.insert(NomenDB.FeedEntry.TABLE_NAME, null, values);
 
         //closes the database connection
@@ -273,8 +297,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 if (line != null){
                     String[] tokens = line.split(split);
                     try {
-                        addRowVerb(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], Boolean.parseBoolean(tokens[5]));
-                        //TODO: Add foreign key 'Lektion'
+                        addRowVerb(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], Boolean.parseBoolean(tokens[5]), Integer.parseInt(tokens[6]));
+
                     }catch (NumberFormatException e){
                         e.printStackTrace();
                     }
@@ -314,7 +338,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 lineAmount++;
             }
 
-            //reset to the beginning
+            //reset reader to the beginning
             bIn.reset();
             br = new BufferedReader(new InputStreamReader((bIn)));
 
@@ -330,8 +354,16 @@ public class DBHelper extends SQLiteOpenHelper {
                 if (line != null){
                     String[] tokens = line.split(split);
                     try {
-                        addRowNomen(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], Boolean.parseBoolean(tokens[5]));
-                        //TODO: Add foreign key 'Lektion'
+
+                        addRowNomen(
+                                tokens[0],
+                                tokens[1],
+                                tokens[2],
+                                tokens[3],
+                                tokens[4],
+                                tokens[5],
+                                Boolean.parseBoolean(tokens[6]),
+                                Integer.parseInt(tokens[7]));
                     }catch (NumberFormatException e){
                         e.printStackTrace();
                     }
@@ -346,6 +378,164 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
+
+    //TODO: Combine all 3 methods into 1
+    /**
+     * TODO: Combine all 3 'getAllItems[..]()' methods into 1
+     * @return a Cursor of all elements of the table 'Lektion'
+     */
+    public Cursor getAllEntriesLektion() {
+        //Get db connection
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.query(
+                LektionDB.FeedEntry.TABLE_NAME,
+                allColumnsLektion,
+                null,
+                null,
+                null,
+                null,
+                LektionDB.FeedEntry._ID + " DESC");
+
+        //return the amount of elements that were returned
+        return cursor;
+    }
+
+    /**
+     * TODO: Combine all 3 'getAllItems[..]()' methods into 1
+     * @return a Cursor of all elements of the table 'Nomen'
+     */
+    public Cursor getAllEntriesNomen() {
+        //Get db connection
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.query(
+                NomenDB.FeedEntry.TABLE_NAME,
+                allColumnsNomen,
+                null,
+                null,
+                null,
+                null,
+                NomenDB.FeedEntry._ID + " DESC");
+
+        db.close();
+        //return the amount of elements that were returned
+        return cursor;
+    }
+
+    /**
+     * TODO: Combine all 3 'getAllItems[..]()' methods into 1
+     * @return a Cursor of all elements of the table 'Verb'
+     */
+    public Cursor getAllEntriesVerb() {
+        //Get db connection
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.query(
+                VerbDB.FeedEntry.TABLE_NAME,
+                allColumnsVerb,
+                null,
+                null,
+                null,
+                null,
+                VerbDB.FeedEntry._ID + " DESC");
+
+        db.close();
+        //return the amount of elements that were returned
+        return cursor;
+    }
+
+    /**
+     * @return amount of rows in the table 'Lektion'
+     */
+    public int getEntryAmountLektion(){
+
+        //Get db connection
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.query(
+                LektionDB.FeedEntry.TABLE_NAME,
+                allColumnsLektion,
+                null,
+                null,
+                null,
+                null,
+                LektionDB.FeedEntry._ID + " DESC");
+
+        int count = 0;
+
+        while (cursor.moveToNext()){
+            count++;
+        }
+
+        cursor.close();
+        db.close();
+
+        //return the amount of elements that were returned
+        return count;
+    }
+
+    /**
+     * @return amount of rows in the table 'Nomen'
+     */
+    public int getEntryAmountNomen(){
+
+        //Get db connection
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.query(
+                NomenDB.FeedEntry.TABLE_NAME,
+                allColumnsNomen,
+                null,
+                null,
+                null,
+                null,
+                NomenDB.FeedEntry._ID + " DESC");
+
+        int count = 0;
+
+        while (cursor.moveToNext()){
+            count++;
+        }
+
+        db.close();
+        cursor.close();
+
+        //return the amount of elements that were returned
+        return count;
+    }
+
+    /**
+     * @return amount of rows in the table 'Verb'
+     */
+    public int getEntryAmountVerb(){
+
+        //Get db connection
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.query(
+                VerbDB.FeedEntry.TABLE_NAME,
+                allColumnsVerb,
+                null,
+                null,
+                null,
+                null,
+                VerbDB.FeedEntry._ID + " DESC");
+
+        int count = 0;
+
+        while (cursor.moveToNext()){
+            count++;
+        }
+
+        db.close();
+        cursor.close();
+
+        //return the amount of elements that were returned
+        return count;
+    }
+
+
 
 
     /**

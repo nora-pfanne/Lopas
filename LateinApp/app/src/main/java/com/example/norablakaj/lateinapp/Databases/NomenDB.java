@@ -22,7 +22,8 @@ public class NomenDB {
                                    COLUMN_GENITIV = "GenSg",
                                    COLUMN_GENUS = "Genus",
                                    COLUMN_DEKLINATION = "Deklination",
-                                   COLUMN_GELERNT = "Gelernt";
-        //TODO: Foreign Key: Lektion
+                                   COLUMN_GELERNT = "Gelernt",
+                                   COLUMN_LEKTIONID = "Lektion_ID";
     }
+
 }

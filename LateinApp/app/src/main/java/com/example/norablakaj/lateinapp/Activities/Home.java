@@ -17,6 +17,8 @@ import com.example.norablakaj.lateinapp.Databases.AndroidDatabaseManager;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.R;
 
+import java.util.concurrent.ExecutionException;
+
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -49,12 +51,22 @@ public class Home extends AppCompatActivity
         lektion3Button = findViewById(R.id.lektion3);
         lektion4Button = findViewById(R.id.lektion4);
 
-        //Adding entries to the 'Verb' table from 'Lektion1Verb.csv'
+        //Adding initial entries if they aren't in the database yet
         DBHelper dbHelper = new DBHelper(getApplicationContext());
-        dbHelper.addFileDataToVerb("/Vokabeln/Lektion1Verb.csv", ";");
 
-        //Adding entries to the 'Nomen' table from 'Lektion1Nomen.csv'
-        dbHelper.addFileDataToNomen("/Vokabeln/Lektion1Nomen.csv", ";");
+        if (dbHelper.getEntryAmountLektion() == 0) {
+            dbHelper.addRowLektion("Platzhalter", "Platzhalter-Beschreibung");
+            dbHelper.addRowLektion("Caesar", "Beschreibung1");
+            dbHelper.addRowLektion("Thema 2", "Beschreibung2");
+        }
+
+        if (dbHelper.getEntryAmountVerb() == 0) {
+            dbHelper.addFileDataToVerb("/Vokabeln/Lektion1Verb.csv", ";");
+        }
+
+        if (dbHelper.getEntryAmountNomen() == 0) {
+            dbHelper.addFileDataToNomen("/Vokabeln/Lektion1Nomen.csv", ";");
+        }
 
         dbHelper.close();
     }
