@@ -1,5 +1,6 @@
 package com.example.norablakaj.lateinapp.Databases;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.MatrixCursor;
@@ -8,6 +9,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
@@ -46,9 +51,20 @@ public class DBHelper extends SQLiteOpenHelper {
                     + VerbDB.FeedEntry.COLUMN_KONJUGATION
                     + " TEXT, "
                     + VerbDB.FeedEntry.COLUMN_GELERNT
-                    + " INTEGER)";
+                    + " INTEGER, "
+                    + VerbDB.FeedEntry.COLUMN_LEKTIONID
+                    + " INTEGER, FOREIGN KEY("
+                    + VerbDB.FeedEntry.COLUMN_LEKTIONID
+                    + ") REFERENCES "
+                    + LektionDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + LektionDB.FeedEntry._ID
+                    + "))";
+
+
 
     private static final String SQL_CREATE_ENTRIES_NOMEN =
+
             "CREATE TABLE "
                     + NomenDB.FeedEntry.TABLE_NAME
                     + " ("
@@ -67,8 +83,15 @@ public class DBHelper extends SQLiteOpenHelper {
                     + NomenDB.FeedEntry.COLUMN_DEKLINATION
                     + " TEXT, "
                     + NomenDB.FeedEntry.COLUMN_GELERNT
-                    + " INTEGER)";
-
+                    + " INTEGER, "
+                    + NomenDB.FeedEntry.COLUMN_LEKTIONID
+                    + " INTEGER, FOREIGN KEY("
+                    + NomenDB.FeedEntry.COLUMN_LEKTIONID
+                    + ") REFERENCES "
+                    + LektionDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + LektionDB.FeedEntry._ID
+                    + "))";
 
     //creating a String for quick access to a deletion command for all tables
     private static final String SQL_DELETE_ENTRIES_LEKTION =
@@ -98,7 +121,8 @@ public class DBHelper extends SQLiteOpenHelper {
             VerbDB.FeedEntry.COLUMN_HINWEIS,
             VerbDB.FeedEntry.COLUMN_VERBFORM,
             VerbDB.FeedEntry.COLUMN_KONJUGATION,
-            VerbDB.FeedEntry.COLUMN_GELERNT
+            VerbDB.FeedEntry.COLUMN_GELERNT,
+            VerbDB.FeedEntry.COLUMN_LEKTIONID
     };
 
     private static final String[] allColumnsNomen = {
@@ -109,19 +133,20 @@ public class DBHelper extends SQLiteOpenHelper {
             NomenDB.FeedEntry.COLUMN_GENITIV,
             NomenDB.FeedEntry.COLUMN_GENUS,
             NomenDB.FeedEntry.COLUMN_DEKLINATION,
-            NomenDB.FeedEntry.COLUMN_GELERNT
+            NomenDB.FeedEntry.COLUMN_GELERNT,
+            NomenDB.FeedEntry.COLUMN_LEKTIONID
     };
 
     //Version of the database
-    public static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 1;
 
 
     //Name of the database file
-    public static final String DATABASE_NAME= "TestDb.db";
+    private static final String DATABASE_NAME= "TestDb.db";
 
     /**
      * Constructor
-     * @param context
+     * @param context lets newly-created objects understand what has been going on
      */
     public DBHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -130,7 +155,7 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Creating all 3 Databases
      * TODO: Maybe initialize them here too?
-     * @param db
+     * @param db database where the tables are supposed to be put into
      */
     public void onCreate(SQLiteDatabase db){
         db.execSQL(SQL_CREATE_ENTRIES_LEKTION);
@@ -151,6 +176,366 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_ENTRIES_VERB);
         onCreate(db);
     }
+
+    //TODO: Combine all 3 methods into 1?
+    /**
+     * Adds a row with the given parameters into the 'Lektion' table
+     * @param thema content for the 'Thema' column
+     * @param beschreibung content for the 'Beschreibung' column
+     */
+    public void addRowLektion(String thema, String beschreibung){
+        //retrieving the database that contains the wanted table
+        SQLiteDatabase db = getWritableDatabase();
+
+        //adds the row to the table
+        ContentValues values = new ContentValues();
+        values.put(LektionDB.FeedEntry.COLUMN_THEMA, thema);
+        values.put(LektionDB.FeedEntry.COLUMN_BESCHREIBUNG, beschreibung);
+        db.insert(LektionDB.FeedEntry.TABLE_NAME, null, values);
+
+        //closes the database connection
+        db.close();
+    }
+
+    /**
+     * Adds a row with the given parameters into the 'Verb' table
+     * @param latein content for the 'Latein' column
+     * @param deutsch content for the 'Deutsch' column
+     * @param hinweis content for the 'Hinweis' column
+     * @param verbform content for the 'Verbform' column
+     * @param konjugation content for the 'Konjugation' column
+     * @param gelernt content for the 'Gelernt?' column
+     * @param lektion foreign key referencing a lektion where the noun in contained
+     */
+    public void addRowVerb(String latein, String deutsch, String hinweis, String verbform, String konjugation, boolean gelernt, int lektion){
+        //retrieving the database that contains the wanted table
+        SQLiteDatabase db = getWritableDatabase();
+
+        //adds the row to the table
+        ContentValues values = new ContentValues();
+        values.put(VerbDB.FeedEntry.COLUMN_LATEIN, latein);
+        values.put(VerbDB.FeedEntry.COLUMN_DEUTSCH, deutsch);
+        values.put(VerbDB.FeedEntry.COLUMN_HINWEIS, hinweis);
+        values.put(VerbDB.FeedEntry.COLUMN_VERBFORM, verbform);
+        values.put(VerbDB.FeedEntry.COLUMN_KONJUGATION, konjugation);
+        values.put(VerbDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
+        values.put(VerbDB.FeedEntry.COLUMN_LEKTIONID, lektion);
+        db.insert(VerbDB.FeedEntry.TABLE_NAME, null, values);
+
+        //closes the database connection
+        db.close();
+    }
+
+    /**
+     * Adds a row with the given parameters into the 'Nomen' table
+     * @param latein content for the 'Latein' column
+     * @param deutsch content for the 'Deutsch' column
+     * @param hinweis content for the 'Hinweis' column
+     * @param genitiv content for the 'Genitiv' column
+     * @param genus content for the 'Genus' column
+     * @param deklination content for the 'Deklination' column
+     * @param gelernt content for the 'Gelernt?' column
+     * @param lektion foreign key referencing a lektion where the noun in contained
+     */
+    public void addRowNomen(String latein, String deutsch, String hinweis, String genitiv, String genus, String deklination, boolean gelernt, int lektion) {
+        //retrieving the database that contains the wanted table
+        SQLiteDatabase db = getWritableDatabase();
+
+        //adds the row to the table
+        ContentValues values = new ContentValues();
+        values.put(NomenDB.FeedEntry.COLUMN_LATEIN, latein);
+        values.put(NomenDB.FeedEntry.COLUMN_DEUTSCH, deutsch);
+        values.put(NomenDB.FeedEntry.COLUMN_HINWEIS, hinweis);
+        values.put(NomenDB.FeedEntry.COLUMN_GENITIV, genitiv);
+        values.put(NomenDB.FeedEntry.COLUMN_GENUS, genus);
+        values.put(NomenDB.FeedEntry.COLUMN_DEKLINATION, deklination);
+        values.put(NomenDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
+        values.put(NomenDB.FeedEntry.COLUMN_LEKTIONID, lektion);
+        db.insert(NomenDB.FeedEntry.TABLE_NAME, null, values);
+
+        //closes the database connection
+        db.close();
+    }
+
+    /**
+     * Add a entry to the 'Verb' table for every row in the file
+     * the columns are split with '@param split'
+     * @param s path to the file to read
+     * @param split element where the columns are split
+     */
+    public void addFileDataToVerb(String s, String split){
+        //TODO: Add support for special characters -> ā ē ī
+        try {
+            //reading the image from the path 's'
+            InputStream in = getClass().getResourceAsStream(s);
+            //add buffer for mark/reset support
+            InputStream bIn = new BufferedInputStream(in);
+            //marks the beginning to resets to this point later
+            bIn.mark(100000000);
+
+            BufferedReader br = new BufferedReader( new InputStreamReader(bIn));
+
+            //count the total number of lines
+            int lineAmount = 0;
+            while(br.readLine() != null){
+                lineAmount++;
+            }
+
+            //reset to the beginning
+            bIn.reset();
+            br = new BufferedReader(new InputStreamReader((bIn)));
+
+            //Skip the first line with the column headings
+            br.readLine();
+
+            SQLiteDatabase db = getReadableDatabase();
+
+            //goes through every line and add its content to the table
+            String line;
+            for (int i = 0; i < lineAmount - 1; i++){
+                line = br.readLine();
+                if (line != null){
+                    String[] tokens = line.split(split);
+                    try {
+                        addRowVerb(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], Boolean.parseBoolean(tokens[5]), Integer.parseInt(tokens[6]));
+
+                    }catch (NumberFormatException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+            //closing all connections
+            db.close();
+            br.close();
+            bIn.close();
+            in.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Add a entry to the 'Verb' table for every row in the file
+     * the columns are split with '@param split'
+     * @param s path to the file to read
+     * @param split element where the columns are split
+     */
+    public void addFileDataToNomen(String s, String split){
+        //TODO: Add support for special characters -> ā ē ī
+        try {
+            //reading the image from the path 's'
+            InputStream in = getClass().getResourceAsStream(s);
+            //add buffer for mark/reset support
+            InputStream bIn = new BufferedInputStream(in);
+            //marks the beginning to resets to this point later
+            bIn.mark(100000000);
+
+            BufferedReader br = new BufferedReader( new InputStreamReader(bIn));
+
+            //count the total number of lines
+            int lineAmount = 0;
+            while(br.readLine() != null){
+                lineAmount++;
+            }
+
+            //reset reader to the beginning
+            bIn.reset();
+            br = new BufferedReader(new InputStreamReader((bIn)));
+
+            //Skip the first line with the column headings
+            br.readLine();
+
+            SQLiteDatabase db = getReadableDatabase();
+
+            //goes through every line and add its content to the table
+            String line;
+            for (int i = 0; i < lineAmount - 1; i++){
+                line = br.readLine();
+                if (line != null){
+                    String[] tokens = line.split(split);
+                    try {
+
+                        addRowNomen(
+                                tokens[0],
+                                tokens[1],
+                                tokens[2],
+                                tokens[3],
+                                tokens[4],
+                                tokens[5],
+                                Boolean.parseBoolean(tokens[6]),
+                                Integer.parseInt(tokens[7]));
+                    }catch (NumberFormatException e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+            //closing all connections
+            db.close();
+            br.close();
+            bIn.close();
+            in.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    //TODO: Combine all 3 methods into 1
+    /**
+     * TODO: Combine all 3 'getAllItems[..]()' methods into 1
+     * @return a Cursor of all elements of the table 'Lektion'
+     */
+    public Cursor getAllEntriesLektion() {
+        //Get db connection
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.query(
+                LektionDB.FeedEntry.TABLE_NAME,
+                allColumnsLektion,
+                null,
+                null,
+                null,
+                null,
+                LektionDB.FeedEntry._ID + " DESC");
+
+        //return the amount of elements that were returned
+        return cursor;
+    }
+
+    /**
+     * TODO: Combine all 3 'getAllItems[..]()' methods into 1
+     * @return a Cursor of all elements of the table 'Nomen'
+     */
+    public Cursor getAllEntriesNomen() {
+        //Get db connection
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.query(
+                NomenDB.FeedEntry.TABLE_NAME,
+                allColumnsNomen,
+                null,
+                null,
+                null,
+                null,
+                NomenDB.FeedEntry._ID + " DESC");
+
+        db.close();
+        //return the amount of elements that were returned
+        return cursor;
+    }
+
+    /**
+     * TODO: Combine all 3 'getAllItems[..]()' methods into 1
+     * @return a Cursor of all elements of the table 'Verb'
+     */
+    public Cursor getAllEntriesVerb() {
+        //Get db connection
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.query(
+                VerbDB.FeedEntry.TABLE_NAME,
+                allColumnsVerb,
+                null,
+                null,
+                null,
+                null,
+                VerbDB.FeedEntry._ID + " DESC");
+
+        db.close();
+        //return the amount of elements that were returned
+        return cursor;
+    }
+
+    /**
+     * @return amount of rows in the table 'Lektion'
+     */
+    public int getEntryAmountLektion(){
+
+        //Get db connection
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.query(
+                LektionDB.FeedEntry.TABLE_NAME,
+                allColumnsLektion,
+                null,
+                null,
+                null,
+                null,
+                LektionDB.FeedEntry._ID + " DESC");
+
+        int count = 0;
+
+        while (cursor.moveToNext()){
+            count++;
+        }
+
+        cursor.close();
+        db.close();
+
+        //return the amount of elements that were returned
+        return count;
+    }
+
+    /**
+     * @return amount of rows in the table 'Nomen'
+     */
+    public int getEntryAmountNomen(){
+
+        //Get db connection
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.query(
+                NomenDB.FeedEntry.TABLE_NAME,
+                allColumnsNomen,
+                null,
+                null,
+                null,
+                null,
+                NomenDB.FeedEntry._ID + " DESC");
+
+        int count = 0;
+
+        while (cursor.moveToNext()){
+            count++;
+        }
+
+        db.close();
+        cursor.close();
+
+        //return the amount of elements that were returned
+        return count;
+    }
+
+    /**
+     * @return amount of rows in the table 'Verb'
+     */
+    public int getEntryAmountVerb(){
+
+        //Get db connection
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.query(
+                VerbDB.FeedEntry.TABLE_NAME,
+                allColumnsVerb,
+                null,
+                null,
+                null,
+                null,
+                VerbDB.FeedEntry._ID + " DESC");
+
+        int count = 0;
+
+        while (cursor.moveToNext()){
+            count++;
+        }
+
+        db.close();
+        cursor.close();
+
+        //return the amount of elements that were returned
+        return count;
+    }
+
+
 
 
     /**
