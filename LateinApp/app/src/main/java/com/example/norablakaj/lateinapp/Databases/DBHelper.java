@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * DBHelper is used for managing the database and its tables.
@@ -346,6 +347,110 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
+
+    /**
+     * TODO: Combine all 3 'getAllItems[..]()' methods into 1
+     * @return a List of all elements of the table 'Lektion'
+     */
+    public List getAllItemsLektion() {
+        //Get db connection
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.query(
+                LektionDB.FeedEntry.TABLE_NAME,
+                allColumnsLektion,
+                null,
+                null,
+                null,
+                null,
+                LektionDB.FeedEntry._ID + " DESC");
+
+        //Add every element that the query returned to a ArrayList<>
+        List itemIds = new ArrayList<>();
+
+        while (cursor.moveToNext()){
+            long itemId = cursor.getLong(
+                    cursor.getColumnIndexOrThrow(NomenDB.FeedEntry._ID)
+            );
+            itemIds.add(itemId);
+        }
+
+        db.close();
+        cursor.close();
+
+        //return the amount of elements that were returned
+        return itemIds;
+    }
+
+    /**
+     * TODO: Combine all 3 'getAllItems[..]()' methods into 1
+     * @return a List of all elements of the table 'Nomen'
+     */
+    public List getAllItemsNomen(){
+        //Get db connection
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.query(
+                NomenDB.FeedEntry.TABLE_NAME,
+                allColumnsNomen,
+                null,
+                null,
+                null,
+                null,
+                NomenDB.FeedEntry._ID + " DESC");
+
+        //Add every element that the query returned to a ArrayList<>
+        List itemIds = new ArrayList<>();
+
+        while (cursor.moveToNext()){
+            long itemId = cursor.getLong(
+                    cursor.getColumnIndexOrThrow(NomenDB.FeedEntry._ID)
+            );
+            itemIds.add(itemId);
+        }
+
+        db.close();
+        cursor.close();
+
+        //return the amount of elements that were returned
+        return itemIds;
+    }
+
+    /**
+     * TODO: Combine all 3 'getAllItems[..]()' methods into 1
+     * @return a List of all elements of the table 'Verb'
+     */
+    public List getAllItemsVerb(){
+        //Get db connection
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.query(
+                VerbDB.FeedEntry.TABLE_NAME,
+                allColumnsVerb,
+                null,
+                null,
+                null,
+                null,
+                VerbDB.FeedEntry._ID + " DESC");
+
+        //Add every element that the query returned to a ArrayList<>
+        List itemIds = new ArrayList<>();
+
+        while (cursor.moveToNext()){
+            long itemId = cursor.getLong(
+                    cursor.getColumnIndexOrThrow(NomenDB.FeedEntry._ID)
+            );
+            itemIds.add(itemId);
+        }
+
+        db.close();
+        cursor.close();
+
+        //return the amount of elements that were returned
+        return itemIds;
+    }
+
+
 
 
     /**

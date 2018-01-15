@@ -49,12 +49,21 @@ public class Home extends AppCompatActivity
         lektion3Button = findViewById(R.id.lektion3);
         lektion4Button = findViewById(R.id.lektion4);
 
-        //Adding entries to the 'Verb' table from 'Lektion1Verb.csv'
+        //Adding inital entries to the database if there aren't any entries yet
         DBHelper dbHelper = new DBHelper(getApplicationContext());
-        dbHelper.addFileDataToVerb("/Vokabeln/Lektion1Verb.csv", ";");
 
-        //Adding entries to the 'Nomen' table from 'Lektion1Nomen.csv'
-        dbHelper.addFileDataToNomen("/Vokabeln/Lektion1Nomen.csv", ";");
+        if (dbHelper.getAllItemsLektion().size() == 0){
+            dbHelper.addRowLektion("Lektion 0", "Placeholder");
+            dbHelper.addRowLektion("Ceasar", "Ceasar wird behandelt");
+            dbHelper.addRowLektion("Senator", "Senatores sind das Thema");
+        }
+        if (dbHelper.getAllItemsVerb().size() == 0) {
+            dbHelper.addFileDataToVerb("/Vokabeln/Lektion1Verb.csv", ";");
+        }
+        //if (dbHelper.getAllItemsNomen().size() == 0) {
+            //Adding entries to the 'Nomen' table from 'Lektion1Nomen.csv'
+            dbHelper.addFileDataToNomen("/Vokabeln/Lektion1Nomen.csv", ";");
+        //}
 
         dbHelper.close();
     }
