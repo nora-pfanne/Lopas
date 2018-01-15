@@ -138,15 +138,15 @@ public class DBHelper extends SQLiteOpenHelper {
     };
 
     //Version of the database
-    public static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 1;
 
 
     //Name of the database file
-    public static final String DATABASE_NAME= "TestDb.db";
+    private static final String DATABASE_NAME= "TestDb.db";
 
     /**
      * Constructor
-     * @param context
+     * @param context lets newly-created objects understand what has been going on
      */
     public DBHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -155,7 +155,7 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Creating all 3 Databases
      * TODO: Maybe initialize them here too?
-     * @param db
+     * @param db database where the tables are supposed to be put into
      */
     public void onCreate(SQLiteDatabase db){
         db.execSQL(SQL_CREATE_ENTRIES_LEKTION);
