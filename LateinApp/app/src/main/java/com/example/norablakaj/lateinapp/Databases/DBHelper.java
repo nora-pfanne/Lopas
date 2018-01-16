@@ -64,7 +64,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     private static final String SQL_CREATE_ENTRIES_NOMEN =
-
             "CREATE TABLE "
                     + NomenDB.FeedEntry.TABLE_NAME
                     + " ("
@@ -446,96 +445,62 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * @return amount of rows in the table 'Lektion'
+     * @param table name of the table where the amount of rows is wanted
+     * @return amount of rows in the table given as parameter
      */
-    public int getEntryAmountLektion(){
+    public int getEntryAmount(String table){
 
         //Get db connection
         SQLiteDatabase db = getWritableDatabase();
 
-        Cursor cursor = db.query(
-                LektionDB.FeedEntry.TABLE_NAME,
-                allColumnsLektion,
-                null,
-                null,
-                null,
-                null,
-                LektionDB.FeedEntry._ID + " DESC");
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + table, null);
 
-        int count = 0;
+        cursor.moveToNext();
+        long count = cursor.getLong(0);
 
-        while (cursor.moveToNext()){
-            count++;
-        }
-
-        cursor.close();
         db.close();
+        cursor.close();
 
-        //return the amount of elements that were returned
-        return count;
+        return (int)count;
     }
+
 
     /**
-     * @return amount of rows in the table 'Nomen'
+     * Returns a single column of a requested row with the id
+     * @param table the table the result should be from
+     * @param id the id of the entry with the wanted result
+     * @param column the name of the wanted column
+     * @return
      */
-    public int getEntryAmountNomen(){
+    public Object returnColumnFromID(String table, int id, String column){
 
-        //Get db connection
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
 
+        //getting the result of the query
         Cursor cursor = db.query(
-                NomenDB.FeedEntry.TABLE_NAME,
-                allColumnsNomen,
+                table,
+                new String[] {column},
+                " = ?",
+                new String[] {""+id},
                 null,
                 null,
-                null,
-                null,
-                NomenDB.FeedEntry._ID + " DESC");
+                null
+        );
 
-        int count = 0;
-
-        while (cursor.moveToNext()){
-            count++;
+        //reading the result of the query
+        cursor.moveToNext();
+        Object result;
+        try {
+            result = cursor.getFloat(0);
+        }catch (Exception e){
+            result = cursor.getString(0);
         }
 
-        db.close();
         cursor.close();
-
-        //return the amount of elements that were returned
-        return count;
-    }
-
-    /**
-     * @return amount of rows in the table 'Verb'
-     */
-    public int getEntryAmountVerb(){
-
-        //Get db connection
-        SQLiteDatabase db = getWritableDatabase();
-
-        Cursor cursor = db.query(
-                VerbDB.FeedEntry.TABLE_NAME,
-                allColumnsVerb,
-                null,
-                null,
-                null,
-                null,
-                VerbDB.FeedEntry._ID + " DESC");
-
-        int count = 0;
-
-        while (cursor.moveToNext()){
-            count++;
-        }
-
         db.close();
-        cursor.close();
 
-        //return the amount of elements that were returned
-        return count;
+        return result;
     }
-
-
 
 
     /**

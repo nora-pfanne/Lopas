@@ -15,6 +15,9 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
+import com.example.norablakaj.lateinapp.Databases.LektionDB;
+import com.example.norablakaj.lateinapp.Databases.NomenDB;
+import com.example.norablakaj.lateinapp.Databases.VerbDB;
 import com.example.norablakaj.lateinapp.R;
 
 public class Home extends AppCompatActivity
@@ -52,17 +55,17 @@ public class Home extends AppCompatActivity
         //Adding initial entries if they aren't in the database yet
         DBHelper dbHelper = new DBHelper(getApplicationContext());
 
-        if (dbHelper.getEntryAmountLektion() == 0) {
+        if (dbHelper.getEntryAmount(LektionDB.FeedEntry.TABLE_NAME) == 0) {
             dbHelper.addRowLektion("Platzhalter", "Platzhalter-Beschreibung");
             dbHelper.addRowLektion("Caesar", "Beschreibung1");
             dbHelper.addRowLektion("Thema 2", "Beschreibung2");
         }
 
-        if (dbHelper.getEntryAmountVerb() == 0) {
+        if (dbHelper.getEntryAmount(VerbDB.FeedEntry.TABLE_NAME) == 0) {
             dbHelper.addFileDataToVerb("/Vokabeln/Lektion1Verb.csv", ";");
         }
 
-        if (dbHelper.getEntryAmountNomen() == 0) {
+        if (dbHelper.getEntryAmount(NomenDB.FeedEntry.TABLE_NAME) == 0) {
             dbHelper.addFileDataToNomen("/Vokabeln/Lektion1Nomen.csv", ";");
         }
 
