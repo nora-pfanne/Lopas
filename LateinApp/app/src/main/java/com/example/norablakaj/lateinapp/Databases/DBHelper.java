@@ -502,6 +502,52 @@ public class DBHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    /**
+     *
+     * @param lektion the lektion where the percentage of completed entries is needed
+     * @return the percentage of completed vocables
+     */
+    public float getPercentCompleted(String lektion){
+
+        //Array with all tables to be queried
+        String[] tables = {NomenDB.FeedEntry.TABLE_NAME,
+                           VerbDB.FeedEntry.TABLE_NAME};
+
+        int complete = 0;
+        int total = 0;
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        //TODO: JOIN in SQL statement ?
+        Cursor cursor;
+        for (String table : tables){
+
+            //getting the total number of entries which were completed and adding it to 'complete'
+            cursor = db.rawQuery("SELECT COUNT(*) FROM " + table
+                    + " WHERE Gelernt = ? AND Lektion_ID = ?",
+                    new String[] {""+1, lektion});
+            cursor.moveToNext();
+            complete += (int)cursor.getFloat(0);
+
+            //getting the total number of entries of each table and adding it to 'total'
+            cursor = db.rawQuery("SELECT COUNT(*) FROM " + table
+                            + " WHERE Lektion_ID = ?",
+                    new String[] {lektion});
+            cursor.moveToNext();
+            total += (int)cursor.getFloat(0);
+
+            cursor.close();
+        }
+
+        db.close();
+
+        //Avoiding dividing by 0
+        if (total == 0){
+            return -1;
+        }else {
+            return complete/total;
+        }
+    }
 
     /**
      * This method is for the class 'AndroidDatabaseManager'
