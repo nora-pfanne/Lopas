@@ -3,7 +3,7 @@ package com.example.norablakaj.lateinapp.Databases;
 import android.provider.BaseColumns;
 
 /**
- * Created by Nora Blakaj on 11.01.2018.
+ * Information for the 'Nomen'-Table
  */
 
 public class NomenDB {
@@ -22,6 +22,8 @@ public class NomenDB {
                                    COLUMN_GENITIV = "GenSg",
                                    COLUMN_GENUS = "Genus",
                                    COLUMN_DEKLINATION = "Deklination",
-                                   COLUMN_GELERNT = "Gelernt";
+                                   COLUMN_GELERNT = "Gelernt",
+                                   COLUMN_LEKTIONID = "Lektion_ID";
     }
+
 }

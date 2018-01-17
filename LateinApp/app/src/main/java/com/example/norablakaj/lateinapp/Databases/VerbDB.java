@@ -3,7 +3,7 @@ package com.example.norablakaj.lateinapp.Databases;
 import android.provider.BaseColumns;
 
 /**
- * Created by Nora Blakaj on 11.01.2018.
+ * Information for the 'Verb'-Table
  */
 
 public class VerbDB {
@@ -20,6 +20,7 @@ public class VerbDB {
                                    COLUMN_HINWEIS = "Hinweis",
                                    COLUMN_VERBFORM = "FirstPersSg",
                                    COLUMN_KONJUGATION = "Konjugation",
-                                   COLUMN_GELERNT = "Gelernt";
+                                   COLUMN_GELERNT = "Gelernt",
+                                   COLUMN_LEKTIONID = "Lektion_ID";
     }
 }
