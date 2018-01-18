@@ -131,7 +131,9 @@ public class Home extends AppCompatActivity
         if (id == R.id.nav_home) {
 
         } else if (id == R.id.nav_wörterbuch) {
-
+            //Opening the activity 'Woerterbuch'
+            Intent openWörterbuch = new Intent(this, Woerterbuch.class);
+            startActivity(openWörterbuch);
         } else if (id == R.id.nav_hilfe) {
 
         } else if (id == R.id.nav_impressum) {

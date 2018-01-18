@@ -24,6 +24,7 @@
         <activity android:name=".Activities.Lektion3" />
         <activity android:name=".Activities.Lektion4" />
         <activity android:name=".Activities.AndroidDatabaseManager" />
+        <activity android:name=".Activities.Woerterbuch"></activity>
     </application>
 
 </manifest>
