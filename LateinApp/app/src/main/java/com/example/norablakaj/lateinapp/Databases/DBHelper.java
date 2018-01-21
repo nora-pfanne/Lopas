@@ -406,15 +406,15 @@ public class DBHelper extends SQLiteOpenHelper {
      * TODO: Combine all 3 'getAllItems[..]()' methods into 1
      * @return a Cursor of all elements of the table 'Nomen'
      */
-    public Cursor getAllEntriesNomen() {
+    public Cursor getAllEntriesNomen(int lektion) {
         //Get db connection
         reopenDb();
 
         Cursor cursor = dbConnection.query(
                 NomenDB.FeedEntry.TABLE_NAME,
                 allColumnsNomen,
-                null,
-                null,
+                NomenDB.FeedEntry.COLUMN_LEKTIONID + "=?",
+                new String[] {""+lektion},
                 null,
                 null,
                 NomenDB.FeedEntry._ID + " ASC");
@@ -427,15 +427,15 @@ public class DBHelper extends SQLiteOpenHelper {
      * TODO: Combine all 3 'getAllItems[..]()' methods into 1
      * @return a Cursor of all elements of the table 'Verb'
      */
-    public Cursor getAllEntriesVerb() {
+    public Cursor getAllEntriesVerb(int lektion) {
         //Get db connection
         reopenDb();
 
         Cursor cursor = dbConnection.query(
                 VerbDB.FeedEntry.TABLE_NAME,
                 allColumnsVerb,
-                null,
-                null,
+                VerbDB.FeedEntry.COLUMN_LEKTIONID + "=?",
+                new String[] {""+lektion},
                 null,
                 null,
                 VerbDB.FeedEntry._ID + " ASC");
