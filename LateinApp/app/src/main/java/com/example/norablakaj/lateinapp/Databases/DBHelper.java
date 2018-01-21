@@ -22,6 +22,8 @@ import java.util.ArrayList;
 
 public class DBHelper extends SQLiteOpenHelper {
 
+    SQLiteDatabase dbConnection;
+
     //Creating a String for quick access to a creation command for all tables
     private static final String SQL_CREATE_ENTRIES_LEKTION =
             "CREATE TABLE "
@@ -184,16 +186,16 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public void addRowLektion(String thema, String beschreibung){
         //retrieving the database that contains the wanted table
-        SQLiteDatabase db = getWritableDatabase();
+        reopenDb();
 
         //adds the row to the table
         ContentValues values = new ContentValues();
         values.put(LektionDB.FeedEntry.COLUMN_THEMA, thema);
         values.put(LektionDB.FeedEntry.COLUMN_BESCHREIBUNG, beschreibung);
-        db.insert(LektionDB.FeedEntry.TABLE_NAME, null, values);
+        dbConnection.insert(LektionDB.FeedEntry.TABLE_NAME, null, values);
 
         //closes the database connection
-        db.close();
+        closeDb();
     }
 
     /**
@@ -208,7 +210,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public void addRowVerb(String latein, String deutsch, String hinweis, String verbform, String konjugation, boolean gelernt, int lektion){
         //retrieving the database that contains the wanted table
-        SQLiteDatabase db = getWritableDatabase();
+        reopenDb();
 
         //adds the row to the table
         ContentValues values = new ContentValues();
@@ -219,10 +221,10 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(VerbDB.FeedEntry.COLUMN_KONJUGATION, konjugation);
         values.put(VerbDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
         values.put(VerbDB.FeedEntry.COLUMN_LEKTIONID, lektion);
-        db.insert(VerbDB.FeedEntry.TABLE_NAME, null, values);
+        dbConnection.insert(VerbDB.FeedEntry.TABLE_NAME, null, values);
 
         //closes the database connection
-        db.close();
+        closeDb();
     }
 
     /**
@@ -238,7 +240,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public void addRowNomen(String latein, String deutsch, String hinweis, String genitiv, String genus, String deklination, boolean gelernt, int lektion) {
         //retrieving the database that contains the wanted table
-        SQLiteDatabase db = getWritableDatabase();
+        reopenDb();
 
         //adds the row to the table
         ContentValues values = new ContentValues();
@@ -250,10 +252,10 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(NomenDB.FeedEntry.COLUMN_DEKLINATION, deklination);
         values.put(NomenDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
         values.put(NomenDB.FeedEntry.COLUMN_LEKTIONID, lektion);
-        db.insert(NomenDB.FeedEntry.TABLE_NAME, null, values);
+        dbConnection.insert(NomenDB.FeedEntry.TABLE_NAME, null, values);
 
         //closes the database connection
-        db.close();
+        closeDb();
     }
 
     /**
@@ -287,7 +289,7 @@ public class DBHelper extends SQLiteOpenHelper {
             //Skip the first line with the column headings
             br.readLine();
 
-            SQLiteDatabase db = getReadableDatabase();
+            reopenDb();
 
             //goes through every line and add its content to the table
             String line;
@@ -304,7 +306,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 }
             }
             //closing all connections
-            db.close();
+            dbConnection.close();
             br.close();
             bIn.close();
             in.close();
@@ -344,7 +346,7 @@ public class DBHelper extends SQLiteOpenHelper {
             //Skip the first line with the column headings
             br.readLine();
 
-            SQLiteDatabase db = getReadableDatabase();
+            reopenDb();
 
             //goes through every line and add its content to the table
             String line;
@@ -369,7 +371,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 }
             }
             //closing all connections
-            db.close();
+            closeDb();
             br.close();
             bIn.close();
             in.close();
@@ -385,16 +387,16 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public Cursor getAllEntriesLektion() {
         //Get db connection
-        SQLiteDatabase db = getWritableDatabase();
+        reopenDb();
 
-        Cursor cursor = db.query(
+        Cursor cursor = dbConnection.query(
                 LektionDB.FeedEntry.TABLE_NAME,
                 allColumnsLektion,
                 null,
                 null,
                 null,
                 null,
-                LektionDB.FeedEntry._ID + " DESC");
+                LektionDB.FeedEntry._ID + " ASC");
 
         //return the amount of elements that were returned
         return cursor;
@@ -404,20 +406,19 @@ public class DBHelper extends SQLiteOpenHelper {
      * TODO: Combine all 3 'getAllItems[..]()' methods into 1
      * @return a Cursor of all elements of the table 'Nomen'
      */
-    public Cursor getAllEntriesNomen() {
+    public Cursor getAllEntriesNomen(int lektion) {
         //Get db connection
-        SQLiteDatabase db = getWritableDatabase();
+        reopenDb();
 
-        Cursor cursor = db.query(
+        Cursor cursor = dbConnection.query(
                 NomenDB.FeedEntry.TABLE_NAME,
                 allColumnsNomen,
+                NomenDB.FeedEntry.COLUMN_LEKTIONID + "=?",
+                new String[] {""+lektion},
                 null,
                 null,
-                null,
-                null,
-                NomenDB.FeedEntry._ID + " DESC");
+                NomenDB.FeedEntry._ID + " ASC");
 
-        db.close();
         //return the amount of elements that were returned
         return cursor;
     }
@@ -426,20 +427,19 @@ public class DBHelper extends SQLiteOpenHelper {
      * TODO: Combine all 3 'getAllItems[..]()' methods into 1
      * @return a Cursor of all elements of the table 'Verb'
      */
-    public Cursor getAllEntriesVerb() {
+    public Cursor getAllEntriesVerb(int lektion) {
         //Get db connection
-        SQLiteDatabase db = getWritableDatabase();
+        reopenDb();
 
-        Cursor cursor = db.query(
+        Cursor cursor = dbConnection.query(
                 VerbDB.FeedEntry.TABLE_NAME,
                 allColumnsVerb,
+                VerbDB.FeedEntry.COLUMN_LEKTIONID + "=?",
+                new String[] {""+lektion},
                 null,
                 null,
-                null,
-                null,
-                VerbDB.FeedEntry._ID + " DESC");
+                VerbDB.FeedEntry._ID + " ASC");
 
-        db.close();
         //return the amount of elements that were returned
         return cursor;
     }
@@ -451,19 +451,18 @@ public class DBHelper extends SQLiteOpenHelper {
     public int getEntryAmount(String table){
 
         //Get db connection
-        SQLiteDatabase db = getWritableDatabase();
+        reopenDb();
 
-        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + table, null);
+        Cursor cursor = dbConnection.rawQuery("SELECT COUNT(*) FROM " + table, null);
 
         cursor.moveToNext();
         long count = cursor.getLong(0);
 
-        db.close();
+        closeDb();
         cursor.close();
 
         return (int)count;
     }
-
 
     /**
      * Returns a single column of a requested row with the id
@@ -474,10 +473,10 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public Object returnColumnFromID(String table, int id, String column){
 
-        SQLiteDatabase db = getReadableDatabase();
+        reopenDb();
 
         //getting the result of the query
-        Cursor cursor = db.query(
+        Cursor cursor = dbConnection.query(
                 table,
                 new String[] {column},
                 " = ?",
@@ -497,10 +496,22 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        db.close();
+        closeDb();
 
         return result;
     }
+
+    public static String[] getAllColumnsNomen() {
+        return allColumnsNomen;
+    }
+
+    public void closeDb(){
+        dbConnection.close();
+    }
+
+    public void reopenDb(){
+        if ( dbConnection != null && dbConnection.isOpen()) close();
+        dbConnection = getWritableDatabase();
 
     /**
      *
