@@ -18,7 +18,6 @@ public class SubstantivDB {
         //Table columns
         public static final String COLUMN_NOM_SG_DEUTSCH = "Nom_Sg_Deutsch",
                                    COLUMN_WORTSTAMM = "Wortstamm",
-                                   COLUMN_GELERNT = "Gelernt",
-                                   COLUMN_LEKTION_ID = "Lektion_ID";
+                                   COLUMN_GELERNT = "Gelernt";
     }
 }
