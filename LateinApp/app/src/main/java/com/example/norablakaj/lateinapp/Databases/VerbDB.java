@@ -15,10 +15,8 @@ public class VerbDB {
         //Table name
         public static final String TABLE_NAME = "Verb";
         //Table columns
-        public static final String COLUMN_LATEIN = "Latein",
-                                   COLUMN_DEUTSCH = "Deutsch",
-                                   COLUMN_HINWEIS = "Hinweis",
-                                   COLUMN_VERBFORM = "FirstPersSg",
+        public static final String COLUMN_WORTSTAMM = "Wortstamm",
+                                   COLUMN_INFINITIV_DEUTSCH = "Infinitiv_Deutsch",
                                    COLUMN_KONJUGATION = "Konjugation",
                                    COLUMN_GELERNT = "Gelernt",
                                    COLUMN_LEKTIONID = "Lektion_ID";

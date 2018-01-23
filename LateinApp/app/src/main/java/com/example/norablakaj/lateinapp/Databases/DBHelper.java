@@ -42,18 +42,14 @@ public class DBHelper extends SQLiteOpenHelper {
                     + " ("
                     + VerbDB.FeedEntry._ID
                     + " INTEGER PRIMARY KEY, "
-                    + VerbDB.FeedEntry.COLUMN_LATEIN
-                    + " TEXT, "
-                    + VerbDB.FeedEntry.COLUMN_DEUTSCH
-                    + " TEXT, "
-                    + VerbDB.FeedEntry.COLUMN_HINWEIS
-                    + " TEXT, "
-                    + VerbDB.FeedEntry.COLUMN_VERBFORM
-                    + " TEXT, "
                     + VerbDB.FeedEntry.COLUMN_KONJUGATION
                     + " TEXT, "
                     + VerbDB.FeedEntry.COLUMN_GELERNT
                     + " INTEGER, "
+                    + VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH
+                    + " TEXT, "
+                    + VerbDB.FeedEntry.COLUMN_WORTSTAMM
+                    + " TEXT, "
                     + VerbDB.FeedEntry.COLUMN_LEKTIONID
                     + " INTEGER, FOREIGN KEY("
                     + VerbDB.FeedEntry.COLUMN_LEKTIONID
@@ -65,29 +61,21 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    private static final String SQL_CREATE_ENTRIES_NOMEN =
+    private static final String SQL_CREATE_ENTRIES_SUBSTANTIV =
             "CREATE TABLE "
-                    + NomenDB.FeedEntry.TABLE_NAME
+                    + SubstantivDB.FeedEntry.TABLE_NAME
                     + " ("
-                    + NomenDB.FeedEntry._ID
+                    + SubstantivDB.FeedEntry._ID
                     + " INTEGER PRIMARY KEY, "
-                    + NomenDB.FeedEntry.COLUMN_LATEIN
+                    + SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH
                     + " TEXT, "
-                    + NomenDB.FeedEntry.COLUMN_DEUTSCH
+                    + SubstantivDB.FeedEntry.COLUMN_WORTSTAMM
                     + " TEXT, "
-                    + NomenDB.FeedEntry.COLUMN_HINWEIS
-                    + " TEXT, "
-                    + NomenDB.FeedEntry.COLUMN_GENITIV
-                    + " TEXT, "
-                    + NomenDB.FeedEntry.COLUMN_GENUS
-                    + " TEXT, "
-                    + NomenDB.FeedEntry.COLUMN_DEKLINATION
-                    + " TEXT, "
-                    + NomenDB.FeedEntry.COLUMN_GELERNT
+                    + SubstantivDB.FeedEntry.COLUMN_GELERNT
                     + " INTEGER, "
-                    + NomenDB.FeedEntry.COLUMN_LEKTIONID
+                    + SubstantivDB.FeedEntry.COLUMN_LEKTION_ID
                     + " INTEGER, FOREIGN KEY("
-                    + NomenDB.FeedEntry.COLUMN_LEKTIONID
+                    + SubstantivDB.FeedEntry.COLUMN_LEKTION_ID
                     + ") REFERENCES "
                     + LektionDB.FeedEntry.TABLE_NAME
                     + "("
