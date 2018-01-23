@@ -16,7 +16,6 @@ import android.widget.Button;
 
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.LektionDB;
-import com.example.norablakaj.lateinapp.Databases.NomenDB;
 import com.example.norablakaj.lateinapp.Databases.VerbDB;
 import com.example.norablakaj.lateinapp.R;
 
