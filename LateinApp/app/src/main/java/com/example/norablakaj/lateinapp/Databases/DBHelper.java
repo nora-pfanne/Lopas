@@ -750,7 +750,8 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = null;
         cursor = dbConnection.rawQuery("SELECT * FROM "+ table +" WHERE _ID = ?",
                 new String[] {""+ id});
-        //TODO
+
+        return  cursor;
     }
 
     /**

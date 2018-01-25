@@ -29,7 +29,7 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
         constraintLayout = findViewById(R.id.constraint_Layout);
 
-        latein = findViewById(R.id.lateinLektion1);
+        latein = findViewById(R.id.lateinVokabel);
         latein.setText("Hallo");
     }
 
