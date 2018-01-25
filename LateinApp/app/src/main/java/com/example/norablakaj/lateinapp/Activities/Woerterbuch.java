@@ -67,7 +67,10 @@ public class Woerterbuch extends AppCompatActivity implements AdapterView.OnItem
             double id = cursor.getDouble(0);// get the first variable
             String latein = cursor.getString(1);// get the second variable
             String deutsch = cursor.getString(2); //get the third variable
+
             // Create the table row
+
+            //Changing the appearance to a black and white pattern
             TableRow tr = new TableRow(this);
             if (tl.getChildCount() % 2 != 0) {
                 tr.setBackgroundColor(Color.GRAY);
