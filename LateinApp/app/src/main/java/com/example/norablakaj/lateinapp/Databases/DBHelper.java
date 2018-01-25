@@ -257,6 +257,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String[] allColumnsVerb = {
 
+            VerbDB.FeedEntry._ID,
             VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH,
             VerbDB.FeedEntry.COLUMN_WORTSTAMM,
             VerbDB.FeedEntry.COLUMN_KONJUGATION,
@@ -719,6 +720,37 @@ public class DBHelper extends SQLiteOpenHelper {
         }else {
             return complete/total;
         }
+    }
+
+    */
+    public int countTableEntries(String[] tables, int lektionNr){
+
+        Cursor cursor = null;
+        int count = 0;
+        reopenDb();
+
+        for(String table : tables){
+
+            //getting the total number of entries which were completed and adding it to 'complete'
+            cursor = dbConnection.rawQuery("SELECT COUNT(*) FROM " + table
+                            + " WHERE Lektion_ID = ?",
+                    new String[] {""+lektionNr});
+            cursor.moveToNext();
+            count += cursor.getInt(0);
+        }
+        cursor.close();
+        closeDb();
+
+        return count;
+    }
+
+    public Cursor getCursorFromId(int id, String table){
+
+        reopenDb();
+        Cursor cursor = null;
+        cursor = dbConnection.rawQuery("SELECT * FROM "+ table +" WHERE _ID = ?",
+                new String[] {""+ id});
+        //TODO
     }
 
     /**
