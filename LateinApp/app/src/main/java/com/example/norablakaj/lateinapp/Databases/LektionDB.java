@@ -16,7 +16,8 @@ public class LektionDB {
         public static final String TABLE_NAME = "Lektion";
 
         //Table columns
-        public static final String COLUMN_THEMA = "Thema",
-                                   COLUMN_BESCHREIBUNG = "Beschreibung";
+        public static final String
+                COLUMN_TITEL = "Titel",
+                COLUMN_THEMA = "Thema";
     }
 }
