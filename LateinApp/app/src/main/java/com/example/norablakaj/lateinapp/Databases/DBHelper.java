@@ -143,7 +143,37 @@ public class DBHelper extends SQLiteOpenHelper {
                     + SubstantivDB.FeedEntry.COLUMN_WORTSTAMM
                     + " TEXT, "
                     + SubstantivDB.FeedEntry.COLUMN_GELERNT
-                    + " INTEGER)";
+                    + " INTEGER, "
+                    + SubstantivDB.FeedEntry.COLUMN_LEKTION_ID
+                    + " INTEGER,"
+                    + SubstantivDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
+                    + " INTEGER, "
+                    + SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID
+                    + " INTEGER, "
+
+
+                    + " FOREIGN KEY ("
+                    + SubstantivDB.FeedEntry.COLUMN_LEKTION_ID
+                    + ") REFERENCES "
+                    + LektionDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + LektionDB.FeedEntry._ID
+                    + "), "
+                    + "FOREIGN KEY ("
+                    + SubstantivDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
+                    + ") REFERENCES "
+                    + Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + Sprechvokal_SubstantivDB.FeedEntry._ID
+                    + "), "
+                    + "FOREIGN KEY ("
+                    + SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID
+                    + ") REFERENCES "
+                    + DeklinationsendungDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + DeklinationsendungDB.FeedEntry._ID
+                    + ")"
+                    + ")";
 
     private static final String SQL_CREATE_ENTRIES_VERB =
             "CREATE TABLE "
@@ -158,7 +188,37 @@ public class DBHelper extends SQLiteOpenHelper {
                     + VerbDB.FeedEntry.COLUMN_KONJUGATION
                     + " TEXT, "
                     + VerbDB.FeedEntry.COLUMN_GELERNT
-                    + " INTEGER)";
+                    + " INTEGER,"
+                    + VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID
+                    + " INTEGER, "
+                    + VerbDB.FeedEntry.COLUMN_LEKTION_ID
+                    + " INTEGER, "
+                    + VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
+                    + " INTEGER, "
+
+
+                    + " FOREIGN KEY ("
+                    + VerbDB.FeedEntry.COLUMN_LEKTION_ID
+                    + ") REFERENCES "
+                    + LektionDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + LektionDB.FeedEntry._ID
+                    + "), "
+                    + "FOREIGN KEY ("
+                    + VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID
+                    + ") REFERENCES "
+                    + Personalendung_PräsensDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + Personalendung_PräsensDB.FeedEntry._ID
+                    + "), "
+                    + "FOREIGN KEY ("
+                    + VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
+                    + ") REFERENCES "
+                    + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + Sprechvokal_PräsensDB.FeedEntry._ID
+                    + ")"
+                    + ")";
 
     //creating a String for quick access to a deletion command for all tables
     private static final String SQL_DELETE_ENTRIES_DEKLINATIONSENDUNG =
@@ -252,7 +312,10 @@ public class DBHelper extends SQLiteOpenHelper {
             SubstantivDB.FeedEntry._ID,
             SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH,
             SubstantivDB.FeedEntry.COLUMN_WORTSTAMM,
-            SubstantivDB.FeedEntry.COLUMN_GELERNT
+            SubstantivDB.FeedEntry.COLUMN_GELERNT,
+            SubstantivDB.FeedEntry.COLUMN_LEKTION_ID,
+            SubstantivDB.FeedEntry.COLUMN_SPRECHVOKAL_ID,
+            SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID
     };
 
     private static final String[] allColumnsVerb = {
@@ -261,7 +324,10 @@ public class DBHelper extends SQLiteOpenHelper {
             VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH,
             VerbDB.FeedEntry.COLUMN_WORTSTAMM,
             VerbDB.FeedEntry.COLUMN_KONJUGATION,
-            VerbDB.FeedEntry.COLUMN_GELERNT
+            VerbDB.FeedEntry.COLUMN_GELERNT,
+            VerbDB.FeedEntry.COLUMN_LEKTION_ID,
+            VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID,
+            VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
     };
 
     //Version of the database
@@ -424,7 +490,8 @@ public class DBHelper extends SQLiteOpenHelper {
         closeDb();
     }
 
-    public void addRowSubstantiv(String nom_sg_deutsch, String wortstamm, boolean gelernt) {
+    public void addRowSubstantiv(String nom_sg_deutsch, String wortstamm, boolean gelernt,
+                                 int lektion, int sprechvokal_id, int deklinationsendung_id) {
 
         reopenDb();
 
@@ -432,13 +499,17 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH, nom_sg_deutsch);
         values.put(SubstantivDB.FeedEntry.COLUMN_WORTSTAMM, wortstamm);
         values.put(SubstantivDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
+        values.put(SubstantivDB.FeedEntry.COLUMN_LEKTION_ID, lektion);
+        values.put(SubstantivDB.FeedEntry.COLUMN_SPRECHVOKAL_ID, sprechvokal_id);
+        values.put(SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID, deklinationsendung_id);
 
         dbConnection.insert(SubstantivDB.FeedEntry.TABLE_NAME, null, values);
 
         closeDb();
     }
 
-    public void addRowVerb(String infinitiv_deutsch, String wortstamm, String konjugation, boolean gelernt) {
+    public void addRowVerb(String infinitiv_deutsch, String wortstamm, String konjugation, boolean gelernt,
+                           int lektion, int personalendung_id, int sprechvokal_id) {
 
         reopenDb();
 
@@ -447,6 +518,9 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(VerbDB.FeedEntry.COLUMN_WORTSTAMM, wortstamm);
         values.put(VerbDB.FeedEntry.COLUMN_KONJUGATION, konjugation);
         values.put(VerbDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
+        values.put(VerbDB.FeedEntry.COLUMN_LEKTION_ID, lektion);
+        values.put(VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID, personalendung_id);
+        values.put(VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID, sprechvokal_id);
 
         dbConnection.insert(VerbDB.FeedEntry.TABLE_NAME, null, values);
 
@@ -504,117 +578,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }catch (Exception e){
             e.printStackTrace();
         }
-    }
-
-    public void addFileDataToNomen(String s, String split){
-        //TODO: Add support for special characters -> ā ē ī
-        try {
-            //reading the image from the path 's'
-            InputStream in = getClass().getResourceAsStream(s);
-            //add buffer for mark/reset support
-            InputStream bIn = new BufferedInputStream(in);
-            //marks the beginning to resets to this point later
-            bIn.mark(100000000);
-
-            BufferedReader br = new BufferedReader( new InputStreamReader(bIn));
-
-            //count the total number of lines
-            int lineAmount = 0;
-            while(br.readLine() != null){
-                lineAmount++;
-            }
-
-            //reset reader to the beginning
-            bIn.reset();
-            br = new BufferedReader(new InputStreamReader((bIn)));
-
-            //Skip the first line with the column headings
-            br.readLine();
-
-            reopenDb();
-
-            //goes through every line and add its content to the table
-            String line;
-            for (int i = 0; i < lineAmount - 1; i++){
-                line = br.readLine();
-                if (line != null){
-                    String[] tokens = line.split(split);
-                    try {
-
-                        addRowNomen(
-                                tokens[0],
-                                tokens[1],
-                                tokens[2],
-                                tokens[3],
-                                tokens[4],
-                                tokens[5],
-                                Boolean.parseBoolean(tokens[6]),
-                                Integer.parseInt(tokens[7]));
-                    }catch (NumberFormatException e){
-                        e.printStackTrace();
-                    }
-                }
-            }
-            //closing all connections
-            closeDb();
-            br.close();
-            bIn.close();
-            in.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    //TODO: Combine all 3 methods into 1
-    public Cursor getAllEntriesLektion() {
-        //Get db connection
-        reopenDb();
-
-        Cursor cursor = dbConnection.query(
-                LektionDB.FeedEntry.TABLE_NAME,
-                allColumnsLektion,
-                null,
-                null,
-                null,
-                null,
-                LektionDB.FeedEntry._ID + " ASC");
-
-        //return the amount of elements that were returned
-        return cursor;
-    }
-
-    public Cursor getAllEntriesNomen(int lektion) {
-        //Get db connection
-        reopenDb();
-
-        Cursor cursor = dbConnection.query(
-                NomenDB.FeedEntry.TABLE_NAME,
-                allColumnsNomen,
-                NomenDB.FeedEntry.COLUMN_LEKTIONID + "=?",
-                new String[] {""+lektion},
-                null,
-                null,
-                NomenDB.FeedEntry._ID + " ASC");
-
-        //return the amount of elements that were returned
-        return cursor;
-    }
-
-    public Cursor getAllEntriesVerb(int lektion) {
-        //Get db connection
-        reopenDb();
-
-        Cursor cursor = dbConnection.query(
-                VerbDB.FeedEntry.TABLE_NAME,
-                allColumnsVerb,
-                VerbDB.FeedEntry.COLUMN_LEKTIONID + "=?",
-                new String[] {""+lektion},
-                null,
-                null,
-                VerbDB.FeedEntry._ID + " ASC");
-
-        //return the amount of elements that were returned
-        return cursor;
     }
 
     public int getEntryAmount(String table){

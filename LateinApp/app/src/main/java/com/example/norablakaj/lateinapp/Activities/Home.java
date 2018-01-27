@@ -55,8 +55,7 @@ public class Home extends AppCompatActivity
         //Adding initial entries if they aren't in the database yet
         DBHelper dbHelper = new DBHelper(getApplicationContext());
 
-        dbHelper.addRowLektion("Titel", "Thema");
-        dbHelper.addRowDeklinationsendung("Name", "nom_sg", "nom_pl", "gen_sg", "gen_pl", "dat_sg", "dat_pl", "akk_sg", "akk_pl", "abl_sg", "abl_pl");
+        //TODO: Add some test entries here
 
         dbHelper.close();
 

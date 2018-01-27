@@ -33,6 +33,7 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
         latein.setText("Hallo");
     }
 
+    /*
     private Cursor getRandomVocabulary(){
 
         String[] tables = {SubstantivDB.FeedEntry.TABLE_NAME, VerbDB.FeedEntry.TABLE_NAME};
@@ -51,6 +52,6 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
         }
     }
 
-
+*/
 }
 
