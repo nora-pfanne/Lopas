@@ -55,7 +55,6 @@ public class Woerterbuch extends AppCompatActivity implements AdapterView.OnItem
      *
      * @param tl     The TableLayout
      * @param cursor the Cursor with the items to be added
-     * @param count  the number of rows already in the TableLayout
      * @return The amount of rows in the TableLayout after executing the method
      */
     private void addTableRows(TableLayout tl, Cursor cursor) {
@@ -68,7 +67,10 @@ public class Woerterbuch extends AppCompatActivity implements AdapterView.OnItem
             double id = cursor.getDouble(0);// get the first variable
             String latein = cursor.getString(1);// get the second variable
             String deutsch = cursor.getString(2); //get the third variable
+
             // Create the table row
+
+            //Changing the appearance to a black and white pattern
             TableRow tr = new TableRow(this);
             if (tl.getChildCount() % 2 != 0) {
                 tr.setBackgroundColor(Color.GRAY);
@@ -119,8 +121,9 @@ public class Woerterbuch extends AppCompatActivity implements AdapterView.OnItem
                 if (child instanceof TableRow) ((ViewGroup) child).removeAllViews();
             }
             //Adding entries to the table layout
-
+            /*
             DBHelper dbHelper = new DBHelper(getApplicationContext());
+
 
             Cursor cursorNomen = dbHelper.getAllEntriesNomen(currentSpinnerPos + 1);
             addTableRows(tl, cursorNomen);
@@ -132,9 +135,10 @@ public class Woerterbuch extends AppCompatActivity implements AdapterView.OnItem
 
             dbHelper.closeDb();
             dbHelper.close();
-
+            */
         }
     }
+
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
