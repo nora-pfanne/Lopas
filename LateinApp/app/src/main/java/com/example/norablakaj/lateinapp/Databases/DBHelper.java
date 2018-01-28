@@ -13,6 +13,8 @@ import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -533,7 +535,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public void addDeklinationsendungEntriesFromFile(String path) {
 
         try{
-            InputStream inputStream = getClass().getResourceAsStream(path);
+            File inputFile = new File(path);
+
+            InputStream inputStream = new FileInputStream(inputFile);
+            //InputStream inputStream = getClass().getResourceAsStream(path);
             InputStream bufferedInputStream = new BufferedInputStream(inputStream);
             bufferedInputStream.mark(1000000000);
 
@@ -541,6 +546,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
             //count the total number of lines
             int lineAmount = 0;
+
+            bufferedReader.readLine();
+            /*
 
             while(bufferedReader.readLine() != null){
                 lineAmount++;
@@ -574,6 +582,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 }
             }
 
+            inputStream.close();
+            bufferedInputStream.close();
+            bufferedReader.close();
+            closeDb();
+
+*/
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -816,7 +830,7 @@ public class DBHelper extends SQLiteOpenHelper {
                         cursor.moveToNext();
                         deklinationId = cursor.getInt(0);
 
-                        //TODO: SPrechvokale einfügen (nicht '0')
+                        //TODO: Sprechvokale einfügen (nicht '0')
                         addRowSubstantiv(tokens[0], tokens[1], tokens[2] == "1" ? true : false, Integer.parseInt(tokens[3]), 0, deklinationId);
 
                     }catch (NumberFormatException nfe){
@@ -869,14 +883,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
                         Cursor cursor = dbConnection.rawQuery(
                                 "SELECT " + Personalendung_PräsensDB.FeedEntry._ID + " FROM " + Personalendung_PräsensDB.FeedEntry.TABLE_NAME
-                                        + " WHERE " + Personalendung_PräsensDB.FeedEntry.COLUMN_NAME + " = ?",
+                                        + " WHERE " + Personalendung_PräsensDB.FeedEntry.TABLE_NAME + " = ?",
                                 new String[]{tokens[5]}
                         );
                         cursor.moveToNext();
                         personalendungId = cursor.getInt(0);
 
                         //TODO: Sprechvokale einfügen (nicht '0')
-                        addRowVerb(tokens[0], tokens[1], tokens[2], tokens[3] == "1" ? true : false, Integer.parseInt(tokens[3]), personalendungId, 0);
+                        //TODO: Personalendungen benennen
+                        addRowVerb(tokens[0], tokens[1], tokens[2], tokens[3] == "1" ? true : false, Integer.parseInt(tokens[3]), 0, 0);
 
                     }catch (NumberFormatException nfe){
                         nfe.printStackTrace();

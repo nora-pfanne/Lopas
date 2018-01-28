@@ -17,6 +17,9 @@ import android.widget.Button;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.R;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -51,7 +54,6 @@ public class Home extends AppCompatActivity
         lektion3Button = findViewById(R.id.lektion3);
         lektion4Button = findViewById(R.id.lektion4);
 
-
         //Adding initial entries if they aren't in the database yet
         DBHelper dbHelper = new DBHelper(getApplicationContext());
 
@@ -59,12 +61,12 @@ public class Home extends AppCompatActivity
         dbHelper.addRowSprechvokal_Substantiv("","","","","","","","","","");
 
 
-        dbHelper.addDeklinationsendungEntriesFromFile("startingEntries/Deklinationsendung.csv");
+        dbHelper.addDeklinationsendungEntriesFromFile("/files/Deklinationsendung.csv");
         //dbHelper.addLektionEntriesFromFile("");
         //dbHelper.addPersonalendungEntriesFromFile("");
         //dbHelper.addSprechvokalPräsensEntriesFromFile("");
         //dbHelper.addSprechvokalSubstantivEntriesFromFile("");
-        dbHelper.addSubstantivEntriesFromFile("startingEntries/Substantiv.csv");
+        //dbHelper.addSubstantivEntriesFromFile("startingEntries/Substantiv.csv");
         //dbHelper.addVerbEntriesFromFile("");
 
 
