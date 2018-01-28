@@ -56,6 +56,17 @@ public class Home extends AppCompatActivity
         DBHelper dbHelper = new DBHelper(getApplicationContext());
 
         //TODO: Add some test entries here
+        dbHelper.addRowSprechvokal_Substantiv("","","","","","","","","","");
+
+
+        dbHelper.addDeklinationsendungEntriesFromFile("startingEntries/Deklinationsendung.csv");
+        //dbHelper.addLektionEntriesFromFile("");
+        //dbHelper.addPersonalendungEntriesFromFile("");
+        //dbHelper.addSprechvokalPräsensEntriesFromFile("");
+        //dbHelper.addSprechvokalSubstantivEntriesFromFile("");
+        dbHelper.addSubstantivEntriesFromFile("startingEntries/Substantiv.csv");
+        //dbHelper.addVerbEntriesFromFile("");
+
 
         dbHelper.close();
 

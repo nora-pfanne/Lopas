@@ -21,6 +21,7 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
     ConstraintLayout constraintLayout;
     TextView latein;
+    String lateinVokabelText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +31,10 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
         constraintLayout = findViewById(R.id.constraint_Layout);
 
         latein = findViewById(R.id.lateinVokabel);
-        latein.setText("Hallo");
+
+        //after a random vocabulary is chosen, it is showm in the TextView
     }
 
-    /*
     private Cursor getRandomVocabulary(){
 
         String[] tables = {SubstantivDB.FeedEntry.TABLE_NAME, VerbDB.FeedEntry.TABLE_NAME};
@@ -46,12 +47,22 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
         int entryAmountVerb = dbHelper.countTableEntries(new String[]{VerbDB.FeedEntry.TABLE_NAME}, 1);
         int entryAmountSubstantiv = dbHelper.countTableEntries(new String[] {SubstantivDB.FeedEntry.TABLE_NAME}, 1);
 
+        Cursor vokabel = null;
+
         if(randomNumber <= entryAmountSubstantiv){
 
+            vokabel = dbHelper.getCursorFromId(randomNumber, tables[0]);
+            lateinVokabelText = vokabel.getString(vokabel.getColumnIndex("infinitiv_deutsch"));
 
+        } else if (randomNumber > entryAmountSubstantiv){
+
+            vokabel = dbHelper.getCursorFromId((randomNumber-entryAmountSubstantiv), tables[1]);
+            lateinVokabelText = vokabel.getString(vokabel.getColumnIndex("nom_sg_deutsch"));
         }
+
+        return vokabel;
     }
 
-*/
+
 }
 
