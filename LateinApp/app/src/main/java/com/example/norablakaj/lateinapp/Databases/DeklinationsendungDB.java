@@ -13,7 +13,7 @@ public class DeklinationsendungDB {
     public static class FeedEntry implements BaseColumns {
 
         //Table name
-        public static final String TABLE_NAME = "Deklinationsendung";
+        public static final String TABLE_NAME = "deklinationsendung";
 
         //Table columns
         public static final String  COLUMN_NAME = "Name",
