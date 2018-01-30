@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.norablakaj.lateinapp.R;
-import com.example.norablakaj.lateinapp.Vokabeltrainer_Lektion_1;
 
 public class Lektion1 extends AppCompatActivity {
 
