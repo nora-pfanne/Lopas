@@ -923,56 +923,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-
-    /*
-
-    public int getEntryAmount(String table){
-
-        //Get db connection
-        reopenDb();
-
-        Cursor cursor = dbConnection.rawQuery("SELECT COUNT(*) FROM " + table, null);
-
-        cursor.moveToNext();
-        long count = cursor.getLong(0);
-
-        closeDb();
-        cursor.close();
-
-        return (int)count;
-    }
-
-    public Object returnColumnFromID(String table, int id, String column){
-
-        reopenDb();
-
-        //getting the result of the query
-        Cursor cursor = dbConnection.query(
-                table,
-                new String[] {column},
-                " = ?",
-                new String[] {""+id},
-                null,
-                null,
-                null
-        );
-
-        //reading the result of the query
-        cursor.moveToNext();
-        Object result;
-        try {
-            result = cursor.getFloat(0);
-        }catch (Exception e){
-            result = cursor.getString(0);
-        }
-
-        cursor.close();
-        closeDb();
-
-        return result;
-    }
-
-*/
     public void closeDb() {
         dbConnection.close();
     }
@@ -983,55 +933,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-
-    /*
-     *
-     * @param lektion the lektion where the percentage of completed entries is needed
-     * @return the percentage of completed vocables
-     *
-    public float getPercentCompleted(String lektion){
-
-        //Array with all tables to be queried
-        String[] tables = {NomenDB.FeedEntry.TABLE_NAME,
-                           VerbDB.FeedEntry.TABLE_NAME};
-
-        int complete = 0;
-        int total = 0;
-
-        SQLiteDatabase db = getReadableDatabase();
-
-        //TODO: JOIN in SQL statement ?
-        Cursor cursor;
-        for (String table : tables){
-
-            //getting the total number of entries which were completed and adding it to 'complete'
-            cursor = db.rawQuery("SELECT COUNT(*) FROM " + table
-                    + " WHERE Gelernt = ? AND Lektion_ID = ?",
-                    new String[] {""+1, lektion});
-            cursor.moveToNext();
-            complete += (int)cursor.getFloat(0);
-
-            //getting the total number of entries of each table and adding it to 'total'
-            cursor = db.rawQuery("SELECT COUNT(*) FROM " + table
-                            + " WHERE Lektion_ID = ?",
-                    new String[] {lektion});
-            cursor.moveToNext();
-            total += (int)cursor.getFloat(0);
-
-            cursor.close();
-        }
-
-        db.close();
-
-        //Avoiding dividing by 0
-        if (total == 0){
-            return -1;
-        }else {
-            return complete/total;
-        }
-    }
-
-    */
     public int countTableEntries(String[] tables, int lektionNr){
 
         Cursor cursor = null;
@@ -1044,6 +945,26 @@ public class DBHelper extends SQLiteOpenHelper {
             cursor = dbConnection.rawQuery("SELECT COUNT(*) FROM " + table
                             + " WHERE Lektion_ID = ?",
                     new String[] {""+lektionNr});
+            cursor.moveToNext();
+            count += cursor.getInt(0);
+        }
+        cursor.close();
+        closeDb();
+
+        return count;
+    }
+
+    public int countTableEntries(String[] tables){
+
+        Cursor cursor = null;
+        int count = 0;
+        reopenDb();
+
+        for(String table : tables){
+
+            //getting the total number of entries which were completed and adding it to 'complete'
+            cursor = dbConnection.rawQuery("SELECT COUNT(*) FROM " + table,
+                    new String[] {});
             cursor.moveToNext();
             count += cursor.getInt(0);
         }
