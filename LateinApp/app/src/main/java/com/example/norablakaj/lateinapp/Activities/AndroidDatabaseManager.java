@@ -1,5 +1,5 @@
 //add your package name here example: package com.example.dbm;
-package com.example.norablakaj.lateinapp.Databases;
+package com.example.norablakaj.lateinapp.Activities;
 //all required import files
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -29,6 +29,8 @@ import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.norablakaj.lateinapp.Databases.DBHelper;
 
 
 /**
