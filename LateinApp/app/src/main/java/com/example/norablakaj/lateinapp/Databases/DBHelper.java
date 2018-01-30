@@ -7,8 +7,6 @@ import android.database.MatrixCursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
-import android.app.DownloadManager.Query;
-import android.provider.Settings;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -547,9 +545,6 @@ public class DBHelper extends SQLiteOpenHelper {
             //count the total number of lines
             int lineAmount = 0;
 
-            bufferedReader.readLine();
-            /*
-
             while(bufferedReader.readLine() != null){
                 lineAmount++;
             }
@@ -587,7 +582,7 @@ public class DBHelper extends SQLiteOpenHelper {
             bufferedReader.close();
             closeDb();
 
-*/
+
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -597,7 +592,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try{
             InputStream inputStream = getClass().getResourceAsStream(path);
             InputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            bufferedInputStream.mark(1000000000);
+            bufferedInputStream.mark(100000000);
 
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
 
@@ -634,6 +629,10 @@ public class DBHelper extends SQLiteOpenHelper {
                     }
                 }
             }
+            dbConnection.close();
+            bufferedReader.close();
+            bufferedInputStream.close();
+            inputStream.close();
 
         }catch(Exception e){
             e.printStackTrace();
@@ -682,6 +681,10 @@ public class DBHelper extends SQLiteOpenHelper {
                     }
                 }
             }
+            dbConnection.close();
+            bufferedReader.close();
+            bufferedInputStream.close();
+            inputStream.close();
 
         }catch(Exception e){
             e.printStackTrace();
@@ -730,6 +733,10 @@ public class DBHelper extends SQLiteOpenHelper {
                     }
                 }
             }
+            dbConnection.close();
+            bufferedReader.close();
+            bufferedInputStream.close();
+            inputStream.close();
 
         }catch(Exception e){
             e.printStackTrace();
@@ -779,6 +786,10 @@ public class DBHelper extends SQLiteOpenHelper {
                     }
                 }
             }
+            dbConnection.close();
+            bufferedReader.close();
+            bufferedInputStream.close();
+            inputStream.close();
 
         }catch(Exception e){
             e.printStackTrace();
@@ -838,6 +849,10 @@ public class DBHelper extends SQLiteOpenHelper {
                     }
                 }
             }
+            dbConnection.close();
+            bufferedReader.close();
+            bufferedInputStream.close();
+            inputStream.close();
 
         }catch(Exception e){
             e.printStackTrace();
@@ -898,12 +913,15 @@ public class DBHelper extends SQLiteOpenHelper {
                     }
                 }
             }
+            dbConnection.close();
+            bufferedReader.close();
+            bufferedInputStream.close();
+            inputStream.close();
 
         }catch(Exception e){
             e.printStackTrace();
         }
     }
-
 
     /*
 

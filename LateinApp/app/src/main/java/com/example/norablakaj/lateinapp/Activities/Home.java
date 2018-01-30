@@ -61,7 +61,7 @@ public class Home extends AppCompatActivity
         dbHelper.addRowSprechvokal_Substantiv("","","","","","","","","","");
 
 
-        dbHelper.addDeklinationsendungEntriesFromFile("/files/Deklinationsendung.csv");
+        dbHelper.addDeklinationsendungEntriesFromFile("C:\\Users\\Nora~1\\Desktop\\AppLatein\\AppLATEIN\\LateinApp\\app\\src\\main\\javaResources\\files\\Deklinationsendung.csv");
         //dbHelper.addLektionEntriesFromFile("");
         //dbHelper.addPersonalendungEntriesFromFile("");
         //dbHelper.addSprechvokalPräsensEntriesFromFile("");
