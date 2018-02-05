@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
+import com.example.norablakaj.lateinapp.Databases.DeklinationsendungDB;
 import com.example.norablakaj.lateinapp.Databases.SubstantivDB;
 import com.example.norablakaj.lateinapp.Databases.VerbDB;
 import com.example.norablakaj.lateinapp.R;
@@ -19,48 +20,60 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
-    ConstraintLayout constraintLayout;
     TextView latein;
-    String lateinVokabelText;
+
+    String lateinVokabel = "Bitte Vokabel auswählen!";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vokabeltrainer__lektion_1);
 
-        constraintLayout = findViewById(R.id.constraint_Layout);
-
         latein = findViewById(R.id.lateinVokabel);
 
         //after a random vocabulary is chosen, it is showm in the TextView
+        lateinVokabel = getRandomVocabulary(1);
+        latein.setText(""+lateinVokabel);
     }
 
-    private Cursor getRandomVocabulary(){
+    //TODO: Move into DBHElper
+    private String getRandomVocabulary(int lektionNr){
+
+        lateinVokabel = "keine Vokabel ausgewählt!";
 
         String[] tables = {SubstantivDB.FeedEntry.TABLE_NAME, VerbDB.FeedEntry.TABLE_NAME};
         DBHelper dbHelper = new DBHelper(getApplicationContext());
-        int entryAmount = dbHelper.countTableEntries(tables, 1);
-        Random rand = new Random();
 
-        int randomNumber = rand.nextInt(entryAmount);
-
-        int entryAmountVerb = dbHelper.countTableEntries(new String[]{VerbDB.FeedEntry.TABLE_NAME}, 1);
-        int entryAmountSubstantiv = dbHelper.countTableEntries(new String[] {SubstantivDB.FeedEntry.TABLE_NAME}, 1);
-
-        Cursor vokabel = null;
-
-        if(randomNumber <= entryAmountSubstantiv){
-
-            vokabel = dbHelper.getCursorFromId(randomNumber, tables[0]);
-            lateinVokabelText = vokabel.getString(vokabel.getColumnIndex("infinitiv_deutsch"));
-
-        } else if (randomNumber > entryAmountSubstantiv){
-
-            vokabel = dbHelper.getCursorFromId((randomNumber-entryAmountSubstantiv), tables[1]);
-            lateinVokabelText = vokabel.getString(vokabel.getColumnIndex("nom_sg_deutsch"));
+        int prevLektionSubstantivCount = 0;
+        int prevLektionVerbCount = 0;
+        for (int i = 1; i < lektionNr; i++){
+            prevLektionSubstantivCount += dbHelper.countTableEntries(new String[] {SubstantivDB.FeedEntry.TABLE_NAME}, i);
+            prevLektionVerbCount += dbHelper.countTableEntries(new String[] {VerbDB.FeedEntry.TABLE_NAME}, i);
         }
 
-        return vokabel;
+
+        int entryAmountVerb = dbHelper.countTableEntries(new String[]{VerbDB.FeedEntry.TABLE_NAME}, lektionNr);
+        int entryAmountSubstantiv = dbHelper.countTableEntries(new String[] {SubstantivDB.FeedEntry.TABLE_NAME}, lektionNr);
+        int entryAmount = entryAmountSubstantiv + entryAmountVerb;
+
+        Random rand = new Random();
+        int randomNumber = rand.nextInt(entryAmount);
+
+        if(randomNumber < entryAmountSubstantiv){
+
+            String deklinationsendung = DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG;
+            lateinVokabel = dbHelper.getDeklinierteVokabel(randomNumber + prevLektionSubstantivCount, deklinationsendung, 1);
+
+        } else if (randomNumber >= entryAmountSubstantiv){
+
+           lateinVokabel = dbHelper.getInfinitiv(randomNumber-entryAmountSubstantiv + prevLektionVerbCount);
+        }
+
+        return lateinVokabel;
+    }
+
+    private void buttonClickedBestaetigung(){
+
     }
 
 

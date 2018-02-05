@@ -11,8 +11,6 @@ import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -530,12 +528,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public void addDeklinationsendungEntriesFromFile(String path) {
+    public void addDeklinationsendungEntriesFromFile(String path, Context context) {
 
         try{
-            File inputFile = new File(path);
-
-            InputStream inputStream = new FileInputStream(inputFile);
+            InputStream inputStream = context.getAssets().open(path);
             //InputStream inputStream = getClass().getResourceAsStream(path);
             InputStream bufferedInputStream = new BufferedInputStream(inputStream);
             bufferedInputStream.mark(1000000000);
@@ -587,12 +583,13 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
-    public void addLektionEntriesFromFile(String path) {
+    public void addLektionEntriesFromFile(String path, Context context) {
 
         try{
-            InputStream inputStream = getClass().getResourceAsStream(path);
+            InputStream inputStream = context.getAssets().open(path);
+            //InputStream inputStream = getClass().getResourceAsStream(path);
             InputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            bufferedInputStream.mark(100000000);
+            bufferedInputStream.mark(1000000000);
 
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
 
@@ -629,19 +626,19 @@ public class DBHelper extends SQLiteOpenHelper {
                     }
                 }
             }
-            dbConnection.close();
-            bufferedReader.close();
-            bufferedInputStream.close();
             inputStream.close();
-
+            bufferedInputStream.close();
+            bufferedReader.close();
+            closeDb();
         }catch(Exception e){
             e.printStackTrace();
         }
     }
-    public void addPersonalendungEntriesFromFile(String path) {
+    public void addPersonalendungEntriesFromFile(String path, Context context) {
 
         try{
-            InputStream inputStream = getClass().getResourceAsStream(path);
+            InputStream inputStream = context.getAssets().open(path);
+            //InputStream inputStream = getClass().getResourceAsStream(path);
             InputStream bufferedInputStream = new BufferedInputStream(inputStream);
             bufferedInputStream.mark(1000000000);
 
@@ -681,19 +678,19 @@ public class DBHelper extends SQLiteOpenHelper {
                     }
                 }
             }
-            dbConnection.close();
-            bufferedReader.close();
-            bufferedInputStream.close();
             inputStream.close();
-
+            bufferedInputStream.close();
+            bufferedReader.close();
+            closeDb();
         }catch(Exception e){
             e.printStackTrace();
         }
     }
-    public void addSprechvokalPräsensEntriesFromFile(String path) {
+    public void addSprechvokalPräsensEntriesFromFile(String path, Context context) {
 
         try{
-            InputStream inputStream = getClass().getResourceAsStream(path);
+            InputStream inputStream = context.getAssets().open(path);
+            //InputStream inputStream = getClass().getResourceAsStream(path);
             InputStream bufferedInputStream = new BufferedInputStream(inputStream);
             bufferedInputStream.mark(1000000000);
 
@@ -733,19 +730,19 @@ public class DBHelper extends SQLiteOpenHelper {
                     }
                 }
             }
-            dbConnection.close();
-            bufferedReader.close();
-            bufferedInputStream.close();
             inputStream.close();
-
+            bufferedInputStream.close();
+            bufferedReader.close();
+            closeDb();
         }catch(Exception e){
             e.printStackTrace();
         }
     }
-    public void addSprechvokalSubstantivEntriesFromFile(String path) {
+    public void addSprechvokalSubstantivEntriesFromFile(String path, Context context) {
 
         try{
-            InputStream inputStream = getClass().getResourceAsStream(path);
+            InputStream inputStream = context.getAssets().open(path);
+            //InputStream inputStream = getClass().getResourceAsStream(path);
             InputStream bufferedInputStream = new BufferedInputStream(inputStream);
             bufferedInputStream.mark(1000000000);
 
@@ -779,26 +776,26 @@ public class DBHelper extends SQLiteOpenHelper {
                     try{
 
                         addRowSprechvokal_Substantiv(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5],
-                                 tokens[6], tokens[7], tokens[8], tokens[9]);
+                                tokens[6], tokens[7], tokens[8], tokens[9]);
 
                     }catch (NumberFormatException nfe){
                         nfe.printStackTrace();
                     }
                 }
             }
-            dbConnection.close();
-            bufferedReader.close();
-            bufferedInputStream.close();
             inputStream.close();
-
+            bufferedInputStream.close();
+            bufferedReader.close();
+            closeDb();
         }catch(Exception e){
             e.printStackTrace();
         }
     }
-    public void addSubstantivEntriesFromFile(String path){
+    public void addSubstantivEntriesFromFile(String path, Context context){
 
         try{
-            InputStream inputStream = getClass().getResourceAsStream(path);
+            InputStream inputStream = context.getAssets().open(path);
+            //InputStream inputStream = getClass().getResourceAsStream(path);
             InputStream bufferedInputStream = new BufferedInputStream(inputStream);
             bufferedInputStream.mark(1000000000);
 
@@ -823,6 +820,8 @@ public class DBHelper extends SQLiteOpenHelper {
             //goes through every line and adds its content to the table
             String line;
 
+            Cursor cursor;
+
             for(int i = 0; i < lineAmount - 1; i++){
                 line = bufferedReader.readLine();
 
@@ -830,10 +829,9 @@ public class DBHelper extends SQLiteOpenHelper {
                     String[] tokens = line.split(";");
 
                     try{
-
                         int deklinationId;
 
-                        Cursor cursor = dbConnection.rawQuery(
+                        cursor = dbConnection.rawQuery(
                                 "SELECT " + DeklinationsendungDB.FeedEntry._ID + " FROM " + DeklinationsendungDB.FeedEntry.TABLE_NAME
                                         + " WHERE " + DeklinationsendungDB.FeedEntry.COLUMN_NAME + " = ?",
                                 new String[]{tokens[5]}
@@ -842,26 +840,31 @@ public class DBHelper extends SQLiteOpenHelper {
                         deklinationId = cursor.getInt(0);
 
                         //TODO: Sprechvokale einfügen (nicht '0')
-                        addRowSubstantiv(tokens[0], tokens[1], tokens[2] == "1" ? true : false, Integer.parseInt(tokens[3]), 0, deklinationId);
+                        addRowSubstantiv(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]), 0, deklinationId);
 
+                        closeDb();
+                        reopenDb();
                     }catch (NumberFormatException nfe){
                         nfe.printStackTrace();
                     }
                 }
             }
-            dbConnection.close();
-            bufferedReader.close();
-            bufferedInputStream.close();
+
             inputStream.close();
+            bufferedInputStream.close();
+            bufferedReader.close();
+            closeDb();
+
 
         }catch(Exception e){
             e.printStackTrace();
         }
     }
-    public void addVerbEntriesFromFile(String path) {
+    public void addVerbEntriesFromFile(String path, Context context) {
 
         try{
-            InputStream inputStream = getClass().getResourceAsStream(path);
+            InputStream inputStream = context.getAssets().open(path);
+            //InputStream inputStream = getClass().getResourceAsStream(path);
             InputStream bufferedInputStream = new BufferedInputStream(inputStream);
             bufferedInputStream.mark(1000000000);
 
@@ -892,86 +895,29 @@ public class DBHelper extends SQLiteOpenHelper {
                 if(line != null){
                     String[] tokens = line.split(";");
 
+                    //TODO
                     try{
 
-                        int personalendungId;
-
-                        Cursor cursor = dbConnection.rawQuery(
-                                "SELECT " + Personalendung_PräsensDB.FeedEntry._ID + " FROM " + Personalendung_PräsensDB.FeedEntry.TABLE_NAME
-                                        + " WHERE " + Personalendung_PräsensDB.FeedEntry.TABLE_NAME + " = ?",
-                                new String[]{tokens[5]}
-                        );
-                        cursor.moveToNext();
-                        personalendungId = cursor.getInt(0);
-
+                        //TODO: read 'gelernt' from file
                         //TODO: Sprechvokale einfügen (nicht '0')
                         //TODO: Personalendungen benennen
-                        addRowVerb(tokens[0], tokens[1], tokens[2], tokens[3] == "1" ? true : false, Integer.parseInt(tokens[3]), 0, 0);
+                        addRowVerb(tokens[0], tokens[1], tokens[2], false, Integer.parseInt(tokens[4]), 0, 0);
 
                     }catch (NumberFormatException nfe){
                         nfe.printStackTrace();
                     }
                 }
             }
-            dbConnection.close();
-            bufferedReader.close();
-            bufferedInputStream.close();
             inputStream.close();
+            bufferedInputStream.close();
+            bufferedReader.close();
+            closeDb();
 
         }catch(Exception e){
             e.printStackTrace();
         }
     }
 
-    /*
-
-    public int getEntryAmount(String table){
-
-        //Get db connection
-        reopenDb();
-
-        Cursor cursor = dbConnection.rawQuery("SELECT COUNT(*) FROM " + table, null);
-
-        cursor.moveToNext();
-        long count = cursor.getLong(0);
-
-        closeDb();
-        cursor.close();
-
-        return (int)count;
-    }
-
-    public Object returnColumnFromID(String table, int id, String column){
-
-        reopenDb();
-
-        //getting the result of the query
-        Cursor cursor = dbConnection.query(
-                table,
-                new String[] {column},
-                " = ?",
-                new String[] {""+id},
-                null,
-                null,
-                null
-        );
-
-        //reading the result of the query
-        cursor.moveToNext();
-        Object result;
-        try {
-            result = cursor.getFloat(0);
-        }catch (Exception e){
-            result = cursor.getString(0);
-        }
-
-        cursor.close();
-        closeDb();
-
-        return result;
-    }
-
-*/
     public void closeDb() {
         dbConnection.close();
     }
@@ -982,55 +928,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-
-    /*
-     *
-     * @param lektion the lektion where the percentage of completed entries is needed
-     * @return the percentage of completed vocables
-     *
-    public float getPercentCompleted(String lektion){
-
-        //Array with all tables to be queried
-        String[] tables = {NomenDB.FeedEntry.TABLE_NAME,
-                           VerbDB.FeedEntry.TABLE_NAME};
-
-        int complete = 0;
-        int total = 0;
-
-        SQLiteDatabase db = getReadableDatabase();
-
-        //TODO: JOIN in SQL statement ?
-        Cursor cursor;
-        for (String table : tables){
-
-            //getting the total number of entries which were completed and adding it to 'complete'
-            cursor = db.rawQuery("SELECT COUNT(*) FROM " + table
-                    + " WHERE Gelernt = ? AND Lektion_ID = ?",
-                    new String[] {""+1, lektion});
-            cursor.moveToNext();
-            complete += (int)cursor.getFloat(0);
-
-            //getting the total number of entries of each table and adding it to 'total'
-            cursor = db.rawQuery("SELECT COUNT(*) FROM " + table
-                            + " WHERE Lektion_ID = ?",
-                    new String[] {lektion});
-            cursor.moveToNext();
-            total += (int)cursor.getFloat(0);
-
-            cursor.close();
-        }
-
-        db.close();
-
-        //Avoiding dividing by 0
-        if (total == 0){
-            return -1;
-        }else {
-            return complete/total;
-        }
-    }
-
-    */
     public int countTableEntries(String[] tables, int lektionNr){
 
         Cursor cursor = null;
@@ -1052,14 +949,120 @@ public class DBHelper extends SQLiteOpenHelper {
         return count;
     }
 
+    public int countTableEntries(String[] tables){
+
+        Cursor cursor = null;
+        int count = 0;
+        reopenDb();
+
+        for(String table : tables){
+
+            //getting the total number of entries which were completed and adding it to 'complete'
+            cursor = dbConnection.rawQuery("SELECT COUNT(*) FROM " + table,
+                    new String[] {});
+            cursor.moveToNext();
+            count += cursor.getInt(0);
+        }
+        cursor.close();
+        closeDb();
+
+        return count;
+    }
+
     public Cursor getCursorFromId(int id, String table){
 
         reopenDb();
-        Cursor cursor = null;
+        Cursor cursor;
         cursor = dbConnection.rawQuery("SELECT * FROM "+ table +" WHERE _ID = ?",
                 new String[] {""+ id});
 
         return  cursor;
+    }
+
+    public String getDeklinierteVokabel(int vokabelID, String deklinationsendungsName, int lektionsNr){
+
+        reopenDb();
+
+        Cursor substantivCursor = dbConnection.rawQuery("SELECT * FROM "+ SubstantivDB.FeedEntry.TABLE_NAME +
+                        " WHERE _ID = ? AND Lektion_ID = ?",
+                new String[] {""+vokabelID, ""+lektionsNr});
+
+        substantivCursor.moveToNext();
+        String substantiv = substantivCursor.getString(substantivCursor.getColumnIndex("Wortstamm"));
+        substantivCursor.close();
+
+        Cursor endungsCursor = dbConnection.rawQuery(
+                "SELECT "
+                        + DeklinationsendungDB.FeedEntry.TABLE_NAME+".*" +
+                    " FROM "
+                        + DeklinationsendungDB.FeedEntry.TABLE_NAME + ", "
+                        + SubstantivDB.FeedEntry.TABLE_NAME +
+                    " WHERE "
+                        + SubstantivDB.FeedEntry.TABLE_NAME + "." + SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID
+                            + " = " +
+                        DeklinationsendungDB.FeedEntry.TABLE_NAME + "." + DeklinationsendungDB.FeedEntry._ID +
+                    " AND "
+                        + SubstantivDB.FeedEntry.TABLE_NAME + "." + SubstantivDB.FeedEntry._ID + " = ?" +
+                    " AND "
+                        + SubstantivDB.FeedEntry.TABLE_NAME + "." + SubstantivDB.FeedEntry.COLUMN_LEKTION_ID + " = ?"
+                , new String[] {""+vokabelID, ""+lektionsNr});
+
+        endungsCursor.moveToNext();
+        String endung = endungsCursor.getString(endungsCursor.getColumnIndex(deklinationsendungsName));
+        endungsCursor.close();
+
+        String deklinierteVokabel = substantiv + endung;
+
+        closeDb();
+
+        return deklinierteVokabel;
+    }
+
+    public String getKonjugierteVokabel(int vokabelID, String personalendung, int lektionsNr){
+
+        reopenDb();
+
+        Cursor verbCursor = null;
+        verbCursor = dbConnection.rawQuery("SELECT * FROM " + VerbDB.FeedEntry.TABLE_NAME +
+                        " WHERE _ID = ? AND Lektion = ?",
+                new String[] {"" + vokabelID + lektionsNr});
+
+        verbCursor.moveToNext();
+        String verb = verbCursor.getString(verbCursor.getColumnIndex("Wortstamm"));
+
+        Cursor personalendungsCursor = null;
+        personalendungsCursor = dbConnection.rawQuery("SELECT " + Personalendung_PräsensDB.FeedEntry.TABLE_NAME + ".? FROM " +
+                Personalendung_PräsensDB.FeedEntry.TABLE_NAME,
+                new String[] {""+ personalendung});
+
+        personalendungsCursor.moveToNext();
+        String endung = personalendungsCursor.getString(personalendungsCursor.getColumnIndex(personalendung));
+
+        String konjugiertesVerb = verb + endung;
+
+        closeDb();
+
+        return konjugiertesVerb;
+    }
+
+    public String getInfinitiv (int verbID){
+
+        reopenDb();
+
+        Cursor verbCursor;
+        verbCursor = dbConnection.rawQuery("SELECT Wortstamm FROM " + VerbDB.FeedEntry.TABLE_NAME
+        + " WHERE " + VerbDB.FeedEntry._ID + " = ?", new String[] {""+ verbID});
+
+        verbCursor.moveToNext();
+        //TODO: getString(0) reicht?
+        String verb = verbCursor.getString(verbCursor.getColumnIndex("Wortstamm"));
+        verbCursor.close();
+
+        String infinitiv = verb + "re";
+
+        closeDb();
+
+        return infinitiv;
     }
 
     /**

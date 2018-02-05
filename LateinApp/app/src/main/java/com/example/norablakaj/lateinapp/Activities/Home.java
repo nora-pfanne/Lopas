@@ -15,10 +15,14 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
+import com.example.norablakaj.lateinapp.Databases.DeklinationsendungDB;
+import com.example.norablakaj.lateinapp.Databases.LektionDB;
+import com.example.norablakaj.lateinapp.Databases.Personalendung_PräsensDB;
+import com.example.norablakaj.lateinapp.Databases.Sprechvokal_PräsensDB;
+import com.example.norablakaj.lateinapp.Databases.Sprechvokal_SubstantivDB;
+import com.example.norablakaj.lateinapp.Databases.SubstantivDB;
+import com.example.norablakaj.lateinapp.Databases.VerbDB;
 import com.example.norablakaj.lateinapp.R;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -57,17 +61,32 @@ public class Home extends AppCompatActivity
         //Adding initial entries if they aren't in the database yet
         DBHelper dbHelper = new DBHelper(getApplicationContext());
 
-        //TODO: Add some test entries here
-        dbHelper.addRowSprechvokal_Substantiv("","","","","","","","","","");
+
+        if(dbHelper.countTableEntries(new String[] {
+                DeklinationsendungDB.FeedEntry.TABLE_NAME,
+                LektionDB.FeedEntry .TABLE_NAME,
+                Personalendung_PräsensDB.FeedEntry.TABLE_NAME,
+                Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME,
+                Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME,
+                SubstantivDB.FeedEntry.TABLE_NAME,
+                VerbDB.FeedEntry.TABLE_NAME}) == 0) {
+            //TODO: Add some test entries here
 
 
-        dbHelper.addDeklinationsendungEntriesFromFile("C:\\Users\\Nora~1\\Desktop\\AppLatein\\AppLATEIN\\LateinApp\\app\\src\\main\\javaResources\\files\\Deklinationsendung.csv");
-        //dbHelper.addLektionEntriesFromFile("");
-        //dbHelper.addPersonalendungEntriesFromFile("");
-        //dbHelper.addSprechvokalPräsensEntriesFromFile("");
-        //dbHelper.addSprechvokalSubstantivEntriesFromFile("");
-        //dbHelper.addSubstantivEntriesFromFile("startingEntries/Substantiv.csv");
-        //dbHelper.addVerbEntriesFromFile("");
+            dbHelper.addRowLektion("Lektion 0", "Lektion 0");
+            dbHelper.addRowSprechvokal_Substantiv("", "", "", "", "", "", "", "", "", "");
+
+
+            dbHelper.addRowSprechvokal_Präsens("", "", "", "", "", "");
+
+
+            dbHelper.addDeklinationsendungEntriesFromFile("deklinationsendung.csv", getApplicationContext());
+            dbHelper.addLektionEntriesFromFile("lektion.csv", getApplicationContext());
+            dbHelper.addPersonalendungEntriesFromFile("personalendung_präsens.csv", getApplicationContext());
+            //dbHelper.addSprechvokalPräsensEntriesFromFile("");
+            dbHelper.addSubstantivEntriesFromFile("substantiv.csv", getApplicationContext());
+            dbHelper.addVerbEntriesFromFile("verb.csv", getApplicationContext());
+        }
 
 
         dbHelper.close();
