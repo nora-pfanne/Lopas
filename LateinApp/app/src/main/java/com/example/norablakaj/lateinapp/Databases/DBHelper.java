@@ -8,11 +8,14 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.app.DownloadManager.Query;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -143,7 +146,37 @@ public class DBHelper extends SQLiteOpenHelper {
                     + SubstantivDB.FeedEntry.COLUMN_WORTSTAMM
                     + " TEXT, "
                     + SubstantivDB.FeedEntry.COLUMN_GELERNT
-                    + " INTEGER)";
+                    + " INTEGER, "
+                    + SubstantivDB.FeedEntry.COLUMN_LEKTION_ID
+                    + " INTEGER,"
+                    + SubstantivDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
+                    + " INTEGER, "
+                    + SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID
+                    + " INTEGER, "
+
+
+                    + " FOREIGN KEY ("
+                    + SubstantivDB.FeedEntry.COLUMN_LEKTION_ID
+                    + ") REFERENCES "
+                    + LektionDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + LektionDB.FeedEntry._ID
+                    + "), "
+                    + "FOREIGN KEY ("
+                    + SubstantivDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
+                    + ") REFERENCES "
+                    + Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + Sprechvokal_SubstantivDB.FeedEntry._ID
+                    + "), "
+                    + "FOREIGN KEY ("
+                    + SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID
+                    + ") REFERENCES "
+                    + DeklinationsendungDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + DeklinationsendungDB.FeedEntry._ID
+                    + ")"
+                    + ")";
 
     private static final String SQL_CREATE_ENTRIES_VERB =
             "CREATE TABLE "
@@ -158,7 +191,37 @@ public class DBHelper extends SQLiteOpenHelper {
                     + VerbDB.FeedEntry.COLUMN_KONJUGATION
                     + " TEXT, "
                     + VerbDB.FeedEntry.COLUMN_GELERNT
-                    + " INTEGER)";
+                    + " INTEGER,"
+                    + VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID
+                    + " INTEGER, "
+                    + VerbDB.FeedEntry.COLUMN_LEKTION_ID
+                    + " INTEGER, "
+                    + VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
+                    + " INTEGER, "
+
+
+                    + " FOREIGN KEY ("
+                    + VerbDB.FeedEntry.COLUMN_LEKTION_ID
+                    + ") REFERENCES "
+                    + LektionDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + LektionDB.FeedEntry._ID
+                    + "), "
+                    + "FOREIGN KEY ("
+                    + VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID
+                    + ") REFERENCES "
+                    + Personalendung_PräsensDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + Personalendung_PräsensDB.FeedEntry._ID
+                    + "), "
+                    + "FOREIGN KEY ("
+                    + VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
+                    + ") REFERENCES "
+                    + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + Sprechvokal_PräsensDB.FeedEntry._ID
+                    + ")"
+                    + ")";
 
     private static final String SQL_CREATE_ENTRIES_PRAEPOSITION =
             "CREATE TABLE"
@@ -256,15 +319,22 @@ public class DBHelper extends SQLiteOpenHelper {
             SubstantivDB.FeedEntry._ID,
             SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH,
             SubstantivDB.FeedEntry.COLUMN_WORTSTAMM,
-            SubstantivDB.FeedEntry.COLUMN_GELERNT
+            SubstantivDB.FeedEntry.COLUMN_GELERNT,
+            SubstantivDB.FeedEntry.COLUMN_LEKTION_ID,
+            SubstantivDB.FeedEntry.COLUMN_SPRECHVOKAL_ID,
+            SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID
     };
 
     private static final String[] allColumnsVerb = {
 
+            VerbDB.FeedEntry._ID,
             VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH,
             VerbDB.FeedEntry.COLUMN_WORTSTAMM,
             VerbDB.FeedEntry.COLUMN_KONJUGATION,
-            VerbDB.FeedEntry.COLUMN_GELERNT
+            VerbDB.FeedEntry.COLUMN_GELERNT,
+            VerbDB.FeedEntry.COLUMN_LEKTION_ID,
+            VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID,
+            VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
     };
 
     //Version of the database
@@ -427,7 +497,8 @@ public class DBHelper extends SQLiteOpenHelper {
         closeDb();
     }
 
-    public void addRowSubstantiv(String nom_sg_deutsch, String wortstamm, boolean gelernt) {
+    public void addRowSubstantiv(String nom_sg_deutsch, String wortstamm, boolean gelernt,
+                                 int lektion_id, int sprechvokal_id, int deklinationsendung_id) {
 
         reopenDb();
 
@@ -435,13 +506,17 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH, nom_sg_deutsch);
         values.put(SubstantivDB.FeedEntry.COLUMN_WORTSTAMM, wortstamm);
         values.put(SubstantivDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
+        values.put(SubstantivDB.FeedEntry.COLUMN_LEKTION_ID, lektion_id);
+        values.put(SubstantivDB.FeedEntry.COLUMN_SPRECHVOKAL_ID, sprechvokal_id);
+        values.put(SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID, deklinationsendung_id);
 
         dbConnection.insert(SubstantivDB.FeedEntry.TABLE_NAME, null, values);
 
         closeDb();
     }
 
-    public void addRowVerb(String infinitiv_deutsch, String wortstamm, String konjugation, boolean gelernt) {
+    public void addRowVerb(String infinitiv_deutsch, String wortstamm, String konjugation, boolean gelernt,
+                           int lektion, int personalendung_id, int sprechvokal_id) {
 
         reopenDb();
 
@@ -450,6 +525,9 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(VerbDB.FeedEntry.COLUMN_WORTSTAMM, wortstamm);
         values.put(VerbDB.FeedEntry.COLUMN_KONJUGATION, konjugation);
         values.put(VerbDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
+        values.put(VerbDB.FeedEntry.COLUMN_LEKTION_ID, lektion);
+        values.put(VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID, personalendung_id);
+        values.put(VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID, sprechvokal_id);
 
         dbConnection.insert(VerbDB.FeedEntry.TABLE_NAME, null, values);
 
@@ -457,216 +535,398 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    /*
-    public void addFileDataToVerb(String s, String split){
-        //TODO: Add support for special characters -> ā ē ī
-        try {
-            //reading the image from the path 's'
-            InputStream in = getClass().getResourceAsStream(s);
-            //add buffer for mark/reset support
-            InputStream bIn = new BufferedInputStream(in);
-            //marks the beginning to resets to this point later
-            bIn.mark(100000000);
 
-            BufferedReader br = new BufferedReader( new InputStreamReader(bIn));
+
+    public void addDeklinationsendungEntriesFromFile(String path, Context context) {
+
+        try{
+            InputStream inputStream = context.getAssets().open(path);
+            //InputStream inputStream = getClass().getResourceAsStream(path);
+            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            bufferedInputStream.mark(1000000000);
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
 
             //count the total number of lines
             int lineAmount = 0;
-            while(br.readLine() != null){
+
+            while(bufferedReader.readLine() != null){
                 lineAmount++;
             }
 
             //reset to the beginning
-            bIn.reset();
-            br = new BufferedReader(new InputStreamReader((bIn)));
+            bufferedInputStream.reset();
+            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
 
-            //Skip the first line with the column headings
-            br.readLine();
+            //Skip the first line with column headings
+            bufferedReader.readLine();
 
             reopenDb();
 
-            //goes through every line and add its content to the table
+            //goes through every line and adds its content to the table
             String line;
-            for (int i = 0; i < lineAmount - 1; i++){
-                line = br.readLine();
-                if (line != null){
-                    String[] tokens = line.split(split);
-                    try {
-                        addRowVerb(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], Boolean.parseBoolean(tokens[5]), Integer.parseInt(tokens[6]));
 
-                    }catch (NumberFormatException e){
-                        e.printStackTrace();
+            for(int i = 0; i < lineAmount - 1; i++){
+                line = bufferedReader.readLine();
+
+                if(line != null){
+                    String[] tokens = line.split(";");
+
+                    try{
+                        addRowDeklinationsendung(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5],
+                                tokens[6], tokens[7], tokens[8], tokens[9], tokens[10]);
+
+                    }catch (NumberFormatException nfe){
+                        nfe.printStackTrace();
                     }
                 }
             }
-            //closing all connections
-            dbConnection.close();
-            br.close();
-            bIn.close();
-            in.close();
-        }catch (Exception e){
+
+            inputStream.close();
+            bufferedInputStream.close();
+            bufferedReader.close();
+            closeDb();
+
+
+        }catch(Exception e){
             e.printStackTrace();
         }
     }
+    public void addLektionEntriesFromFile(String path, Context context) {
 
-    public void addFileDataToNomen(String s, String split){
-        //TODO: Add support for special characters -> ā ē ī
-        try {
-            //reading the image from the path 's'
-            InputStream in = getClass().getResourceAsStream(s);
-            //add buffer for mark/reset support
-            InputStream bIn = new BufferedInputStream(in);
-            //marks the beginning to resets to this point later
-            bIn.mark(100000000);
+        try{
+            InputStream inputStream = context.getAssets().open(path);
+            //InputStream inputStream = getClass().getResourceAsStream(path);
+            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            bufferedInputStream.mark(1000000000);
 
-            BufferedReader br = new BufferedReader( new InputStreamReader(bIn));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
 
             //count the total number of lines
             int lineAmount = 0;
-            while(br.readLine() != null){
+
+            while(bufferedReader.readLine() != null){
                 lineAmount++;
             }
 
-            //reset reader to the beginning
-            bIn.reset();
-            br = new BufferedReader(new InputStreamReader((bIn)));
+            //reset to the beginning
+            bufferedInputStream.reset();
+            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
 
-            //Skip the first line with the column headings
-            br.readLine();
+            //Skip the first line with column headings
+            bufferedReader.readLine();
 
             reopenDb();
 
-            //goes through every line and add its content to the table
+            //goes through every line and adds its content to the table
             String line;
-            for (int i = 0; i < lineAmount - 1; i++){
-                line = br.readLine();
-                if (line != null){
-                    String[] tokens = line.split(split);
-                    try {
 
-                        addRowNomen(
-                                tokens[0],
-                                tokens[1],
-                                tokens[2],
-                                tokens[3],
-                                tokens[4],
-                                tokens[5],
-                                Boolean.parseBoolean(tokens[6]),
-                                Integer.parseInt(tokens[7]));
-                    }catch (NumberFormatException e){
-                        e.printStackTrace();
+            for(int i = 0; i < lineAmount - 1; i++){
+                line = bufferedReader.readLine();
+
+                if(line != null){
+                    String[] tokens = line.split(";");
+
+                    try{
+                        addRowLektion(tokens[0], tokens[1]);
+
+                    }catch (NumberFormatException nfe){
+                        nfe.printStackTrace();
                     }
                 }
             }
-            //closing all connections
+            inputStream.close();
+            bufferedInputStream.close();
+            bufferedReader.close();
             closeDb();
-            br.close();
-            bIn.close();
-            in.close();
-        }catch (Exception e){
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    public void addPersonalendungEntriesFromFile(String path, Context context) {
+
+        try{
+            InputStream inputStream = context.getAssets().open(path);
+            //InputStream inputStream = getClass().getResourceAsStream(path);
+            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            bufferedInputStream.mark(1000000000);
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
+
+            //count the total number of lines
+            int lineAmount = 0;
+
+            while(bufferedReader.readLine() != null){
+                lineAmount++;
+            }
+
+            //reset to the beginning
+            bufferedInputStream.reset();
+            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
+
+            //Skip the first line with column headings
+            bufferedReader.readLine();
+
+            reopenDb();
+
+            //goes through every line and adds its content to the table
+            String line;
+
+            for(int i = 0; i < lineAmount - 1; i++){
+                line = bufferedReader.readLine();
+
+                if(line != null){
+                    String[] tokens = line.split(";");
+
+                    try{
+
+                        addRowPersonalendung_Präsens(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5]);
+
+                    }catch (NumberFormatException nfe){
+                        nfe.printStackTrace();
+                    }
+                }
+            }
+            inputStream.close();
+            bufferedInputStream.close();
+            bufferedReader.close();
+            closeDb();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    public void addSprechvokalPräsensEntriesFromFile(String path, Context context) {
+
+        try{
+            InputStream inputStream = context.getAssets().open(path);
+            //InputStream inputStream = getClass().getResourceAsStream(path);
+            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            bufferedInputStream.mark(1000000000);
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
+
+            //count the total number of lines
+            int lineAmount = 0;
+
+            while(bufferedReader.readLine() != null){
+                lineAmount++;
+            }
+
+            //reset to the beginning
+            bufferedInputStream.reset();
+            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
+
+            //Skip the first line with column headings
+            bufferedReader.readLine();
+
+            reopenDb();
+
+            //goes through every line and adds its content to the table
+            String line;
+
+            for(int i = 0; i < lineAmount - 1; i++){
+                line = bufferedReader.readLine();
+
+                if(line != null){
+                    String[] tokens = line.split(";");
+
+                    try{
+
+                        addRowSprechvokal_Präsens(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5]);
+
+                    }catch (NumberFormatException nfe){
+                        nfe.printStackTrace();
+                    }
+                }
+            }
+            inputStream.close();
+            bufferedInputStream.close();
+            bufferedReader.close();
+            closeDb();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    public void addSprechvokalSubstantivEntriesFromFile(String path, Context context) {
+
+        try{
+            InputStream inputStream = context.getAssets().open(path);
+            //InputStream inputStream = getClass().getResourceAsStream(path);
+            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            bufferedInputStream.mark(1000000000);
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
+
+            //count the total number of lines
+            int lineAmount = 0;
+
+            while(bufferedReader.readLine() != null){
+                lineAmount++;
+            }
+
+            //reset to the beginning
+            bufferedInputStream.reset();
+            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
+
+            //Skip the first line with column headings
+            bufferedReader.readLine();
+
+            reopenDb();
+
+            //goes through every line and adds its content to the table
+            String line;
+
+            for(int i = 0; i < lineAmount - 1; i++){
+                line = bufferedReader.readLine();
+
+                if(line != null){
+                    String[] tokens = line.split(";");
+
+                    try{
+
+                        addRowSprechvokal_Substantiv(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5],
+                                 tokens[6], tokens[7], tokens[8], tokens[9]);
+
+                    }catch (NumberFormatException nfe){
+                        nfe.printStackTrace();
+                    }
+                }
+            }
+            inputStream.close();
+            bufferedInputStream.close();
+            bufferedReader.close();
+            closeDb();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    public void addSubstantivEntriesFromFile(String path, Context context){
+
+        try{
+            InputStream inputStream = context.getAssets().open(path);
+            //InputStream inputStream = getClass().getResourceAsStream(path);
+            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            bufferedInputStream.mark(1000000000);
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
+
+            //count the total number of lines
+            int lineAmount = 0;
+
+            while(bufferedReader.readLine() != null){
+                lineAmount++;
+            }
+
+            //reset to the beginning
+            bufferedInputStream.reset();
+            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
+
+            //Skip the first line with column headings
+            bufferedReader.readLine();
+
+            reopenDb();
+
+            //goes through every line and adds its content to the table
+            String line;
+
+            Cursor cursor;
+
+            for(int i = 0; i < lineAmount - 1; i++){
+                line = bufferedReader.readLine();
+
+                if(line != null){
+                    String[] tokens = line.split(";");
+
+                    try{
+                        int deklinationId;
+
+                        cursor = dbConnection.rawQuery(
+                                "SELECT " + DeklinationsendungDB.FeedEntry._ID + " FROM " + DeklinationsendungDB.FeedEntry.TABLE_NAME
+                                        + " WHERE " + DeklinationsendungDB.FeedEntry.COLUMN_NAME + " = ?",
+                                new String[]{tokens[5]}
+                        );
+                        cursor.moveToNext();
+                        deklinationId = cursor.getInt(0);
+
+                        //TODO: Sprechvokale einfügen (nicht '0')
+                        addRowSubstantiv(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]), 0, deklinationId);
+
+                        closeDb();
+                        reopenDb();
+                    }catch (NumberFormatException nfe){
+                        nfe.printStackTrace();
+                    }
+                }
+            }
+
+            inputStream.close();
+            bufferedInputStream.close();
+            bufferedReader.close();
+            closeDb();
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    public void addVerbEntriesFromFile(String path, Context context) {
+
+        try{
+            InputStream inputStream = context.getAssets().open(path);
+            //InputStream inputStream = getClass().getResourceAsStream(path);
+            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            bufferedInputStream.mark(1000000000);
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
+
+            //count the total number of lines
+            int lineAmount = 0;
+
+            while(bufferedReader.readLine() != null){
+                lineAmount++;
+            }
+
+            //reset to the beginning
+            bufferedInputStream.reset();
+            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
+
+            //Skip the first line with column headings
+            bufferedReader.readLine();
+
+            reopenDb();
+
+            //goes through every line and adds its content to the table
+            String line;
+
+            for(int i = 0; i < lineAmount - 1; i++){
+                line = bufferedReader.readLine();
+
+                if(line != null){
+                    String[] tokens = line.split(";");
+
+                    //TODO
+                    try{
+
+                        //TODO: read 'gelernt' from file
+                        //TODO: Sprechvokale einfügen (nicht '0')
+                        //TODO: Personalendungen benennen
+                        addRowVerb(tokens[0], tokens[1], tokens[2], false, Integer.parseInt(tokens[4]), 0, 0);
+
+                    }catch (NumberFormatException nfe){
+                        nfe.printStackTrace();
+                    }
+                }
+            }
+            inputStream.close();
+            bufferedInputStream.close();
+            bufferedReader.close();
+            closeDb();
+
+        }catch(Exception e){
             e.printStackTrace();
         }
     }
 
-    //TODO: Combine all 3 methods into 1
-    public Cursor getAllEntriesLektion() {
-        //Get db connection
-        reopenDb();
-
-        Cursor cursor = dbConnection.query(
-                LektionDB.FeedEntry.TABLE_NAME,
-                allColumnsLektion,
-                null,
-                null,
-                null,
-                null,
-                LektionDB.FeedEntry._ID + " ASC");
-
-        //return the amount of elements that were returned
-        return cursor;
-    }
-
-    public Cursor getAllEntriesNomen(int lektion) {
-        //Get db connection
-        reopenDb();
-
-        Cursor cursor = dbConnection.query(
-                NomenDB.FeedEntry.TABLE_NAME,
-                allColumnsNomen,
-                NomenDB.FeedEntry.COLUMN_LEKTIONID + "=?",
-                new String[] {""+lektion},
-                null,
-                null,
-                NomenDB.FeedEntry._ID + " ASC");
-
-        //return the amount of elements that were returned
-        return cursor;
-    }
-
-    public Cursor getAllEntriesVerb(int lektion) {
-        //Get db connection
-        reopenDb();
-
-        Cursor cursor = dbConnection.query(
-                VerbDB.FeedEntry.TABLE_NAME,
-                allColumnsVerb,
-                VerbDB.FeedEntry.COLUMN_LEKTIONID + "=?",
-                new String[] {""+lektion},
-                null,
-                null,
-                VerbDB.FeedEntry._ID + " ASC");
-
-        //return the amount of elements that were returned
-        return cursor;
-    }
-
-    public int getEntryAmount(String table){
-
-        //Get db connection
-        reopenDb();
-
-        Cursor cursor = dbConnection.rawQuery("SELECT COUNT(*) FROM " + table, null);
-
-        cursor.moveToNext();
-        long count = cursor.getLong(0);
-
-        closeDb();
-        cursor.close();
-
-        return (int)count;
-    }
-
-    public Object returnColumnFromID(String table, int id, String column){
-
-        reopenDb();
-
-        //getting the result of the query
-        Cursor cursor = dbConnection.query(
-                table,
-                new String[] {column},
-                " = ?",
-                new String[] {""+id},
-                null,
-                null,
-                null
-        );
-
-        //reading the result of the query
-        cursor.moveToNext();
-        Object result;
-        try {
-            result = cursor.getFloat(0);
-        }catch (Exception e){
-            result = cursor.getString(0);
-        }
-
-        cursor.close();
-        closeDb();
-
-        return result;
-    }
-
-*/
     public void closeDb() {
         dbConnection.close();
     }
@@ -677,52 +937,55 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    public int countTableEntries(String[] tables, int lektionNr){
 
-    /*
-     *
-     * @param lektion the lektion where the percentage of completed entries is needed
-     * @return the percentage of completed vocables
-     *
-    public float getPercentCompleted(String lektion){
+        Cursor cursor = null;
+        int count = 0;
+        reopenDb();
 
-        //Array with all tables to be queried
-        String[] tables = {NomenDB.FeedEntry.TABLE_NAME,
-                           VerbDB.FeedEntry.TABLE_NAME};
-
-        int complete = 0;
-        int total = 0;
-
-        SQLiteDatabase db = getReadableDatabase();
-
-        //TODO: JOIN in SQL statement ?
-        Cursor cursor;
-        for (String table : tables){
+        for(String table : tables){
 
             //getting the total number of entries which were completed and adding it to 'complete'
-            cursor = db.rawQuery("SELECT COUNT(*) FROM " + table
-                    + " WHERE Gelernt = ? AND Lektion_ID = ?",
-                    new String[] {""+1, lektion});
-            cursor.moveToNext();
-            complete += (int)cursor.getFloat(0);
-
-            //getting the total number of entries of each table and adding it to 'total'
-            cursor = db.rawQuery("SELECT COUNT(*) FROM " + table
+            cursor = dbConnection.rawQuery("SELECT COUNT(*) FROM " + table
                             + " WHERE Lektion_ID = ?",
-                    new String[] {lektion});
+                    new String[] {""+lektionNr});
             cursor.moveToNext();
-            total += (int)cursor.getFloat(0);
-
-            cursor.close();
+            count += cursor.getInt(0);
         }
+        cursor.close();
+        closeDb();
 
-        db.close();
+        return count;
+    }
 
-        //Avoiding dividing by 0
-        if (total == 0){
-            return -1;
-        }else {
-            return complete/total;
+    public int countTableEntries(String[] tables){
+
+        Cursor cursor = null;
+        int count = 0;
+        reopenDb();
+
+        for(String table : tables){
+
+            //getting the total number of entries which were completed and adding it to 'complete'
+            cursor = dbConnection.rawQuery("SELECT COUNT(*) FROM " + table,
+                    new String[] {});
+            cursor.moveToNext();
+            count += cursor.getInt(0);
         }
+        cursor.close();
+        closeDb();
+
+        return count;
+    }
+
+    public Cursor getCursorFromId(int id, String table){
+
+        reopenDb();
+        Cursor cursor = null;
+        cursor = dbConnection.rawQuery("SELECT * FROM "+ table +" WHERE _ID = ?",
+                new String[] {""+ id});
+
+        return  cursor;
     }
 
     /**
