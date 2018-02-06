@@ -79,11 +79,11 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
         if(randomNumber < entryAmountSubstantiv){
 
             String deklinationsendung = DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG;
-            lateinVokabel = dbHelper.getDeklinierteVokabel(randomNumber + prevLektionSubstantivCount, deklinationsendung);
+            lateinVokabel = dbHelper.getDekliniertenSubstantiv(randomNumber + prevLektionSubstantivCount, deklinationsendung);
 
         } else if (randomNumber >= entryAmountSubstantiv){
 
-            lateinVokabel = dbHelper.getKonjugierteVokabel(
+            lateinVokabel = dbHelper.getKonjugiertesVerb(
                     randomNumber-entryAmountSubstantiv + prevLektionVerbCount,
                     "inf");
 

@@ -19,7 +19,6 @@ import java.util.ArrayList;
  * DBHelper is used for managing the database and its tables.
  * All queries are done in this class and called where they are needed
  */
-//TODO FOREIGN KEYS
 public class DBHelper extends SQLiteOpenHelper {
 
     private SQLiteDatabase dbConnection;
@@ -829,13 +828,15 @@ public class DBHelper extends SQLiteOpenHelper {
                     try{
                         int deklinationId;
 
-                        cursor = dbConnection.rawQuery(
-                                "SELECT " + DeklinationsendungDB.FeedEntry._ID + " FROM " + DeklinationsendungDB.FeedEntry.TABLE_NAME
-                                        + " WHERE " + DeklinationsendungDB.FeedEntry.COLUMN_NAME + " = ?",
+                        String query = "SELECT " + DeklinationsendungDB.FeedEntry._ID +
+                                       " FROM " + DeklinationsendungDB.FeedEntry.TABLE_NAME +
+                                       " WHERE " + DeklinationsendungDB.FeedEntry.COLUMN_NAME + " = ?";
+                        cursor = dbConnection.rawQuery(query,
                                 new String[]{tokens[5]}
                         );
                         cursor.moveToNext();
                         deklinationId = cursor.getInt(0);
+                        cursor.close();
 
                         //TODO: Sprechvokale einfügen (nicht '0')
                         addRowSubstantiv(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]), 0, deklinationId);
@@ -862,7 +863,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         try{
             InputStream inputStream = context.getAssets().open(path);
-            //InputStream inputStream = getClass().getResourceAsStream(path);
             InputStream bufferedInputStream = new BufferedInputStream(inputStream);
             bufferedInputStream.mark(1000000000);
 
@@ -893,11 +893,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 if(line != null){
                     String[] tokens = line.split(";");
 
-                    //TODO
                     try{
 
                         //TODO: read 'gelernt' from file
-                        //TODO: Sprechvokale einfügen (nicht '0')
+                        //TODO: Sprechvokale einfügen (nicht '1')
                         //TODO: Personalendungen benennen
                         addRowVerb(tokens[0],
                                 tokens[1],
@@ -922,17 +921,19 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void closeDb() {
+    private void closeDb() {
         dbConnection.close();
     }
 
-    public void reopenDb() {
+    private void reopenDb() {
         if (dbConnection != null && dbConnection.isOpen()) close();
         dbConnection = getWritableDatabase();
     }
 
     public int countTableEntries(String[] tables, int lektionNr){
 
+        //TODO: Currently only works for tables containing the column 'Lektion_ID' -> maybe make it general?
+        //TODO: Maybe with try/catch?
         Cursor cursor = null;
         int count = 0;
         reopenDb();
@@ -946,7 +947,7 @@ public class DBHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
             count += cursor.getInt(0);
         }
-        cursor.close();
+        if (cursor != null) cursor.close();
         closeDb();
 
         return count;
@@ -966,77 +967,69 @@ public class DBHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
             count += cursor.getInt(0);
         }
-        cursor.close();
+
+        if (cursor != null) cursor.close();
         closeDb();
 
         return count;
     }
 
-    public Cursor getCursorFromId(int id, String table){
+    public String getDekliniertenSubstantiv(int vokabelID, String deklinationsendungsName){
 
-        reopenDb();
-        Cursor cursor;
-        cursor = dbConnection.rawQuery("SELECT * FROM "+ table +" WHERE _ID = ?",
-                new String[] {""+ id});
-
-        return  cursor;
-    }
-
-    public String getDeklinierteVokabel(int vokabelID, String deklinationsendungsName){
-
+        //Increment vokabelID by 1 since _ID in the table starts at 1
         vokabelID++;
 
         reopenDb();
 
-        Cursor substantivCursor = dbConnection.rawQuery("SELECT * FROM "+ SubstantivDB.FeedEntry.TABLE_NAME +
-                        " WHERE _ID = ?",
-                new String[] {""+vokabelID});
-
+        String query = "SELECT " + SubstantivDB.FeedEntry.COLUMN_WORTSTAMM +
+                       " FROM "+ SubstantivDB.FeedEntry.TABLE_NAME +
+                       " WHERE _ID = ?";
+        Cursor substantivCursor = dbConnection.rawQuery(query,
+                                                        new String[] {""+vokabelID});
         substantivCursor.moveToNext();
-        String substantiv = substantivCursor.getString(substantivCursor.getColumnIndex("Wortstamm"));
+        String substantiv = substantivCursor.getString(0);
         substantivCursor.close();
 
-        Cursor endungsCursor = dbConnection.rawQuery(
-                "SELECT "
-                    + DeklinationsendungDB.FeedEntry.TABLE_NAME+".*" +
+        query = "SELECT "
+                + DeklinationsendungDB.FeedEntry.TABLE_NAME+".?" +
                 " FROM " +
-                    DeklinationsendungDB.FeedEntry.TABLE_NAME + ", " +
-                    SubstantivDB.FeedEntry.TABLE_NAME +
+                DeklinationsendungDB.FeedEntry.TABLE_NAME + ", " +
+                SubstantivDB.FeedEntry.TABLE_NAME +
                 " WHERE " +
-                        SubstantivDB.FeedEntry.TABLE_NAME+"."+SubstantivDB.FeedEntry._ID +
-                            " = " +
-                        "?" +
-                    " AND " +
-                        SubstantivDB.FeedEntry.TABLE_NAME+"."+SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID +
-                            " = " +
-                        DeklinationsendungDB.FeedEntry.TABLE_NAME+"."+DeklinationsendungDB.FeedEntry._ID
-                , new String[] {""+vokabelID}
+                SubstantivDB.FeedEntry.TABLE_NAME+"."+SubstantivDB.FeedEntry._ID +
+                " = " +
+                "?" +
+                " AND " +
+                SubstantivDB.FeedEntry.TABLE_NAME+"."+SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID +
+                " = " +
+                DeklinationsendungDB.FeedEntry.TABLE_NAME+"."+DeklinationsendungDB.FeedEntry._ID;
+        //TODO: Is ""+deklinationsname nöitg -> konvertierung String-String ist redundant
+        Cursor endungCursor = dbConnection.rawQuery(query,
+                                                    new String[] {""+deklinationsendungsName, ""+vokabelID}
         );
-
-        endungsCursor.moveToNext();
-        String endung = endungsCursor.getString(endungsCursor.getColumnIndex(deklinationsendungsName));
-        endungsCursor.close();
-
-        String deklinierteVokabel = substantiv + endung;
+        endungCursor.moveToNext();
+        String endung = endungCursor.getString(0);
+        endungCursor.close();
 
         closeDb();
 
-        return deklinierteVokabel;
+        return (substantiv + endung);
+
     }
 
-    public String getKonjugierteVokabel(int vokabelID, String personalendung){
+    public String getKonjugiertesVerb(int vokabelID, String personalendung){
 
+        //Increment vokabelID by 1 since _ID in the table starts at 1
         vokabelID++;
 
         reopenDb();
 
-        Cursor verbCursor;
-        verbCursor = dbConnection.rawQuery("SELECT * FROM " + VerbDB.FeedEntry.TABLE_NAME +
-                        " WHERE _ID = ?",
-                new String[] {"" + vokabelID});
-
+        String query = "SELECT * FROM " + VerbDB.FeedEntry.TABLE_NAME + " WHERE _ID = ?";
+        Cursor verbCursor = dbConnection.rawQuery(query,
+                                                  new String[] {"" + vokabelID});
         verbCursor.moveToNext();
         String verb = verbCursor.getString(verbCursor.getColumnIndex("Wortstamm"));
+        verbCursor.close();
 
         //TODO: Sprechvokal fehlt noch, da es noch keine Vokabeln mit Sprechvokalen in den bisherigen Lektionen gibt
 
@@ -1046,57 +1039,30 @@ public class DBHelper extends SQLiteOpenHelper {
             endung = "re";
         }else{
 
-            //TODO: Table_name.* -> spalte ausgeben
-
-            Cursor personalendungsCursor;
-            personalendungsCursor = dbConnection.rawQuery(
-                    "SELECT "
-                            + Personalendung_PräsensDB.FeedEntry.TABLE_NAME+".*" +
-                            " FROM " +
-                            Personalendung_PräsensDB.FeedEntry.TABLE_NAME + ", " +
-                            VerbDB.FeedEntry.TABLE_NAME +
-                            " WHERE " +
-                            VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry._ID +
-                            " = " +
-                            "?" +
-                            " AND " +
-                            VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID +
-                            " = " +
-                            Personalendung_PräsensDB.FeedEntry.TABLE_NAME+"."+Personalendung_PräsensDB.FeedEntry._ID
-                    , new String[] {""+vokabelID}
+            query = "SELECT "
+                    + Personalendung_PräsensDB.FeedEntry.TABLE_NAME+".?" +
+                    " FROM " +
+                    Personalendung_PräsensDB.FeedEntry.TABLE_NAME + ", " +
+                    VerbDB.FeedEntry.TABLE_NAME +
+                    " WHERE " +
+                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry._ID +
+                    " = " +
+                    "?" +
+                    " AND " +
+                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID +
+                    " = " +
+                    Personalendung_PräsensDB.FeedEntry.TABLE_NAME+"."+Personalendung_PräsensDB.FeedEntry._ID;
+            Cursor personalendungCursor = dbConnection.rawQuery(query ,
+                                                                new String[] {""+personalendung, ""+vokabelID}
             );
-
-            personalendungsCursor.moveToNext();
-            endung = personalendungsCursor.getString(personalendungsCursor.getColumnIndex(personalendung));
-            personalendungsCursor.close();
+            personalendungCursor.moveToNext();
+            endung = personalendungCursor.getString(0);
+            personalendungCursor.close();
         }
 
-        String konjugiertesVerb = verb + endung;
-
         closeDb();
 
-        return konjugiertesVerb;
-    }
-
-    @Deprecated
-    public String getInfinitiv (int verbID){
-
-        reopenDb();
-
-        Cursor verbCursor;
-        verbCursor = dbConnection.rawQuery("SELECT Wortstamm FROM " + VerbDB.FeedEntry.TABLE_NAME
-        + " WHERE " + VerbDB.FeedEntry._ID + " = ?", new String[] {""+ verbID});
-
-        verbCursor.moveToNext();
-        //TODO: getString(0) reicht?
-        String verb = verbCursor.getString(verbCursor.getColumnIndex("Wortstamm"));
-        verbCursor.close();
-
-        String infinitiv = verb + "re";
-
-        closeDb();
-
-        return infinitiv;
+        return (verb + endung);
     }
 
     /**
@@ -1105,6 +1071,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param Query
      * @return
      */
+    @SuppressWarnings("all")
     public ArrayList<Cursor> getData (String Query){
         //get writable database
         SQLiteDatabase sqlDB = this.getWritableDatabase();
