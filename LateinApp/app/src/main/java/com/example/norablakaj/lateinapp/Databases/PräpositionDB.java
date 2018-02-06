@@ -16,6 +16,9 @@ public class PräpositionDB {
         public static final String TABLE_NAME = "Praeposition";
 
         //Table columns
-        public static final String COLUMN_
+    public static final String COLUMN_DEUTSCH = "Deutsch",
+                                COLUMN_LATEIN = "Latein",
+                                COLUMN_GELERNT = "Gelernt",
+                                COLUMN_LEKTION_ID = "Lektion_ID";
     }
 }
