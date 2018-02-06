@@ -273,11 +273,11 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String[] allColumnsPersonalendung_Präsens = {
             Personalendung_PräsensDB.FeedEntry._ID,
             Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG,
-            Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG,
-            Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG,
             Personalendung_PräsensDB.FeedEntry.COLUMN_1_PL,
+            Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG,
             Personalendung_PräsensDB.FeedEntry.COLUMN_2_PL,
-            Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL,
+            Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG,
+            Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL
     };
 
     private static final String[] allColumnsSprechvokal_Präsens = {
@@ -381,7 +381,6 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //TODO: Combine all 3 methods into 1?
     public void addRowDeklinationsendung(String name,
                                          String nom_sg, String nom_pl,
                                          String gen_sg, String gen_pl,
@@ -392,17 +391,17 @@ public class DBHelper extends SQLiteOpenHelper {
         reopenDb();
 
         ContentValues values = new ContentValues();
-        values.put(DeklinationsendungDB.FeedEntry.COLUMN_NAME, name);
-        values.put(DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG, nom_sg);
-        values.put(DeklinationsendungDB.FeedEntry.COLUMN_NOM_PL, nom_pl);
-        values.put(DeklinationsendungDB.FeedEntry.COLUMN_GEN_SG, gen_sg);
-        values.put(DeklinationsendungDB.FeedEntry.COLUMN_GEN_PL, gen_pl);
-        values.put(DeklinationsendungDB.FeedEntry.COLUMN_DAT_SG, dat_sg);
-        values.put(DeklinationsendungDB.FeedEntry.COLUMN_DAT_PL, dat_pl);
-        values.put(DeklinationsendungDB.FeedEntry.COLUMN_AKK_SG, akk_sg);
-        values.put(DeklinationsendungDB.FeedEntry.COLUMN_AKK_PL, akk_pl);
-        values.put(DeklinationsendungDB.FeedEntry.COLUMN_ABL_SG, abl_sg);
-        values.put(DeklinationsendungDB.FeedEntry.COLUMN_ABL_PL, abl_pl);
+        values.put(allColumnsDeklinationsendung[1], name);
+        values.put(allColumnsDeklinationsendung[2], nom_sg);
+        values.put(allColumnsDeklinationsendung[3], nom_pl);
+        values.put(allColumnsDeklinationsendung[4], gen_sg);
+        values.put(allColumnsDeklinationsendung[5], gen_pl);
+        values.put(allColumnsDeklinationsendung[6], dat_sg);
+        values.put(allColumnsDeklinationsendung[7], dat_pl);
+        values.put(allColumnsDeklinationsendung[8], akk_sg);
+        values.put(allColumnsDeklinationsendung[9], akk_pl);
+        values.put(allColumnsDeklinationsendung[10], abl_sg);
+        values.put(allColumnsDeklinationsendung[11], abl_pl);
 
         dbConnection.insert(DeklinationsendungDB.FeedEntry.TABLE_NAME, null, values);
 
@@ -414,27 +413,27 @@ public class DBHelper extends SQLiteOpenHelper {
         reopenDb();
 
         ContentValues values = new ContentValues();
-        values.put(LektionDB.FeedEntry.COLUMN_TITEL, titel);
-        values.put(LektionDB.FeedEntry.COLUMN_THEMA, thema);
+        values.put(allColumnsLektion[1], titel);
+        values.put(allColumnsLektion[2], thema);
 
         dbConnection.insert(LektionDB.FeedEntry.TABLE_NAME, null, values);
 
         closeDb();
     }
 
-    public void addRowPersonalendung_Präsens(String erste_sg, String erste_pl,
-                                             String zweite_sg, String zweite_pl,
-                                             String dritte_sg, String dritte_pl) {
+    public void addRowPersonalendung_Präsens(String erste_sg, String zweite_sg,
+                                             String dritte_sg, String erste_pl,
+                                             String zweite_pl, String dritte_pl) {
 
         reopenDb();
 
         ContentValues values = new ContentValues();
-        values.put(Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG, erste_sg);
-        values.put(Personalendung_PräsensDB.FeedEntry.COLUMN_1_PL, erste_pl);
-        values.put(Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG, zweite_sg);
-        values.put(Personalendung_PräsensDB.FeedEntry.COLUMN_2_PL, zweite_pl);
-        values.put(Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG, dritte_sg);
-        values.put(Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL, dritte_pl);
+        values.put(allColumnsPersonalendung_Präsens[1], erste_sg);
+        values.put(allColumnsPersonalendung_Präsens[2], erste_pl);
+        values.put(allColumnsPersonalendung_Präsens[3], zweite_sg);
+        values.put(allColumnsPersonalendung_Präsens[4], zweite_pl);
+        values.put(allColumnsPersonalendung_Präsens[5], dritte_sg);
+        values.put(allColumnsPersonalendung_Präsens[6], dritte_pl);
 
         dbConnection.insert(Personalendung_PräsensDB.FeedEntry.TABLE_NAME, null, values);
 
@@ -442,19 +441,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void addRowSprechvokal_Präsens(String erste_sg, String erste_pl,
-                                          String zweite_sg, String zweite_pl,
-                                          String dritte_sg, String dritte_pl) {
+    public void addRowSprechvokal_Präsens(String erste_sg, String zweite_sg,
+                                          String dritte_sg, String erste_pl,
+                                          String zweite_pl, String dritte_pl) {
 
         reopenDb();
 
         ContentValues values = new ContentValues();
-        values.put(Sprechvokal_PräsensDB.FeedEntry.COLUMN_1_SG, erste_sg);
-        values.put(Sprechvokal_PräsensDB.FeedEntry.COLUMN_1_PL, erste_pl);
-        values.put(Sprechvokal_PräsensDB.FeedEntry.COLUMN_2_SG, zweite_sg);
-        values.put(Sprechvokal_PräsensDB.FeedEntry.COLUMN_2_PL, zweite_pl);
-        values.put(Sprechvokal_PräsensDB.FeedEntry.COLUMN_3_SG, dritte_sg);
-        values.put(Sprechvokal_PräsensDB.FeedEntry.COLUMN_3_PL, dritte_pl);
+        values.put(allColumnsSprechvokal_Präsens[1], erste_sg);
+        values.put(allColumnsSprechvokal_Präsens[2], erste_pl);
+        values.put(allColumnsSprechvokal_Präsens[3], zweite_sg);
+        values.put(allColumnsSprechvokal_Präsens[4], zweite_pl);
+        values.put(allColumnsSprechvokal_Präsens[5], dritte_sg);
+        values.put(allColumnsSprechvokal_Präsens[6], dritte_pl);
 
         dbConnection.insert(Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME, null, values);
 
@@ -472,16 +471,16 @@ public class DBHelper extends SQLiteOpenHelper {
         reopenDb();
 
         ContentValues values = new ContentValues();
-        values.put(Sprechvokal_SubstantivDB.FeedEntry.COLUMN_NOM_SG, nom_sg);
-        values.put(Sprechvokal_SubstantivDB.FeedEntry.COLUMN_NOM_PL, nom_pl);
-        values.put(Sprechvokal_SubstantivDB.FeedEntry.COLUMN_GEN_SG, gen_sg);
-        values.put(Sprechvokal_SubstantivDB.FeedEntry.COLUMN_GEN_PL, gen_pl);
-        values.put(Sprechvokal_SubstantivDB.FeedEntry.COLUMN_DAT_SG, dat_sg);
-        values.put(Sprechvokal_SubstantivDB.FeedEntry.COLUMN_DAT_PL, dat_pl);
-        values.put(Sprechvokal_SubstantivDB.FeedEntry.COLUMN_AKK_SG, akk_sg);
-        values.put(Sprechvokal_SubstantivDB.FeedEntry.COLUMN_AKK_PL, akk_pl);
-        values.put(Sprechvokal_SubstantivDB.FeedEntry.COLUMN_ABL_SG, abl_sg);
-        values.put(Sprechvokal_SubstantivDB.FeedEntry.COLUMN_ABL_PL, abl_pl);
+        values.put(allColumnsSprechvokal_Substantiv[1], nom_sg);
+        values.put(allColumnsSprechvokal_Substantiv[2], nom_pl);
+        values.put(allColumnsSprechvokal_Substantiv[3], gen_sg);
+        values.put(allColumnsSprechvokal_Substantiv[4], gen_pl);
+        values.put(allColumnsSprechvokal_Substantiv[5], dat_sg);
+        values.put(allColumnsSprechvokal_Substantiv[6], dat_pl);
+        values.put(allColumnsSprechvokal_Substantiv[7], akk_sg);
+        values.put(allColumnsSprechvokal_Substantiv[8], akk_pl);
+        values.put(allColumnsSprechvokal_Substantiv[9], abl_sg);
+        values.put(allColumnsSprechvokal_Substantiv[10], abl_pl);
 
         dbConnection.insert(Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME, null, values);
 
@@ -494,12 +493,12 @@ public class DBHelper extends SQLiteOpenHelper {
         reopenDb();
 
         ContentValues values = new ContentValues();
-        values.put(SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH, nom_sg_deutsch);
-        values.put(SubstantivDB.FeedEntry.COLUMN_WORTSTAMM, wortstamm);
-        values.put(SubstantivDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
-        values.put(SubstantivDB.FeedEntry.COLUMN_LEKTION_ID, lektion_id);
-        values.put(SubstantivDB.FeedEntry.COLUMN_SPRECHVOKAL_ID, sprechvokal_id);
-        values.put(SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID, deklinationsendung_id);
+        values.put(allColumnsSubstantiv[1], nom_sg_deutsch);
+        values.put(allColumnsSubstantiv[2], wortstamm);
+        values.put(allColumnsSubstantiv[3], gelernt ? 1 : 0);
+        values.put(allColumnsSubstantiv[4], lektion_id);
+        values.put(allColumnsSubstantiv[5], sprechvokal_id);
+        values.put(allColumnsSubstantiv[6], deklinationsendung_id);
 
         dbConnection.insert(SubstantivDB.FeedEntry.TABLE_NAME, null, values);
 
@@ -512,21 +511,18 @@ public class DBHelper extends SQLiteOpenHelper {
         reopenDb();
 
         ContentValues values = new ContentValues();
-        values.put(VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH, infinitiv_deutsch);
-        values.put(VerbDB.FeedEntry.COLUMN_WORTSTAMM, wortstamm);
-        values.put(VerbDB.FeedEntry.COLUMN_KONJUGATION, konjugation);
-        values.put(VerbDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
-        values.put(VerbDB.FeedEntry.COLUMN_LEKTION_ID, lektion);
-        values.put(VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID, personalendung_id);
-        values.put(VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID, sprechvokal_id);
+        values.put(allColumnsVerb[1], infinitiv_deutsch);
+        values.put(allColumnsVerb[2], wortstamm);
+        values.put(allColumnsVerb[3], konjugation);
+        values.put(allColumnsVerb[4], gelernt ? 1 : 0);
+        values.put(allColumnsVerb[5], lektion);
+        values.put(allColumnsVerb[6], personalendung_id);
+        values.put(allColumnsVerb[7], sprechvokal_id);
 
         dbConnection.insert(VerbDB.FeedEntry.TABLE_NAME, null, values);
 
         closeDb();
     }
-
-
-
 
     public void addDeklinationsendungEntriesFromFile(String path, Context context) {
 
@@ -671,7 +667,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
                     try{
 
-                        addRowPersonalendung_Präsens(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5]);
+                        addRowPersonalendung_Präsens(
+                                tokens[0], tokens[1], tokens[2],
+                                tokens[3], tokens[4], tokens[5]);
 
                     }catch (NumberFormatException nfe){
                         nfe.printStackTrace();
@@ -901,7 +899,13 @@ public class DBHelper extends SQLiteOpenHelper {
                         //TODO: read 'gelernt' from file
                         //TODO: Sprechvokale einfügen (nicht '0')
                         //TODO: Personalendungen benennen
-                        addRowVerb(tokens[0], tokens[1], tokens[2], false, Integer.parseInt(tokens[4]), 0, 0);
+                        addRowVerb(tokens[0],
+                                tokens[1],
+                                tokens[2],
+                                false,
+                                Integer.parseInt(tokens[4]),
+                                1,
+                                1);
 
                     }catch (NumberFormatException nfe){
                         nfe.printStackTrace();
@@ -926,7 +930,6 @@ public class DBHelper extends SQLiteOpenHelper {
         if (dbConnection != null && dbConnection.isOpen()) close();
         dbConnection = getWritableDatabase();
     }
-
 
     public int countTableEntries(String[] tables, int lektionNr){
 
@@ -981,6 +984,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public String getDeklinierteVokabel(int vokabelID, String deklinationsendungsName){
 
+        vokabelID++;
+
         reopenDb();
 
         Cursor substantivCursor = dbConnection.rawQuery("SELECT * FROM "+ SubstantivDB.FeedEntry.TABLE_NAME +
@@ -1019,14 +1024,13 @@ public class DBHelper extends SQLiteOpenHelper {
         return deklinierteVokabel;
     }
 
-    /*
-    TODO: Ausprobieren / Fixen
-     */
     public String getKonjugierteVokabel(int vokabelID, String personalendung){
+
+        vokabelID++;
 
         reopenDb();
 
-        Cursor verbCursor = null;
+        Cursor verbCursor;
         verbCursor = dbConnection.rawQuery("SELECT * FROM " + VerbDB.FeedEntry.TABLE_NAME +
                         " WHERE _ID = ?",
                 new String[] {"" + vokabelID});
@@ -1034,13 +1038,38 @@ public class DBHelper extends SQLiteOpenHelper {
         verbCursor.moveToNext();
         String verb = verbCursor.getString(verbCursor.getColumnIndex("Wortstamm"));
 
-        Cursor personalendungsCursor = null;
-        personalendungsCursor = dbConnection.rawQuery("SELECT " + Personalendung_PräsensDB.FeedEntry.TABLE_NAME + ".? FROM " +
-                Personalendung_PräsensDB.FeedEntry.TABLE_NAME,
-                new String[] {""+ personalendung});
+        //TODO: Sprechvokal fehlt noch, da es noch keine Vokabeln mit Sprechvokalen in den bisherigen Lektionen gibt
 
-        personalendungsCursor.moveToNext();
-        String endung = personalendungsCursor.getString(personalendungsCursor.getColumnIndex(personalendung));
+        String endung;
+        if (personalendung.equals("inf") || personalendung.equals("infinitiv") ||
+            personalendung.equals("Inf") || personalendung.equals("Infinitiv")){
+            endung = "re";
+        }else{
+
+            //TODO: Table_name.* -> spalte ausgeben
+
+            Cursor personalendungsCursor;
+            personalendungsCursor = dbConnection.rawQuery(
+                    "SELECT "
+                            + Personalendung_PräsensDB.FeedEntry.TABLE_NAME+".*" +
+                            " FROM " +
+                            Personalendung_PräsensDB.FeedEntry.TABLE_NAME + ", " +
+                            VerbDB.FeedEntry.TABLE_NAME +
+                            " WHERE " +
+                            VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry._ID +
+                            " = " +
+                            "?" +
+                            " AND " +
+                            VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID +
+                            " = " +
+                            Personalendung_PräsensDB.FeedEntry.TABLE_NAME+"."+Personalendung_PräsensDB.FeedEntry._ID
+                    , new String[] {""+vokabelID}
+            );
+
+            personalendungsCursor.moveToNext();
+            endung = personalendungsCursor.getString(personalendungsCursor.getColumnIndex(personalendung));
+            personalendungsCursor.close();
+        }
 
         String konjugiertesVerb = verb + endung;
 
@@ -1049,6 +1078,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return konjugiertesVerb;
     }
 
+    @Deprecated
     public String getInfinitiv (int verbID){
 
         reopenDb();

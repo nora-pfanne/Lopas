@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.DeklinationsendungDB;
+import com.example.norablakaj.lateinapp.Databases.Personalendung_PräsensDB;
+import com.example.norablakaj.lateinapp.Databases.Sprechvokal_PräsensDB;
 import com.example.norablakaj.lateinapp.Databases.SubstantivDB;
 import com.example.norablakaj.lateinapp.Databases.VerbDB;
 import com.example.norablakaj.lateinapp.R;
@@ -67,7 +69,6 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
             prevLektionVerbCount += dbHelper.countTableEntries(new String[] {VerbDB.FeedEntry.TABLE_NAME}, i);
         }
 
-
         int entryAmountVerb = dbHelper.countTableEntries(new String[]{VerbDB.FeedEntry.TABLE_NAME}, lektionNr);
         int entryAmountSubstantiv = dbHelper.countTableEntries(new String[] {SubstantivDB.FeedEntry.TABLE_NAME}, lektionNr);
         int entryAmount = entryAmountSubstantiv + entryAmountVerb;
@@ -82,7 +83,9 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
         } else if (randomNumber >= entryAmountSubstantiv){
 
-           lateinVokabel = dbHelper.getInfinitiv(randomNumber-entryAmountSubstantiv + prevLektionVerbCount);
+            lateinVokabel = dbHelper.getKonjugierteVokabel(
+                    randomNumber-entryAmountSubstantiv + prevLektionVerbCount,
+                    "inf");
 
         }
 
