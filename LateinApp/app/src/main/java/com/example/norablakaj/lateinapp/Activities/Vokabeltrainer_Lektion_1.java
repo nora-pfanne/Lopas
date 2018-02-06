@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,6 +25,10 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
     String lateinVokabel = "Bitte Vokabel auswählen!";
 
+    EditText schuelerInput;
+    String schuelerInputString;
+    Button bestaetigung;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +39,17 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
         //after a random vocabulary is chosen, it is showm in the TextView
         lateinVokabel = getRandomVocabulary(1);
         latein.setText(""+lateinVokabel);
+
+        schuelerInput = (EditText) findViewById(R.id.schuelerInput);
+        schuelerInputString = schuelerInput.getText().toString();
+
+        bestaetigung = (Button) findViewById(R.id.eingabeBestaetigungLektion1);
+        bestaetigung.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     //TODO: Move into DBHElper
@@ -75,6 +91,8 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
     private void buttonClickedBestaetigung(){
 
     }
+
+    private void pruefeSchuelerInput()
 
 
 }
