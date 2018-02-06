@@ -63,14 +63,17 @@ public class Home extends AppCompatActivity
 
 
         if(dbHelper.countTableEntries(new String[] {
-            DeklinationsendungDB.FeedEntry.TABLE_NAME,
-                    LektionDB.FeedEntry .TABLE_NAME,
-                    Personalendung_PräsensDB.FeedEntry.TABLE_NAME,
-                    Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME,
-                    Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME,
-                    SubstantivDB.FeedEntry.TABLE_NAME,
-                    VerbDB.FeedEntry.TABLE_NAME}) == 0) {
+                DeklinationsendungDB.FeedEntry.TABLE_NAME,
+                LektionDB.FeedEntry .TABLE_NAME,
+                Personalendung_PräsensDB.FeedEntry.TABLE_NAME,
+                Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME,
+                Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME,
+                SubstantivDB.FeedEntry.TABLE_NAME,
+                VerbDB.FeedEntry.TABLE_NAME}) == 0) {
             //TODO: Add some test entries here
+
+
+            dbHelper.addRowLektion("Lektion 0", "Lektion 0");
             dbHelper.addRowSprechvokal_Substantiv("", "", "", "", "", "", "", "", "", "");
 
 
