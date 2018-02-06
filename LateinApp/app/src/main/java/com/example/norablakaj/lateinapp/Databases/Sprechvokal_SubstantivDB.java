@@ -13,7 +13,7 @@ public class Sprechvokal_SubstantivDB {
     public static class FeedEntry implements BaseColumns {
 
         //Table name
-        public static final String TABLE_NAME = "Sprechvokal";
+        public static final String TABLE_NAME = "Sprechvokal_Substantiv";
 
         //Table columns
         public static final String

@@ -15,8 +15,6 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
-import com.example.norablakaj.lateinapp.Databases.LektionDB;
-import com.example.norablakaj.lateinapp.Databases.VerbDB;
 import com.example.norablakaj.lateinapp.R;
 
 public class Home extends AppCompatActivity
@@ -31,6 +29,8 @@ public class Home extends AppCompatActivity
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -51,24 +51,15 @@ public class Home extends AppCompatActivity
         lektion3Button = findViewById(R.id.lektion3);
         lektion4Button = findViewById(R.id.lektion4);
 
+
         //Adding initial entries if they aren't in the database yet
         DBHelper dbHelper = new DBHelper(getApplicationContext());
 
-        if (dbHelper.getEntryAmount(LektionDB.FeedEntry.TABLE_NAME) == 0) {
-            dbHelper.addRowLektion("Platzhalter", "Platzhalter-Beschreibung");
-            dbHelper.addRowLektion("Caesar", "Beschreibung1");
-            dbHelper.addRowLektion("Thema 2", "Beschreibung2");
-        }
-
-        if (dbHelper.getEntryAmount(VerbDB.FeedEntry.TABLE_NAME) == 0) {
-            dbHelper.addFileDataToVerb("/Vokabeln/Lektion1Verb.csv", ";");
-        }
-
-        if (dbHelper.getEntryAmount(NomenDB.FeedEntry.TABLE_NAME) == 0) {
-            dbHelper.addFileDataToNomen("/Vokabeln/Lektion1Nomen.csv", ";");
-        }
+        dbHelper.addRowLektion("Titel", "Thema");
+        dbHelper.addRowDeklinationsendung("Name", "nom_sg", "nom_pl", "gen_sg", "gen_pl", "dat_sg", "dat_pl", "akk_sg", "akk_pl", "abl_sg", "abl_pl");
 
         dbHelper.close();
+
     }
 
     /**
