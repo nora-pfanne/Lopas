@@ -40,10 +40,10 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
         lateinVokabel = getRandomVocabulary(1);
         latein.setText(""+lateinVokabel);
 
-        schuelerInput = (EditText) findViewById(R.id.schuelerInput);
+        schuelerInput = findViewById(R.id.schuelerInput);
         schuelerInputString = schuelerInput.getText().toString();
 
-        bestaetigung = (Button) findViewById(R.id.eingabeBestaetigungLektion1);
+        bestaetigung = findViewById(R.id.eingabeBestaetigungLektion1);
         bestaetigung.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,11 +78,12 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
         if(randomNumber < entryAmountSubstantiv){
 
             String deklinationsendung = DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG;
-            lateinVokabel = dbHelper.getDeklinierteVokabel(randomNumber + prevLektionSubstantivCount, deklinationsendung, 1);
+            lateinVokabel = dbHelper.getDeklinierteVokabel(randomNumber + prevLektionSubstantivCount, deklinationsendung);
 
         } else if (randomNumber >= entryAmountSubstantiv){
 
            lateinVokabel = dbHelper.getInfinitiv(randomNumber-entryAmountSubstantiv + prevLektionVerbCount);
+
         }
 
         return lateinVokabel;
@@ -92,7 +93,9 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
     }
 
-    private void pruefeSchuelerInput()
+    private void pruefeSchuelerInput(){
+
+    }
 
 
 }

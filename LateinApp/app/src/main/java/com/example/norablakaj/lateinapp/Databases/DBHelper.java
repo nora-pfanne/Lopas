@@ -979,13 +979,13 @@ public class DBHelper extends SQLiteOpenHelper {
         return  cursor;
     }
 
-    public String getDeklinierteVokabel(int vokabelID, String deklinationsendungsName, int lektionsNr){
+    public String getDeklinierteVokabel(int vokabelID, String deklinationsendungsName){
 
         reopenDb();
 
         Cursor substantivCursor = dbConnection.rawQuery("SELECT * FROM "+ SubstantivDB.FeedEntry.TABLE_NAME +
-                        " WHERE _ID = ? AND Lektion_ID = ?",
-                new String[] {""+vokabelID, ""+lektionsNr});
+                        " WHERE _ID = ?",
+                new String[] {""+vokabelID});
 
         substantivCursor.moveToNext();
         String substantiv = substantivCursor.getString(substantivCursor.getColumnIndex("Wortstamm"));
@@ -993,19 +993,20 @@ public class DBHelper extends SQLiteOpenHelper {
 
         Cursor endungsCursor = dbConnection.rawQuery(
                 "SELECT "
-                        + DeklinationsendungDB.FeedEntry.TABLE_NAME+".*" +
-                    " FROM "
-                        + DeklinationsendungDB.FeedEntry.TABLE_NAME + ", "
-                        + SubstantivDB.FeedEntry.TABLE_NAME +
-                    " WHERE "
-                        + SubstantivDB.FeedEntry.TABLE_NAME + "." + SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID
-                            + " = " +
-                        DeklinationsendungDB.FeedEntry.TABLE_NAME + "." + DeklinationsendungDB.FeedEntry._ID +
-                    " AND "
-                        + SubstantivDB.FeedEntry.TABLE_NAME + "." + SubstantivDB.FeedEntry._ID + " = ?" +
-                    " AND "
-                        + SubstantivDB.FeedEntry.TABLE_NAME + "." + SubstantivDB.FeedEntry.COLUMN_LEKTION_ID + " = ?"
-                , new String[] {""+vokabelID, ""+lektionsNr});
+                    + DeklinationsendungDB.FeedEntry.TABLE_NAME+".*" +
+                " FROM " +
+                    DeklinationsendungDB.FeedEntry.TABLE_NAME + ", " +
+                    SubstantivDB.FeedEntry.TABLE_NAME +
+                " WHERE " +
+                        SubstantivDB.FeedEntry.TABLE_NAME+"."+SubstantivDB.FeedEntry._ID +
+                            " = " +
+                        "?" +
+                    " AND " +
+                        SubstantivDB.FeedEntry.TABLE_NAME+"."+SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID +
+                            " = " +
+                        DeklinationsendungDB.FeedEntry.TABLE_NAME+"."+DeklinationsendungDB.FeedEntry._ID
+                , new String[] {""+vokabelID}
+        );
 
         endungsCursor.moveToNext();
         String endung = endungsCursor.getString(endungsCursor.getColumnIndex(deklinationsendungsName));
@@ -1018,14 +1019,17 @@ public class DBHelper extends SQLiteOpenHelper {
         return deklinierteVokabel;
     }
 
-    public String getKonjugierteVokabel(int vokabelID, String personalendung, int lektionsNr){
+    /*
+    TODO: Ausprobieren / Fixen
+     */
+    public String getKonjugierteVokabel(int vokabelID, String personalendung){
 
         reopenDb();
 
         Cursor verbCursor = null;
         verbCursor = dbConnection.rawQuery("SELECT * FROM " + VerbDB.FeedEntry.TABLE_NAME +
-                        " WHERE _ID = ? AND Lektion = ?",
-                new String[] {"" + vokabelID + lektionsNr});
+                        " WHERE _ID = ?",
+                new String[] {"" + vokabelID});
 
         verbCursor.moveToNext();
         String verb = verbCursor.getString(verbCursor.getColumnIndex("Wortstamm"));
