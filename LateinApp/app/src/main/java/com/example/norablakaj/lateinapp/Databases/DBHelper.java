@@ -160,6 +160,10 @@ public class DBHelper extends SQLiteOpenHelper {
                     + VerbDB.FeedEntry.COLUMN_GELERNT
                     + " INTEGER)";
 
+    private static final String SQL_CREATE_ENTRIES_PRAEPOSITION =
+            "CREATE TABLE"
+                    +
+
     //creating a String for quick access to a deletion command for all tables
     private static final String SQL_DELETE_ENTRIES_DEKLINATIONSENDUNG =
             "DROP TABLES IF EXISTS "
