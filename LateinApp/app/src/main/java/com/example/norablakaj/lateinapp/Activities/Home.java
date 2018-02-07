@@ -83,7 +83,9 @@ public class Home extends AppCompatActivity
             //dbHelper.addSprechvokalPräsensEntriesFromFile("");
             dbHelper.addSubstantivEntriesFromFile("substantiv.csv", getApplicationContext());
             dbHelper.addVerbEntriesFromFile("verb.csv", getApplicationContext());
-        }
+            //dbHelper.addRowPraeposition();
+            //dbHelper.addSprichwortEntriesFromFile();
+            dbHelper.addAdverbEntriesFromFile("adverb.csv", getApplicationContext());
 
 
         dbHelper.close();
