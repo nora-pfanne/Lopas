@@ -248,6 +248,54 @@ public class DBHelper extends SQLiteOpenHelper {
                     + ")"
                     + ")";
 
+    private static final String SQL_CREATE_ENTRIES_SPRICHWORT =
+            "CREATE TABLE"
+                    + SprichwortDB.FeedEntry.TABLE_NAME
+                    + "( "
+                    + SprichwortDB.FeedEntry._ID
+                    + " INTEGER PRIMARY KEY "
+                    + SprichwortDB.FeedEntry.COLUMN_DEUTSCH
+                    + " TEXT, "
+                    + SprichwortDB.FeedEntry.COLUMN_LATEIN
+                    + " TEXT, "
+                    + SprichwortDB.FeedEntry.COLUMN_GELERNT
+                    + " INTEGER, "
+                    + SprichwortDB.FeedEntry.COLUMN_LEKTION_ID
+                    + " INTEGER, "
+
+                    + " FOREIGN KEY ("
+                    + SprichwortDB.FeedEntry.COLUMN_LEKTION_ID
+                    + ") REFERENCES "
+                    + LektionDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + LektionDB.FeedEntry._ID
+                    + ")"
+                    + ")";
+
+    private static final String SQL_CREATE_ENTRIES_ADVERB =
+            "CREATE TABLE"
+                    + AdverbDB.FeedEntry.TABLE_NAME
+                    + "( "
+                    + AdverbDB.FeedEntry._ID
+                    + " INTEGER PRIMARY KEY "
+                    + AdverbDB.FeedEntry.COLUMN_DEUTSCH
+                    + " TEXT, "
+                    + AdverbDB.FeedEntry.COLUMN_LATEIN
+                    + " TEXT, "
+                    + AdverbDB.FeedEntry.COLUMN_GELERNT
+                    + " INTEGER, "
+                    + AdverbDB.FeedEntry.COLUMN_LEKTION_ID
+                    + " INTEGER, "
+
+                    + " FOREIGN KEY ("
+                    + AdverbDB.FeedEntry.COLUMN_LEKTION_ID
+                    + ") REFERENCES "
+                    + LektionDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + LektionDB.FeedEntry._ID
+                    + ")"
+                    + ")";
+
     //creating a String for quick access to a deletion command for all tables
     private static final String SQL_DELETE_ENTRIES_DEKLINATIONSENDUNG =
             "DROP TABLES IF EXISTS "
@@ -281,6 +329,14 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_ENTRIES_PRAEPOSITION =
             "DROP TABLES IF EXISTS "
                     + PräpositionDB.FeedEntry.TABLE_NAME;
+
+    private static final String SQL_DELETE_ENTRIES_SPRICHWORT =
+            "DROP TABLES IF EXISTS "
+                    + SprichwortDB.FeedEntry.TABLE_NAME;
+
+    private static final String SQL_DELETE_ENTRIES_ADVERB =
+            "DROP TABLES IF EXISTS "
+                    + AdverbDB.FeedEntry.TABLE_NAME;
 
 
     private static final String[] allColumnsDeklinationsendung = {
@@ -371,6 +427,24 @@ public class DBHelper extends SQLiteOpenHelper {
             PräpositionDB.FeedEntry.COLUMN_LEKTION_ID
     };
 
+    private static final String[] allColumnsSprichwort = {
+
+            SprichwortDB.FeedEntry._ID,
+            SprichwortDB.FeedEntry.COLUMN_DEUTSCH,
+            SprichwortDB.FeedEntry.COLUMN_LATEIN,
+            SprichwortDB.FeedEntry.COLUMN_GELERNT,
+            SprichwortDB.FeedEntry.COLUMN_LEKTION_ID
+    };
+
+    private static final String[] allColumnsAdverb = {
+
+            AdverbDB.FeedEntry._ID,
+            AdverbDB.FeedEntry.COLUMN_DEUTSCH,
+            AdverbDB.FeedEntry.COLUMN_LATEIN,
+            AdverbDB.FeedEntry.COLUMN_GELERNT,
+            AdverbDB.FeedEntry.COLUMN_LEKTION_ID
+    };
+
     //Version of the database
     private static final int DATABASE_VERSION = 1;
 
@@ -403,6 +477,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_ENTRIES_SUBSTANTIV);
         db.execSQL(SQL_CREATE_ENTRIES_VERB);
         db.execSQL(SQL_CREATE_ENTRIES_PRAEPOSITION);
+        db.execSQL(SQL_CREATE_ENTRIES_SPRICHWORT);
+        db.execSQL(SQL_CREATE_ENTRIES_ADVERB);
 
     }
 
@@ -422,7 +498,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_ENTRIES_SPRECHVOKAL_SUBSTANTIV);
         db.execSQL(SQL_DELETE_ENTRIES_SUBSTANTIV);
         db.execSQL(SQL_DELETE_ENTRIES_VERB);
-        db.execSQL(SQL_CREATE_ENTRIES_PRAEPOSITION);
+        db.execSQL(SQL_DELETE_ENTRIES_PRAEPOSITION);
+        db.execSQL(SQL_DELETE_ENTRIES_SPRICHWORT);
+        db.execSQL(SQL_DELETE_ENTRIES_ADVERB);
         onCreate(db);
     }
 
@@ -586,6 +664,37 @@ public class DBHelper extends SQLiteOpenHelper {
         closeDb();
     }
 
+    public void addRowSprichwort(String deutsch, String latein, boolean gelernt,
+                                   int lektion_id){
+
+        reopenDb();
+
+        ContentValues values = new ContentValues();
+        values.put(SprichwortDB.FeedEntry.COLUMN_DEUTSCH, deutsch);
+        values.put(SprichwortDB.FeedEntry.COLUMN_LATEIN, latein);
+        values.put(SprichwortDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
+        values.put(SprichwortDB.FeedEntry.COLUMN_LEKTION_ID, lektion_id);
+
+        dbConnection.insert(SprichwortDB.FeedEntry.TABLE_NAME, null, values);
+
+        closeDb();
+    }
+
+    public void addRowAdverb(String deutsch, String latein, boolean gelernt,
+                                   int lektion_id){
+
+        reopenDb();
+
+        ContentValues values = new ContentValues();
+        values.put(AdverbDB.FeedEntry.COLUMN_DEUTSCH, deutsch);
+        values.put(AdverbDB.FeedEntry.COLUMN_LATEIN, latein);
+        values.put(AdverbDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
+        values.put(AdverbDB.FeedEntry.COLUMN_LEKTION_ID, lektion_id);
+
+        dbConnection.insert(AdverbDB.FeedEntry.TABLE_NAME, null, values);
+
+        closeDb();
+    }
 
     public void addDeklinationsendungEntriesFromFile(String path, Context context) {
 
@@ -1017,6 +1126,118 @@ public class DBHelper extends SQLiteOpenHelper {
 
                         //TODO: read 'gelernt' from file
                         addRowPraeposition(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]));
+
+                    }catch (NumberFormatException nfe){
+                        nfe.printStackTrace();
+                    }
+                }
+            }
+            inputStream.close();
+            bufferedInputStream.close();
+            bufferedReader.close();
+            closeDb();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void addSprichwortEntriesFromFile(String path, Context context) {
+
+        try{
+            InputStream inputStream = context.getAssets().open(path);
+            //InputStream inputStream = getClass().getResourceAsStream(path);
+            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            bufferedInputStream.mark(1000000000);
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
+
+            //count the total number of lines
+            int lineAmount = 0;
+
+            while(bufferedReader.readLine() != null){
+                lineAmount++;
+            }
+
+            //reset to the beginning
+            bufferedInputStream.reset();
+            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
+
+            //Skip the first line with column headings
+            bufferedReader.readLine();
+
+            reopenDb();
+
+            //goes through every line and adds its content to the table
+            String line;
+
+            for(int i = 0; i < lineAmount - 1; i++){
+                line = bufferedReader.readLine();
+
+                if(line != null){
+                    String[] tokens = line.split(";");
+
+                    //TODO
+                    try{
+
+                        //TODO: read 'gelernt' from file
+                        addRowSprichwort(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]));
+
+                    }catch (NumberFormatException nfe){
+                        nfe.printStackTrace();
+                    }
+                }
+            }
+            inputStream.close();
+            bufferedInputStream.close();
+            bufferedReader.close();
+            closeDb();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void addAdverbEntriesFromFile(String path, Context context) {
+
+        try{
+            InputStream inputStream = context.getAssets().open(path);
+            //InputStream inputStream = getClass().getResourceAsStream(path);
+            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            bufferedInputStream.mark(1000000000);
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
+
+            //count the total number of lines
+            int lineAmount = 0;
+
+            while(bufferedReader.readLine() != null){
+                lineAmount++;
+            }
+
+            //reset to the beginning
+            bufferedInputStream.reset();
+            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
+
+            //Skip the first line with column headings
+            bufferedReader.readLine();
+
+            reopenDb();
+
+            //goes through every line and adds its content to the table
+            String line;
+
+            for(int i = 0; i < lineAmount - 1; i++){
+                line = bufferedReader.readLine();
+
+                if(line != null){
+                    String[] tokens = line.split(";");
+
+                    //TODO
+                    try{
+
+                        //TODO: read 'gelernt' from file
+                        addRowAdverb(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]));
 
                     }catch (NumberFormatException nfe){
                         nfe.printStackTrace();
