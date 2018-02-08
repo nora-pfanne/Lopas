@@ -88,6 +88,7 @@ public class Home extends AppCompatActivity
             //dbHelper.addPraepositionEntriesFromFile("", getApplicationContext());
         }
 
+        
         dbHelper.close();
 
     }
