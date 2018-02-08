@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import com.example.norablakaj.lateinapp.Databases.AdverbDB;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.DeklinationsendungDB;
 import com.example.norablakaj.lateinapp.Databases.LektionDB;
@@ -69,13 +70,12 @@ public class Home extends AppCompatActivity
                     Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME,
                     Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME,
                     SubstantivDB.FeedEntry.TABLE_NAME,
-                    VerbDB.FeedEntry.TABLE_NAME}) == 0) {
-            //TODO: Add some test entries here
+                    VerbDB.FeedEntry.TABLE_NAME,
+                    AdverbDB.FeedEntry.TABLE_NAME}) == 0) {
+
+
             dbHelper.addRowSprechvokal_Substantiv("", "", "", "", "", "", "", "", "", "");
-
-
             dbHelper.addRowSprechvokal_Präsens("", "", "", "", "", "");
-
 
             dbHelper.addDeklinationsendungEntriesFromFile("deklinationsendung.csv", getApplicationContext());
             dbHelper.addLektionEntriesFromFile("lektion.csv", getApplicationContext());
@@ -83,10 +83,10 @@ public class Home extends AppCompatActivity
             //dbHelper.addSprechvokalPräsensEntriesFromFile("");
             dbHelper.addSubstantivEntriesFromFile("substantiv.csv", getApplicationContext());
             dbHelper.addVerbEntriesFromFile("verb.csv", getApplicationContext());
-            //dbHelper.addRowPraeposition();
-            //dbHelper.addSprichwortEntriesFromFile();
             dbHelper.addAdverbEntriesFromFile("adverb.csv", getApplicationContext());
-
+            //dbHelper.addSprichwortEntriesFromFile("", getApplicationContext());
+            //dbHelper.addPraepositionEntriesFromFile("", getApplicationContext());
+        }
 
         dbHelper.close();
 

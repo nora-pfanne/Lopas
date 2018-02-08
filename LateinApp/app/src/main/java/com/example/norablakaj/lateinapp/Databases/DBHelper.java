@@ -654,10 +654,10 @@ public class DBHelper extends SQLiteOpenHelper {
         reopenDb();
 
         ContentValues values = new ContentValues();
-        values.put(PräpositionDB.FeedEntry.COLUMN_DEUTSCH, deutsch);
-        values.put(PräpositionDB.FeedEntry.COLUMN_LATEIN, latein);
-        values.put(PräpositionDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
-        values.put(PräpositionDB.FeedEntry.COLUMN_LEKTION_ID, lektion_id);
+        values.put(allColumnsPraeposition[1], deutsch);
+        values.put(allColumnsPraeposition[1], latein);
+        values.put(allColumnsPraeposition[1], gelernt ? 1 : 0);
+        values.put(allColumnsPraeposition[1], lektion_id);
 
         dbConnection.insert(PräpositionDB.FeedEntry.TABLE_NAME, null, values);
 
@@ -1085,7 +1085,6 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
-
     public void addPraepositionEntriesFromFile(String path, Context context) {
 
         try{
@@ -1141,7 +1140,6 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
-
     public void addSprichwortEntriesFromFile(String path, Context context) {
 
         try{
