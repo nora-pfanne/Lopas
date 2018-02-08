@@ -28,5 +28,17 @@ public class Lektion1 extends AppCompatActivity {
             Intent startVokabeltrainerLektion1 = new Intent(view.getContext(), Vokabeltrainer_Lektion_1.class);
             startActivity(startVokabeltrainerLektion1);
         }
+        if(view.getId() == R.id.button1A){
+            Intent startGrammatik1A = new Intent (view.getContext(), Grammatik1A.class);
+            startActivity(startGrammatik1A);
+        }
+        if(view.getId() == R.id.button1B){
+            Intent startGrammatik1B = new Intent(view.getContext(), Grammatik1B.class);
+            startActivity(startGrammatik1B);
+        }
+        if (view.getId() == R.id.button1C) {
+            Intent startGrammatik1C = new Intent(view.getContext(),Grammatik1C.class);
+            startActivity(startGrammatik1C);
+        }
     }
 }

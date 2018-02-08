@@ -25,7 +25,10 @@
         <activity android:name=".Activities.Lektion4" />
         <activity android:name=".Activities.AndroidDatabaseManager" />
         <activity android:name=".Activities.Woerterbuch" />
-        <activity android:name=".Activities.Vokabeltrainer_Lektion_1"></activity>
+        <activity android:name=".Activities.Vokabeltrainer_Lektion_1" />
+        <activity android:name=".Activities.Grammatik1A" />
+        <activity android:name=".Activities.Grammatik1B" />
+        <activity android:name=".Activities.Grammatik1C"></activity>
     </application>
 
 </manifest>
