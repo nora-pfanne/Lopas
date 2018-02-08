@@ -33,7 +33,8 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
         latein = findViewById(R.id.lateinVokabel);
 
         //after a random vocabulary is chosen, it is showm in the TextView
-        lateinVokabel = getRandomVocabulary(1);
+        DBHelper dbHelper = new DBHelper(getApplicationContext());
+        lateinVokabel = dbHelper.getRandomVocabulary(1, getApplicationContext());
         latein.setText(""+lateinVokabel);
 
         schuelerInput = findViewById(R.id.schuelerInput);
@@ -48,43 +49,7 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
         });
     }
 
-    //TODO: Move into DBHElper
-    private String getRandomVocabulary(int lektionNr){
 
-        lateinVokabel = "keine Vokabel ausgewählt!";
-
-        String[] tables = {SubstantivDB.FeedEntry.TABLE_NAME, VerbDB.FeedEntry.TABLE_NAME};
-        DBHelper dbHelper = new DBHelper(getApplicationContext());
-
-        int prevLektionSubstantivCount = 0;
-        int prevLektionVerbCount = 0;
-        for (int i = 1; i < lektionNr; i++){
-            prevLektionSubstantivCount += dbHelper.countTableEntries(new String[] {SubstantivDB.FeedEntry.TABLE_NAME}, i);
-            prevLektionVerbCount += dbHelper.countTableEntries(new String[] {VerbDB.FeedEntry.TABLE_NAME}, i);
-        }
-
-        int entryAmountVerb = dbHelper.countTableEntries(new String[]{VerbDB.FeedEntry.TABLE_NAME}, lektionNr);
-        int entryAmountSubstantiv = dbHelper.countTableEntries(new String[] {SubstantivDB.FeedEntry.TABLE_NAME}, lektionNr);
-        int entryAmount = entryAmountSubstantiv + entryAmountVerb;
-
-        Random rand = new Random();
-        int randomNumber = rand.nextInt(entryAmount);
-
-        if(randomNumber < entryAmountSubstantiv){
-
-            String deklinationsendung = DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG;
-            lateinVokabel = dbHelper.getDekliniertenSubstantiv(randomNumber + prevLektionSubstantivCount, deklinationsendung);
-
-        } else if (randomNumber >= entryAmountSubstantiv){
-
-            lateinVokabel = dbHelper.getKonjugiertesVerb(
-                    randomNumber-entryAmountSubstantiv + prevLektionVerbCount,
-                    "inf");
-
-        }
-
-        return lateinVokabel;
-    }
 
     private void buttonClickedBestaetigung(){
 
