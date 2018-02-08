@@ -87,7 +87,7 @@ public class Home extends AppCompatActivity
             //dbHelper.addSprichwortEntriesFromFile();
             dbHelper.addAdverbEntriesFromFile("adverb.csv", getApplicationContext());
 
-
+        }
         dbHelper.close();
 
     }
