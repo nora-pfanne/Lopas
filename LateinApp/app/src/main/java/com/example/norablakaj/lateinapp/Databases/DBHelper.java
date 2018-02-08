@@ -7,14 +7,27 @@ import android.database.MatrixCursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.Telephony;
 import android.util.Log;
+
+import com.example.norablakaj.lateinapp.Databases.Tables.AdverbDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.DeklinationsendungDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.LektionDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.Personalendung_PräsensDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.PräpositionDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.Sprechvokal_PräsensDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.Sprechvokal_SubstantivDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.SprichwortDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.SubstantivDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PipedReader;
 import java.util.ArrayList;
+
+import static com.example.norablakaj.lateinapp.Databases.SQL_DUMP.*;
 
 /**
  * DBHelper is used for managing the database and its tables.
@@ -24,481 +37,124 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private SQLiteDatabase dbConnection;
 
-    private static final String SQL_CREATE_ENTRIES_DEKLINATIONSENDUNG =
-            "CREATE TABLE "
-                    + DeklinationsendungDB.FeedEntry.TABLE_NAME
-                    + " ("
-                    + DeklinationsendungDB.FeedEntry._ID
-                    + " INTEGER PRIMARY KEY, "
-                    + DeklinationsendungDB.FeedEntry.COLUMN_NAME
-                    + " TEXT, "
-                    + DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG
-                    + " TEXT, "
-                    + DeklinationsendungDB.FeedEntry.COLUMN_NOM_PL
-                    + " TEXT, "
-                    + DeklinationsendungDB.FeedEntry.COLUMN_GEN_SG
-                    + " TEXT, "
-                    + DeklinationsendungDB.FeedEntry.COLUMN_GEN_PL
-                    + " TEXT, "
-                    + DeklinationsendungDB.FeedEntry.COLUMN_DAT_SG
-                    + " TEXT, "
-                    + DeklinationsendungDB.FeedEntry.COLUMN_DAT_PL
-                    + " TEXT, "
-                    + DeklinationsendungDB.FeedEntry.COLUMN_AKK_SG
-                    + " TEXT, "
-                    + DeklinationsendungDB.FeedEntry.COLUMN_AKK_PL
-                    + " TEXT, "
-                    + DeklinationsendungDB.FeedEntry.COLUMN_ABL_SG
-                    + " TEXT, "
-                    + DeklinationsendungDB.FeedEntry.COLUMN_ABL_PL
-                    + " TEXT)";
-
-    private static final String SQL_CREATE_ENTRIES_LEKTION =
-            "CREATE TABLE "
-                    + LektionDB.FeedEntry.TABLE_NAME
-                    + "( "
-                    + LektionDB.FeedEntry._ID
-                    + " INTEGER PRIMARY KEY, "
-                    + LektionDB.FeedEntry.COLUMN_TITEL
-                    + " TEXT, "
-                    + LektionDB.FeedEntry.COLUMN_THEMA
-                    + " TEXT)";
-
-
-    private static final String SQL_CREATE_ENTRIES_PERSONALENDUNG_PRÄSENS =
-            "CREATE TABLE "
-                    + Personalendung_PräsensDB.FeedEntry.TABLE_NAME
-                    + "( "
-                    + Personalendung_PräsensDB.FeedEntry._ID
-                    + " INTEGER PRIMARY KEY, "
-                    + Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG
-                    + " TEXT, "
-                    + Personalendung_PräsensDB.FeedEntry.COLUMN_1_PL
-                    + " TEXT, "
-                    + Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG
-                    + " TEXT, "
-                    + Personalendung_PräsensDB.FeedEntry.COLUMN_2_PL
-                    + " TEXT, "
-                    + Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG
-                    + " TEXT, "
-                    + Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL
-                    + " TEXT)";
-
-    private static final String SQL_CREATE_ENTRIES_SPRECHVOKAL_PRÄSENS =
-            "CREATE TABLE "
-                    + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME
-                    + "( "
-                    + Sprechvokal_PräsensDB.FeedEntry._ID
-                    + " INTEGER PRIMARY KEY, "
-                    + Sprechvokal_PräsensDB.FeedEntry.COLUMN_1_SG
-                    + " TEXT, "
-                    + Sprechvokal_PräsensDB.FeedEntry.COLUMN_1_PL
-                    + " TEXT, "
-                    + Sprechvokal_PräsensDB.FeedEntry.COLUMN_2_SG
-                    + " TEXT, "
-                    + Sprechvokal_PräsensDB.FeedEntry.COLUMN_2_PL
-                    + " TEXT, "
-                    + Sprechvokal_PräsensDB.FeedEntry.COLUMN_3_SG
-                    + " TEXT, "
-                    + Sprechvokal_PräsensDB.FeedEntry.COLUMN_3_PL
-                    + " TEXT)";
-
-    private static final String SQL_CREATE_ENTRIES_SPRECHVOKAL_SUBSTANTIV =
-            "CREATE TABLE "
-                    + Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME
-                    + " ("
-                    + Sprechvokal_SubstantivDB.FeedEntry._ID
-                    + " INTEGER PRIMARY KEY, "
-                    + Sprechvokal_SubstantivDB.FeedEntry.COLUMN_NOM_SG
-                    + " TEXT, "
-                    + Sprechvokal_SubstantivDB.FeedEntry.COLUMN_NOM_PL
-                    + " TEXT, "
-                    + Sprechvokal_SubstantivDB.FeedEntry.COLUMN_GEN_SG
-                    + " TEXT, "
-                    + Sprechvokal_SubstantivDB.FeedEntry.COLUMN_GEN_PL
-                    + " TEXT, "
-                    + Sprechvokal_SubstantivDB.FeedEntry.COLUMN_DAT_SG
-                    + " TEXT, "
-                    + Sprechvokal_SubstantivDB.FeedEntry.COLUMN_DAT_PL
-                    + " TEXT, "
-                    + Sprechvokal_SubstantivDB.FeedEntry.COLUMN_AKK_SG
-                    + " TEXT, "
-                    + Sprechvokal_SubstantivDB.FeedEntry.COLUMN_AKK_PL
-                    + " TEXT, "
-                    + Sprechvokal_SubstantivDB.FeedEntry.COLUMN_ABL_SG
-                    + " TEXT, "
-                    + Sprechvokal_SubstantivDB.FeedEntry.COLUMN_ABL_PL
-                    + " TEXT)";
-
-    private static final String SQL_CREATE_ENTRIES_SUBSTANTIV =
-            "CREATE TABLE "
-                    + SubstantivDB.FeedEntry.TABLE_NAME
-                    + "( "
-                    + SubstantivDB.FeedEntry._ID
-                    + " INTEGER PRIMARY KEY, "
-                    + SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH
-                    + " TEXT, "
-                    + SubstantivDB.FeedEntry.COLUMN_WORTSTAMM
-                    + " TEXT, "
-                    + SubstantivDB.FeedEntry.COLUMN_GELERNT
-                    + " INTEGER, "
-                    + SubstantivDB.FeedEntry.COLUMN_LEKTION_ID
-                    + " INTEGER,"
-                    + SubstantivDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
-                    + " INTEGER, "
-                    + SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID
-                    + " INTEGER, "
-
-
-                    + " FOREIGN KEY ("
-                    + SubstantivDB.FeedEntry.COLUMN_LEKTION_ID
-                    + ") REFERENCES "
-                    + LektionDB.FeedEntry.TABLE_NAME
-                    + "("
-                    + LektionDB.FeedEntry._ID
-                    + "), "
-                    + "FOREIGN KEY ("
-                    + SubstantivDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
-                    + ") REFERENCES "
-                    + Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME
-                    + "("
-                    + Sprechvokal_SubstantivDB.FeedEntry._ID
-                    + "), "
-                    + "FOREIGN KEY ("
-                    + SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID
-                    + ") REFERENCES "
-                    + DeklinationsendungDB.FeedEntry.TABLE_NAME
-                    + "("
-                    + DeklinationsendungDB.FeedEntry._ID
-                    + ")"
-                    + ")";
-
-    private static final String SQL_CREATE_ENTRIES_VERB =
-            "CREATE TABLE "
-                    + VerbDB.FeedEntry.TABLE_NAME
-                    + "( "
-                    + VerbDB.FeedEntry._ID
-                    + " INTEGER PRIMARY KEY, "
-                    + VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH
-                    + " TEXT, "
-                    + VerbDB.FeedEntry.COLUMN_WORTSTAMM
-                    + " TEXT, "
-                    + VerbDB.FeedEntry.COLUMN_KONJUGATION
-                    + " TEXT, "
-                    + VerbDB.FeedEntry.COLUMN_GELERNT
-                    + " INTEGER,"
-                    + VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID
-                    + " INTEGER, "
-                    + VerbDB.FeedEntry.COLUMN_LEKTION_ID
-                    + " INTEGER, "
-                    + VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
-                    + " INTEGER, "
-
-
-                    + " FOREIGN KEY ("
-                    + VerbDB.FeedEntry.COLUMN_LEKTION_ID
-                    + ") REFERENCES "
-                    + LektionDB.FeedEntry.TABLE_NAME
-                    + "("
-                    + LektionDB.FeedEntry._ID
-                    + "), "
-                    + "FOREIGN KEY ("
-                    + VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID
-                    + ") REFERENCES "
-                    + Personalendung_PräsensDB.FeedEntry.TABLE_NAME
-                    + "("
-                    + Personalendung_PräsensDB.FeedEntry._ID
-                    + "), "
-                    + "FOREIGN KEY ("
-                    + VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
-                    + ") REFERENCES "
-                    + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME
-                    + "("
-                    + Sprechvokal_PräsensDB.FeedEntry._ID
-                    + ")"
-                    + ")";
-
-    private static final String SQL_CREATE_ENTRIES_PRAEPOSITION =
-            "CREATE TABLE"
-                    + PräpositionDB.FeedEntry.TABLE_NAME
-                    + "( "
-                    + PräpositionDB.FeedEntry._ID
-                    + " INTEGER PRIMARY KEY "
-                    + PräpositionDB.FeedEntry.COLUMN_DEUTSCH
-                    + " TEXT, "
-                    + PräpositionDB.FeedEntry.COLUMN_LATEIN
-                    + " TEXT, "
-                    + PräpositionDB.FeedEntry.COLUMN_GELERNT
-                    + " INTEGER, "
-                    + PräpositionDB.FeedEntry.COLUMN_LEKTION_ID
-                    + " INTEGER, "
-
-                    + " FOREIGN KEY ("
-                    + PräpositionDB.FeedEntry.COLUMN_LEKTION_ID
-                    + ") REFERENCES "
-                    + LektionDB.FeedEntry.TABLE_NAME
-                    + "("
-                    + LektionDB.FeedEntry._ID
-                    + ")"
-                    + ")";
-
-    private static final String SQL_CREATE_ENTRIES_SPRICHWORT =
-            "CREATE TABLE"
-                    + SprichwortDB.FeedEntry.TABLE_NAME
-                    + "( "
-                    + SprichwortDB.FeedEntry._ID
-                    + " INTEGER PRIMARY KEY "
-                    + SprichwortDB.FeedEntry.COLUMN_DEUTSCH
-                    + " TEXT, "
-                    + SprichwortDB.FeedEntry.COLUMN_LATEIN
-                    + " TEXT, "
-                    + SprichwortDB.FeedEntry.COLUMN_GELERNT
-                    + " INTEGER, "
-                    + SprichwortDB.FeedEntry.COLUMN_LEKTION_ID
-                    + " INTEGER, "
-
-                    + " FOREIGN KEY ("
-                    + SprichwortDB.FeedEntry.COLUMN_LEKTION_ID
-                    + ") REFERENCES "
-                    + LektionDB.FeedEntry.TABLE_NAME
-                    + "("
-                    + LektionDB.FeedEntry._ID
-                    + ")"
-                    + ")";
-
-    private static final String SQL_CREATE_ENTRIES_ADVERB =
-            "CREATE TABLE"
-                    + AdverbDB.FeedEntry.TABLE_NAME
-                    + "( "
-                    + AdverbDB.FeedEntry._ID
-                    + " INTEGER PRIMARY KEY "
-                    + AdverbDB.FeedEntry.COLUMN_DEUTSCH
-                    + " TEXT, "
-                    + AdverbDB.FeedEntry.COLUMN_LATEIN
-                    + " TEXT, "
-                    + AdverbDB.FeedEntry.COLUMN_GELERNT
-                    + " INTEGER, "
-                    + AdverbDB.FeedEntry.COLUMN_LEKTION_ID
-                    + " INTEGER, "
-
-                    + " FOREIGN KEY ("
-                    + AdverbDB.FeedEntry.COLUMN_LEKTION_ID
-                    + ") REFERENCES "
-                    + LektionDB.FeedEntry.TABLE_NAME
-                    + "("
-                    + LektionDB.FeedEntry._ID
-                    + ")"
-                    + ")";
-
-    //creating a String for quick access to a deletion command for all tables
-    private static final String SQL_DELETE_ENTRIES_DEKLINATIONSENDUNG =
-            "DROP TABLES IF EXISTS "
-                    + DeklinationsendungDB.FeedEntry.TABLE_NAME;
-
-    private static final String SQL_DELETE_ENTRIES_LEKTION =
-            "DROP TABLES IF EXISTS "
-                    + LektionDB.FeedEntry.TABLE_NAME;
-
-    private static final String SQL_DELETE_ENTRIES_PERSONALENDUNG_PRÄSENS =
-            "DROP TABLES IF EXISTS "
-                    + Personalendung_PräsensDB.FeedEntry.TABLE_NAME;
-
-    private static final String SQL_DELETE_ENTRIES_SPRECHVOKAL_PRÄSENS =
-            "DROP TABLES IF EXISTS "
-                    + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME;
-
-    private static final String SQL_DELETE_ENTRIES_SPRECHVOKAL_SUBSTANTIV =
-            "DROP TABLES IF EXISTS "
-                    + Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME;
-
-    private static final String SQL_DELETE_ENTRIES_SUBSTANTIV =
-            "DROP TABLES IF EXISTS "
-                    + SubstantivDB.FeedEntry.TABLE_NAME;
-
-
-    private static final String SQL_DELETE_ENTRIES_VERB =
-            "DROP TABLES IF EXISTS "
-                    + VerbDB.FeedEntry.TABLE_NAME;
-
-    private static final String SQL_DELETE_ENTRIES_PRAEPOSITION =
-            "DROP TABLES IF EXISTS "
-                    + PräpositionDB.FeedEntry.TABLE_NAME;
-
-    private static final String SQL_DELETE_ENTRIES_SPRICHWORT =
-            "DROP TABLES IF EXISTS "
-                    + SprichwortDB.FeedEntry.TABLE_NAME;
-
-    private static final String SQL_DELETE_ENTRIES_ADVERB =
-            "DROP TABLES IF EXISTS "
-                    + AdverbDB.FeedEntry.TABLE_NAME;
-
-
-    private static final String[] allColumnsDeklinationsendung = {
-            DeklinationsendungDB.FeedEntry._ID,
-            DeklinationsendungDB.FeedEntry.COLUMN_NAME,
-            DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG,
-            DeklinationsendungDB.FeedEntry.COLUMN_NOM_PL,
-            DeklinationsendungDB.FeedEntry.COLUMN_GEN_SG,
-            DeklinationsendungDB.FeedEntry.COLUMN_GEN_PL,
-            DeklinationsendungDB.FeedEntry.COLUMN_DAT_SG,
-            DeklinationsendungDB.FeedEntry.COLUMN_DAT_PL,
-            DeklinationsendungDB.FeedEntry.COLUMN_AKK_SG,
-            DeklinationsendungDB.FeedEntry.COLUMN_AKK_PL,
-            DeklinationsendungDB.FeedEntry.COLUMN_ABL_SG,
-            DeklinationsendungDB.FeedEntry.COLUMN_ABL_PL
-    };
-
-    private static final String[] allColumnsLektion = {
-            LektionDB.FeedEntry._ID,
-            LektionDB.FeedEntry.COLUMN_TITEL,
-            LektionDB.FeedEntry.COLUMN_THEMA
-    };
-
-    private static final String[] allColumnsPersonalendung_Präsens = {
-            Personalendung_PräsensDB.FeedEntry._ID,
-            Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG,
-            Personalendung_PräsensDB.FeedEntry.COLUMN_1_PL,
-            Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG,
-            Personalendung_PräsensDB.FeedEntry.COLUMN_2_PL,
-            Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG,
-            Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL
-    };
-
-    private static final String[] allColumnsSprechvokal_Präsens = {
-            Sprechvokal_PräsensDB.FeedEntry._ID,
-            Sprechvokal_PräsensDB.FeedEntry.COLUMN_1_SG,
-            Sprechvokal_PräsensDB.FeedEntry.COLUMN_2_SG,
-            Sprechvokal_PräsensDB.FeedEntry.COLUMN_3_SG,
-            Sprechvokal_PräsensDB.FeedEntry.COLUMN_1_PL,
-            Sprechvokal_PräsensDB.FeedEntry.COLUMN_2_PL,
-            Sprechvokal_PräsensDB.FeedEntry.COLUMN_3_PL
-
-    };
-
-    private static final String[] allColumnsSprechvokal_Substantiv = {
-            Sprechvokal_SubstantivDB.FeedEntry._ID,
-            Sprechvokal_SubstantivDB.FeedEntry.COLUMN_NOM_SG,
-            Sprechvokal_SubstantivDB.FeedEntry.COLUMN_NOM_PL,
-            Sprechvokal_SubstantivDB.FeedEntry.COLUMN_GEN_SG,
-            Sprechvokal_SubstantivDB.FeedEntry.COLUMN_GEN_PL,
-            Sprechvokal_SubstantivDB.FeedEntry.COLUMN_DAT_SG,
-            Sprechvokal_SubstantivDB.FeedEntry.COLUMN_DAT_PL,
-            Sprechvokal_SubstantivDB.FeedEntry.COLUMN_AKK_SG,
-            Sprechvokal_SubstantivDB.FeedEntry.COLUMN_AKK_PL,
-            Sprechvokal_SubstantivDB.FeedEntry.COLUMN_ABL_SG,
-            Sprechvokal_SubstantivDB.FeedEntry.COLUMN_ABL_PL
-
-    };
-
-    private static final String[] allColumnsSubstantiv = {
-            SubstantivDB.FeedEntry._ID,
-            SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH,
-            SubstantivDB.FeedEntry.COLUMN_WORTSTAMM,
-            SubstantivDB.FeedEntry.COLUMN_GELERNT,
-            SubstantivDB.FeedEntry.COLUMN_LEKTION_ID,
-            SubstantivDB.FeedEntry.COLUMN_SPRECHVOKAL_ID,
-            SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID
-    };
-
-    private static final String[] allColumnsVerb = {
-
-            VerbDB.FeedEntry._ID,
-            VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH,
-            VerbDB.FeedEntry.COLUMN_WORTSTAMM,
-            VerbDB.FeedEntry.COLUMN_KONJUGATION,
-            VerbDB.FeedEntry.COLUMN_GELERNT,
-            VerbDB.FeedEntry.COLUMN_LEKTION_ID,
-            VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID,
-            VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
-    };
-
-    private static final String[] allColumnsPraeposition = {
-
-            PräpositionDB.FeedEntry._ID,
-            PräpositionDB.FeedEntry.COLUMN_DEUTSCH,
-            PräpositionDB.FeedEntry.COLUMN_LATEIN,
-            PräpositionDB.FeedEntry.COLUMN_GELERNT,
-            PräpositionDB.FeedEntry.COLUMN_LEKTION_ID
-    };
-
-    private static final String[] allColumnsSprichwort = {
-
-            SprichwortDB.FeedEntry._ID,
-            SprichwortDB.FeedEntry.COLUMN_DEUTSCH,
-            SprichwortDB.FeedEntry.COLUMN_LATEIN,
-            SprichwortDB.FeedEntry.COLUMN_GELERNT,
-            SprichwortDB.FeedEntry.COLUMN_LEKTION_ID
-    };
-
-    private static final String[] allColumnsAdverb = {
-
-            AdverbDB.FeedEntry._ID,
-            AdverbDB.FeedEntry.COLUMN_DEUTSCH,
-            AdverbDB.FeedEntry.COLUMN_LATEIN,
-            AdverbDB.FeedEntry.COLUMN_GELERNT,
-            AdverbDB.FeedEntry.COLUMN_LEKTION_ID
-    };
-
     //Version of the database
     private static final int DATABASE_VERSION = 1;
 
-
     //Name of the database file
-    private static final String DATABASE_NAME = "TestDb6.db";
-
+    private static final String DATABASE_NAME = "Database.db";
 
     /**
      * Constructor
-     *
+     * Used
      * @param context lets newly-created objects understand what has been going on
      */
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
+        /*
+        TODO: Maybe add check for the amount of entries against the amount of entries in the file:
+            if (table_1.countEntries() < file.entryAmount){
+              addInitialEntry();
+            }
+        */
+        if(countTableEntries(allTables) == 0) {
+            addRowSprechvokal_Substantiv("", "", "", "", "", "", "", "", "", "");
+            addRowSprechvokal_Präsens("", "", "", "", "", "");
+
+            addEntriesFromFile("deklinationsendung.csv", DeklinationsendungDB.FeedEntry.TABLE_NAME ,context);
+            addEntriesFromFile("lektion.csv", LektionDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("personalendung_präsens.csv", Personalendung_PräsensDB.FeedEntry.TABLE_NAME, context);
+            //addEntriesFromFile("", Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("substantiv.csv", SubstantivDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("verb.csv", VerbDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("adverb.csv", AdverbDB.FeedEntry.TABLE_NAME, context);
+            //addEntriesFromFile("", SprichwortDB.FeedEntry.TABLE_NAME, context);
+            //addEntriesFromFile("", PräpositionDB.FeedEntry.TABLE_NAME, context);
+        }
+
     }
 
     /**
-     * Creating all 3 Databases
+     * Creating all tables
      *
      * @param db database where the tables are supposed to be put into
      */
     public void onCreate(SQLiteDatabase db) {
-
+        
+        db.execSQL(SQL_CREATE_ENTRIES_ADVERB);
         db.execSQL(SQL_CREATE_ENTRIES_DEKLINATIONSENDUNG);
         db.execSQL(SQL_CREATE_ENTRIES_LEKTION);
         db.execSQL(SQL_CREATE_ENTRIES_PERSONALENDUNG_PRÄSENS);
+        db.execSQL(SQL_CREATE_ENTRIES_PRAEPOSITION);
         db.execSQL(SQL_CREATE_ENTRIES_SPRECHVOKAL_PRÄSENS);
         db.execSQL(SQL_CREATE_ENTRIES_SPRECHVOKAL_SUBSTANTIV);
+        db.execSQL(SQL_CREATE_ENTRIES_SPRICHWORT);
         db.execSQL(SQL_CREATE_ENTRIES_SUBSTANTIV);
         db.execSQL(SQL_CREATE_ENTRIES_VERB);
-        db.execSQL(SQL_CREATE_ENTRIES_PRAEPOSITION);
-        db.execSQL(SQL_CREATE_ENTRIES_SPRICHWORT);
-        db.execSQL(SQL_CREATE_ENTRIES_ADVERB);
-
+        
     }
 
     /**
      * Deleting all tables and
-     * recreating them in 'onCreate(db)'
+     * recreating them through 'onCreate(db)'
      *
      * @param db         Database that should be upgraded
      * @param oldVersion old versionNr of the database
      * @param newVersion new versionNr of the database
      */
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        db.execSQL(SQL_DELETE_ENTRIES_ADVERB);
         db.execSQL(SQL_DELETE_ENTRIES_DEKLINATIONSENDUNG);
         db.execSQL(SQL_DELETE_ENTRIES_LEKTION);
         db.execSQL(SQL_DELETE_ENTRIES_PERSONALENDUNG_PRÄSENS);
+        db.execSQL(SQL_DELETE_ENTRIES_PRAEPOSITION);
         db.execSQL(SQL_DELETE_ENTRIES_SPRECHVOKAL_PRÄSENS);
         db.execSQL(SQL_DELETE_ENTRIES_SPRECHVOKAL_SUBSTANTIV);
+        db.execSQL(SQL_DELETE_ENTRIES_SPRICHWORT);
         db.execSQL(SQL_DELETE_ENTRIES_SUBSTANTIV);
         db.execSQL(SQL_DELETE_ENTRIES_VERB);
-        db.execSQL(SQL_DELETE_ENTRIES_PRAEPOSITION);
-        db.execSQL(SQL_DELETE_ENTRIES_SPRICHWORT);
-        db.execSQL(SQL_DELETE_ENTRIES_ADVERB);
         onCreate(db);
     }
 
-    public void addRowDeklinationsendung(String name,
+    /**
+     * Adds a entry to the 'Adverb' table in the database with given parameters
+     * @param deutsch content of the column 'deutsch' in the database entry
+     * @param latein content of the column 'latein' in the database entry
+     * @param gelernt content of the column 'gelernt' in the database entry
+     * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
+     */
+    private void addRowAdverb(String deutsch, String latein, boolean gelernt,
+                             int lektion_id){
+
+        reopenDb();
+
+        ContentValues values = new ContentValues();
+        values.put(allColumnsAdverb[1], deutsch);
+        values.put(allColumnsAdverb[2], latein);
+        values.put(allColumnsAdverb[3], gelernt ? 1 : 0);
+        values.put(allColumnsAdverb[4], lektion_id);
+
+        dbConnection.insert(AdverbDB.FeedEntry.TABLE_NAME, null, values);
+
+        closeDb();
+    }
+
+    /**
+     * Adds a entry to the 'Deklinationsendung' table in the database with given parameters
+     * @param name content of the column 'name' in the database entry
+     * @param nom_sg content of the column 'nom_sg' in the database entry
+     * @param nom_pl content of the column 'nom_pl' in the database entry
+     * @param gen_sg content of the column 'gen_sg' in the database entry
+     * @param gen_pl content of the column 'gen_pl' in the database entry
+     * @param dat_sg content of the column 'dat_sg' in the database entry
+     * @param dat_pl content of the column 'dat_pl' in the database entry
+     * @param akk_sg content of the column 'akk_sg' in the database entry
+     * @param akk_pl content of the column 'akk_pl' in the database entry
+     * @param abl_sg content of the column 'abl_sg' in the database entry
+     * @param abl_pl content of the column 'abl_pl' in the database entry
+     */
+    private void addRowDeklinationsendung(String name,
                                          String nom_sg, String nom_pl,
                                          String gen_sg, String gen_pl,
                                          String dat_sg, String dat_pl,
@@ -525,7 +181,12 @@ public class DBHelper extends SQLiteOpenHelper {
         closeDb();
     }
 
-    public void addRowLektion(String titel, String thema) {
+    /**
+     * Adds a entry to the 'Lektion' table in the database with given parameters
+     * @param titel content of the column 'titel' in the database entry
+     * @param thema content of the column 'thema' in the database entry
+     */
+    private void addRowLektion(String titel, String thema) {
 
         reopenDb();
 
@@ -538,7 +199,16 @@ public class DBHelper extends SQLiteOpenHelper {
         closeDb();
     }
 
-    public void addRowPersonalendung_Präsens(String erste_sg, String zweite_sg,
+    /**
+     * Adds a entry to the 'Personalendung_Präsens' table in the database with given parameters
+     * @param erste_sg content of the column 'erste_sg' in the database entry
+     * @param zweite_sg content of the column 'zweite_sg' in the database entry
+     * @param dritte_sg content of the column 'dritte_sg' in the database entry
+     * @param erste_pl content of the column 'erste_pl' in the database entry
+     * @param zweite_pl content of the column 'zweite_pl' in the database entry
+     * @param dritte_pl content of the column 'dritte_pl' in the database entry
+     */
+    private void addRowPersonalendung_Präsens(String erste_sg, String zweite_sg,
                                              String dritte_sg, String erste_pl,
                                              String zweite_pl, String dritte_pl) {
 
@@ -558,7 +228,39 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void addRowSprechvokal_Präsens(String erste_sg, String zweite_sg,
+    /**
+     * Adds a entry to the 'Präposition' table in the database with given parameters
+     * @param deutsch content of the column 'deutsch' in the database entry
+     * @param latein content of the column 'latein' in the database entry
+     * @param gelernt content of the column 'gelernt' in the database entry
+     * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
+     */
+    private void addRowPräposition(String deutsch, String latein, boolean gelernt,
+                                   int lektion_id){
+
+        reopenDb();
+
+        ContentValues values = new ContentValues();
+        values.put(allColumnsPraeposition[1], deutsch);
+        values.put(allColumnsPraeposition[1], latein);
+        values.put(allColumnsPraeposition[1], gelernt ? 1 : 0);
+        values.put(allColumnsPraeposition[1], lektion_id);
+
+        dbConnection.insert(PräpositionDB.FeedEntry.TABLE_NAME, null, values);
+
+        closeDb();
+    }
+
+    /**
+     * Adds a entry to the 'Sprechvokal_Präsens' table in the database with given parameters
+     * @param erste_sg content of the column 'erste_sg' in the database entry
+     * @param zweite_sg content of the column 'zweite_sg' in the database entry
+     * @param dritte_sg content of the column 'dritte_sg' in the database entry
+     * @param erste_pl content of the column 'erste_pl' in the database entry
+     * @param zweite_pl content of the column 'zweite_pl' in the database entry
+     * @param dritte_pl content of the column 'dritte_pl' in the database entry
+     */
+    private void addRowSprechvokal_Präsens(String erste_sg, String zweite_sg,
                                           String dritte_sg, String erste_pl,
                                           String zweite_pl, String dritte_pl) {
 
@@ -578,7 +280,20 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void addRowSprechvokal_Substantiv(
+    /**
+     * Adds a entry to the 'Sprechvokal_Substantiv' table in the database with given parameters
+     * @param nom_sg content of the column '' in the database entry
+     * @param nom_pl content of the column '' in the database entry
+     * @param gen_sg content of the column '' in the database entry
+     * @param gen_pl content of the column '' in the database entry
+     * @param dat_sg content of the column '' in the database entry
+     * @param dat_pl content of the column '' in the database entry
+     * @param akk_sg content of the column '' in the database entry
+     * @param akk_pl content of the column '' in the database entry
+     * @param abl_sg content of the column '' in the database entry
+     * @param abl_pl content of the column '' in the database entry
+     */
+    private void addRowSprechvokal_Substantiv(
             String nom_sg, String nom_pl,
             String gen_sg, String gen_pl,
             String dat_sg, String dat_pl,
@@ -604,7 +319,39 @@ public class DBHelper extends SQLiteOpenHelper {
         closeDb();
     }
 
-    public void addRowSubstantiv(String nom_sg_deutsch, String wortstamm, boolean gelernt,
+    /**
+     * Adds a entry to the 'Sprichwort' table in the database with given parameters
+     * @param deutsch content of the column 'deutsch' in the database entry
+     * @param latein content of the column 'latein' in the database entry
+     * @param gelernt content of the column 'gelernt' in the database entry
+     * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
+     */
+    private void addRowSprichwort(String deutsch, String latein, boolean gelernt,
+                                 int lektion_id){
+
+        reopenDb();
+
+        ContentValues values = new ContentValues();
+        values.put(allColumnsSprichwort[1], deutsch);
+        values.put(allColumnsSprichwort[2], latein);
+        values.put(allColumnsSprichwort[3], gelernt ? 1 : 0);
+        values.put(allColumnsSprichwort[4], lektion_id);
+
+        dbConnection.insert(SprichwortDB.FeedEntry.TABLE_NAME, null, values);
+
+        closeDb();
+    }
+
+    /**
+     * Adds a entry to the 'Substantiv' table in the database with given parameters
+     * @param nom_sg_deutsch content of the column '' in the database entry
+     * @param wortstamm content of the column '' in the database entry
+     * @param gelernt content of the column '' in the database entry
+     * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
+     * @param sprechvokal_id foreign key: the corresponding entry from the 'Sprechvokal_Substantiv' table
+     * @param deklinationsendung_id foreign key: the corresponding entry from the 'Deklinationsendung' table
+     */
+    private void addRowSubstantiv(String nom_sg_deutsch, String wortstamm, boolean gelernt,
                                  int lektion_id, int sprechvokal_id, int deklinationsendung_id) {
 
         reopenDb();
@@ -622,8 +369,18 @@ public class DBHelper extends SQLiteOpenHelper {
         closeDb();
     }
 
-    public void addRowVerb(String infinitiv_deutsch, String wortstamm, String konjugation, boolean gelernt,
-                           int lektion, int personalendung_id, int sprechvokal_id) {
+    /**
+     * Adds a entry to the 'Verb' table in the database with given parameters
+     * @param infinitiv_deutsch content of the column 'infinitiv_deutsch' in the database entry
+     * @param wortstamm content of the column 'wortstamm' in the database entry
+     * @param konjugation content of the column 'konjugation' in the database entry
+     * @param gelernt content of the column 'gelernt' in the database entry
+     * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
+     * @param personalendung_id foreign key: the corresponding entry from the 'Personalendung_Präsens' table
+     * @param sprechvokal_id foreign key: the corresponding entry from the 'Sprechvokal_Substantiv' table
+     */
+    private void addRowVerb(String infinitiv_deutsch, String wortstamm, String konjugation, boolean gelernt,
+                           int lektion_id, int personalendung_id, int sprechvokal_id) {
 
         reopenDb();
 
@@ -632,7 +389,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsVerb[2], wortstamm);
         values.put(allColumnsVerb[3], konjugation);
         values.put(allColumnsVerb[4], gelernt ? 1 : 0);
-        values.put(allColumnsVerb[5], lektion);
+        values.put(allColumnsVerb[5], lektion_id);
         values.put(allColumnsVerb[6], personalendung_id);
         values.put(allColumnsVerb[7], sprechvokal_id);
 
@@ -641,395 +398,13 @@ public class DBHelper extends SQLiteOpenHelper {
         closeDb();
     }
 
-<<<<<<< HEAD
-=======
-    public void addRowPraeposition(String deutsch, String latein, boolean gelernt,
-                                    int lektion_id){
-
-        reopenDb();
-
-        ContentValues values = new ContentValues();
-        values.put(allColumnsPraeposition[1], deutsch);
-        values.put(allColumnsPraeposition[1], latein);
-        values.put(allColumnsPraeposition[1], gelernt ? 1 : 0);
-        values.put(allColumnsPraeposition[1], lektion_id);
-
-        dbConnection.insert(PräpositionDB.FeedEntry.TABLE_NAME, null, values);
-
-        closeDb();
-    }
-
-    public void addRowSprichwort(String deutsch, String latein, boolean gelernt,
-                                   int lektion_id){
-
-        reopenDb();
-
-        ContentValues values = new ContentValues();
-        values.put(SprichwortDB.FeedEntry.COLUMN_DEUTSCH, deutsch);
-        values.put(SprichwortDB.FeedEntry.COLUMN_LATEIN, latein);
-        values.put(SprichwortDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
-        values.put(SprichwortDB.FeedEntry.COLUMN_LEKTION_ID, lektion_id);
-
-        dbConnection.insert(SprichwortDB.FeedEntry.TABLE_NAME, null, values);
-
-        closeDb();
-    }
-
-    public void addRowAdverb(String deutsch, String latein, boolean gelernt,
-                                   int lektion_id){
-
-        reopenDb();
-
-        ContentValues values = new ContentValues();
-        values.put(AdverbDB.FeedEntry.COLUMN_DEUTSCH, deutsch);
-        values.put(AdverbDB.FeedEntry.COLUMN_LATEIN, latein);
-        values.put(AdverbDB.FeedEntry.COLUMN_GELERNT, gelernt ? 1 : 0);
-        values.put(AdverbDB.FeedEntry.COLUMN_LEKTION_ID, lektion_id);
-
-        dbConnection.insert(AdverbDB.FeedEntry.TABLE_NAME, null, values);
-
-        closeDb();
-    }
-
->>>>>>> Databases
-    public void addDeklinationsendungEntriesFromFile(String path, Context context) {
-
-        try{
-            InputStream inputStream = context.getAssets().open(path);
-            //InputStream inputStream = getClass().getResourceAsStream(path);
-            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            bufferedInputStream.mark(1000000000);
-
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //count the total number of lines
-            int lineAmount = 0;
-
-            while(bufferedReader.readLine() != null){
-                lineAmount++;
-            }
-
-            //reset to the beginning
-            bufferedInputStream.reset();
-            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //Skip the first line with column headings
-            bufferedReader.readLine();
-
-            reopenDb();
-
-            //goes through every line and adds its content to the table
-            String line;
-
-            for(int i = 0; i < lineAmount - 1; i++){
-                line = bufferedReader.readLine();
-
-                if(line != null){
-                    String[] tokens = line.split(";");
-
-                    try{
-                        addRowDeklinationsendung(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5],
-                                tokens[6], tokens[7], tokens[8], tokens[9], tokens[10]);
-
-                    }catch (NumberFormatException nfe){
-                        nfe.printStackTrace();
-                    }
-                }
-            }
-
-            inputStream.close();
-            bufferedInputStream.close();
-            bufferedReader.close();
-            closeDb();
-
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    public void addLektionEntriesFromFile(String path, Context context) {
-
-        try{
-            InputStream inputStream = context.getAssets().open(path);
-            //InputStream inputStream = getClass().getResourceAsStream(path);
-            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            bufferedInputStream.mark(1000000000);
-
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //count the total number of lines
-            int lineAmount = 0;
-
-            while(bufferedReader.readLine() != null){
-                lineAmount++;
-            }
-
-            //reset to the beginning
-            bufferedInputStream.reset();
-            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //Skip the first line with column headings
-            bufferedReader.readLine();
-
-            reopenDb();
-
-            //goes through every line and adds its content to the table
-            String line;
-
-            for(int i = 0; i < lineAmount - 1; i++){
-                line = bufferedReader.readLine();
-
-                if(line != null){
-                    String[] tokens = line.split(";");
-
-                    try{
-                        addRowLektion(tokens[0], tokens[1]);
-
-                    }catch (NumberFormatException nfe){
-                        nfe.printStackTrace();
-                    }
-                }
-            }
-            inputStream.close();
-            bufferedInputStream.close();
-            bufferedReader.close();
-            closeDb();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    public void addPersonalendungEntriesFromFile(String path, Context context) {
-
-        try{
-            InputStream inputStream = context.getAssets().open(path);
-            //InputStream inputStream = getClass().getResourceAsStream(path);
-            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            bufferedInputStream.mark(1000000000);
-
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //count the total number of lines
-            int lineAmount = 0;
-
-            while(bufferedReader.readLine() != null){
-                lineAmount++;
-            }
-
-            //reset to the beginning
-            bufferedInputStream.reset();
-            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //Skip the first line with column headings
-            bufferedReader.readLine();
-
-            reopenDb();
-
-            //goes through every line and adds its content to the table
-            String line;
-
-            for(int i = 0; i < lineAmount - 1; i++){
-                line = bufferedReader.readLine();
-
-                if(line != null){
-                    String[] tokens = line.split(";");
-
-                    try{
-
-                        addRowPersonalendung_Präsens(
-                                tokens[0], tokens[1], tokens[2],
-                                tokens[3], tokens[4], tokens[5]);
-
-                    }catch (NumberFormatException nfe){
-                        nfe.printStackTrace();
-                    }
-                }
-            }
-            inputStream.close();
-            bufferedInputStream.close();
-            bufferedReader.close();
-            closeDb();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    public void addSprechvokalPräsensEntriesFromFile(String path, Context context) {
-
-        try{
-            InputStream inputStream = context.getAssets().open(path);
-            //InputStream inputStream = getClass().getResourceAsStream(path);
-            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            bufferedInputStream.mark(1000000000);
-
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //count the total number of lines
-            int lineAmount = 0;
-
-            while(bufferedReader.readLine() != null){
-                lineAmount++;
-            }
-
-            //reset to the beginning
-            bufferedInputStream.reset();
-            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //Skip the first line with column headings
-            bufferedReader.readLine();
-
-            reopenDb();
-
-            //goes through every line and adds its content to the table
-            String line;
-
-            for(int i = 0; i < lineAmount - 1; i++){
-                line = bufferedReader.readLine();
-
-                if(line != null){
-                    String[] tokens = line.split(";");
-
-                    try{
-
-                        addRowSprechvokal_Präsens(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5]);
-
-                    }catch (NumberFormatException nfe){
-                        nfe.printStackTrace();
-                    }
-                }
-            }
-            inputStream.close();
-            bufferedInputStream.close();
-            bufferedReader.close();
-            closeDb();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    public void addSprechvokalSubstantivEntriesFromFile(String path, Context context) {
-
-        try{
-            InputStream inputStream = context.getAssets().open(path);
-            //InputStream inputStream = getClass().getResourceAsStream(path);
-            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            bufferedInputStream.mark(1000000000);
-
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //count the total number of lines
-            int lineAmount = 0;
-
-            while(bufferedReader.readLine() != null){
-                lineAmount++;
-            }
-
-            //reset to the beginning
-            bufferedInputStream.reset();
-            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //Skip the first line with column headings
-            bufferedReader.readLine();
-
-            reopenDb();
-
-            //goes through every line and adds its content to the table
-            String line;
-
-            for(int i = 0; i < lineAmount - 1; i++){
-                line = bufferedReader.readLine();
-
-                if(line != null){
-                    String[] tokens = line.split(";");
-
-                    try{
-
-                        addRowSprechvokal_Substantiv(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5],
-                                tokens[6], tokens[7], tokens[8], tokens[9]);
-
-                    }catch (NumberFormatException nfe){
-                        nfe.printStackTrace();
-                    }
-                }
-            }
-            inputStream.close();
-            bufferedInputStream.close();
-            bufferedReader.close();
-            closeDb();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    public void addSubstantivEntriesFromFile(String path, Context context){
-
-        try{
-            InputStream inputStream = context.getAssets().open(path);
-            //InputStream inputStream = getClass().getResourceAsStream(path);
-            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            bufferedInputStream.mark(1000000000);
-
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //count the total number of lines
-            int lineAmount = 0;
-
-            while(bufferedReader.readLine() != null){
-                lineAmount++;
-            }
-
-            //reset to the beginning
-            bufferedInputStream.reset();
-            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //Skip the first line with column headings
-            bufferedReader.readLine();
-
-            reopenDb();
-
-            //goes through every line and adds its content to the table
-            String line;
-
-            Cursor cursor;
-
-            for(int i = 0; i < lineAmount - 1; i++){
-                line = bufferedReader.readLine();
-
-                if(line != null){
-                    String[] tokens = line.split(";");
-
-                    try{
-                        int deklinationId;
-
-                        String query = "SELECT " + DeklinationsendungDB.FeedEntry._ID +
-                                       " FROM " + DeklinationsendungDB.FeedEntry.TABLE_NAME +
-                                       " WHERE " + DeklinationsendungDB.FeedEntry.COLUMN_NAME + " = ?";
-                        cursor = dbConnection.rawQuery(query,
-                                new String[]{tokens[5]}
-                        );
-                        cursor.moveToNext();
-                        deklinationId = cursor.getInt(0);
-                        cursor.close();
-
-                        //TODO: Sprechvokale einfügen (nicht '0')
-                        addRowSubstantiv(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]), 0, deklinationId);
-
-                        closeDb();
-                        reopenDb();
-                    }catch (NumberFormatException nfe){
-                        nfe.printStackTrace();
-                    }
-                }
-            }
-
-            inputStream.close();
-            bufferedInputStream.close();
-            bufferedReader.close();
-            closeDb();
-
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    public void addVerbEntriesFromFile(String path, Context context) {
-
+    /**
+     *
+     * @param path path of the file relative to the 'assets' folder of the project
+     * @param table Name of the table where the entries are to be added to
+     * @param context application context
+     */
+    private void addEntriesFromFile(String path, String table, Context context){
         try{
             InputStream inputStream = context.getAssets().open(path);
             InputStream bufferedInputStream = new BufferedInputStream(inputStream);
@@ -1062,188 +437,106 @@ public class DBHelper extends SQLiteOpenHelper {
                 if(line != null){
                     String[] tokens = line.split(";");
 
-                    try{
+                    try {
+                        switch (table) {
 
-                        //TODO: read 'gelernt' from file
-                        //TODO: Sprechvokale einfügen (nicht '1')
-                        //TODO: Personalendungen benennen
-                        addRowVerb(tokens[0],
-                                tokens[1],
-                                tokens[2],
-                                false,
-                                Integer.parseInt(tokens[4]),
-                                1,
-                                1);
+                            case AdverbDB.FeedEntry.TABLE_NAME:
+                                //TODO: Why is this needed here
+                                tokens[3] = tokens[3].replaceAll("[^\\d.]", "");
 
+                                //TODO: read 'gelernt' from file
+                                addRowAdverb(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]));
+
+                                break;
+
+                            case DeklinationsendungDB.FeedEntry.TABLE_NAME:
+                                addRowDeklinationsendung(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5],
+                                        tokens[6], tokens[7], tokens[8], tokens[9], tokens[10]);
+                                break;
+
+                            case LektionDB.FeedEntry.TABLE_NAME:
+                                addRowLektion(tokens[0], tokens[1]);
+                                break;
+
+                            case Personalendung_PräsensDB.FeedEntry.TABLE_NAME:
+                                addRowPersonalendung_Präsens(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5]);
+                                break;
+
+                            case PräpositionDB.FeedEntry.TABLE_NAME:
+                                //TODO: Why is this needed here: removes the �
+                                tokens[3] = tokens[3].replaceAll("[^\\d.]", "");
+
+                                //TODO: read 'gelernt' from file
+                                addRowPräposition(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]));
+
+                                break;
+
+                            case Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME:
+                                //TODO: Why is this needed here: removes the �
+                                tokens[3] = tokens[3].replaceAll("[^\\d.]", "");
+
+                                //TODO: read 'gelernt' from file
+                                addRowPräposition(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]));
+
+                                break;
+
+                            case Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME:
+                                break;
+
+                            case SprichwortDB.FeedEntry.TABLE_NAME:
+                                //TODO: Why is this needed here
+                                tokens[3] = tokens[3].replaceAll("[^\\d.]", "");
+
+                                //TODO: read 'gelernt' from file
+                                addRowSprichwort(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]));
+
+                                break;
+
+                            case SubstantivDB.FeedEntry.TABLE_NAME:
+                                int deklinationId;
+
+                                String query = "SELECT " + DeklinationsendungDB.FeedEntry._ID +
+                                        " FROM " + DeklinationsendungDB.FeedEntry.TABLE_NAME +
+                                        " WHERE " + DeklinationsendungDB.FeedEntry.COLUMN_NAME + " = ?";
+                                Cursor cursor = dbConnection.rawQuery(query,
+                                        new String[]{tokens[5]}
+                                );
+                                cursor.moveToNext();
+                                deklinationId = cursor.getInt(0);
+                                cursor.close();
+
+                                //TODO: Sprechvokale einfügen (nicht '0')
+                                addRowSubstantiv(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]), 0, deklinationId);
+
+                                closeDb();
+                                reopenDb();
+                                break;
+
+                            case VerbDB.FeedEntry.TABLE_NAME:
+                                //TODO: read 'gelernt' from file
+                                //TODO: Sprechvokale einfügen (nicht '1')
+                                //TODO: Personalendungen benennen
+                                addRowVerb(tokens[0],
+                                        tokens[1],
+                                        tokens[2],
+                                        false,
+                                        Integer.parseInt(tokens[4]),
+                                        1,
+                                        1);
+                                break;
+
+                            default:
+                                Log.e(DBHelper.class.getName(),
+                                        "A table was not found while trying to add a entry from a file:\n" +
+                                                "Method: DBHelper.class -> addEntriesFromFile(String path, String table, String context\n" +
+                                                "Table: " + table);
+                                break;
+                        }
                     }catch (NumberFormatException nfe){
                         nfe.printStackTrace();
                     }
-                }
-            }
-            inputStream.close();
-            bufferedInputStream.close();
-            bufferedReader.close();
-            closeDb();
 
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    public void addPraepositionEntriesFromFile(String path, Context context) {
 
-        try{
-            InputStream inputStream = context.getAssets().open(path);
-            //InputStream inputStream = getClass().getResourceAsStream(path);
-            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            bufferedInputStream.mark(1000000000);
-
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //count the total number of lines
-            int lineAmount = 0;
-
-            while(bufferedReader.readLine() != null){
-                lineAmount++;
-            }
-
-            //reset to the beginning
-            bufferedInputStream.reset();
-            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //Skip the first line with column headings
-            bufferedReader.readLine();
-
-            reopenDb();
-
-            //goes through every line and adds its content to the table
-            String line;
-
-            for(int i = 0; i < lineAmount - 1; i++){
-                line = bufferedReader.readLine();
-
-                if(line != null){
-                    String[] tokens = line.split(";");
-
-                    //TODO
-                    try{
-
-                        //TODO: read 'gelernt' from file
-                        addRowPraeposition(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]));
-
-                    }catch (NumberFormatException nfe){
-                        nfe.printStackTrace();
-                    }
-                }
-            }
-            inputStream.close();
-            bufferedInputStream.close();
-            bufferedReader.close();
-            closeDb();
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    public void addSprichwortEntriesFromFile(String path, Context context) {
-
-        try{
-            InputStream inputStream = context.getAssets().open(path);
-            //InputStream inputStream = getClass().getResourceAsStream(path);
-            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            bufferedInputStream.mark(1000000000);
-
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //count the total number of lines
-            int lineAmount = 0;
-
-            while(bufferedReader.readLine() != null){
-                lineAmount++;
-            }
-
-            //reset to the beginning
-            bufferedInputStream.reset();
-            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //Skip the first line with column headings
-            bufferedReader.readLine();
-
-            reopenDb();
-
-            //goes through every line and adds its content to the table
-            String line;
-
-            for(int i = 0; i < lineAmount - 1; i++){
-                line = bufferedReader.readLine();
-
-                if(line != null){
-                    String[] tokens = line.split(";");
-
-                    //TODO
-                    try{
-
-                        //TODO: read 'gelernt' from file
-                        addRowSprichwort(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]));
-
-                    }catch (NumberFormatException nfe){
-                        nfe.printStackTrace();
-                    }
-                }
-            }
-            inputStream.close();
-            bufferedInputStream.close();
-            bufferedReader.close();
-            closeDb();
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    public void addAdverbEntriesFromFile(String path, Context context) {
-
-        try{
-            InputStream inputStream = context.getAssets().open(path);
-            //InputStream inputStream = getClass().getResourceAsStream(path);
-            InputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            bufferedInputStream.mark(1000000000);
-
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //count the total number of lines
-            int lineAmount = 0;
-
-            while(bufferedReader.readLine() != null){
-                lineAmount++;
-            }
-
-            //reset to the beginning
-            bufferedInputStream.reset();
-            bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
-
-            //Skip the first line with column headings
-            bufferedReader.readLine();
-
-            reopenDb();
-
-            //goes through every line and adds its content to the table
-            String line;
-
-            for(int i = 0; i < lineAmount - 1; i++){
-                line = bufferedReader.readLine();
-
-                if(line != null){
-                    String[] tokens = line.split(";");
-
-                    //TODO
-                    try{
-
-                        //TODO: read 'gelernt' from file
-                        addRowAdverb(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]));
-
-                    }catch (NumberFormatException nfe){
-                        nfe.printStackTrace();
-                    }
                 }
             }
             inputStream.close();

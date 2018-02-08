@@ -1,10 +1,9 @@
-package com.example.norablakaj.lateinapp.Databases;
+package com.example.norablakaj.lateinapp.Databases.Tables;
 
 import android.provider.BaseColumns;
 
-/**
- * Information for the 'Lektion'-Table
- */
+//TODO: Should this be private/package private?
+
 
 public class LektionDB {
 

@@ -1,20 +1,18 @@
-package com.example.norablakaj.lateinapp.Databases;
+package com.example.norablakaj.lateinapp.Databases.Tables;
 
 import android.provider.BaseColumns;
 
-/**
- * Created by Nora Blakaj on 23.01.2018.
- */
+//TODO: Should this be private/package private?
 
-public class Sprechvokal_PräsensDB {
+public class Personalendung_PräsensDB {
 
-    private Sprechvokal_PräsensDB(){}
+    private Personalendung_PräsensDB(){}
 
     public static class FeedEntry implements BaseColumns {
 
 
         // Table name
-        public static final String TABLE_NAME = "Sprechvokal_Praesens";
+        public static final String TABLE_NAME = "Personalendung_Praesens";
 
         // Table columns
         public static final String  COLUMN_1_SG = "Erste_Sg",

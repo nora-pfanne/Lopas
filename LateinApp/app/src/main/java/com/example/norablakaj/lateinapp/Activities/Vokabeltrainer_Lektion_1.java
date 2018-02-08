@@ -1,25 +1,19 @@
 package com.example.norablakaj.lateinapp.Activities;
 
-import android.database.Cursor;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
-import com.example.norablakaj.lateinapp.Databases.DeklinationsendungDB;
-import com.example.norablakaj.lateinapp.Databases.Personalendung_PräsensDB;
-import com.example.norablakaj.lateinapp.Databases.Sprechvokal_PräsensDB;
-import com.example.norablakaj.lateinapp.Databases.SubstantivDB;
-import com.example.norablakaj.lateinapp.Databases.VerbDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.DeklinationsendungDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.SubstantivDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
 import com.example.norablakaj.lateinapp.R;
 
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
