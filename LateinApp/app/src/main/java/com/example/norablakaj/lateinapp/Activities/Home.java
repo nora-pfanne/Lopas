@@ -58,7 +58,9 @@ public class Home extends AppCompatActivity
         lektion3Button = findViewById(R.id.lektion3);
         lektion4Button = findViewById(R.id.lektion4);
 
+
         //Adding initial entries if they aren't in the database yet
+        //TODO: Move into a setup() method in DBHelper.class
         DBHelper dbHelper = new DBHelper(getApplicationContext());
 
 
@@ -70,7 +72,6 @@ public class Home extends AppCompatActivity
                 Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME,
                 SubstantivDB.FeedEntry.TABLE_NAME,
                 VerbDB.FeedEntry.TABLE_NAME}) == 0) {
-            //TODO: Add some test entries here
 
 
             dbHelper.addRowLektion("Lektion 0", "Lektion 0");
