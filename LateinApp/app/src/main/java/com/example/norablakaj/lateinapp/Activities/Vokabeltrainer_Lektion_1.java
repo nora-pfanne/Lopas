@@ -63,18 +63,32 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
     private boolean compareTranslation(String userInput, String wantedTranslation){
 
-        String[] tokens = wantedTranslation.split(",");
+        String[] tokensTranslation = wantedTranslation.split(",");
+        String[] tokensUser = userInput.split(",");
 
-        for (String s: tokens){
 
-            s = s.replaceFirst("^ *", "");
+        for (String uS : tokensUser) {
 
-            if (userInput.equalsIgnoreCase(s)){
-                return true;
+            boolean found = false;
+
+            uS = uS.replaceFirst("^ *","");
+
+            for (String tS : tokensTranslation) {
+
+                tS = tS.replaceFirst("^ *", "");
+
+                if (uS.equalsIgnoreCase(tS)) {
+                    found = true;
+                }
+
+                if(!found){
+                    return false;
+                }
             }
+
         }
 
-        return false;
+        return true;
     }
 }
 
