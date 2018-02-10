@@ -5,9 +5,11 @@ import android.provider.BaseColumns;
 //TODO: Should this be private/package private?
 
 
-public class SubstantivDB {
+public class SubstantivDB extends Vokabel{
 
-    private SubstantivDB(){}
+    public SubstantivDB(int id, String lateinNomSg, String deutsch){
+        super(id, lateinNomSg, deutsch);
+    }
 
     public static class FeedEntry implements BaseColumns{
 

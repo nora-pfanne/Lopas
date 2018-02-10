@@ -5,9 +5,11 @@ import android.provider.BaseColumns;
 //TODO: Should this be private/package private?
 
 
-public class SprichwortDB {
+public class SprichwortDB extends Vokabel{
 
-    private SprichwortDB(){}
+    public SprichwortDB(int id, String latein, String deutsch){
+        super(id, latein, deutsch);
+    }
 
     public static class FeedEntry implements BaseColumns{
 

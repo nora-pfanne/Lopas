@@ -1,7 +1,9 @@
 package com.example.norablakaj.lateinapp.Activities;
 
+import android.os.CpuUsageInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +13,7 @@ import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.Tables.DeklinationsendungDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.SubstantivDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.Vokabel;
 import com.example.norablakaj.lateinapp.R;
 
 import java.util.Random;
@@ -19,7 +22,7 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
     TextView latein;
 
-    String lateinVokabel = "Bitte Vokabel auswählen!";
+    Vokabel currentVokabel;
 
     EditText schuelerInput;
     String schuelerInputString;
@@ -34,8 +37,9 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
         //after a random vocabulary is chosen, it is showm in the TextView
         DBHelper dbHelper = new DBHelper(getApplicationContext());
-        lateinVokabel = dbHelper.getRandomVocabulary(1, getApplicationContext());
-        latein.setText(""+lateinVokabel);
+        currentVokabel = dbHelper.getRandomVocabulary(2);
+        latein.setText(currentVokabel.getLatein());
+        dbHelper.close();
 
         schuelerInput = findViewById(R.id.schuelerInput);
         schuelerInputString = schuelerInput.getText().toString();
@@ -49,8 +53,6 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
         });
     }
 
-
-
     private void buttonClickedBestaetigung(){
 
     }
@@ -59,6 +61,20 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
     }
 
+    private boolean compareTranslation(String userInput, String wantedTranslation){
 
+        String[] tokens = wantedTranslation.split(",");
+
+        for (String s: tokens){
+
+            s = s.replaceFirst("^ *", "");
+
+            if (userInput.equalsIgnoreCase(s)){
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
 

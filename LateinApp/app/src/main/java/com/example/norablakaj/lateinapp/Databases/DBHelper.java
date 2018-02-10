@@ -7,7 +7,6 @@ import android.database.MatrixCursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.example.norablakaj.lateinapp.Databases.Tables.AdverbDB;
@@ -20,6 +19,7 @@ import com.example.norablakaj.lateinapp.Databases.Tables.Sprechvokal_SubstantivD
 import com.example.norablakaj.lateinapp.Databases.Tables.SprichwortDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.SubstantivDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.Vokabel;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -595,11 +595,11 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Counts the entries of all tables in the tables Array
+     * Counts the entries of all tables in the Array given as parameter
      * @param tables Array of all tables, where the entries are to be counted
      * @return the amount of entries in the tables of the array
      */
-    public int countTableEntries(String[] tables){
+    private int countTableEntries(String[] tables){
 
         Cursor cursor = null;
         int count = 0;
@@ -620,7 +620,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    public int countTableEntries(String table, int lektionNr){
+    private int countTableEntries(String table, int lektionNr){
         //TODO: Currently only works for tables containing the column 'Lektion_ID' -> maybe make it general?
         //TODO: Maybe with try/catch?
         Cursor cursor;
@@ -662,6 +662,25 @@ public class DBHelper extends SQLiteOpenHelper {
         closeDb();
 
         return latein;
+    }
+
+    private String getColumnFromId(int id, String table, String column){
+
+        reopenDb();
+
+        Cursor cursor = database.rawQuery("SELECT "+column +
+                        " FROM " + table +
+                        " WHERE _ID = " + id
+                , new String[]{});
+
+        cursor.moveToNext();
+
+        String deutsch = cursor.getString(0);
+
+        cursor.close();
+        closeDb();
+
+        return deutsch;
     }
 
     /**
@@ -755,21 +774,21 @@ public class DBHelper extends SQLiteOpenHelper {
         return (verb + endung);
     }
 
-    public String getRandomVocabulary(int lektionNr, Context context){
+    public Vokabel getRandomVocabulary(int lektionNr){
 
-        String lateinVokabel = "keine Vokabel ausgewählt!";
+        String lateinVokabel;
 
-        int prevLektionSubstantivCount = 0;
-        int prevLektionVerbCount = 0;
-        int prevLektionPräpositionCount = 0;
-        int prevLektionSprichwortCount = 0;
-        int prevLektionAdverbCount = 0;
+        int prevLektionCountSubstantiv = 0;
+        int prevLektionCountVerb = 0;
+        int prevLektionCountPräposition = 0;
+        int prevLektionCountSprichwort = 0;
+        int prevLektionCountAdverb = 0;
         for (int i = 1; i < lektionNr; i++){
-            prevLektionSubstantivCount += countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME, i);
-            prevLektionVerbCount += countTableEntries(VerbDB.FeedEntry.TABLE_NAME, i);
-            prevLektionPräpositionCount += countTableEntries(PräpositionDB.FeedEntry.TABLE_NAME, i);
-            prevLektionSprichwortCount += countTableEntries(SprichwortDB.FeedEntry.TABLE_NAME, i);
-            prevLektionAdverbCount += countTableEntries(AdverbDB.FeedEntry.TABLE_NAME, i);
+            prevLektionCountSubstantiv += countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME, i);
+            prevLektionCountVerb += countTableEntries(VerbDB.FeedEntry.TABLE_NAME, i);
+            prevLektionCountPräposition += countTableEntries(PräpositionDB.FeedEntry.TABLE_NAME, i);
+            prevLektionCountSprichwort += countTableEntries(SprichwortDB.FeedEntry.TABLE_NAME, i);
+            prevLektionCountAdverb += countTableEntries(AdverbDB.FeedEntry.TABLE_NAME, i);
         }
 
         int entryAmountVerb = countTableEntries(VerbDB.FeedEntry.TABLE_NAME, lektionNr);
@@ -777,54 +796,81 @@ public class DBHelper extends SQLiteOpenHelper {
         int entryAmountPräposition = countTableEntries(PräpositionDB.FeedEntry.TABLE_NAME, lektionNr);
         int entryAmountSprichwort = countTableEntries(SprichwortDB.FeedEntry.TABLE_NAME, lektionNr);
         int entryAmountAdverb = countTableEntries(AdverbDB.FeedEntry.TABLE_NAME, lektionNr);
-
         int entryAmountTotal = entryAmountSubstantiv + entryAmountVerb + entryAmountPräposition + entryAmountSprichwort + entryAmountAdverb;
 
         Random rand = new Random();
         int randomNumber = rand.nextInt(entryAmountTotal);
+        String table;
+        int vokabelID;
+        String deutsch;
+        Vokabel vokabelInstance;
 
         if(randomNumber < entryAmountSubstantiv){
 
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
 
-            String deklinationsendung = DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG;
-            lateinVokabel = getDekliniertenSubstantiv(randomNumber + prevLektionSubstantivCount, deklinationsendung);
+            vokabelID = randomNumber + prevLektionCountSubstantiv;
+            table = SubstantivDB.FeedEntry.TABLE_NAME;
+            lateinVokabel = getDekliniertenSubstantiv(vokabelID, DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG);
+            deutsch = getColumnFromId(vokabelID, table, SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH);
+
+            vokabelInstance = new SubstantivDB(vokabelID, lateinVokabel, deutsch);
 
         } else if (randomNumber-entryAmountSubstantiv < entryAmountVerb){
 
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
 
-            lateinVokabel = getKonjugiertesVerb(
-                    randomNumber-entryAmountSubstantiv + prevLektionVerbCount,
-                    "inf");
+            vokabelID = randomNumber-entryAmountSubstantiv + prevLektionCountVerb;
+            table = VerbDB.FeedEntry.TABLE_NAME;
+            lateinVokabel = getKonjugiertesVerb(vokabelID,"inf");
+            deutsch = getColumnFromId(vokabelID, table, VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH);
+
+            vokabelInstance = new VerbDB(vokabelID, lateinVokabel, deutsch);
 
         }else if (randomNumber-entryAmountSubstantiv-entryAmountVerb < entryAmountPräposition){
 
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
-            lateinVokabel = getLateinFromId(randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition + prevLektionPräpositionCount,
-                            PräpositionDB.FeedEntry.TABLE_NAME);
+
+            vokabelID = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition + prevLektionCountPräposition;
+            table = PräpositionDB.FeedEntry.TABLE_NAME;
+            lateinVokabel = getLateinFromId(vokabelID, table);
+            deutsch = getColumnFromId(vokabelID, table, PräpositionDB.FeedEntry.COLUMN_DEUTSCH);
+
+            vokabelInstance = new PräpositionDB(vokabelID, lateinVokabel, deutsch);
+
         }else if (randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition < entryAmountSprichwort){
 
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
-            lateinVokabel = getLateinFromId(randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition + prevLektionSprichwortCount,
-                            SprichwortDB.FeedEntry.TABLE_NAME);
+
+            vokabelID = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition + prevLektionCountSprichwort;
+            table = SprichwortDB.FeedEntry.TABLE_NAME;
+            lateinVokabel = getLateinFromId(vokabelID, table);
+            deutsch = getColumnFromId(vokabelID, table, SprichwortDB.FeedEntry.COLUMN_DEUTSCH);
+
+            vokabelInstance = new SprichwortDB(vokabelID, lateinVokabel, deutsch);
 
         }else if(randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition-entryAmountSprichwort < entryAmountAdverb){
 
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
-            lateinVokabel = getLateinFromId(randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition-entryAmountSprichwort + prevLektionAdverbCount,
-                            AdverbDB.FeedEntry.TABLE_NAME);
+
+            vokabelID = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition-entryAmountSprichwort + prevLektionCountAdverb;
+            table = AdverbDB.FeedEntry.TABLE_NAME;
+            lateinVokabel = getLateinFromId(vokabelID, table);
+            deutsch = getColumnFromId(vokabelID, table, AdverbDB.FeedEntry.COLUMN_DEUTSCH);
+
+            vokabelInstance = new AdverbDB(vokabelID, lateinVokabel, deutsch);
 
         }else{
             Log.e(DBHelper.class.getName(), "entry_id given by the randomNumber is out of bounds -> bigger than the amount of all entries combined");
+            return null;
         }
 
-        return lateinVokabel;
+        return vokabelInstance;
     }
 
     /**

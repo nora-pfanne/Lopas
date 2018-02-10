@@ -5,9 +5,11 @@ import android.provider.BaseColumns;
 //TODO: Should this be private/package private?
 
 
-public class VerbDB {
+public class VerbDB extends Vokabel{
 
-    public VerbDB(){}
+    public VerbDB(int id, String lateinInf, String deutsch){
+        super(id, lateinInf, deutsch);
+    }
 
     public static class FeedEntry implements BaseColumns{
 

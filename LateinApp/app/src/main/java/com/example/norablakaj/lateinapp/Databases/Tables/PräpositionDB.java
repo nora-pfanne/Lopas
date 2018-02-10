@@ -5,9 +5,11 @@ import android.provider.BaseColumns;
 //TODO: Should this be private/package private?
 
 
-public class PräpositionDB {
+public class PräpositionDB extends Vokabel{
 
-    private PräpositionDB(){}
+    public PräpositionDB(int id, String latein, String deutsch){
+        super(id, latein, deutsch);
+    }
 
     public static class FeedEntry implements BaseColumns {
 
