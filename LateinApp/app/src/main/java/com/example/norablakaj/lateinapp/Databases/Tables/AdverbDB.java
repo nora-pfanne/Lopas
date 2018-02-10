@@ -6,9 +6,11 @@ import android.provider.BaseColumns;
 //TODO: Should this be private/package private?
 //TODO: SQL_DUMP -> Ref: Hancl: https://github.com/LinuCC/babesk/tree/master/dbv/data/revisions
 
-public class AdverbDB {
+public class AdverbDB extends Vokabel{
 
-    private AdverbDB(){}
+    public AdverbDB(int id, String latein, String deutsch){
+        super(id, latein, deutsch);
+    }
 
     public static class FeedEntry implements BaseColumns{
 
