@@ -783,6 +783,7 @@ public class DBHelper extends SQLiteOpenHelper {
         int prevLektionCountPräposition = 0;
         int prevLektionCountSprichwort = 0;
         int prevLektionCountAdverb = 0;
+
         for (int i = 1; i < lektionNr; i++){
             prevLektionCountSubstantiv += countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME, i);
             prevLektionCountVerb += countTableEntries(VerbDB.FeedEntry.TABLE_NAME, i);
@@ -791,6 +792,7 @@ public class DBHelper extends SQLiteOpenHelper {
             prevLektionCountAdverb += countTableEntries(AdverbDB.FeedEntry.TABLE_NAME, i);
         }
 
+        //TODO: Only count entries where "Gelernt" = false here
         int entryAmountVerb = countTableEntries(VerbDB.FeedEntry.TABLE_NAME, lektionNr);
         int entryAmountSubstantiv = countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME, lektionNr);
         int entryAmountPräposition = countTableEntries(PräpositionDB.FeedEntry.TABLE_NAME, lektionNr);
@@ -871,6 +873,19 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return vokabelInstance;
+    }
+
+    public void setGelernt(String tableName, int vokabelID, boolean gelerntWert){
+
+        reopenDb();
+
+        String query = "UPDATE " + tableName +
+                " SET Gelernt = ?" +
+                " WHERE _ID = ?";
+
+        database.rawQuery(query, new String [] {"" + (gelerntWert ? 1 : 0), "" + vokabelID});
+
+        closeDb();
     }
 
     /**

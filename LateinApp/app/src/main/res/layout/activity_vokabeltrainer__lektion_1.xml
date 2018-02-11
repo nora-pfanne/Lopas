@@ -31,13 +31,28 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:text="Hier steht die lateinische Vokabel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.226" />
+
+    <TextView
+        android:id="@+id/deutschVokabel"
+        android:layout_width="341dp"
+        android:layout_height="155dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Hier steht die Übersetzung der lateininschen Vokabel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.837" />
 
     <EditText
         android:id="@+id/schuelerInput"
@@ -82,7 +97,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="\u2713"
-        android:onClick="buttonClickedBestaetigung"
+        android:onClick="buttonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.889"
@@ -99,7 +114,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Weiter"
-        android:onClick="buttonClickedNextVocabulary"
+        android:onClick="buttonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.912"
