@@ -70,11 +70,12 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
             weiter.setVisibility(View.GONE);
             deutsch.setVisibility(View.GONE);
 
+            Log.d("Gelernt in %", dbHelper.getGelerntProzent(1) + " wurden gelernt");
+
         }else if (view.getId() == R.id.eingabeBestaetigungLektion1){
 
             if(compareTranslation(schuelerInput.getText().toString(),
                     currentVokabel.getDeutsch())){
-
               dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
             }
 
