@@ -68,11 +68,9 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
             Log.d("currentVok", currentVokabel.getDeutsch());
 
             progressVokabeln = findViewById(R.id.progressBar);
+            progressVokabeln.animate();
             progressVokabeln.setMax(100);
             progressVokabeln.setProgress((int)(dbHelper.getGelerntProzent(1) * 100));
-            //progressVokabeln.setMax(dbHelper.countTableEntries(allTables, 1));
-            //progressVokabeln.setProgress(dbHelper.countTableEntries(allTables, 1, true));
-           // progressVokabeln.setProgressBackgroundTintList();
 
             weiter.setVisibility(View.GONE);
             Log.d("currentVok", currentVokabel.getDeutsch());
@@ -112,6 +110,11 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
     private boolean compareTranslation(String userInput, String wantedTranslation){
         //TODO: Check if the user had all cases correct if he inputs multiple
+
+        if (userInput.equals("") || userInput.equals(" ") || userInput.equals("  ")){
+            return false;
+        }
+
         String[] tokensTranslation = wantedTranslation.split(",");
 
         for (String tS : tokensTranslation) {
@@ -120,9 +123,7 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
             char lastChar = userInput.charAt(userInput.length() - 1);
             if (lastChar == ' '){
-                //TODO: How do we use this
-                userInput.substring(0,4)+'x'+userInput.substring(5);
-
+                userInput = userInput.substring(0, userInput.length() - 1);
             }
 
             if (userInput.equalsIgnoreCase(tS)) {
