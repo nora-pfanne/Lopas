@@ -40,18 +40,25 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
         deutsch.setVisibility(View.GONE);
 
+
         //after a random vocabulary is chosen, it is showm in the TextView
         dbHelper = new DBHelper(getApplicationContext());
-        currentVokabel = dbHelper.getRandomVocabulary(1);
-        latein.setText(currentVokabel.getLatein());
 
-        schuelerInput = findViewById(R.id.schuelerInput);
+        if (dbHelper.getGelerntProzent(1) == 1) {
+            allLearned();
+        } else {
 
-        bestaetigung = findViewById(R.id.eingabeBestaetigungLektion1);
-        weiter = findViewById(R.id.nextVocabulary);
+            currentVokabel = dbHelper.getRandomVocabulary(1);
+            latein.setText(currentVokabel.getLatein());
 
-        weiter.setVisibility(View.GONE);
-        Log.d("currentVok", currentVokabel.getDeutsch());
+            schuelerInput = findViewById(R.id.schuelerInput);
+
+            bestaetigung = findViewById(R.id.eingabeBestaetigungLektion1);
+            weiter = findViewById(R.id.nextVocabulary);
+
+            weiter.setVisibility(View.GONE);
+            Log.d("currentVok", currentVokabel.getDeutsch());
+        }
     }
 
     public void buttonClicked(View view){
@@ -86,31 +93,17 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
     private boolean compareTranslation(String userInput, String wantedTranslation){
 
         String[] tokensTranslation = wantedTranslation.split(",");
-        String[] tokensUser = userInput.split(",");
 
+        for (String tS : tokensTranslation) {
 
-        for (String uS : tokensUser) {
+            tS = tS.replaceFirst("^ *", "");
 
-            boolean found = false;
-
-            uS = uS.replaceFirst("^ *","");
-
-            for (String tS : tokensTranslation) {
-
-                tS = tS.replaceFirst("^ *", "");
-
-                if (uS.equalsIgnoreCase(tS)) {
-                    found = true;
-                }
-
-                if(!found){
-                    return false;
-                }
+            if (userInput.equalsIgnoreCase(tS)) {
+                return true;
             }
-
         }
 
-        return true;
+        return false;
     }
 
     private String getVokabelTable(Vokabel vokabel){
@@ -142,5 +135,18 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
             return "";
         }
     }
+
+    private void allLearned(){
+
+        latein.setVisibility(View.GONE);
+        deutsch.setVisibility(View.GONE);
+        schuelerInput.setVisibility(View.GONE);
+        bestaetigung.setVisibility(View.GONE);
+        weiter.setVisibility(View.GONE);
+
+    }
+
 }
+
+
 

@@ -857,6 +857,26 @@ public class DBHelper extends SQLiteOpenHelper {
         return (verb + endung);
     }
 
+    private int getIdFromCount(int lektion, int count, boolean gelernt, String table){
+
+        reopenDb();
+
+        String query = "SELECT _ID FROM "+ table +
+                        " WHERE Gelernt = "+(gelernt ? 1 : 0)+" AND Lektion_ID = " + lektion;
+        Cursor cursor = database.rawQuery(query, new String[]{});
+
+        for (int i = 0; i < count; i++){
+            cursor.moveToNext();
+        }
+
+        int id = cursor.getInt(0);
+
+        cursor.close();
+        closeDb();
+
+        return id;
+    }
+
     public Vokabel getRandomVocabulary(int lektionNr){
 
         String lateinVokabel;
@@ -896,6 +916,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Random rand = new Random();
         int randomNumber = rand.nextInt(entryAmountTotal);
         String table;
+        int count;
         int vokabelID;
         String deutsch;
         Vokabel vokabelInstance;
@@ -905,8 +926,9 @@ public class DBHelper extends SQLiteOpenHelper {
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
 
-            vokabelID = randomNumber + prevLektionCountSubstantiv;
+            count = randomNumber + prevLektionCountSubstantiv;
             table = SubstantivDB.FeedEntry.TABLE_NAME;
+            vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getDekliniertenSubstantiv(vokabelID, DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG);
             deutsch = getColumnFromId(vokabelID, table, SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH);
 
@@ -917,8 +939,9 @@ public class DBHelper extends SQLiteOpenHelper {
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
 
-            vokabelID = randomNumber-entryAmountSubstantiv + prevLektionCountVerb;
+            count = randomNumber-entryAmountSubstantiv + prevLektionCountVerb;
             table = VerbDB.FeedEntry.TABLE_NAME;
+            vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getKonjugiertesVerb(vokabelID,"inf");
             deutsch = getColumnFromId(vokabelID, table, VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH);
 
@@ -929,8 +952,9 @@ public class DBHelper extends SQLiteOpenHelper {
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
 
-            vokabelID = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition + prevLektionCountPräposition;
+            count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition + prevLektionCountPräposition;
             table = PräpositionDB.FeedEntry.TABLE_NAME;
+            vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getLateinFromId(vokabelID, table);
             deutsch = getColumnFromId(vokabelID, table, PräpositionDB.FeedEntry.COLUMN_DEUTSCH);
 
@@ -941,8 +965,9 @@ public class DBHelper extends SQLiteOpenHelper {
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
 
-            vokabelID = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition + prevLektionCountSprichwort;
+            count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition + prevLektionCountSprichwort;
             table = SprichwortDB.FeedEntry.TABLE_NAME;
+            vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getLateinFromId(vokabelID, table);
             deutsch = getColumnFromId(vokabelID, table, SprichwortDB.FeedEntry.COLUMN_DEUTSCH);
 
@@ -953,8 +978,9 @@ public class DBHelper extends SQLiteOpenHelper {
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
 
-            vokabelID = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition-entryAmountSprichwort + prevLektionCountAdverb;
+            count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition-entryAmountSprichwort + prevLektionCountAdverb;
             table = AdverbDB.FeedEntry.TABLE_NAME;
+            vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getLateinFromId(vokabelID, table);
             deutsch = getColumnFromId(vokabelID, table, AdverbDB.FeedEntry.COLUMN_DEUTSCH);
 
