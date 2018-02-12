@@ -60,6 +60,11 @@ public class DBHelper extends SQLiteOpenHelper {
               addInitialEntry();
             }
         */
+/*TODO: Change ae -> ä
+  TODO         ue -> ü
+  TODO         oe -> ö
+  TODO         sz -> ß
+ */
         if(countTableEntries(allTables) == 0) {
             addRowSprechvokal_Substantiv("", "", "", "", "", "", "", "", "", "");
             addRowSprechvokal_Präsens("", "", "", "", "", "");
@@ -429,6 +434,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             for(int i = 0; i < lineAmount - 1; i++){
                 line = bufferedReader.readLine();
+                line = replaceWithUmlaut(line);
 
                 if(line != null){
                     String[] tokens = line.split(";");
@@ -897,15 +903,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
          }
 
-        /*
-        int entryAmountVerb = countTableEntries(VerbDB.FeedEntry.TABLE_NAME, lektionNr);
-        int entryAmountSubstantiv = countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME, lektionNr);
-        int entryAmountPräposition = countTableEntries(PräpositionDB.FeedEntry.TABLE_NAME, lektionNr);
-        int entryAmountSprichwort = countTableEntries(SprichwortDB.FeedEntry.TABLE_NAME, lektionNr);
-        int entryAmountAdverb = countTableEntries(AdverbDB.FeedEntry.TABLE_NAME, lektionNr);
-        int entryAmountTotal = entryAmountSubstantiv + entryAmountVerb + entryAmountPräposition + entryAmountSprichwort + entryAmountAdverb;
-        */
-
         int entryAmountVerb = countTableEntries(VerbDB.FeedEntry.TABLE_NAME, lektionNr, false);
         int entryAmountSubstantiv = countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME, lektionNr, false);
         int entryAmountPräposition = countTableEntries(PräpositionDB.FeedEntry.TABLE_NAME, lektionNr, false);
@@ -1007,6 +1004,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
         cursor.close();
         closeDb();
+    }
+
+    private String replaceWithUmlaut(String s){
+
+        s = s.replace("aeae", "ä");
+        s = s.replace("AeAe", "Ä");
+        s = s.replace("ueue", "ü");
+        s = s.replace("UeUe", "Ü");
+        s = s.replace("oeoe", "ö");
+        s = s.replace("OeOe", "Ö");
+        s = s.replace("sz", "ß");
+
+        return s;
     }
 
     /**
