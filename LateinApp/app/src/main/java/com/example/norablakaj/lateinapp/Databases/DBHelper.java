@@ -1019,6 +1019,53 @@ public class DBHelper extends SQLiteOpenHelper {
         return s;
     }
 
+    public void resetLektion(int lektionNr){
+        reopenDb();
+
+
+        String query = "UPDATE "
+                + AdverbDB.FeedEntry.TABLE_NAME
+                + " SET Gelernt = 0"
+                + " WHERE Lektion_ID = " + lektionNr;
+        Cursor cursor = database.rawQuery(query, new String[]{});
+        cursor.moveToFirst();
+        cursor.close();
+
+        query = "UPDATE "
+                + PräpositionDB.FeedEntry.TABLE_NAME
+                + " SET Gelernt = 0"
+                + " WHERE Lektion_ID = " + lektionNr;
+        Cursor cursor1 = database.rawQuery(query, new String[]{});
+        cursor1.moveToFirst();
+        cursor1.close();
+
+        query = "UPDATE "
+                + SprichwortDB.FeedEntry.TABLE_NAME
+                + " SET Gelernt = 0"
+                + " WHERE Lektion_ID = " + lektionNr;
+        Cursor cursor2 = database.rawQuery(query, new String[]{});
+        cursor2.moveToFirst();
+        cursor2.close();
+
+        query = "UPDATE "
+                + SubstantivDB.FeedEntry.TABLE_NAME
+                + " SET Gelernt = 0"
+                + " WHERE Lektion_ID = " + lektionNr;
+        Cursor cursor3 = database.rawQuery(query, new String[]{});
+        cursor3.moveToFirst();
+        cursor3.close();
+
+        query = "UPDATE "
+                + VerbDB.FeedEntry.TABLE_NAME
+                + " SET Gelernt = 0"
+                + " WHERE Lektion_ID = " + lektionNr;
+        Cursor cursor4 = database.rawQuery(query, new String[]{});
+        cursor4.moveToFirst();
+        cursor4.close();
+
+        closeDb();
+    }
+
     /**
      * This method is for the class 'AndroidDatabaseManager'
      * Remove this before release

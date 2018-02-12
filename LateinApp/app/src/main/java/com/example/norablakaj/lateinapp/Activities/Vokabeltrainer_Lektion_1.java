@@ -81,17 +81,23 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
         if(view.getId() == R.id.nextVocabulary){
 
-            currentVokabel = dbHelper.getRandomVocabulary(1);
-            latein.setText(currentVokabel.getLatein());
-            schuelerInput.setText("");
-
             progressVokabeln.setProgress((int)(dbHelper.getGelerntProzent(1) * 100));
 
-            bestaetigung.setVisibility(View.VISIBLE);
-            weiter.setVisibility(View.GONE);
-            deutsch.setVisibility(View.GONE);
+            if (dbHelper.getGelerntProzent(1) == 1) {
+                allLearned();
+            } else {
 
-            Log.d("New vokabel is", currentVokabel.getDeutsch());
+                currentVokabel = dbHelper.getRandomVocabulary(1);
+                latein.setText(currentVokabel.getLatein());
+                schuelerInput.setText("");
+
+                Log.d("currentVok", currentVokabel.getDeutsch());
+
+                bestaetigung.setVisibility(View.VISIBLE);
+                weiter.setVisibility(View.GONE);
+                deutsch.setVisibility(View.GONE);
+            }
+
 
         }else if (view.getId() == R.id.eingabeBestaetigungLektion1){
 
@@ -111,6 +117,11 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
             bestaetigung.setVisibility(View.GONE);
             weiter.setVisibility(View.VISIBLE);
             deutsch.setVisibility(View.VISIBLE);
+
+        }else if (view.getId() == R.id.resetButton){
+
+            dbHelper.resetLektion(1);
+            finish();
         }
     }
 
