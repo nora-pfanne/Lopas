@@ -70,7 +70,7 @@ public class DBHelper extends SQLiteOpenHelper {
             //addEntriesFromFile("", Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME, context);
             addEntriesFromFile("substantiv.csv", SubstantivDB.FeedEntry.TABLE_NAME, context);
             addEntriesFromFile("verb.csv", VerbDB.FeedEntry.TABLE_NAME, context);
-            addEntriesFromFile("adverb.csv", AdverbDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("adverbTable.csv", AdverbDB.FeedEntry.TABLE_NAME, context);
             //addEntriesFromFile("", SprichwortDB.FeedEntry.TABLE_NAME, context);
             //addEntriesFromFile("", PräpositionDB.FeedEntry.TABLE_NAME, context);
         }
@@ -763,7 +763,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 VerbDB.FeedEntry.TABLE_NAME}, lektion, true);
 
 
-        return entryAmountGelernt/entryAmout;
+        return ((float)entryAmountGelernt/entryAmout);
     }
 
     /**
@@ -968,7 +968,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return vokabelInstance;
     }
 
-    //TODO: Doesn't work
     public void setGelernt(String tableName, int vokabelID, boolean gelerntWert){
 
         reopenDb();
@@ -977,9 +976,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 " SET Gelernt = ?" +
                 " WHERE _ID = ?";
 
-        
-        database.rawQuery(query, new String [] {"" + (gelerntWert ? 1 : 0), "" + vokabelID});
+        Cursor cursor = database.rawQuery(query, new String [] {"" + (gelerntWert ? 1 : 0), "" + vokabelID});
+        cursor.moveToFirst();
 
+        cursor.close();
         closeDb();
     }
 

@@ -1,6 +1,5 @@
 package com.example.norablakaj.lateinapp.Activities;
 
-import android.os.CpuUsageInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,15 +10,12 @@ import android.widget.TextView;
 
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.Tables.AdverbDB;
-import com.example.norablakaj.lateinapp.Databases.Tables.DeklinationsendungDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.PräpositionDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.SprichwortDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.SubstantivDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.Vokabel;
 import com.example.norablakaj.lateinapp.R;
-
-import java.util.Random;
 
 public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
