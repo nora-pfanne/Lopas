@@ -6,9 +6,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
+import com.example.norablakaj.lateinapp.Databases.SQL_DUMP;
 import com.example.norablakaj.lateinapp.Databases.Tables.AdverbDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.PräpositionDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.SprichwortDB;
@@ -29,6 +31,13 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
     Button bestaetigung;
     Button weiter;
 
+    ProgressBar progressVokabeln;
+
+    String[] allTables = {SubstantivDB.FeedEntry.TABLE_NAME,
+            VerbDB.FeedEntry.TABLE_NAME,
+            AdverbDB.FeedEntry.TABLE_NAME,
+            PräpositionDB.FeedEntry.TABLE_NAME,
+            SprichwortDB.FeedEntry.TABLE_NAME};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +61,11 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
         weiter.setVisibility(View.GONE);
         Log.d("currentVok", currentVokabel.getDeutsch());
+
+        progressVokabeln = findViewById(R.id.progressBar);
+        progressVokabeln.setMax(dbHelper.countTableEntries(allTables, 1));
+        progressVokabeln.setProgress(dbHelper.countTableEntries(allTables, 1, true));
+        progressVokabeln.setProgressBackgroundTintList();
     }
 
     public void buttonClicked(View view){
@@ -142,5 +156,6 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
             return "";
         }
     }
+
 }
 

@@ -15,7 +15,7 @@ import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
  * A dump for all the SQL-Statements and Arrays used in DBHelper.class
  */
 //@SuppressWarnings("WeakerAccess")
-final class SQL_DUMP {
+public final class SQL_DUMP {
 
     //Strings used for the creation of all database tables
      static final String SQL_CREATE_ENTRIES_ADVERB =
