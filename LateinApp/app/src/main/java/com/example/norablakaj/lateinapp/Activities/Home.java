@@ -136,23 +136,29 @@ public class Home extends AppCompatActivity
      */
     public void buttonClicked(View view){
 
+        Intent startLektionUebersicht= new Intent(view.getContext(), LektionUebersicht.class);
+
+
         //opens a new activity
         if (view.getId() == R.id.lektion1){
-            Intent startLektion1 = new Intent(view.getContext(), Lektion1.class);
-            startActivity(startLektion1);
+
+            startLektionUebersicht.putExtra("lektion",1);
 
         }else if (view.getId() == R.id.lektion2){
-            Intent startLektion2 = new Intent(view.getContext(), Lektion2.class);
-            startActivity(startLektion2);
+
+            startLektionUebersicht.putExtra("lektion",2);
 
         }else if (view.getId() == R.id.lektion3){
-            Intent startLektion3 = new Intent(view.getContext(), Lektion3.class);
-            startActivity(startLektion3);
+
+            startLektionUebersicht.putExtra("lektion",3);
 
         }else if (view.getId() == R.id.lektion4){
-            Intent startLektion4 = new Intent(view.getContext(), Lektion4.class);
-            startActivity(startLektion4);
+
+            startLektionUebersicht.putExtra("lektion",4);
+
         }
+
+        startActivity(startLektionUebersicht);
 
     }
 

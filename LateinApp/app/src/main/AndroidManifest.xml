@@ -19,16 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.Lektion1" />
-        <activity android:name=".Activities.Lektion2" />
-        <activity android:name=".Activities.Lektion3" />
-        <activity android:name=".Activities.Lektion4" />
+        <activity android:name=".Activities.LektionUebersicht" />
         <activity android:name=".Activities.AndroidDatabaseManager" />
         <activity android:name=".Activities.Woerterbuch" />
-        <activity android:name=".Activities.Vokabeltrainer_Lektion_1" />
-        <activity android:name=".Activities.Grammatik1A" />
-        <activity android:name=".Activities.Grammatik1B" />
-        <activity android:name=".Activities.Grammatik1C"></activity>
+        <activity android:name=".Activities.Vokabeltrainer" />
+        <activity android:name=".Activities.GrammatikA" />
+        <activity android:name=".Activities.GrammatikB" />
+        <activity android:name=".Activities.GrammatikC"></activity>
     </application>
 
 </manifest>

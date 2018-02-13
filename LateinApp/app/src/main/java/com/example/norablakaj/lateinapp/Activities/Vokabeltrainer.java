@@ -1,6 +1,7 @@
 package com.example.norablakaj.lateinapp.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,53 +25,54 @@ import com.example.norablakaj.lateinapp.R;
 
 
 
-public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
+public class Vokabeltrainer extends AppCompatActivity {
 
     TextView latein;
     TextView deutsch;
-    EditText schuelerInput;
+    EditText userInput;
     Button bestaetigung;
     Button weiter;
     Button resetButton;
+    TextView überschrift;
 
     DBHelper dbHelper;
     Vokabel currentVokabel;
 
-    ProgressBar progressVokabeln;
+    ProgressBar progressBar;
 
-    String[] allTables = {SubstantivDB.FeedEntry.TABLE_NAME,
-            VerbDB.FeedEntry.TABLE_NAME,
-            AdverbDB.FeedEntry.TABLE_NAME,
-            PräpositionDB.FeedEntry.TABLE_NAME,
-            SprichwortDB.FeedEntry.TABLE_NAME};
+    int lektion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vokabeltrainer__lektion_1);
+        setContentView(R.layout.activity_vokabeltrainer);
+
+        Intent intent = getIntent();
+        lektion = intent.getIntExtra("lektion",0);
 
         dbHelper = new DBHelper(getApplicationContext());
 
-        latein = findViewById(R.id.lateinVokabel);
-        deutsch = findViewById(R.id.deutschVokabel);
-        schuelerInput = findViewById(R.id.schuelerInput);
-        bestaetigung = findViewById(R.id.eingabeBestaetigungLektion1);
-        weiter = findViewById(R.id.nextVocabulary);
-        resetButton = findViewById(R.id.resetButton);
-
+        überschrift = findViewById(R.id.VokabeltrainerÜberschrift);
+        latein = findViewById(R.id.VokabeltrainerLatein);
+        deutsch = findViewById(R.id.VokabeltrainerDeutsch);
+        userInput = findViewById(R.id.VokabeltrainerUserInput);
+        progressBar = findViewById(R.id.VokabeltrainerProgressBar);
+        bestaetigung = findViewById(R.id.VokabeltrainerEingabeBestätigt);
+        weiter = findViewById(R.id.VokabeltrainerNächsteVokabel);
+        resetButton = findViewById(R.id.VokabeltrainerFortschrittLöschen);
+        
         deutsch.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
 
-        progressVokabeln = findViewById(R.id.progressBar);
-        progressVokabeln.animate();
-        progressVokabeln.setMax(100);
-        progressVokabeln.setProgress((int)(dbHelper.getGelerntProzent(1) * 100));
+        progressBar.animate();
+        progressBar.setMax(100);
+        progressBar.setProgress((int)(dbHelper.getGelerntProzent(lektion) * 100));
 
-        if (dbHelper.getGelerntProzent(1) == 1) {
+        if (dbHelper.getGelerntProzent(lektion) == 1) {
             allLearned();
         } else {
 
-            currentVokabel = dbHelper.getRandomVocabulary(1);
+            currentVokabel = dbHelper.getRandomVocabulary(lektion);
             latein.setText(currentVokabel.getLatein());
 
             Log.d("currentVok", currentVokabel.getDeutsch());
@@ -79,17 +81,17 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
     public void buttonClicked(View view){
 
-        if(view.getId() == R.id.nextVocabulary){
+        if(view.getId() == R.id.VokabeltrainerNächsteVokabel){
 
-            progressVokabeln.setProgress((int)(dbHelper.getGelerntProzent(1) * 100));
+            progressBar.setProgress((int)(dbHelper.getGelerntProzent(lektion) * 100));
 
-            if (dbHelper.getGelerntProzent(1) == 1) {
+            if (dbHelper.getGelerntProzent(lektion) == 1) {
                 allLearned();
             } else {
 
-                currentVokabel = dbHelper.getRandomVocabulary(1);
+                currentVokabel = dbHelper.getRandomVocabulary(lektion);
                 latein.setText(currentVokabel.getLatein());
-                schuelerInput.setText("");
+                userInput.setText("");
 
                 Log.d("currentVok", currentVokabel.getDeutsch());
 
@@ -99,7 +101,7 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
             }
 
 
-        }else if (view.getId() == R.id.eingabeBestaetigungLektion1){
+        }else if (view.getId() == R.id.VokabeltrainerEingabeBestätigt){
 
             View v = this.getCurrentFocus();
             if (v != null){
@@ -107,7 +109,7 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             }
 
-            if(compareTranslation(schuelerInput.getText().toString(), currentVokabel.getDeutsch())){
+            if(compareTranslation(userInput.getText().toString(), currentVokabel.getDeutsch())){
 
                 dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
             }
@@ -118,9 +120,9 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
             weiter.setVisibility(View.VISIBLE);
             deutsch.setVisibility(View.VISIBLE);
 
-        }else if (view.getId() == R.id.resetButton){
+        }else if (view.getId() == R.id.VokabeltrainerFortschrittLöschen){
 
-            dbHelper.resetLektion(1);
+            dbHelper.resetLektion(lektion);
             finish();
         }
     }
@@ -185,7 +187,7 @@ public class Vokabeltrainer_Lektion_1 extends AppCompatActivity {
 
         latein.setVisibility(View.GONE);
         deutsch.setVisibility(View.GONE);
-        schuelerInput.setVisibility(View.GONE);
+        userInput.setVisibility(View.GONE);
         bestaetigung.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
 
