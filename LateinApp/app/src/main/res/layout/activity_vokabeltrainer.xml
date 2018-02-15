@@ -103,6 +103,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
+        style="@style/BasicBlueButton"
         android:id="@+id/VokabeltrainerEingabeBestätigt"
         android:layout_width="85dp"
         android:layout_height="56dp"
@@ -110,11 +111,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="#011627"
-        android:fontFamily="@font/hind_light"
-        android:textColor="#FF9F1C"
         android:textSize="14dp"
-        android:textStyle="bold"
         android:onClick="buttonClicked"
         android:text="\u2713"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -125,6 +122,7 @@
         app:layout_constraintVertical_bias="0.541" />
 
     <Button
+        style="@style/BasicBlueButton"
         android:id="@+id/VokabeltrainerNächsteVokabel"
         android:layout_width="85dp"
         android:layout_height="56dp"
@@ -132,11 +130,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="#011627"
-        android:fontFamily="@font/hind_light"
-        android:textColor="#FF9F1C"
         android:textSize="16dp"
-        android:textStyle="bold"
         android:onClick="buttonClicked"
         android:text="Weiter"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -147,6 +141,7 @@
         app:layout_constraintVertical_bias="0.541" />
 
     <Button
+        style="@style/BasicBlueButton"
         android:id="@+id/VokabeltrainerFortschrittLöschen"
         android:layout_width="153dp"
         android:layout_height="85dp"

@@ -4,4 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="spinnerColor">#2398ff</color>
+    <color name="PrussianBlue">#002E54</color>
+    <color name="Burgundy">#7A0028</color>
+    <color name="GhostWhite">#FAFAFF</color>
+    <color name="Grey">#564E58</color>
+    <color name="Gold">#FF9F1C</color>
 </resources>

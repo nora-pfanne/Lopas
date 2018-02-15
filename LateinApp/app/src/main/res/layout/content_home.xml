@@ -9,6 +9,7 @@
     tools:showIn="@layout/app_bar_home">
 
     <Button
+        style="@style/BasicBlueButton"
         android:id="@+id/lektion1"
         android:layout_width="176dp"
         android:layout_height="46dp"
@@ -16,11 +17,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="#011627"
-        android:fontFamily="@font/hind_light"
-        android:textColor="#FF9F1C"
         android:textSize="20dp"
-        android:textStyle="bold"
         android:onClick="buttonClicked"
         android:text="Lektion 1"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -31,6 +28,7 @@
         app:layout_constraintVertical_bias="0.04" />
 
     <Button
+        style="@style/BasicBlueButton"
         android:id="@+id/lektion2"
         android:layout_width="176dp"
         android:layout_height="46dp"
@@ -38,11 +36,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="#011627"
-        android:fontFamily="@font/hind_light"
-        android:textColor="#FF9F1C"
         android:textSize="20dp"
-        android:textStyle="bold"
         android:text="Lektion 2"
         android:onClick="buttonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -53,6 +47,7 @@
         app:layout_constraintVertical_bias="0.195" />
 
     <Button
+        style="@style/BasicBlueButton"
         android:id="@+id/lektion3"
         android:layout_width="176dp"
         android:layout_height="46dp"
@@ -60,11 +55,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="#011627"
-        android:fontFamily="@font/hind_light"
-        android:textColor="#FF9F1C"
         android:textSize="20dp"
-        android:textStyle="bold"
         android:text="Lektion 3"
         android:onClick="buttonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -75,6 +66,7 @@
         app:layout_constraintVertical_bias="0.338" />
 
     <Button
+        style="@style/BasicBlueButton"
         android:id="@+id/lektion4"
         android:layout_width="176dp"
         android:layout_height="46dp"
@@ -82,11 +74,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="#011627"
-        android:fontFamily="@font/hind_light"
-        android:textColor="#FF9F1C"
         android:textSize="20dp"
-        android:textStyle="bold"
         android:text="Lektion 4"
         android:onClick="buttonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -97,6 +85,7 @@
         app:layout_constraintVertical_bias="0.498" />
 
     <Button
+        style="@style/BasicBlueButton"
         android:id="@+id/lektion5"
         android:layout_width="176dp"
         android:layout_height="46dp"
@@ -104,11 +93,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="#011627"
-        android:fontFamily="@font/hind_light"
-        android:textColor="#FF9F1C"
         android:textSize="20dp"
-        android:textStyle="bold"
         android:onClick="buttonClicked"
         android:text="Lektion 5"
         app:layout_constraintBottom_toBottomOf="parent"
