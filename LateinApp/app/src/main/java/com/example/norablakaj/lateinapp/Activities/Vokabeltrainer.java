@@ -2,6 +2,7 @@ package com.example.norablakaj.lateinapp.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -77,6 +78,8 @@ public class Vokabeltrainer extends AppCompatActivity {
 
             Log.d("currentVok", currentVokabel.getDeutsch());
         }
+
+        //TODO: Open the keyboard on startup
     }
 
     public void buttonClicked(View view){
@@ -129,6 +132,8 @@ public class Vokabeltrainer extends AppCompatActivity {
 
     private boolean compareTranslation(String userInput, String wantedTranslation){
         //TODO: Check if the user had all cases correct if he inputs multiple
+
+        //TODO: Make the pronouns optional "Der Sklave" can be correct as "Sklave" aswell
 
         if (userInput.equals("") || userInput.equals(" ") || userInput.equals("  ")){
             return false;
