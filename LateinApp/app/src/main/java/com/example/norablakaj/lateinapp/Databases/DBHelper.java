@@ -26,6 +26,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Random;
@@ -555,14 +556,14 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Closes the connection to the database if it is open
      */
-    private void closeDb() {
+    public void closeDb() {
         database.close();
     }
 
     /**
      * Reopens the connection to the database if it isn't open already
      */
-    private void reopenDb() {
+    public void reopenDb() {
         if (database != null && database.isOpen()) close();
         database = getWritableDatabase();
     }
@@ -771,6 +772,40 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
         return ((float)entryAmountGelernt/entryAmout);
+    }
+
+    public String[][] getColumns(String table, String[] columns, int lektion){
+
+        reopenDb();
+
+        String query = "SELECT ";
+        for (int i = 0; i < columns.length; i++){
+            query += columns[i];
+            if (i < columns.length-1){
+                query += ",";
+            }
+            query += " ";
+        }
+        query += "FROM " + table + " WHERE Lektion_ID = " + lektion;
+
+        Cursor cursor = database.rawQuery(query, new String[]{});
+
+        String[][] values = new String[cursor.getCount()][columns.length];
+
+        int count = 0;
+        while (cursor.moveToNext()){
+            for (int i = 0; i < columns.length; i++){
+
+                values[count][i] = ""+cursor.getString(i);
+
+            }
+            count++;
+        }
+
+        cursor.close();
+        closeDb();
+
+        return values;
     }
 
     /**
