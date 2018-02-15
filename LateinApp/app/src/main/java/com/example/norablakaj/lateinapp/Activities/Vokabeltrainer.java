@@ -2,11 +2,13 @@ package com.example.norablakaj.lateinapp.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,6 +45,8 @@ public class Vokabeltrainer extends AppCompatActivity {
 
     int lektion;
 
+    Color color;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,14 +76,11 @@ public class Vokabeltrainer extends AppCompatActivity {
         if (dbHelper.getGelerntProzent(lektion) == 1) {
             allLearned();
         } else {
-
             currentVokabel = dbHelper.getRandomVocabulary(lektion);
             latein.setText(currentVokabel.getLatein());
 
             Log.d("currentVok", currentVokabel.getDeutsch());
         }
-
-        //TODO: Open the keyboard on startup
     }
 
     public void buttonClicked(View view){
@@ -101,6 +102,10 @@ public class Vokabeltrainer extends AppCompatActivity {
                 bestaetigung.setVisibility(View.VISIBLE);
                 weiter.setVisibility(View.GONE);
                 deutsch.setVisibility(View.GONE);
+
+                //TODO: get this color out of the /values/colors.xml file. currently: @colors/ghostWhite
+                userInput.setBackgroundColor(Color.parseColor("#FAFAFF"));
+                userInput.setFocusableInTouchMode(true);
             }
 
 
@@ -112,9 +117,16 @@ public class Vokabeltrainer extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             }
 
+            userInput.setFocusable(false);
+
             if(compareTranslation(userInput.getText().toString(), currentVokabel.getDeutsch())){
 
                 dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
+
+                userInput.setBackgroundColor(Color.GREEN);
+
+            }else {
+                userInput.setBackgroundColor(Color.RED);
             }
 
             deutsch.setText(currentVokabel.getDeutsch());
