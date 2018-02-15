@@ -165,6 +165,17 @@ public class Vokabeltrainer extends AppCompatActivity {
             if (userInput.equalsIgnoreCase(tS)) {
                 return true;
             }
+
+            if (tS.contains("Der") || tS.contains("Die") || tS.contains("Das") ||
+                    tS.contains("der") || tS.contains("die") || tS.contains("das")){
+
+                tS = tS.substring(4);
+
+                if (userInput.equalsIgnoreCase(tS)) {
+                    return true;
+                }
+            }
+
         }
 
         return false;
