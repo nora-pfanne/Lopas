@@ -77,6 +77,8 @@ public final class SQL_DUMP {
                     + "( "
                     + LektionDB.FeedEntry._ID
                     + " INTEGER PRIMARY KEY, "
+                    + LektionDB.FeedEntry.COLUMN_LEKTION_NR
+                    + " INTEGER, "
                     + LektionDB.FeedEntry.COLUMN_TITEL
                     + " TEXT, "
                     + LektionDB.FeedEntry.COLUMN_THEMA
@@ -363,6 +365,7 @@ public final class SQL_DUMP {
 
      static final String[] allColumnsLektion = {
             LektionDB.FeedEntry._ID,
+             LektionDB.FeedEntry.COLUMN_LEKTION_NR,
             LektionDB.FeedEntry.COLUMN_TITEL,
             LektionDB.FeedEntry.COLUMN_THEMA
     };

@@ -5,12 +5,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.R;
 
 public class LektionUebersicht extends AppCompatActivity {
 
     int lektion;
+
+    DBHelper dbHelper;
+
+    TextView lektionsUeberschrift;
+    TextView lektionsText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +27,13 @@ public class LektionUebersicht extends AppCompatActivity {
         Intent intent = getIntent();
         lektion = intent.getIntExtra("lektion",0);
 
+        dbHelper = new DBHelper(getApplicationContext());
+
+        lektionsUeberschrift = findViewById(R.id.lektionsueberschrift);
+        lektionsText = findViewById(R.id.lektionsText);
+
+        lektionsUeberschrift.setText(dbHelper.getLektionsUeberschrift(lektion));
+        lektionsText.setText(dbHelper.getLektionsText(lektion));
     }
 
     public void buttonClicked (View view){

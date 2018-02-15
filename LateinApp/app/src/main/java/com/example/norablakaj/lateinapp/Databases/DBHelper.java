@@ -192,13 +192,14 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param titel content of the column 'titel' in the database entry
      * @param thema content of the column 'thema' in the database entry
      */
-    private void addRowLektion(String titel, String thema) {
+    private void addRowLektion(int lektionNr, String titel, String thema) {
 
         reopenDb();
 
         ContentValues values = new ContentValues();
-        values.put(allColumnsLektion[1], titel);
-        values.put(allColumnsLektion[2], thema);
+        values.put(allColumnsLektion[1], lektionNr);
+        values.put(allColumnsLektion[2], titel);
+        values.put(allColumnsLektion[3], thema);
 
         database.insert(LektionDB.FeedEntry.TABLE_NAME, null, values);
 
@@ -457,7 +458,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                 break;
 
                             case LektionDB.FeedEntry.TABLE_NAME:
-                                addRowLektion(tokens[0], tokens[1]);
+                                addRowLektion(Integer.parseInt(tokens[0]), tokens[1], tokens[2]);
                                 break;
 
                             case Personalendung_PräsensDB.FeedEntry.TABLE_NAME:
@@ -1064,6 +1065,42 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor4.close();
 
         closeDb();
+    }
+
+    public String getLektionsUeberschrift(int lektionNr){
+
+        reopenDb();
+
+        String query = "SELECT Titel FROM " + LektionDB.FeedEntry.TABLE_NAME +
+                " WHERE " + LektionDB.FeedEntry._ID + " = ?";
+        Cursor lektionCursor = database.rawQuery(query,
+                                                    new String[]{"" + lektionNr});
+
+        lektionCursor.moveToNext();
+        String lektionsUeberschrift = lektionCursor.getString(lektionCursor.getColumnIndex("Titel"));
+        lektionCursor.close();
+
+        closeDb();
+
+        return lektionsUeberschrift;
+    }
+
+    public String getLektionsText(int lektionNr){
+
+        reopenDb();
+
+        String query = "SELECT Thema FROM " + LektionDB.FeedEntry.TABLE_NAME +
+                " WHERE " + LektionDB.FeedEntry._ID + " = ?";
+        Cursor lektionCursor = database.rawQuery(query,
+                new String[]{"" + lektionNr});
+
+        lektionCursor.moveToNext();
+        String lektionsText = lektionCursor.getString(lektionCursor.getColumnIndex("Thema"));
+        lektionCursor.close();
+
+        closeDb();
+
+        return lektionsText;
     }
 
     /**

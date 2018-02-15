@@ -19,7 +19,7 @@ import com.example.norablakaj.lateinapp.R;
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Button lektion1Button, lektion2Button, lektion3Button, lektion4Button;
+    Button lektion1Button, lektion2Button, lektion3Button, lektion4Button, lektion5Button;
 
     /**
      * Creating drawer
@@ -49,7 +49,7 @@ public class Home extends AppCompatActivity
         lektion2Button = findViewById(R.id.lektion2);
         lektion3Button = findViewById(R.id.lektion3);
         lektion4Button = findViewById(R.id.lektion4);
-
+        lektion5Button = findViewById(R.id.lektion5);
     }
 
     /**
@@ -156,6 +156,9 @@ public class Home extends AppCompatActivity
 
             startLektionUebersicht.putExtra("lektion",4);
 
+        }else if (view.getId() == R.id.lektion5){
+
+            startLektionUebersicht.putExtra("lektion", 5);
         }
 
         startActivity(startLektionUebersicht);

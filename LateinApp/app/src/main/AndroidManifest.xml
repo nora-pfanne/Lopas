@@ -25,7 +25,12 @@
         <activity android:name=".Activities.Vokabeltrainer" />
         <activity android:name=".Activities.GrammatikA" />
         <activity android:name=".Activities.GrammatikB" />
-        <activity android:name=".Activities.GrammatikC"></activity>
+        <activity android:name=".Activities.GrammatikC" />
+        <activity android:name=".Activities.Grammatikeinheiten.GrammatikDeklination"></activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
