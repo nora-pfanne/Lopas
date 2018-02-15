@@ -23,9 +23,9 @@
         <activity android:name=".Activities.AndroidDatabaseManager" />
         <activity android:name=".Activities.Woerterbuch" />
         <activity android:name=".Activities.Vokabeltrainer" />
-        <activity android:name=".Activities.GrammatikA" />
-        <activity android:name=".Activities.GrammatikB" />
-        <activity android:name=".Activities.GrammatikC" />
+        <activity android:name=".Activities.GrammatikA" android:theme="@style/noAnimationTheme"/>
+        <activity android:name=".Activities.GrammatikB" android:theme="@style/noAnimationTheme"/>
+        <activity android:name=".Activities.GrammatikC" android:theme="@style/noAnimationTheme"/>
         <activity android:name=".Activities.Grammatikeinheiten.GrammatikDeklination"></activity>
 
         <meta-data
