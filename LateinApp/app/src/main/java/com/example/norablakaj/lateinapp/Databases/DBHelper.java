@@ -7,6 +7,7 @@ import android.database.MatrixCursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import com.example.norablakaj.lateinapp.Databases.Tables.AdverbDB;
@@ -25,6 +26,8 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.Array;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -58,6 +61,11 @@ public class DBHelper extends SQLiteOpenHelper {
               addInitialEntry();
             }
         */
+/*TODO: Change ae -> ä
+  TODO         ue -> ü
+  TODO         oe -> ö
+  TODO         sz -> ß
+ */
         if(countTableEntries(allTables) == 0) {
             addRowSprechvokal_Substantiv("", "", "", "", "", "", "", "", "", "");
             addRowSprechvokal_Präsens("", "", "", "", "", "");
@@ -68,7 +76,7 @@ public class DBHelper extends SQLiteOpenHelper {
             //addEntriesFromFile("", Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME, context);
             addEntriesFromFile("substantiv.csv", SubstantivDB.FeedEntry.TABLE_NAME, context);
             addEntriesFromFile("verb.csv", VerbDB.FeedEntry.TABLE_NAME, context);
-            addEntriesFromFile("adverb.csv", AdverbDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("adverbTable.csv", AdverbDB.FeedEntry.TABLE_NAME, context);
             //addEntriesFromFile("", SprichwortDB.FeedEntry.TABLE_NAME, context);
             //addEntriesFromFile("", PräpositionDB.FeedEntry.TABLE_NAME, context);
         }
@@ -185,13 +193,14 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param titel content of the column 'titel' in the database entry
      * @param thema content of the column 'thema' in the database entry
      */
-    private void addRowLektion(String titel, String thema) {
+    private void addRowLektion(int lektionNr, String titel, String thema) {
 
         reopenDb();
 
         ContentValues values = new ContentValues();
-        values.put(allColumnsLektion[1], titel);
-        values.put(allColumnsLektion[2], thema);
+        values.put(allColumnsLektion[1], lektionNr);
+        values.put(allColumnsLektion[2], titel);
+        values.put(allColumnsLektion[3], thema);
 
         database.insert(LektionDB.FeedEntry.TABLE_NAME, null, values);
 
@@ -427,6 +436,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             for(int i = 0; i < lineAmount - 1; i++){
                 line = bufferedReader.readLine();
+                line = replaceWithUmlaut(line);
 
                 if(line != null){
                     String[] tokens = line.split(";");
@@ -449,7 +459,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                 break;
 
                             case LektionDB.FeedEntry.TABLE_NAME:
-                                addRowLektion(tokens[0], tokens[1]);
+                                addRowLektion(Integer.parseInt(tokens[0]), tokens[1], tokens[2]);
                                 break;
 
                             case Personalendung_PräsensDB.FeedEntry.TABLE_NAME:
@@ -546,14 +556,14 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Closes the connection to the database if it is open
      */
-    private void closeDb() {
+    public void closeDb() {
         database.close();
     }
 
     /**
      * Reopens the connection to the database if it isn't open already
      */
-    private void reopenDb() {
+    public void reopenDb() {
         if (database != null && database.isOpen()) close();
         database = getWritableDatabase();
     }
@@ -580,6 +590,36 @@ public class DBHelper extends SQLiteOpenHelper {
                 cursor = database.rawQuery("SELECT COUNT(*) FROM " + table
                                 + " WHERE Lektion_ID = ?",
                         new String[] {""+lektionNr});
+                cursor.moveToNext();
+                count += cursor.getInt(0);
+            }catch (Exception e){
+                e.printStackTrace();
+                return -1;
+            }
+
+        }
+        if (cursor != null) cursor.close();
+        closeDb();
+
+        return count;
+    }
+
+    public int countTableEntries(String[] tables, int lektionNr, boolean gelernt){
+
+        //TODO: Currently only works for tables containing the column 'Lektion_ID' -> maybe make it general?
+        //TODO: Maybe with try/catch?
+        Cursor cursor = null;
+        int count = 0;
+        reopenDb();
+
+        for(String table : tables){
+
+            try {
+                //getting the total number of entries which were completed and adding it to 'complete'
+                cursor = database.rawQuery("SELECT COUNT(*) FROM " + table
+                                + " WHERE Lektion_ID = ?" +
+                                  " AND Gelernt = ?",
+                        new String[] {""+lektionNr, ""+(gelernt ? 1 : 0)});
                 cursor.moveToNext();
                 count += cursor.getInt(0);
             }catch (Exception e){
@@ -646,6 +686,33 @@ public class DBHelper extends SQLiteOpenHelper {
         return count;
     }
 
+    private int countTableEntries(String table, int lektionNr, boolean gelernt){
+        //TODO: Currently only works for tables containing the column 'Lektion_ID' -> maybe make it general?
+        //TODO: Maybe with try/catch?
+        Cursor cursor;
+        int count = 0;
+        reopenDb();
+
+        try {
+            //getting the total number of entries which were completed and adding it to 'complete'
+            cursor = database.rawQuery("SELECT COUNT(*) FROM " + table
+                            + " WHERE Lektion_ID = ?"
+                            + " AND Gelernt = ?",
+                    new String[] {""+lektionNr, "" + (gelernt ? 1 : 0)});
+            cursor.moveToNext();
+            count += cursor.getInt(0);
+        }catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+
+
+        cursor.close();
+        closeDb();
+
+        return count;
+    }
+
     private String getLateinFromId(int id, String table){
         reopenDb();
 
@@ -681,6 +748,64 @@ public class DBHelper extends SQLiteOpenHelper {
         closeDb();
 
         return deutsch;
+    }
+
+    public float getGelerntProzent(int lektion){
+
+        int entryAmout = countTableEntries(new String[] {
+                        AdverbDB.FeedEntry.TABLE_NAME,
+                        PräpositionDB.FeedEntry.TABLE_NAME,
+                        SprichwortDB.FeedEntry.TABLE_NAME,
+                        SubstantivDB.FeedEntry.TABLE_NAME,
+                        VerbDB.FeedEntry.TABLE_NAME}, lektion);
+        if (entryAmout == 0){
+            Log.e("getGelerntProzent", "Division by 0: no entries in lektion " + lektion);
+            return -1;
+        }
+
+        int entryAmountGelernt = countTableEntries(new String[] {
+                AdverbDB.FeedEntry.TABLE_NAME,
+                PräpositionDB.FeedEntry.TABLE_NAME,
+                SprichwortDB.FeedEntry.TABLE_NAME,
+                SubstantivDB.FeedEntry.TABLE_NAME,
+                VerbDB.FeedEntry.TABLE_NAME}, lektion, true);
+
+
+        return ((float)entryAmountGelernt/entryAmout);
+    }
+
+    public String[][] getColumns(String table, String[] columns, int lektion){
+
+        reopenDb();
+
+        String query = "SELECT ";
+        for (int i = 0; i < columns.length; i++){
+            query += columns[i];
+            if (i < columns.length-1){
+                query += ",";
+            }
+            query += " ";
+        }
+        query += "FROM " + table + " WHERE Lektion_ID = " + lektion;
+
+        Cursor cursor = database.rawQuery(query, new String[]{});
+
+        String[][] values = new String[cursor.getCount()][columns.length];
+
+        int count = 0;
+        while (cursor.moveToNext()){
+            for (int i = 0; i < columns.length; i++){
+
+                values[count][i] = ""+cursor.getString(i);
+
+            }
+            count++;
+        }
+
+        cursor.close();
+        closeDb();
+
+        return values;
     }
 
     /**
@@ -774,6 +899,26 @@ public class DBHelper extends SQLiteOpenHelper {
         return (verb + endung);
     }
 
+    private int getIdFromCount(int lektion, int count, boolean gelernt, String table){
+
+        reopenDb();
+
+        String query = "SELECT _ID FROM "+ table +
+                        " WHERE Gelernt = "+(gelernt ? 1 : 0)+" AND Lektion_ID = " + lektion;
+        Cursor cursor = database.rawQuery(query, new String[]{});
+
+        for (int i = 0; i < count; i++){
+            cursor.moveToNext();
+        }
+
+        int id = cursor.getInt(0);
+
+        cursor.close();
+        closeDb();
+
+        return id;
+    }
+
     public Vokabel getRandomVocabulary(int lektionNr){
 
         String lateinVokabel;
@@ -783,24 +928,28 @@ public class DBHelper extends SQLiteOpenHelper {
         int prevLektionCountPräposition = 0;
         int prevLektionCountSprichwort = 0;
         int prevLektionCountAdverb = 0;
+
         for (int i = 1; i < lektionNr; i++){
+
             prevLektionCountSubstantiv += countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME, i);
             prevLektionCountVerb += countTableEntries(VerbDB.FeedEntry.TABLE_NAME, i);
             prevLektionCountPräposition += countTableEntries(PräpositionDB.FeedEntry.TABLE_NAME, i);
             prevLektionCountSprichwort += countTableEntries(SprichwortDB.FeedEntry.TABLE_NAME, i);
             prevLektionCountAdverb += countTableEntries(AdverbDB.FeedEntry.TABLE_NAME, i);
-        }
 
-        int entryAmountVerb = countTableEntries(VerbDB.FeedEntry.TABLE_NAME, lektionNr);
-        int entryAmountSubstantiv = countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME, lektionNr);
-        int entryAmountPräposition = countTableEntries(PräpositionDB.FeedEntry.TABLE_NAME, lektionNr);
-        int entryAmountSprichwort = countTableEntries(SprichwortDB.FeedEntry.TABLE_NAME, lektionNr);
-        int entryAmountAdverb = countTableEntries(AdverbDB.FeedEntry.TABLE_NAME, lektionNr);
+         }
+
+        int entryAmountVerb = countTableEntries(VerbDB.FeedEntry.TABLE_NAME, lektionNr, false);
+        int entryAmountSubstantiv = countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME, lektionNr, false);
+        int entryAmountPräposition = countTableEntries(PräpositionDB.FeedEntry.TABLE_NAME, lektionNr, false);
+        int entryAmountSprichwort = countTableEntries(SprichwortDB.FeedEntry.TABLE_NAME, lektionNr, false);
+        int entryAmountAdverb = countTableEntries(AdverbDB.FeedEntry.TABLE_NAME, lektionNr, false);
         int entryAmountTotal = entryAmountSubstantiv + entryAmountVerb + entryAmountPräposition + entryAmountSprichwort + entryAmountAdverb;
 
         Random rand = new Random();
         int randomNumber = rand.nextInt(entryAmountTotal);
         String table;
+        int count;
         int vokabelID;
         String deutsch;
         Vokabel vokabelInstance;
@@ -810,8 +959,9 @@ public class DBHelper extends SQLiteOpenHelper {
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
 
-            vokabelID = randomNumber + prevLektionCountSubstantiv;
+            count = randomNumber;
             table = SubstantivDB.FeedEntry.TABLE_NAME;
+            vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getDekliniertenSubstantiv(vokabelID, DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG);
             deutsch = getColumnFromId(vokabelID, table, SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH);
 
@@ -822,8 +972,9 @@ public class DBHelper extends SQLiteOpenHelper {
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
 
-            vokabelID = randomNumber-entryAmountSubstantiv + prevLektionCountVerb;
+            count = randomNumber-entryAmountSubstantiv;
             table = VerbDB.FeedEntry.TABLE_NAME;
+            vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getKonjugiertesVerb(vokabelID,"inf");
             deutsch = getColumnFromId(vokabelID, table, VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH);
 
@@ -834,8 +985,9 @@ public class DBHelper extends SQLiteOpenHelper {
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
 
-            vokabelID = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition + prevLektionCountPräposition;
+            count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition;
             table = PräpositionDB.FeedEntry.TABLE_NAME;
+            vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getLateinFromId(vokabelID, table);
             deutsch = getColumnFromId(vokabelID, table, PräpositionDB.FeedEntry.COLUMN_DEUTSCH);
 
@@ -846,8 +998,9 @@ public class DBHelper extends SQLiteOpenHelper {
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
 
-            vokabelID = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition + prevLektionCountSprichwort;
+            count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition;
             table = SprichwortDB.FeedEntry.TABLE_NAME;
+            vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getLateinFromId(vokabelID, table);
             deutsch = getColumnFromId(vokabelID, table, SprichwortDB.FeedEntry.COLUMN_DEUTSCH);
 
@@ -858,8 +1011,9 @@ public class DBHelper extends SQLiteOpenHelper {
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
 
-            vokabelID = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition-entryAmountSprichwort + prevLektionCountAdverb;
+            count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition-entryAmountSprichwort;
             table = AdverbDB.FeedEntry.TABLE_NAME;
+            vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getLateinFromId(vokabelID, table);
             deutsch = getColumnFromId(vokabelID, table, AdverbDB.FeedEntry.COLUMN_DEUTSCH);
 
@@ -871,6 +1025,117 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return vokabelInstance;
+    }
+
+    public void setGelernt(String tableName, int vokabelID, boolean gelerntWert){
+
+        reopenDb();
+
+        String query = "UPDATE " + tableName +
+                " SET Gelernt = ?" +
+                " WHERE _ID = ?";
+
+        Cursor cursor = database.rawQuery(query, new String [] {"" + (gelerntWert ? 1 : 0), "" + vokabelID});
+        cursor.moveToFirst();
+
+        cursor.close();
+        closeDb();
+    }
+
+    private String replaceWithUmlaut(String s){
+
+        s = s.replace("aeae", "ä");
+        s = s.replace("AeAe", "Ä");
+        s = s.replace("ueue", "ü");
+        s = s.replace("UeUe", "Ü");
+        s = s.replace("oeoe", "ö");
+        s = s.replace("OeOe", "Ö");
+        s = s.replace("sz", "ß");
+
+        return s;
+    }
+
+    public void resetLektion(int lektionNr){
+        reopenDb();
+
+
+        String query = "UPDATE "
+                + AdverbDB.FeedEntry.TABLE_NAME
+                + " SET Gelernt = 0"
+                + " WHERE Lektion_ID = " + lektionNr;
+        Cursor cursor = database.rawQuery(query, new String[]{});
+        cursor.moveToFirst();
+        cursor.close();
+
+        query = "UPDATE "
+                + PräpositionDB.FeedEntry.TABLE_NAME
+                + " SET Gelernt = 0"
+                + " WHERE Lektion_ID = " + lektionNr;
+        Cursor cursor1 = database.rawQuery(query, new String[]{});
+        cursor1.moveToFirst();
+        cursor1.close();
+
+        query = "UPDATE "
+                + SprichwortDB.FeedEntry.TABLE_NAME
+                + " SET Gelernt = 0"
+                + " WHERE Lektion_ID = " + lektionNr;
+        Cursor cursor2 = database.rawQuery(query, new String[]{});
+        cursor2.moveToFirst();
+        cursor2.close();
+
+        query = "UPDATE "
+                + SubstantivDB.FeedEntry.TABLE_NAME
+                + " SET Gelernt = 0"
+                + " WHERE Lektion_ID = " + lektionNr;
+        Cursor cursor3 = database.rawQuery(query, new String[]{});
+        cursor3.moveToFirst();
+        cursor3.close();
+
+        query = "UPDATE "
+                + VerbDB.FeedEntry.TABLE_NAME
+                + " SET Gelernt = 0"
+                + " WHERE Lektion_ID = " + lektionNr;
+        Cursor cursor4 = database.rawQuery(query, new String[]{});
+        cursor4.moveToFirst();
+        cursor4.close();
+
+        closeDb();
+    }
+
+    public String getLektionsUeberschrift(int lektionNr){
+
+        reopenDb();
+
+        String query = "SELECT Titel FROM " + LektionDB.FeedEntry.TABLE_NAME +
+                " WHERE " + LektionDB.FeedEntry._ID + " = ?";
+        Cursor lektionCursor = database.rawQuery(query,
+                                                    new String[]{"" + lektionNr});
+
+        lektionCursor.moveToNext();
+        String lektionsUeberschrift = lektionCursor.getString(lektionCursor.getColumnIndex("Titel"));
+        lektionCursor.close();
+
+        closeDb();
+
+        return lektionsUeberschrift;
+    }
+
+    public String getLektionsText(int lektionNr){
+
+        reopenDb();
+
+        String query = "SELECT Thema FROM " + LektionDB.FeedEntry.TABLE_NAME +
+                " WHERE " + LektionDB.FeedEntry._ID + " = ?";
+        Cursor lektionCursor = database.rawQuery(query,
+                new String[]{"" + lektionNr});
+
+        lektionCursor.moveToNext();
+        String lektionsText = lektionCursor.getString(lektionCursor.getColumnIndex("Thema"));
+        lektionCursor.close();
+
+        closeDb();
+
+        return lektionsText;
     }
 
     /**

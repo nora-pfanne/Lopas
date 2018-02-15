@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.norablakaj.lateinapp.Activities.Lektion1"
+    tools:context="com.example.norablakaj.lateinapp.Activities.GrammatikA"
     android:id="@+id/constraint_Layout">
 
     <TextView
-        android:id="@+id/lateinLektion1"
+        android:id="@+id/lateinLektion1GrammatikA"
         android:layout_width="288dp"
         android:layout_height="35dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Vokabeltrainer Lektion 1"
+        android:text="Grammatik A"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -26,7 +26,7 @@
     <TextView
         android:id="@+id/lateinVokabel"
         android:layout_width="341dp"
-        android:layout_height="155dp"
+        android:layout_height="132dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -34,10 +34,9 @@
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.226" />
+        app:layout_constraintVertical_bias="0.347" />
 
     <EditText
         android:id="@+id/schuelerInput"
@@ -82,7 +81,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="\u2713"
-        android:onClick="buttonClickedBestaetigung"
+        android:onClick="buttonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.889"
@@ -99,12 +98,27 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Weiter"
-        android:onClick="buttonClickedNextVocabulary"
+        android:onClick="buttonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.912"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.846" />
+
+    <TextView
+        android:id="@+id/textViewAufgabenstellung"
+        android:layout_width="341dp"
+        android:layout_height="72dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.13" />
 
 </android.support.constraint.ConstraintLayout>

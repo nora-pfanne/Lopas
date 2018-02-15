@@ -1,15 +1,15 @@
-package com.example.norablakaj.lateinapp.Activities;
+package com.example.norablakaj.lateinapp.Activities.Grammatikeinheiten;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.norablakaj.lateinapp.R;
 
-public class Lektion4 extends AppCompatActivity {
+public class GrammatikDeklination extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lektion4);
+        setContentView(R.layout.activity_grammatik_deklination);
     }
 }
