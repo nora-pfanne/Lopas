@@ -3,6 +3,7 @@ package com.example.norablakaj.lateinapp.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -98,8 +99,8 @@ public class Vokabeltrainer extends AppCompatActivity {
                 weiter.setVisibility(View.GONE);
                 deutsch.setVisibility(View.GONE);
 
-                //TODO: get this color out of the /values/colors.xml file. currently: @colors/ghostWhite
-                userInput.setBackgroundColor(Color.parseColor("#FAFAFF"));
+                int color = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+                userInput.setBackgroundColor(color);
                 userInput.setFocusableInTouchMode(true);
             }
 
@@ -138,7 +139,6 @@ public class Vokabeltrainer extends AppCompatActivity {
     }
 
     private boolean compareTranslation(String userInput, String wantedTranslation){
-        //TODO: Check if the user had all cases correct if he inputs multiple
 
         if (userInput.equals("") || userInput.equals(" ") || userInput.equals("  ")){
             return false;

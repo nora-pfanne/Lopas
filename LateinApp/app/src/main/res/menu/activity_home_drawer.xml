@@ -12,23 +12,5 @@
             android:id="@+id/nav_wörterbuch"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Wörterbuch" />
-        <item
-            android:id="@+id/nav_hilfe"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Hilfe" />
-        <item
-            android:id="@+id/nav_impressum"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Impressum" />
     </group>
-
-    <item android:title="Entwicklermodus">
-        <menu>
-            <item
-                android:id="@+id/nav_dbhelper"
-                android:icon="@drawable/ic_menu_share"
-                android:title="DB Helper" />
-        </menu>
-    </item>
-
 </menu>

@@ -64,7 +64,9 @@ public class Woerterbuch extends AppCompatActivity implements AdapterView.OnItem
 
     private void addTableRows(TableLayout tl, String[][] values) {
 
-        //TODO: set space between columns on rows
+        //TODO: What do we do if the line to be printed is longer than the smartphone width
+
+
 
         for(int i = 0; i < values.length; i++) {
 
@@ -87,15 +89,6 @@ public class Woerterbuch extends AppCompatActivity implements AdapterView.OnItem
                     LayoutParams.MATCH_PARENT));
 
             //Create the columns to add as table data
-
-            /*
-            TextView labelID = new TextView(this);
-            labelID.setId(200 + tl.getChildCount());
-            labelID.setText(tl.getChildCount());
-            labelID.setTextColor(Color.WHITE);
-            tr.addView(labelID);
-*/
-//TODO: Add a \n for every possible translation
 
             TextView labelLatein = new TextView(this);
             labelLatein.setId(200 + tl.getChildCount());

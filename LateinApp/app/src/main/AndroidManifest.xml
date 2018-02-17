@@ -12,21 +12,34 @@
         <activity
             android:name=".Activities.Home"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.LektionUebersicht" />
-        <activity android:name=".Activities.AndroidDatabaseManager" />
-        <activity android:name=".Activities.Woerterbuch" />
-        <activity android:name=".Activities.Vokabeltrainer" android:windowSoftInputMode="stateVisible"/>
-        <activity android:name=".Activities.GrammatikA" android:theme="@style/noAnimationTheme"/>
-        <activity android:name=".Activities.GrammatikB" android:theme="@style/noAnimationTheme"/>
-        <activity android:name=".Activities.GrammatikC" android:theme="@style/noAnimationTheme"/>
-        <activity android:name=".Activities.Grammatikeinheiten.GrammatikDeklination"></activity>
+        <activity android:name=".Activities.LektionUebersicht"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.AndroidDatabaseManager"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.Woerterbuch"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.Vokabeltrainer"
+            android:windowSoftInputMode="stateVisible"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.GrammatikA"
+            android:theme="@style/noAnimationTheme"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.GrammatikB"
+            android:theme="@style/noAnimationTheme"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.GrammatikC"
+            android:theme="@style/noAnimationTheme"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.Grammatikeinheiten.GrammatikDeklination"
+            android:screenOrientation="portrait"></activity>
 
         <meta-data
             android:name="preloaded_fonts"

@@ -3,6 +3,8 @@ package com.example.norablakaj.lateinapp.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.view.SubMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +21,8 @@ import com.example.norablakaj.lateinapp.R;
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public boolean DEVELOPER = false;
+
     Button lektion1Button, lektion2Button, lektion3Button, lektion4Button, lektion5Button;
 
     /**
@@ -28,7 +32,6 @@ public class Home extends AppCompatActivity
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -74,6 +77,12 @@ public class Home extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+
+        if (!DEVELOPER) {
+            MenuItem devDBHelper = menu.findItem(R.id.action_dev_DB_Helper);
+            devDBHelper.setVisible(false);
+        }
+
         return true;
     }
 
@@ -89,9 +98,13 @@ public class Home extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        if (id == R.id.action_dev_DB_Helper){
+            Intent dbManager = new Intent(this, AndroidDatabaseManager.class);
+            startActivity(dbManager);
         }
 
         return super.onOptionsItemSelected(item);
@@ -106,6 +119,7 @@ public class Home extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
+
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
@@ -114,14 +128,6 @@ public class Home extends AppCompatActivity
             //Opening the activity 'Woerterbuch'
             Intent openWörterbuch = new Intent(this, Woerterbuch.class);
             startActivity(openWörterbuch);
-        } else if (id == R.id.nav_hilfe) {
-
-        } else if (id == R.id.nav_impressum) {
-
-        } else if (id == R.id.nav_dbhelper) {
-            //Opening the activity 'AndroidDatabaseManager'
-            Intent dbManager = new Intent(this, AndroidDatabaseManager.class);
-            startActivity(dbManager);
         }
 
         //Closing the drawer
