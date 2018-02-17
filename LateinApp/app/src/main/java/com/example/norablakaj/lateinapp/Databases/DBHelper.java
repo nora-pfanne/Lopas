@@ -465,11 +465,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
                             //Adverb
                             case AdverbDB.FeedEntry.TABLE_NAME:
-                                //TODO: Why is this needed here
-                                tokens[3] = tokens[3].replaceAll("[^\\d.]", "");
 
-                                //TODO: read 'gelernt' from file or remove it in the file
-                                addRowAdverb(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]));
+                                addRowAdverb(tokens[0], tokens[1], false, Integer.parseInt(tokens[2]));
 
                                 break;
 
@@ -491,35 +488,27 @@ public class DBHelper extends SQLiteOpenHelper {
 
                             //Präposition
                             case PräpositionDB.FeedEntry.TABLE_NAME:
-                                //TODO: Why is this needed here: removes the �
-                                tokens[3] = tokens[3].replaceAll("[^\\d.]", "");
 
-                                //TODO: read 'gelernt' from file
-                                addRowPräposition(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]));
+                                addRowPräposition(tokens[0], tokens[1], false, Integer.parseInt(tokens[2]));
 
                                 break;
 
                             //Sprechvokal_Präsens
                             case Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME:
-                                //TODO: Why is this needed here: removes the �
-                                tokens[3] = tokens[3].replaceAll("[^\\d.]", "");
 
-                                //TODO: read 'gelernt' from file
-                                addRowPräposition(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]));
+                                addRowPräposition(tokens[0], tokens[1], false, Integer.parseInt(tokens[2]));
 
                                 break;
 
                             //Sprechvokal_Substantiv
                             case Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME:
+                                //TODO: ???
                                 break;
 
                             //Sprichwort
                             case SprichwortDB.FeedEntry.TABLE_NAME:
-                                //TODO: Why is this needed here
-                                tokens[3] = tokens[3].replaceAll("[^\\d.]", "");
 
-                                //TODO: read 'gelernt' from file
-                                addRowSprichwort(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]));
+                                addRowSprichwort(tokens[0], tokens[1], false, Integer.parseInt(tokens[2]));
 
                                 break;
 
@@ -531,7 +520,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                         " FROM " + DeklinationsendungDB.FeedEntry.TABLE_NAME +
                                         " WHERE " + DeklinationsendungDB.FeedEntry.COLUMN_NAME + " = ?";
                                 Cursor cursor = database.rawQuery(query,
-                                        new String[]{tokens[5]}
+                                        new String[]{tokens[4]}
                                 );
                                 cursor.moveToNext();
                                 deklinationId = cursor.getInt(0);
@@ -546,14 +535,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
                             //Verb
                             case VerbDB.FeedEntry.TABLE_NAME:
-                                //TODO: read 'gelernt' from file
                                 //TODO: Sprechvokale einfügen (nicht '1')
                                 //TODO: Personalendungen benennen
                                 addRowVerb(tokens[0],
                                         tokens[1],
                                         tokens[2],
                                         false,
-                                        Integer.parseInt(tokens[4]),
+                                        Integer.parseInt(tokens[3]),
                                         1,
                                         1);
                                 break;
@@ -585,7 +573,7 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Closes the connection to the database if it is open
      */
-    private void closeDb() {
+    public void closeDb() {
         if (!database.isOpen()){
             database.close();
         }
@@ -628,6 +616,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 return -1;
             }
         }
+        return count;
     }
 
     public int countTableEntries(String[] tables, int lektionNr, boolean gelernt){
@@ -865,7 +854,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param deklinationsendungsName deklination of the wanted verb (from Deklinationsendung)
      * @return the final word in the right declination
      */
-    private String getDekliniertenSubstantiv(int vokabelID, String deklinationsendungsName){
+    public String getDekliniertenSubstantiv(int vokabelID, String deklinationsendungsName){
 
         reopenDb();
 
