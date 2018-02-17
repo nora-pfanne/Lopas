@@ -1017,8 +1017,7 @@ public class DBHelper extends SQLiteOpenHelper {
           
             
             //constructs a instance of Substantiv from the given randomNumber
-            count = randomNumber;  
-            vokabelID = randomNumber + prevLektionCountSubstantiv;
+            count = randomNumber;
             table = SubstantivDB.FeedEntry.TABLE_NAME;
             vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getDekliniertenSubstantiv(vokabelID, DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG);
@@ -1033,7 +1032,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
             //constructs a instance of Verb from the given randomNumber
             count = randomNumber-entryAmountSubstantiv;
-            vokabelID = randomNumber-entryAmountSubstantiv + prevLektionCountVerb;
             table = VerbDB.FeedEntry.TABLE_NAME;
             vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getKonjugiertesVerb(vokabelID,"inf");

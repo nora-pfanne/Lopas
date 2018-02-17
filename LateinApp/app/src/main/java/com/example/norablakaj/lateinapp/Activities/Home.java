@@ -3,8 +3,6 @@ package com.example.norablakaj.lateinapp.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import android.view.SubMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,7 +19,9 @@ import com.example.norablakaj.lateinapp.R;
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public boolean DEVELOPER = false;
+    private static boolean DEVELOPER = false;
+    private Menu menu;
+    private boolean onPause = false;
 
     Button lektion1Button, lektion2Button, lektion3Button, lektion4Button, lektion5Button;
 
@@ -78,12 +78,39 @@ public class Home extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
 
-        if (!DEVELOPER) {
-            MenuItem devDBHelper = menu.findItem(R.id.action_dev_DB_Helper);
+        this.menu = menu;
+
+        MenuItem devDBHelper = this.menu.findItem(R.id.action_dev_DB_Helper);
+        if (DEVELOPER) {
+            devDBHelper.setVisible(true);
+        }else {
             devDBHelper.setVisible(false);
         }
 
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        onPause = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (onPause){
+            onPause = false;
+
+            MenuItem devDBHelper = this.menu.findItem(R.id.action_dev_DB_Helper);
+            if (DEVELOPER) {
+                devDBHelper.setVisible(true);
+            }else {
+                devDBHelper.setVisible(false);
+            }
+        }
     }
 
     /**
@@ -99,7 +126,8 @@ public class Home extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            return true;
+            Intent settingsActivity = new Intent(this, SettingsActivity.class);
+            startActivity(settingsActivity);
         }
 
         if (id == R.id.action_dev_DB_Helper){
@@ -171,4 +199,11 @@ public class Home extends AppCompatActivity
 
     }
 
+    public static void setDeveloper (boolean developer){
+        DEVELOPER = developer;
+    }
+
+    public static boolean getDeveloper(){
+        return DEVELOPER;
+    }
 }
