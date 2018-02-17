@@ -15,7 +15,7 @@ import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
  * A dump for all the SQL-Statements and Arrays used in DBHelper.class
  */
 //@SuppressWarnings("WeakerAccess")
-final class SQL_DUMP {
+public final class SQL_DUMP {
 
     //Strings used for the creation of all database tables
      static final String SQL_CREATE_ENTRIES_ADVERB =
@@ -77,6 +77,8 @@ final class SQL_DUMP {
                     + "( "
                     + LektionDB.FeedEntry._ID
                     + " INTEGER PRIMARY KEY, "
+                    + LektionDB.FeedEntry.COLUMN_LEKTION_NR
+                    + " INTEGER, "
                     + LektionDB.FeedEntry.COLUMN_TITEL
                     + " TEXT, "
                     + LektionDB.FeedEntry.COLUMN_THEMA
@@ -363,6 +365,7 @@ final class SQL_DUMP {
 
      static final String[] allColumnsLektion = {
             LektionDB.FeedEntry._ID,
+             LektionDB.FeedEntry.COLUMN_LEKTION_NR,
             LektionDB.FeedEntry.COLUMN_TITEL,
             LektionDB.FeedEntry.COLUMN_THEMA
     };
