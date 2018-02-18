@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -23,10 +23,9 @@ import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.Vokabel;
 import com.example.norablakaj.lateinapp.R;
 
+public class Vokabeltrainer extends DevActivity {
 
-
-
-public class Vokabeltrainer extends AppCompatActivity {
+    private static boolean devCheatMode = false;
 
     TextView latein;
     TextView deutsch;
@@ -76,6 +75,10 @@ public class Vokabeltrainer extends AppCompatActivity {
             latein.setText(currentVokabel.getLatein());
 
             Log.d("currentVok", currentVokabel.getDeutsch());
+
+            if (Home.DEVELOPER && devCheatMode){
+                latein.setText(currentVokabel.getLatein() + "\n" + currentVokabel.getDeutsch());
+            }
         }
     }
 
@@ -102,6 +105,10 @@ public class Vokabeltrainer extends AppCompatActivity {
                 int color = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
                 userInput.setBackgroundColor(color);
                 userInput.setFocusableInTouchMode(true);
+
+                if (Home.DEVELOPER && devCheatMode){
+                    latein.setText(currentVokabel.getLatein() + "\n" + currentVokabel.getDeutsch());
+                }
             }
 
 
@@ -237,6 +244,13 @@ public class Vokabeltrainer extends AppCompatActivity {
         weiter.setVisibility(View.GONE);
 
         resetButton.setVisibility(View.VISIBLE);
+    }
+
+    public static boolean isDevCheatMode() {
+        return devCheatMode;
+    }
+    public static void setDevCheatMode(boolean devCheatMode) {
+        Vokabeltrainer.devCheatMode = devCheatMode;
     }
 }
 

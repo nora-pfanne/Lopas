@@ -104,7 +104,7 @@ public class GrammatikDeklination extends AppCompatActivity {
 
         }
     }
-
+/*
     public int getRandomVocabularyNumber(int weightNomSg,
                                         int weightNomPl,
                                         int weightGenSg,
@@ -118,4 +118,5 @@ public class GrammatikDeklination extends AppCompatActivity {
 
 
     }
+*/
 }

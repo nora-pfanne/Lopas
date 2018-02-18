@@ -1,9 +1,7 @@
 package com.example.norablakaj.lateinapp.Activities;
 
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -13,20 +11,18 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.database.Cursor;
 import android.widget.TableRow.LayoutParams;
 
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.Tables.AdverbDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.DeklinationsendungDB;
-import com.example.norablakaj.lateinapp.Databases.Tables.Personalendung_PräsensDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.PräpositionDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.SprichwortDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.SubstantivDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
 import com.example.norablakaj.lateinapp.R;
 
-public class Woerterbuch extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class Woerterbuch extends DevActivity implements AdapterView.OnItemSelectedListener{
 
     TableLayout tl;
     LinearLayout linearLayout;
