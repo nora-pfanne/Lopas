@@ -34,11 +34,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible" />
         <activity
-            android:name=".Activities.GrammatikA"
+            android:name=".GrammatikManager"
             android:screenOrientation="portrait"
             android:theme="@style/noAnimationTheme" />
         <activity
-            android:name=".Activities.GrammatikB"
+            android:name=".Activities.GrammatikBManager"
             android:screenOrientation="portrait"
             android:theme="@style/noAnimationTheme" />
         <activity

@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
+import com.example.norablakaj.lateinapp.GrammatikManager;
 import com.example.norablakaj.lateinapp.R;
 
 public class LektionUebersicht extends AppCompatActivity {
@@ -44,19 +44,13 @@ public class LektionUebersicht extends AppCompatActivity {
             startActivity(startVokabeltrainer);
         }
         if(view.getId() == R.id.buttonA){
-            Intent startGrammatikA = new Intent (view.getContext(), GrammatikA.class);
-            startGrammatikA.putExtra("lektion", lektion);
-            startActivity(startGrammatikA);
+            GrammatikManager grammatikManager = new GrammatikManager('A', lektion);
         }
         if(view.getId() == R.id.buttonB){
-            Intent startGrammatikB = new Intent(view.getContext(), GrammatikB.class);
-            startGrammatikB.putExtra("lektion", lektion);
-            startActivity(startGrammatikB);
+            GrammatikManager grammatikManager = new GrammatikManager('B', lektion);
         }
         if (view.getId() == R.id.buttonC) {
-            Intent startGrammatikC = new Intent(view.getContext(),GrammatikC.class);
-            startGrammatikC.putExtra("lektion", lektion);
-            startActivity(startGrammatikC);
+            GrammatikManager grammatikManager = new GrammatikManager('C', lektion);
         }
     }
 }
