@@ -3,6 +3,7 @@ package com.example.norablakaj.lateinapp.Activities.Grammatikeinheiten;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -81,45 +82,6 @@ public class GrammatikDeklination extends AppCompatActivity {
             abl_sg.setVisibility(View.GONE);
             abl_pl.setVisibility(View.GONE);
 
-        } else if(lektion == 2){
-
-            gen_sg.setVisibility(View.GONE);
-            gen_pl.setVisibility(View.GONE);
-            dat_sg.setVisibility(View.GONE);
-            dat_pl.setVisibility(View.GONE);
-            abl_sg.setVisibility(View.GONE);
-            abl_pl.setVisibility(View.GONE);
-
-        } else if(lektion == 3){
-
-            gen_sg.setVisibility(View.GONE);
-            gen_pl.setVisibility(View.GONE);
-            abl_sg.setVisibility(View.GONE);
-            abl_pl.setVisibility(View.GONE);
-
-        } else if(lektion == 4){
-
-            gen_sg.setVisibility(View.GONE);
-            gen_pl.setVisibility(View.GONE);
-
-        } else if(lektion >= 5){
-
-        }
-    }
-/*
-    public int getRandomVocabularyNumber(int weightNomSg,
-                                        int weightNomPl,
-                                        int weightGenSg,
-                                        int weightGenPl,
-                                        int weightDatSg,
-                                        int weightDatPl,
-                                        int weightAkkSg,
-                                        int weightAkkPl,
-                                        int weightAblSg,
-                                        int weightAblPl){
-
-        if(lektion == 1){
-
             weightNomSg = 1;
             weightNomPl = 1;
             weightGenSg = 0;
@@ -132,6 +94,13 @@ public class GrammatikDeklination extends AppCompatActivity {
             weightAblPl = 0;
 
         } else if(lektion == 2){
+
+            gen_sg.setVisibility(View.GONE);
+            gen_pl.setVisibility(View.GONE);
+            dat_sg.setVisibility(View.GONE);
+            dat_pl.setVisibility(View.GONE);
+            abl_sg.setVisibility(View.GONE);
+            abl_pl.setVisibility(View.GONE);
 
             weightNomSg = 1;
             weightNomPl = 1;
@@ -146,6 +115,11 @@ public class GrammatikDeklination extends AppCompatActivity {
 
         } else if(lektion == 3){
 
+            gen_sg.setVisibility(View.GONE);
+            gen_pl.setVisibility(View.GONE);
+            abl_sg.setVisibility(View.GONE);
+            abl_pl.setVisibility(View.GONE);
+
             weightNomSg = 1;
             weightNomPl = 1;
             weightGenSg = 0;
@@ -159,6 +133,9 @@ public class GrammatikDeklination extends AppCompatActivity {
 
         } else if(lektion == 4){
 
+            gen_sg.setVisibility(View.GONE);
+            gen_pl.setVisibility(View.GONE);
+
             weightNomSg = 1;
             weightNomPl = 1;
             weightGenSg = 0;
@@ -170,7 +147,7 @@ public class GrammatikDeklination extends AppCompatActivity {
             weightAblSg = 6;
             weightAblPl = 6;
 
-        }else if(lektion == 5){
+        } else if(lektion >= 5){
 
             weightNomSg = 1;
             weightNomPl = 1;
@@ -182,7 +159,43 @@ public class GrammatikDeklination extends AppCompatActivity {
             weightAkkPl = 1;
             weightAblSg = 1;
             weightAblPl = 1;
+
+        }else {
+            Log.e("LektionNotFound", "Lektion " + lektion + " in GrammatikDeklination.java not found");
+            weightNomSg = 0;
+            weightNomPl = 0;
+            weightGenSg = 0;
+            weightGenPl = 0;
+            weightDatSg = 0;
+            weightDatPl = 0;
+            weightAkkSg = 0;
+            weightAkkPl = 0;
+            weightAblSg = 0;
+            weightAblPl = 0;
         }
+        
+        int declinationNr = getRandomVocabularyNumber(weightNomSg,
+                                                     weightNomPl,
+                                                     weightGenSg,
+                                                     weightGenPl,
+                                                     weightDatSg,
+                                                     weightDatPl,
+                                                     weightAkkSg,
+                                                     weightAkkPl,
+                                                     weightAblSg,
+                                                     weightAblPl);
+    }
+
+    public int getRandomVocabularyNumber(int weightNomSg,
+                                        int weightNomPl,
+                                        int weightGenSg,
+                                        int weightGenPl,
+                                        int weightDatSg,
+                                        int weightDatPl,
+                                        int weightAkkSg,
+                                        int weightAkkPl,
+                                        int weightAblSg,
+                                        int weightAblPl){
 
         int[] weights = {weightNomSg,
                         weightNomPl,
@@ -194,8 +207,7 @@ public class GrammatikDeklination extends AppCompatActivity {
                         weightAkkPl,
                         weightAblSg,
                         weightAblPl};
-
-        int min = 0;
+        
         int max =  (weightNomSg +
                     weightNomPl +
                     weightGenSg +
@@ -211,7 +223,8 @@ public class GrammatikDeklination extends AppCompatActivity {
         int intRandom = randomNumber.nextInt(max+1);
         int sum = 1;
 
-        int randomVocabulary;
+        //TODO: Can we make this initialisation better? Can we prevent the error without?
+        int randomVocabulary = -1;
 
         for(int i = 0; i < weights.length; i++){
 
@@ -227,5 +240,5 @@ public class GrammatikDeklination extends AppCompatActivity {
 
         return randomVocabulary;
     }
-*/
+
 }

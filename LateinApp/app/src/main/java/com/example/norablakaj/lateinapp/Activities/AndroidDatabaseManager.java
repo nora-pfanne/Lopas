@@ -42,7 +42,7 @@ import com.example.norablakaj.lateinapp.Databases.DBHelper;
  * This Activity is used to view and edit all used databases on the mobile device
  *
  */
-
+@SuppressWarnings("all")
 public class AndroidDatabaseManager extends Activity implements OnItemClickListener {
 
     //a static class to save cursor,table values etc which is used by functions to share data in the program.

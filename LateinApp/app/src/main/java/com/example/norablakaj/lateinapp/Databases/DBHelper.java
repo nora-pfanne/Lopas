@@ -7,9 +7,7 @@ import android.database.MatrixCursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
-import android.webkit.JsPromptResult;
 
 import com.example.norablakaj.lateinapp.Databases.Tables.AdverbDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.DeklinationsendungDB;
@@ -27,8 +25,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Array;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -137,9 +133,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         onCreate(db);
     }
-
-
-    //TODO: Maybe combine all "addRow..." into one single method
 
     /**
      * Adds a entry to the 'Adverb' table in the database with given parameters
@@ -503,7 +496,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
                             //Sprechvokal_Substantiv
                             case Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME:
-                                //TODO: ???
+                                //TODO: We don't know how the .csv file looks like -> add a entry here later
                                 break;
 
                             //Sprichwort
@@ -515,8 +508,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
                             //Substantiv
                             case SubstantivDB.FeedEntry.TABLE_NAME:
-                                int deklinationId;
 
+                                //getting the deklination_ID
+                                int deklinationId;
                                 String query = "SELECT " + DeklinationsendungDB.FeedEntry._ID +
                                         " FROM " + DeklinationsendungDB.FeedEntry.TABLE_NAME +
                                         " WHERE " + DeklinationsendungDB.FeedEntry.COLUMN_NAME + " = ?";
@@ -527,8 +521,8 @@ public class DBHelper extends SQLiteOpenHelper {
                                 deklinationId = cursor.getInt(0);
                                 cursor.close();
 
-                                //TODO: Sprechvokale einfügen (nicht '0')
-                                addRowSubstantiv(tokens[0], tokens[1], false, Integer.parseInt(tokens[2]), 0, deklinationId);
+                                //TODO: Sprechvokale einfügen (nicht '1')
+                                addRowSubstantiv(tokens[0], tokens[1], false, Integer.parseInt(tokens[2]), 1, deklinationId);
 
                                 closeDb();
                                 reopenDb();
@@ -537,7 +531,7 @@ public class DBHelper extends SQLiteOpenHelper {
                             //Verb
                             case VerbDB.FeedEntry.TABLE_NAME:
                                 //TODO: Sprechvokale einfügen (nicht '1')
-                                //TODO: Personalendungen benennen
+                                //TODO: Personalendungen einfügen (nicht '1')
                                 addRowVerb(tokens[0],
                                         tokens[1],
                                         tokens[2],
@@ -588,6 +582,8 @@ public class DBHelper extends SQLiteOpenHelper {
         database = getWritableDatabase();
     }
 
+    //TODO: combine all countTableEntries(..) into one method
+
     /**
      * Counts the entries of all tables in the tables Array with a specific 'Lektion_id'
      * ONLY WORKS IF EVERY TABLE IN THE ARRAY HAS A FOREIGN KEY NAMED 'Lektion_id'
@@ -595,11 +591,9 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param lektionNr the id of the 'lektion', where the entries are to be counted
      * @return the amount of entries in the tables of the array; returns -1 if the any table doesn't have 'Lektion_id' as foreign key
      */
-    public int countTableEntries(String[] tables, int lektionNr){
+    private int countTableEntries(String[] tables, int lektionNr){
 
-        //TODO: Currently only works for tables containing the column 'Lektion_ID' -> maybe make it general?
-        //TODO: Maybe with try/catch?
-        Cursor cursor = null;
+        Cursor cursor;
         int count = 0;
         reopenDb();
 
@@ -607,8 +601,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
             try {
                 //getting the total number of entries which were completed and adding it to 'complete'
-                cursor = database.rawQuery("SELECT COUNT(*) FROM " + table
-                                + " WHERE Lektion_ID = ?",
+                String query = "SELECT COUNT(*) FROM " + table
+                        + " WHERE Lektion_ID = ?";
+
+                cursor = database.rawQuery(query,
                         new String[] {""+lektionNr});
                 cursor.moveToNext();
                 count += cursor.getInt(0);
@@ -620,10 +616,15 @@ public class DBHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    public int countTableEntries(String[] tables, int lektionNr, boolean gelernt){
+    /**
+     * Counts the entries of all tables in the tables Array with a specific 'Lektion_id'
+     * @param tables Array of all tables, where the entries are to be counted
+     * @param lektionNr the id of the 'lektion', where the entries are to be counted
+     * @param gelernt should the requested vokabel be 'gelernt==true'
+     * @return the amount of entries in the tables of the array; returns -1 if the any table doesn't have 'Lektion_id' as foreign key
+     */
+    private int countTableEntries(String[] tables, int lektionNr, boolean gelernt){
 
-        //TODO: Currently only works for tables containing the column 'Lektion_ID' -> maybe make it general?
-        //TODO: Maybe with try/catch?
         Cursor cursor = null;
         int count = 0;
         reopenDb();
@@ -632,9 +633,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
             try {
                 //getting the total number of entries which were completed and adding it to 'complete'
-                cursor = database.rawQuery("SELECT COUNT(*) FROM " + table
-                                + " WHERE Lektion_ID = ?" +
-                                  " AND Gelernt = ?",
+                String query = "SELECT COUNT(*) FROM " + table
+                        + " WHERE Lektion_ID = ?" +
+                        " AND Gelernt = ?";
+
+                cursor = database.rawQuery(query,
                         new String[] {""+lektionNr, ""+(gelernt ? 1 : 0)});
                 cursor.moveToNext();
                 count += cursor.getInt(0);
@@ -664,7 +667,8 @@ public class DBHelper extends SQLiteOpenHelper {
         //Counts the entry of every table in the tables-Array
         for(String table : tables){
             //getting the total number of entries which were completed and adding it to 'complete'
-            cursor = database.rawQuery("SELECT COUNT(*) FROM " + table,
+            String query = "SELECT COUNT(*) FROM " + table;
+            cursor = database.rawQuery(query,
                     new String[] {});
             cursor.moveToNext();
             count += cursor.getInt(0);
@@ -685,25 +689,16 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return the amount of entries in the tables of the array
      */
     private int countTableEntries(String table, int lektionNr){
-
-        /* TODO: Currently only works for tables containing the column 'Lektion_ID'
-        -> maybe make it general?
-
-         if(lektionNr == null){
-            count all lektion
-         }      */
-
-        //TODO: Make it work for table-array so that the previous method can be removed
-
-
         Cursor cursor;
         int count = 0;
         reopenDb();
 
         try {
             //getting the total number of entries and adding it to 'count'
-            cursor = database.rawQuery("SELECT COUNT(*) FROM " + table
-                            + " WHERE Lektion_ID = ?",
+            String query = "SELECT COUNT(*) FROM " + table
+                    + " WHERE Lektion_ID = ?";
+
+            cursor = database.rawQuery(query,
                     new String[] {""+lektionNr});
             cursor.moveToNext();
             count += cursor.getInt(0);
@@ -719,17 +714,18 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     private int countTableEntries(String table, int lektionNr, boolean gelernt){
-        //TODO: Currently only works for tables containing the column 'Lektion_ID' -> maybe make it general?
-        //TODO: Maybe with try/catch?
+        //Maybe with try/catch?
         Cursor cursor;
         int count = 0;
         reopenDb();
 
         try {
             //getting the total number of entries which were completed and adding it to 'complete'
-            cursor = database.rawQuery("SELECT COUNT(*) FROM " + table
-                            + " WHERE Lektion_ID = ?"
-                            + " AND Gelernt = ?",
+            String query = "SELECT COUNT(*) FROM " + table
+                    + " WHERE Lektion_ID = ?"
+                    + " AND Gelernt = ?";
+
+            cursor = database.rawQuery(query,
                     new String[] {""+lektionNr, "" + (gelernt ? 1 : 0)});
             cursor.moveToNext();
             count += cursor.getInt(0);
@@ -748,10 +744,11 @@ public class DBHelper extends SQLiteOpenHelper {
     private String getLateinFromId(int id, String table){
         reopenDb();
 
-        Cursor cursor = database.rawQuery("SELECT Latein" +
-                                                " FROM " + table +
-                                                " WHERE _ID = " + id
-        , new String[]{});
+        String query = "SELECT Latein" +
+                " FROM " + table +
+                " WHERE _ID = ?";
+
+        Cursor cursor = database.rawQuery(query, new String[]{""+id});
 
         cursor.moveToNext();
 
@@ -772,14 +769,13 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     private String getColumnFromId(int id, String table, String column){
 
-        //TODO: Check if the column exist -> abort
-
         reopenDb();
 
-        Cursor cursor = database.rawQuery("SELECT "+ column +
-                        " FROM " + table +
-                        " WHERE _ID = " + id
-                , new String[]{});
+        String query = "SELECT "+ column +
+                " FROM " + table +
+                " WHERE _ID = ?";
+
+        Cursor cursor = database.rawQuery(query, new String[]{""+id});
 
         cursor.moveToNext();
 
@@ -819,14 +815,17 @@ public class DBHelper extends SQLiteOpenHelper {
 
         reopenDb();
 
-        String query = "SELECT ";
+        StringBuilder stringBuilder = new StringBuilder(63);
+        stringBuilder.append("SELECT ");
+
         for (int i = 0; i < columns.length; i++){
-            query += columns[i];
+            stringBuilder.append(columns[i]);
             if (i < columns.length-1){
-                query += ",";
+                stringBuilder.append(",");
             }
-            query += " ";
+            stringBuilder.append(" ");
         }
+        String query = stringBuilder.toString();
         query += "FROM " + table + " WHERE Lektion_ID = " + lektion;
 
         Cursor cursor = database.rawQuery(query, new String[]{});
@@ -837,7 +836,7 @@ public class DBHelper extends SQLiteOpenHelper {
         while (cursor.moveToNext()){
             for (int i = 0; i < columns.length; i++){
 
-                values[count][i] = ""+cursor.getString(i);
+                values[count][i] = cursor.getString(i);
 
             }
             count++;
@@ -882,9 +881,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 SubstantivDB.FeedEntry.TABLE_NAME+"."+SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID +
                 " = " +
                 DeklinationsendungDB.FeedEntry.TABLE_NAME+"."+DeklinationsendungDB.FeedEntry._ID;
-        //TODO: Is ""+deklinationsname nöitg -> konvertierung String-String ist redundant
-        Cursor endungCursor = database.rawQuery(query,
-                                                    new String[] {""+vokabelID}
+        Cursor endungCursor = database.rawQuery(query, new String[] {""+vokabelID}
         );
         endungCursor.moveToNext();
         String endung = endungCursor.getString(0);
@@ -913,18 +910,17 @@ public class DBHelper extends SQLiteOpenHelper {
         String verbStamm = verbCursor.getString(verbCursor.getColumnIndex("Wortstamm"));
         verbCursor.close();
 
-        //gets the middle part of the word (Sprechvokal)
-        //TODO: Add a query for 'Sprechvokal'
+
         String sprechvokal;
-        //Gets the last part of the word (Endung)
         String endung;
+
         if (personalendung.equals("inf") || personalendung.equals("infinitiv") ||
             personalendung.equals("Inf") || personalendung.equals("Infinitiv")){
 
             sprechvokal = "";
             endung = "re";
         }else{
-
+            //gets the middle part of the word (Sprechvokal)
             query = "SELECT "
                     + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME+"."+personalendung +
                     " FROM " +
@@ -943,6 +939,7 @@ public class DBHelper extends SQLiteOpenHelper {
             sprechvokal = sprechvokalCursor.getString(0);
             sprechvokalCursor.close();
 
+            //Gets the last part of the word (Endung)
             query = "SELECT "
                     + Personalendung_PräsensDB.FeedEntry.TABLE_NAME+".?" +
                     " FROM " +
@@ -956,8 +953,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID +
                     " = " +
                     Personalendung_PräsensDB.FeedEntry.TABLE_NAME+"."+Personalendung_PräsensDB.FeedEntry._ID;
-            Cursor personalendungCursor = database.rawQuery(query ,
-                                                                new String[] {""+personalendung, ""+vokabelID}
+            Cursor personalendungCursor = database.rawQuery(query , new String[] {personalendung, ""+vokabelID}
             );
             personalendungCursor.moveToNext();
             endung = personalendungCursor.getString(0);

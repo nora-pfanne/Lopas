@@ -47,7 +47,7 @@ public class Woerterbuch extends DevActivity implements AdapterView.OnItemSelect
                 "Lektion 4",
                 "Lektion 5"
         };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_spinner_item,
                 spinnerElements);
