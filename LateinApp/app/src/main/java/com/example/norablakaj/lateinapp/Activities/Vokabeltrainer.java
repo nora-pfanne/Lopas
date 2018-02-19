@@ -28,9 +28,12 @@ public class Vokabeltrainer extends AppCompatActivity {
     TextView latein;
     TextView deutsch;
     EditText userInput;
+    
+    //TODO: Remove button elevation to make it align with 'userInput'-EditText
     Button bestaetigung;
     Button weiter;
     Button resetButton;
+
     TextView überschrift;
 
     DBHelper dbHelper;
