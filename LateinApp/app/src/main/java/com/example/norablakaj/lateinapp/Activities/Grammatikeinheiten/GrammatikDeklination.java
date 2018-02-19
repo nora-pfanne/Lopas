@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.R;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class GrammatikDeklination extends AppCompatActivity {
@@ -71,7 +73,7 @@ public class GrammatikDeklination extends AppCompatActivity {
         int weightAblSg;
         int weightAblPl;
 
-        if(lektion == 1){
+        if (lektion == 1) {
 
             gen_sg.setVisibility(View.GONE);
             gen_pl.setVisibility(View.GONE);
@@ -93,7 +95,7 @@ public class GrammatikDeklination extends AppCompatActivity {
             weightAblSg = 0;
             weightAblPl = 0;
 
-        } else if(lektion == 2){
+        } else if (lektion == 2) {
 
             gen_sg.setVisibility(View.GONE);
             gen_pl.setVisibility(View.GONE);
@@ -113,7 +115,7 @@ public class GrammatikDeklination extends AppCompatActivity {
             weightAblSg = 0;
             weightAblPl = 0;
 
-        } else if(lektion == 3){
+        } else if (lektion == 3) {
 
             gen_sg.setVisibility(View.GONE);
             gen_pl.setVisibility(View.GONE);
@@ -131,7 +133,7 @@ public class GrammatikDeklination extends AppCompatActivity {
             weightAblSg = 0;
             weightAblPl = 0;
 
-        } else if(lektion == 4){
+        } else if (lektion == 4) {
 
             gen_sg.setVisibility(View.GONE);
             gen_pl.setVisibility(View.GONE);
@@ -147,7 +149,7 @@ public class GrammatikDeklination extends AppCompatActivity {
             weightAblSg = 6;
             weightAblPl = 6;
 
-        } else if(lektion >= 5){
+        } else if (lektion >= 5) {
 
             weightNomSg = 1;
             weightNomPl = 1;
@@ -160,7 +162,7 @@ public class GrammatikDeklination extends AppCompatActivity {
             weightAblSg = 1;
             weightAblPl = 1;
 
-        }else {
+        } else {
             Log.e("LektionNotFound", "Lektion " + lektion + " in GrammatikDeklination.java not found");
             weightNomSg = 0;
             weightNomPl = 0;
@@ -173,17 +175,40 @@ public class GrammatikDeklination extends AppCompatActivity {
             weightAblSg = 0;
             weightAblPl = 0;
         }
-        
-        int declinationNr = getRandomVocabularyNumber(weightNomSg,
-                                                     weightNomPl,
-                                                     weightGenSg,
-                                                     weightGenPl,
-                                                     weightDatSg,
-                                                     weightDatPl,
-                                                     weightAkkSg,
-                                                     weightAkkPl,
-                                                     weightAblSg,
-                                                     weightAblPl);
+
+        ArrayList<Integer> testList = new ArrayList<>();
+        for (int i = 0; i < 100; i++){
+            int declinationNr = getRandomVocabularyNumber(weightNomSg,
+                    weightNomPl,
+                    weightGenSg,
+                    weightGenPl,
+                    weightDatSg,
+                    weightDatPl,
+                    weightAkkSg,
+                    weightAkkPl,
+                    weightAblSg,
+                    weightAblPl);
+            testList.add(declinationNr);
+        }
+
+        Log.d("Length", ""+testList.size());
+        Log.d("OccCounter",
+                "NomSg: " + Collections.frequency(testList, 0) + "\t" +
+                "NomPl: " + Collections.frequency(testList, 1) + "\n" +
+
+                "GenSg: " + Collections.frequency(testList, 2) + "\t" +
+                "GenPl: " + Collections.frequency(testList, 3) + "\n" +
+
+                "DatSg: " + Collections.frequency(testList, 4) + "\t" +
+                "DatPl: " + Collections.frequency(testList, 5) + "\n" +
+
+                "AkkSg: " + Collections.frequency(testList, 6) + "\t" +
+                "AkkPl: " + Collections.frequency(testList, 7) + "\n" +
+
+                "AblSg: " + Collections.frequency(testList, 8) + "\t" +
+                "AblPl: " + Collections.frequency(testList, 9) + "\n");
+        //FIXME SOME BUGS HERE?
+
     }
 
     public int getRandomVocabularyNumber(int weightNomSg,
@@ -220,23 +245,29 @@ public class GrammatikDeklination extends AppCompatActivity {
                     weightAblPl);
 
         Random randomNumber = new Random();
-        int intRandom = randomNumber.nextInt(max+1);
+        int intRandom = randomNumber.nextInt(max);
+        intRandom++;
         int sum = 1;
 
         //TODO: Can we make this initialisation better? Can we prevent the error without?
         int randomVocabulary = -1;
-
+        //Log.d("0","intRandom: \t" + intRandom);
         for(int i = 0; i < weights.length; i++){
+
+            //Log.d("Log", "sum:   \t" + sum +"\n"
+            //                +"weight[i]: \t" + weights[i] + "\n");
 
             if (intRandom == sum){
 
                 randomVocabulary = i;
+            //    Log.d("Found!", "randomVocabulary is "+randomVocabulary);
+                break;
             }
             else {
-
                 sum += weights[i];
             }
         }
+
 
         return randomVocabulary;
     }
