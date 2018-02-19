@@ -17,7 +17,7 @@ import com.example.norablakaj.lateinapp.R;
 public class Home extends DevActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static boolean DEVELOPER = false;
+    public static boolean DEVELOPER = true;
 
     Button lektion1Button, lektion2Button, lektion3Button, lektion4Button, lektion5Button;
 
