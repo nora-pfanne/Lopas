@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.R;
 
+import java.util.Random;
+
 public class GrammatikDeklination extends AppCompatActivity {
 
     TextView grammatikUeberschrift;
@@ -116,6 +118,113 @@ public class GrammatikDeklination extends AppCompatActivity {
                                         int weightAblSg,
                                         int weightAblPl){
 
+        if(lektion == 1){
 
+            weightNomSg = 1;
+            weightNomPl = 1;
+            weightGenSg = 0;
+            weightGenPl = 0;
+            weightDatSg = 0;
+            weightDatPl = 0;
+            weightAkkSg = 0;
+            weightAkkPl = 0;
+            weightAblSg = 0;
+            weightAblPl = 0;
+
+        } else if(lektion == 2){
+
+            weightNomSg = 1;
+            weightNomPl = 1;
+            weightGenSg = 0;
+            weightGenPl = 0;
+            weightDatSg = 0;
+            weightDatPl = 0;
+            weightAkkSg = 2;
+            weightAkkPl = 2;
+            weightAblSg = 0;
+            weightAblPl = 0;
+
+        } else if(lektion == 3){
+
+            weightNomSg = 1;
+            weightNomPl = 1;
+            weightGenSg = 0;
+            weightGenPl = 0;
+            weightDatSg = 4;
+            weightDatPl = 4;
+            weightAkkSg = 1;
+            weightAkkPl = 1;
+            weightAblSg = 0;
+            weightAblPl = 0;
+
+        } else if(lektion == 4){
+
+            weightNomSg = 1;
+            weightNomPl = 1;
+            weightGenSg = 0;
+            weightGenPl = 0;
+            weightDatSg = 1;
+            weightDatPl = 1;
+            weightAkkSg = 1;
+            weightAkkPl = 1;
+            weightAblSg = 6;
+            weightAblPl = 6;
+
+        }else if(lektion == 5){
+
+            weightNomSg = 1;
+            weightNomPl = 1;
+            weightGenSg = 8;
+            weightGenPl = 8;
+            weightDatSg = 1;
+            weightDatPl = 1;
+            weightAkkSg = 1;
+            weightAkkPl = 1;
+            weightAblSg = 1;
+            weightAblPl = 1;
+        }
+
+        int[] weights = {weightNomSg,
+                        weightNomPl,
+                        weightGenSg,
+                        weightGenPl,
+                        weightDatSg,
+                        weightDatPl,
+                        weightAkkSg,
+                        weightAkkPl,
+                        weightAblSg,
+                        weightAblPl};
+
+        int min = 0;
+        int max =  (weightNomSg +
+                    weightNomPl +
+                    weightGenSg +
+                    weightGenPl +
+                    weightDatSg +
+                    weightDatPl +
+                    weightAkkSg +
+                    weightAkkPl +
+                    weightAblSg +
+                    weightAblPl);
+
+        Random randomNumber = new Random();
+        int intRandom = randomNumber.nextInt(max+1);
+        int sum = 1;
+
+        int randomVocabulary;
+
+        for(int i = 0; i < weights.length; i++){
+
+            if (intRandom == sum){
+
+                randomVocabulary = i;
+            }
+            else {
+
+                sum += weights[i+1];
+            }
+        }
+
+        return randomVocabulary;
     }
 }
