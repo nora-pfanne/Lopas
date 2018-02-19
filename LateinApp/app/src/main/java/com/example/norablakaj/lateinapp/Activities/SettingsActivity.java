@@ -1,5 +1,6 @@
 package com.example.norablakaj.lateinapp.Activities;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -49,6 +50,11 @@ public class SettingsActivity extends AppCompatActivity {
 
         if (v.getId() == R.id.toggleDevModeSwitch){
             Home.setDeveloper(toggleDevModeSwitch.isChecked());
+
+            SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean("DEVELOPER", toggleDevModeSwitch.isChecked());
+            editor.commit();
         }
     }
 

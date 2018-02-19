@@ -2,6 +2,7 @@ package com.example.norablakaj.lateinapp.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -237,6 +238,11 @@ public class Vokabeltrainer extends AppCompatActivity {
         weiter.setVisibility(View.GONE);
 
         resetButton.setVisibility(View.VISIBLE);
+
+        SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("Vokabeltrainer"+lektion, true);
+        editor.commit();
     }
 }
 
