@@ -11,4 +11,10 @@
         android:orderInCategory="100"
         android:title="DEV: DB-Helper"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_dev_Vokabeltrainer-Cheat"
+        android:orderInCategory="100"
+        android:title="DEV: Vokabeltrainer-Cheat"
+        app:showAsAction="never"/>
 </menu>

@@ -2,11 +2,11 @@ package com.example.norablakaj.lateinapp.Activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -23,17 +23,19 @@ import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.Vokabel;
 import com.example.norablakaj.lateinapp.R;
 
+public class Vokabeltrainer extends DevActivity {
 
-
-
-public class Vokabeltrainer extends AppCompatActivity {
+    private static boolean devCheatMode = false;
 
     TextView latein;
     TextView deutsch;
     EditText userInput;
+    
+    //TODO: Remove button elevation to make it align with 'userInput'-EditText
     Button bestaetigung;
     Button weiter;
     Button resetButton;
+
     TextView überschrift;
 
     DBHelper dbHelper;
@@ -61,7 +63,7 @@ public class Vokabeltrainer extends AppCompatActivity {
         bestaetigung = findViewById(R.id.VokabeltrainerEingabeBestätigt);
         weiter = findViewById(R.id.VokabeltrainerNächsteVokabel);
         resetButton = findViewById(R.id.VokabeltrainerFortschrittLöschen);
-        
+
         deutsch.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
 
@@ -70,12 +72,24 @@ public class Vokabeltrainer extends AppCompatActivity {
         progressBar.setProgress((int)(dbHelper.getGelerntProzent(lektion) * 100));
 
         if (dbHelper.getGelerntProzent(lektion) == 1) {
-            allLearned();
-        } else {
-            currentVokabel = dbHelper.getRandomVocabulary(lektion);
-            latein.setText(currentVokabel.getLatein());
+            InputMethodManager imm = (InputMethodManager)getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
 
-            Log.d("currentVok", currentVokabel.getDeutsch());
+            allLearned();
+
+        } else {
+
+            currentVokabel = dbHelper.getRandomVocabulary(lektion);
+
+
+            Log.d("currentVok", "Latein: \t" + currentVokabel.getLatein() + "\n"
+                    +"Deutsch: \t" + currentVokabel.getDeutsch()+"\n");
+
+            latein.setText(currentVokabel.getLatein());
+            if (Home.DEVELOPER && devCheatMode){
+                latein.setText(currentVokabel.getLatein() + "\n" + currentVokabel.getDeutsch());
+            }
         }
     }
 
@@ -89,11 +103,15 @@ public class Vokabeltrainer extends AppCompatActivity {
                 allLearned();
             } else {
 
+                InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
                 currentVokabel = dbHelper.getRandomVocabulary(lektion);
                 latein.setText(currentVokabel.getLatein());
                 userInput.setText("");
 
-                Log.d("currentVok", currentVokabel.getDeutsch());
+                Log.d("currentVok", "Latein: \t" + currentVokabel.getLatein() + "\n"
+                        +"Deutsch: \t" + currentVokabel.getDeutsch()+"\n");
 
                 bestaetigung.setVisibility(View.VISIBLE);
                 weiter.setVisibility(View.GONE);
@@ -102,6 +120,10 @@ public class Vokabeltrainer extends AppCompatActivity {
                 int color = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
                 userInput.setBackgroundColor(color);
                 userInput.setFocusableInTouchMode(true);
+
+                if (Home.DEVELOPER && devCheatMode){
+                    latein.setText(currentVokabel.getLatein() + "\n" + currentVokabel.getDeutsch());
+                }
             }
 
 
@@ -119,10 +141,12 @@ public class Vokabeltrainer extends AppCompatActivity {
 
                 dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
 
-                userInput.setBackgroundColor(Color.GREEN);
+                int color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
+                userInput.setBackgroundColor(color);
 
             }else {
-                userInput.setBackgroundColor(Color.RED);
+                int color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+                userInput.setBackgroundColor(color);
             }
 
             deutsch.setText(currentVokabel.getDeutsch());
@@ -187,6 +211,15 @@ public class Vokabeltrainer extends AppCompatActivity {
                     }
                 }
 
+                if (translation.contains("sich") || translation.contains("Sich")){
+
+                    translation = translation.substring(5);
+
+                    if (user.equalsIgnoreCase(translation)){
+                        found = true;
+                    }
+                }
+
             }
 
             if (!found){
@@ -237,6 +270,18 @@ public class Vokabeltrainer extends AppCompatActivity {
         weiter.setVisibility(View.GONE);
 
         resetButton.setVisibility(View.VISIBLE);
+
+        SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("Vokabeltrainer"+lektion, true);
+        editor.commit();
+    }
+
+    public static boolean isDevCheatMode() {
+        return devCheatMode;
+    }
+    public static void setDevCheatMode(boolean devCheatMode) {
+        Vokabeltrainer.devCheatMode = devCheatMode;
     }
 }
 

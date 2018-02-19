@@ -1,7 +1,6 @@
 package com.example.norablakaj.lateinapp.Activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -10,7 +9,7 @@ import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.GrammatikManager;
 import com.example.norablakaj.lateinapp.R;
 
-public class LektionUebersicht extends AppCompatActivity {
+public class LektionUebersicht extends DevActivity {
 
     int lektion;
 
