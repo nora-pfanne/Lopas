@@ -3,7 +3,6 @@ package com.example.norablakaj.lateinapp.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,9 +22,6 @@ import com.example.norablakaj.lateinapp.Databases.Tables.SubstantivDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.Vokabel;
 import com.example.norablakaj.lateinapp.R;
-
-
-
 
 public class Vokabeltrainer extends AppCompatActivity {
 
@@ -62,7 +58,7 @@ public class Vokabeltrainer extends AppCompatActivity {
         bestaetigung = findViewById(R.id.VokabeltrainerEingabeBestätigt);
         weiter = findViewById(R.id.VokabeltrainerNächsteVokabel);
         resetButton = findViewById(R.id.VokabeltrainerFortschrittLöschen);
-        
+
         deutsch.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
 
@@ -71,8 +67,14 @@ public class Vokabeltrainer extends AppCompatActivity {
         progressBar.setProgress((int)(dbHelper.getGelerntProzent(lektion) * 100));
 
         if (dbHelper.getGelerntProzent(lektion) == 1) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+
             allLearned();
+
         } else {
+
             currentVokabel = dbHelper.getRandomVocabulary(lektion);
             latein.setText(currentVokabel.getLatein());
 
@@ -89,6 +91,9 @@ public class Vokabeltrainer extends AppCompatActivity {
             if (dbHelper.getGelerntProzent(lektion) == 1) {
                 allLearned();
             } else {
+
+                InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
                 currentVokabel = dbHelper.getRandomVocabulary(lektion);
                 latein.setText(currentVokabel.getLatein());
@@ -120,10 +125,12 @@ public class Vokabeltrainer extends AppCompatActivity {
 
                 dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
 
-                userInput.setBackgroundColor(Color.GREEN);
+                int color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
+                userInput.setBackgroundColor(color);
 
             }else {
-                userInput.setBackgroundColor(Color.RED);
+                int color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+                userInput.setBackgroundColor(color);
             }
 
             deutsch.setText(currentVokabel.getDeutsch());

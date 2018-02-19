@@ -977,9 +977,6 @@ public class DBHelper extends SQLiteOpenHelper {
                         " WHERE Gelernt = "+(gelernt ? 1 : 0)+" AND Lektion_ID = " + lektion;
         Cursor cursor = database.rawQuery(query, new String[]{});
 
-        Log.d("query", query);
-        Log.d("CursorLength",""+cursor.getCount());
-
         for (int i = 0; i < count; i++){
             cursor.moveToNext();
         }
@@ -1024,8 +1021,6 @@ public class DBHelper extends SQLiteOpenHelper {
             //constructs a instance of Substantiv from the given randomNumber
             count = randomNumber;
 
-            Log.d("Substantiv", "Count: " + count + "; EntryAmount: " + entryAmountSubstantiv);
-
             table = SubstantivDB.FeedEntry.TABLE_NAME;
             vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getDekliniertenSubstantiv(vokabelID, DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG);
@@ -1040,8 +1035,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
             //constructs a instance of Verb from the given randomNumber
             count = randomNumber-entryAmountSubstantiv;
-
-            Log.d("Verb", "Count: " + count + "; EntryAmount: " + entryAmountVerb);
 
             table = VerbDB.FeedEntry.TABLE_NAME;
             vokabelID = getIdFromCount(lektionNr, count, false, table);
@@ -1058,8 +1051,6 @@ public class DBHelper extends SQLiteOpenHelper {
             //constructs a instance of Präposition from the given randomNumber
             count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition;
 
-            Log.d("Präposition", "Count: " + count + "; EntryAmount: " + entryAmountPräposition);
-
             table = PräpositionDB.FeedEntry.TABLE_NAME;
             vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getLateinFromId(vokabelID, table);
@@ -1074,8 +1065,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
             //constructs a instance of Sprichwort from the given randomNumber
             count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition;
-
-            Log.d("Sprichwort", "Count: " + count + "; EntryAmount: " + entryAmountSprichwort);
 
             table = SprichwortDB.FeedEntry.TABLE_NAME;
             vokabelID = getIdFromCount(lektionNr, count, false, table);
@@ -1092,8 +1081,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
             //constructs a instance of Adverb from the given randomNumber
             count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition-entryAmountSprichwort;
-
-            Log.d("Adverb", "Count: " + count + "; EntryAmount: " + entryAmountAdverb);
 
             table = AdverbDB.FeedEntry.TABLE_NAME;
             vokabelID = getIdFromCount(lektionNr, count, false, table);
