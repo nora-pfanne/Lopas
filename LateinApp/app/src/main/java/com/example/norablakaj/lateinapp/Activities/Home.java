@@ -1,8 +1,10 @@
 package com.example.norablakaj.lateinapp.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +20,7 @@ public class Home extends DevActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public static boolean DEVELOPER = true;
+
 
     Button lektion1Button, lektion2Button, lektion3Button, lektion4Button, lektion5Button;
 
@@ -49,6 +52,14 @@ public class Home extends DevActivity
         lektion3Button = findViewById(R.id.lektion3);
         lektion4Button = findViewById(R.id.lektion4);
         lektion5Button = findViewById(R.id.lektion5);
+
+        SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
+        for (int i = 1; i <= 5; i++){
+        Log.d("VokTrainer", "Lektion "+i+" is: " + sharedPref.getBoolean("Vokabeltrainer"+i, false));
+        }
+
+        DEVELOPER = sharedPref.getBoolean("DEVELOPER", false);
+
     }
 
     /**

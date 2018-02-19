@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
+import android.webkit.JsPromptResult;
 
 import com.example.norablakaj.lateinapp.Databases.Tables.AdverbDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.DeklinationsendungDB;
@@ -520,14 +521,14 @@ public class DBHelper extends SQLiteOpenHelper {
                                         " FROM " + DeklinationsendungDB.FeedEntry.TABLE_NAME +
                                         " WHERE " + DeklinationsendungDB.FeedEntry.COLUMN_NAME + " = ?";
                                 Cursor cursor = database.rawQuery(query,
-                                        new String[]{tokens[4]}
+                                        new String[]{tokens[3]}
                                 );
                                 cursor.moveToNext();
                                 deklinationId = cursor.getInt(0);
                                 cursor.close();
 
                                 //TODO: Sprechvokale einfügen (nicht '0')
-                                addRowSubstantiv(tokens[0], tokens[1], false, Integer.parseInt(tokens[3]), 0, deklinationId);
+                                addRowSubstantiv(tokens[0], tokens[1], false, Integer.parseInt(tokens[2]), 0, deklinationId);
 
                                 closeDb();
                                 reopenDb();
@@ -914,14 +915,33 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //gets the middle part of the word (Sprechvokal)
         //TODO: Add a query for 'Sprechvokal'
-        String sprechvokal = "";
-
+        String sprechvokal;
         //Gets the last part of the word (Endung)
         String endung;
         if (personalendung.equals("inf") || personalendung.equals("infinitiv") ||
             personalendung.equals("Inf") || personalendung.equals("Infinitiv")){
+
+            sprechvokal = "";
             endung = "re";
         }else{
+
+            query = "SELECT "
+                    + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME+"."+personalendung +
+                    " FROM " +
+                    SprichwortDB.FeedEntry.TABLE_NAME + ", " +
+                    VerbDB.FeedEntry.TABLE_NAME +
+                    " WHERE " +
+                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry._ID +
+                    " = " +
+                    vokabelID +
+                    " AND " +
+                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID +
+                    " = " +
+                    Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME+"."+Sprechvokal_PräsensDB.FeedEntry._ID;
+            Cursor sprechvokalCursor = database.rawQuery(query, new String[]{});
+            sprechvokalCursor.moveToNext();
+            sprechvokal = sprechvokalCursor.getString(0);
+            sprechvokalCursor.close();
 
             query = "SELECT "
                     + Personalendung_PräsensDB.FeedEntry.TABLE_NAME+".?" +
@@ -975,30 +995,13 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return a instance of the chosen entry as object
      */
     public Vokabel getRandomVocabulary(int lektionNr){
-
-        //Get the amount of entries with a 'lektion' less than the lektionNr
-        int prevLektionCountSubstantiv = 0;
-        int prevLektionCountVerb = 0;
-        int prevLektionCountPräposition = 0;
-        int prevLektionCountSprichwort = 0;
-        int prevLektionCountAdverb = 0;
-
-        for (int i = 1; i < lektionNr; i++){
-
-            prevLektionCountSubstantiv += countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME, i);
-            prevLektionCountVerb += countTableEntries(VerbDB.FeedEntry.TABLE_NAME, i);
-            prevLektionCountPräposition += countTableEntries(PräpositionDB.FeedEntry.TABLE_NAME, i);
-            prevLektionCountSprichwort += countTableEntries(SprichwortDB.FeedEntry.TABLE_NAME, i);
-            prevLektionCountAdverb += countTableEntries(AdverbDB.FeedEntry.TABLE_NAME, i);
-
-        }
       
         //Get the amount of entries with a matching lektionNr
-        int entryAmountVerb = countTableEntries(VerbDB.FeedEntry.TABLE_NAME, lektionNr);
-        int entryAmountSubstantiv = countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME, lektionNr);
-        int entryAmountPräposition = countTableEntries(PräpositionDB.FeedEntry.TABLE_NAME, lektionNr);
-        int entryAmountSprichwort = countTableEntries(SprichwortDB.FeedEntry.TABLE_NAME, lektionNr);
-        int entryAmountAdverb = countTableEntries(AdverbDB.FeedEntry.TABLE_NAME, lektionNr);
+        int entryAmountVerb = countTableEntries(VerbDB.FeedEntry.TABLE_NAME, lektionNr, false);
+        int entryAmountSubstantiv = countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME, lektionNr, false);
+        int entryAmountPräposition = countTableEntries(PräpositionDB.FeedEntry.TABLE_NAME, lektionNr, false);
+        int entryAmountSprichwort = countTableEntries(SprichwortDB.FeedEntry.TABLE_NAME, lektionNr, false);
+        int entryAmountAdverb = countTableEntries(AdverbDB.FeedEntry.TABLE_NAME, lektionNr, false);
         int entryAmountTotal = entryAmountSubstantiv + entryAmountVerb + entryAmountPräposition + entryAmountSprichwort + entryAmountAdverb;
 
         Random rand = new Random();
@@ -1014,10 +1017,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
-          
             
             //constructs a instance of Substantiv from the given randomNumber
             count = randomNumber;
+
             table = SubstantivDB.FeedEntry.TABLE_NAME;
             vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getDekliniertenSubstantiv(vokabelID, DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG);
@@ -1032,6 +1035,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             //constructs a instance of Verb from the given randomNumber
             count = randomNumber-entryAmountSubstantiv;
+
             table = VerbDB.FeedEntry.TABLE_NAME;
             vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getKonjugiertesVerb(vokabelID,"inf");
@@ -1046,6 +1050,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             //constructs a instance of Präposition from the given randomNumber
             count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition;
+
             table = PräpositionDB.FeedEntry.TABLE_NAME;
             vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getLateinFromId(vokabelID, table);
@@ -1060,6 +1065,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             //constructs a instance of Sprichwort from the given randomNumber
             count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition;
+
             table = SprichwortDB.FeedEntry.TABLE_NAME;
             vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getLateinFromId(vokabelID, table);
@@ -1075,6 +1081,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             //constructs a instance of Adverb from the given randomNumber
             count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition-entryAmountSprichwort;
+
             table = AdverbDB.FeedEntry.TABLE_NAME;
             vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getLateinFromId(vokabelID, table);
