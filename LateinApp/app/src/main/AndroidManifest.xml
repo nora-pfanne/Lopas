@@ -53,7 +53,8 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".Activities.SettingsActivity"></activity>
+        <activity android:name=".Activities.SettingsActivity" />
+        <activity android:name=".Activities.Grammatikeinheiten.GrammatikPersonalendung"></activity>
     </application>
 
 </manifest>
