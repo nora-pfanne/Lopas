@@ -188,6 +188,15 @@ public class Vokabeltrainer extends AppCompatActivity {
                     }
                 }
 
+                if (translation.contains("sich") || translation.contains("Sich")){
+
+                    translation = translation.substring(5);
+
+                    if (user.equalsIgnoreCase(translation)){
+                        found = true;
+                    }
+                }
+
             }
 
             if (!found){

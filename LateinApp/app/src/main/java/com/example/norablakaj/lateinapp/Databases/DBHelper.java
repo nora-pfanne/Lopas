@@ -915,14 +915,33 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //gets the middle part of the word (Sprechvokal)
         //TODO: Add a query for 'Sprechvokal'
-        String sprechvokal = "";
-
+        String sprechvokal;
         //Gets the last part of the word (Endung)
         String endung;
         if (personalendung.equals("inf") || personalendung.equals("infinitiv") ||
             personalendung.equals("Inf") || personalendung.equals("Infinitiv")){
+
+            sprechvokal = "";
             endung = "re";
         }else{
+
+            query = "SELECT "
+                    + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME+"."+personalendung +
+                    " FROM " +
+                    SprichwortDB.FeedEntry.TABLE_NAME + ", " +
+                    VerbDB.FeedEntry.TABLE_NAME +
+                    " WHERE " +
+                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry._ID +
+                    " = " +
+                    vokabelID +
+                    " AND " +
+                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID +
+                    " = " +
+                    Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME+"."+Sprechvokal_PräsensDB.FeedEntry._ID;
+            Cursor sprechvokalCursor = database.rawQuery(query, new String[]{});
+            sprechvokalCursor.moveToNext();
+            sprechvokal = sprechvokalCursor.getString(0);
+            sprechvokalCursor.close();
 
             query = "SELECT "
                     + Personalendung_PräsensDB.FeedEntry.TABLE_NAME+".?" +
