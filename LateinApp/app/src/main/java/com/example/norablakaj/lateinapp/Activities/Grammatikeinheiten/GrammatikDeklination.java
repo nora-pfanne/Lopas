@@ -28,6 +28,9 @@ public class GrammatikDeklination extends AppCompatActivity {
 
     ProgressBar progressBar;
 
+    String[] faelle = {"Nom_Sg", "Nom_Pl", "Gen_Sg", "Gen_Pl", "Dat_Sg", "Dat_Pl",
+            "Akk_Sg", "Akk_Pl", "Abl_Sg", "Abl_Pl"};
+
     DBHelper dbHelper;
 
     int lektion;
@@ -67,9 +70,6 @@ public class GrammatikDeklination extends AppCompatActivity {
         int weightAkkPl;
         int weightAblSg;
         int weightAblPl;
-
-        String[] faelle = {"Nom_Sg", "Nom_Pl", "Gen_Sg", "Gen_Pl", "Dat_Sg", "Dat_Pl",
-                "Akk_Sg", "Akk_Pl", "Abl_Sg", "Abl_Pl"};
 
         if(lektion == 1){
 
@@ -234,7 +234,7 @@ public class GrammatikDeklination extends AppCompatActivity {
             }
             else {
 
-                sum += weights[i+1];
+                sum += weights[i];
             }
         }
 
