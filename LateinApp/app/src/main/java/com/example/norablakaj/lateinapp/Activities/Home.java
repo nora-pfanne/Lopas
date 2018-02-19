@@ -19,6 +19,10 @@ import com.example.norablakaj.lateinapp.R;
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static boolean DEVELOPER = false;
+    private Menu menu;
+    private boolean onPause = false;
+
     Button lektion1Button, lektion2Button, lektion3Button, lektion4Button, lektion5Button;
 
     /**
@@ -28,7 +32,6 @@ public class Home extends AppCompatActivity
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -74,7 +77,40 @@ public class Home extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+
+        this.menu = menu;
+
+        MenuItem devDBHelper = this.menu.findItem(R.id.action_dev_DB_Helper);
+        if (DEVELOPER) {
+            devDBHelper.setVisible(true);
+        }else {
+            devDBHelper.setVisible(false);
+        }
+
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        onPause = true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (onPause){
+            onPause = false;
+
+            MenuItem devDBHelper = this.menu.findItem(R.id.action_dev_DB_Helper);
+            if (DEVELOPER) {
+                devDBHelper.setVisible(true);
+            }else {
+                devDBHelper.setVisible(false);
+            }
+        }
     }
 
     /**
@@ -89,9 +125,14 @@ public class Home extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent settingsActivity = new Intent(this, SettingsActivity.class);
+            startActivity(settingsActivity);
+        }
+
+        if (id == R.id.action_dev_DB_Helper){
+            Intent dbManager = new Intent(this, AndroidDatabaseManager.class);
+            startActivity(dbManager);
         }
 
         return super.onOptionsItemSelected(item);
@@ -106,6 +147,7 @@ public class Home extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
+
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
@@ -114,14 +156,6 @@ public class Home extends AppCompatActivity
             //Opening the activity 'Woerterbuch'
             Intent openWörterbuch = new Intent(this, Woerterbuch.class);
             startActivity(openWörterbuch);
-        } else if (id == R.id.nav_hilfe) {
-
-        } else if (id == R.id.nav_impressum) {
-
-        } else if (id == R.id.nav_dbhelper) {
-            //Opening the activity 'AndroidDatabaseManager'
-            Intent dbManager = new Intent(this, AndroidDatabaseManager.class);
-            startActivity(dbManager);
         }
 
         //Closing the drawer
@@ -165,4 +199,11 @@ public class Home extends AppCompatActivity
 
     }
 
+    public static void setDeveloper (boolean developer){
+        DEVELOPER = developer;
+    }
+
+    public static boolean getDeveloper(){
+        return DEVELOPER;
+    }
 }

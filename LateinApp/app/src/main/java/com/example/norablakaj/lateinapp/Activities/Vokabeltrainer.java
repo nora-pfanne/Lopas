@@ -2,7 +2,8 @@ package com.example.norablakaj.lateinapp.Activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.constraint.ConstraintLayout;
+import android.graphics.Color;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
-import com.example.norablakaj.lateinapp.Databases.SQL_DUMP;
 import com.example.norablakaj.lateinapp.Databases.Tables.AdverbDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.PräpositionDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.SprichwortDB;
@@ -72,14 +72,11 @@ public class Vokabeltrainer extends AppCompatActivity {
         if (dbHelper.getGelerntProzent(lektion) == 1) {
             allLearned();
         } else {
-
             currentVokabel = dbHelper.getRandomVocabulary(lektion);
             latein.setText(currentVokabel.getLatein());
 
             Log.d("currentVok", currentVokabel.getDeutsch());
         }
-
-        //TODO: Open the keyboard on startup
     }
 
     public void buttonClicked(View view){
@@ -101,6 +98,10 @@ public class Vokabeltrainer extends AppCompatActivity {
                 bestaetigung.setVisibility(View.VISIBLE);
                 weiter.setVisibility(View.GONE);
                 deutsch.setVisibility(View.GONE);
+
+                int color = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+                userInput.setBackgroundColor(color);
+                userInput.setFocusableInTouchMode(true);
             }
 
 
@@ -112,9 +113,16 @@ public class Vokabeltrainer extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             }
 
+            userInput.setFocusable(false);
+
             if(compareTranslation(userInput.getText().toString(), currentVokabel.getDeutsch())){
 
                 dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
+
+                userInput.setBackgroundColor(Color.GREEN);
+
+            }else {
+                userInput.setBackgroundColor(Color.RED);
             }
 
             deutsch.setText(currentVokabel.getDeutsch());
@@ -131,31 +139,63 @@ public class Vokabeltrainer extends AppCompatActivity {
     }
 
     private boolean compareTranslation(String userInput, String wantedTranslation){
-        //TODO: Check if the user had all cases correct if he inputs multiple
-
-        //TODO: Make the pronouns optional "Der Sklave" can be correct as "Sklave" aswell
 
         if (userInput.equals("") || userInput.equals(" ") || userInput.equals("  ")){
             return false;
         }
 
+        String[] userTokens = userInput.split(",");
         String[] tokensTranslation = wantedTranslation.split(",");
 
-        for (String tS : tokensTranslation) {
+        boolean found;
 
-            tS = tS.replaceFirst("^ *", "");
+        for (String user : userTokens){
 
-            char lastChar = userInput.charAt(userInput.length() - 1);
-            if (lastChar == ' '){
-                userInput = userInput.substring(0, userInput.length() - 1);
+            //Deleting the first char of the user if it is a space
+            user = user.replaceFirst("^ *", "");
+
+            //Deleting the last char of the user if it is a space
+            char lastChar = user.charAt(user.length() - 1);
+            if (lastChar == ' ') {
+                user = user.substring(0, user.length() - 1);
             }
 
-            if (userInput.equalsIgnoreCase(tS)) {
-                return true;
+            found = false;
+
+            for (String translation : tokensTranslation){
+
+                //Deleting the first char of the translation if it is a space
+                translation = translation.replaceFirst("^ *", "");
+
+                //Deleting the last char of the translation if it is a space
+                lastChar = translation.charAt(translation.length() - 1);
+                if (lastChar == ' ') {
+                    translation = translation.substring(0, translation.length() - 1);
+                }
+
+                //Checking with pronouns
+                if (user.equalsIgnoreCase(translation)){
+                    found = true;
+                }
+                //Checking without pronouns
+                if (translation.contains("der") || translation.contains("die") || translation.contains("das") ||
+                    translation.contains("Der") || translation.contains("Die") || translation.contains("Das")){
+                    translation = translation.substring(4);
+
+                    if (user.equalsIgnoreCase(translation)){
+                        found = true;
+                    }
+                }
+
             }
+
+            if (!found){
+                return false;
+            }
+
         }
 
-        return false;
+        return true;
     }
 
     private String getVokabelTable(Vokabel vokabel){
