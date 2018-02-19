@@ -78,8 +78,8 @@ public class Vokabeltrainer extends AppCompatActivity {
             currentVokabel = dbHelper.getRandomVocabulary(lektion);
             latein.setText(currentVokabel.getLatein());
 
-            Log.d("currentVok", currentVokabel.getDeutsch());
-        }
+            Log.d("currentVok", "Latein: \t" + currentVokabel.getLatein() + "\n"
+                    +"Deutsch: \t" + currentVokabel.getDeutsch()+"\n");        }
     }
 
     public void buttonClicked(View view){
@@ -99,7 +99,8 @@ public class Vokabeltrainer extends AppCompatActivity {
                 latein.setText(currentVokabel.getLatein());
                 userInput.setText("");
 
-                Log.d("currentVok", currentVokabel.getDeutsch());
+                Log.d("currentVok", "Latein: \t" + currentVokabel.getLatein() + "\n"
+                        +"Deutsch: \t" + currentVokabel.getDeutsch()+"\n");
 
                 bestaetigung.setVisibility(View.VISIBLE);
                 weiter.setVisibility(View.GONE);
