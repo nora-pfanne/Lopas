@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.norablakaj.lateinapp.Activities.Grammatikeinheiten.GrammatikDeklination;
@@ -18,6 +20,13 @@ public class LektionUebersicht extends DevActivity {
 
     TextView lektionsUeberschrift;
     TextView lektionsText;
+
+    Button openVok;
+
+    ProgressBar progressVok;
+    ProgressBar progressA;
+    ProgressBar progressB;
+    ProgressBar progressC;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +43,17 @@ public class LektionUebersicht extends DevActivity {
 
         lektionsUeberschrift.setText(dbHelper.getLektionsUeberschrift(lektion));
         lektionsText.setText(dbHelper.getLektionsText(lektion));
+
+        openVok = findViewById(R.id.openVok);
+        openVok.setVisibility(View.GONE);
+
+        progressVok = findViewById(R.id.ÜbersichtProgressBarVokTrainer);
+        progressVok.setProgress((int)(dbHelper.getGelerntProzent(lektion)*100));
     }
 
     public void buttonClicked (View view){
 
-        if(view.getId() == R.id.openVok){
+        if(view.getId() == R.id.ÜbersichtProgressBarVokTrainer){
             Intent startVokabeltrainer = new Intent(view.getContext(), Vokabeltrainer.class);
             startVokabeltrainer.putExtra("lektion", lektion);
             startActivity(startVokabeltrainer);
@@ -52,6 +67,13 @@ public class LektionUebersicht extends DevActivity {
         if (view.getId() == R.id.buttonC) {
             grammarPartC(lektion);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        progressVok.setProgress((int)(dbHelper.getGelerntProzent(lektion)*100));
     }
 
     private void grammarPartA(int lektion){

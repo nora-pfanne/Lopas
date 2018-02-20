@@ -25,28 +25,6 @@
         app:layout_constraintVertical_bias="0.211" />
 
     <Button
-        android:id="@+id/openVok"
-        android:layout_width="314dp"
-        android:layout_height="82dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="#7A0028"
-        android:fontFamily="@font/hind_light"
-        android:textColor="#FF9F1C"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:onClick="buttonClicked"
-        android:text="Vokabeltrainer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.653" />
-
-    <Button
         style="@style/BasicBlueButton"
         android:id="@+id/buttonA"
         android:layout_width="90dp"
@@ -103,22 +81,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.862" />
 
-    <ProgressBar
-        android:id="@+id/progressBarÜbersicht"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="314dp"
-        android:layout_height="44dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
     <TextView
         android:id="@+id/lektionsueberschrift"
         android:layout_width="314dp"
@@ -137,5 +99,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.038" />
+
+    <ProgressBar
+        android:id="@+id/ÜbersichtVokTrainerProgressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="314dp"
+        android:layout_height="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.63"
+        android:scaleY="19"
+        android:onClick="buttonClicked"
+        android:background="@color/BurgundyLight"
+        />
+
+    <TextView
+        android:id="@+id/ÜbersichtVokTrainerText"
+        android:layout_width="311dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="#00000000"
+        android:gravity="center"
+        android:text="Vokabeltrainer"
+        android:textStyle="bold"
+        android:textColor="@color/Gold"
+        android:textSize="22dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.654" />
 
 </android.support.constraint.ConstraintLayout>

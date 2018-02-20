@@ -5,7 +5,9 @@
     <color name="colorAccent">#FF4081</color>
     <color name="spinnerColor">#2398ff</color>
     <color name="PrussianBlue">#002E54</color>
+    <color name="PrussianBlueLight">#7F96A9</color>
     <color name="Burgundy">#7A0028</color>
+    <color name="BurgundyLight">#BC7F93</color>
     <color name="GhostWhite">#FAFAFF</color>
     <color name="InputWrongRed">#FF4242</color>
     <color name="InputRightGreen">#AAFF86</color>
