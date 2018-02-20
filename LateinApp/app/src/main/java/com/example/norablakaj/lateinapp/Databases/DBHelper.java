@@ -35,7 +35,10 @@ import static com.example.norablakaj.lateinapp.Databases.SQL_DUMP.*;
     -> 3 Line Database:     _ID, Substantiv_ID, Translation
     -> 3 Line Database:     _ID, Verb_ID, Translation
     -> 3 Line Database:     _ID, Präposition_ID, Translation
-    -> ...      */
+    -> ...
+
+    Momentan keine Priorität, da die Übersetzungen nicht modifiziert wird.
+    */
 
 /**
  * DBHelper is used for managing the database and its tables.
@@ -1089,6 +1092,35 @@ public class DBHelper extends SQLiteOpenHelper {
             Log.e(DBHelper.class.getName(), "entry_id given by the randomNumber is out of bounds -> bigger than the amount of all entries combined");
             return null;
         }
+
+        return vokabelInstance;
+    }
+
+    public Vokabel getRandomSubstantiv(int lektionNr){
+
+        int entryAmountSubstantiv = countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME, lektionNr, false);
+
+        Random rand = new Random();
+        int randomNumber = rand.nextInt(entryAmountSubstantiv);
+        String lateinVokabel;
+        String table;
+        int count;
+        int vokabelID;
+        String deutsch;
+        Vokabel vokabelInstance;
+
+        //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
+        randomNumber++;
+
+        //constructs a instance of Substantiv from the given randomNumber
+        count = randomNumber;
+
+        table = SubstantivDB.FeedEntry.TABLE_NAME;
+        vokabelID = getIdFromCount(lektionNr, count, false, table);
+        lateinVokabel = getDekliniertenSubstantiv(vokabelID, DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG);
+        deutsch = getColumnFromId(vokabelID, table, SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH);
+
+        vokabelInstance = new SubstantivDB(vokabelID, lateinVokabel, deutsch);
 
         return vokabelInstance;
     }

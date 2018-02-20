@@ -34,7 +34,7 @@ public abstract class DevActivity extends AppCompatActivity{
             temp = "OFF";
         }
         MenuItem devVokCheat = this.menu.findItem(R.id.action_dev_Vokabeltrainer_Cheat);
-        devVokCheat.setTitle("DEV: Vokabeltrainer-Cheat: " + temp);
+        devVokCheat.setTitle("DEV: Cheat-Mode: " + temp);
 
         return true;
     }

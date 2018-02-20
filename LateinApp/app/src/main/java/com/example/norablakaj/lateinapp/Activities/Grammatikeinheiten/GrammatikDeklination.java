@@ -9,14 +9,20 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.norablakaj.lateinapp.Activities.DevActivity;
+import com.example.norablakaj.lateinapp.Activities.Home;
+import com.example.norablakaj.lateinapp.Activities.Vokabeltrainer;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
+import com.example.norablakaj.lateinapp.Databases.Tables.DeklinationsendungDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.SubstantivDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.Vokabel;
 import com.example.norablakaj.lateinapp.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class GrammatikDeklination extends AppCompatActivity {
+public class GrammatikDeklination extends DevActivity {
 
     TextView grammatikUeberschrift;
     TextView grammatikAufgabenstellung;
@@ -30,12 +36,40 @@ public class GrammatikDeklination extends AppCompatActivity {
 
     ProgressBar progressBar;
 
-    String[] faelle = {"Nom_Sg", "Nom_Pl", "Gen_Sg", "Gen_Pl", "Dat_Sg", "Dat_Pl",
-            "Akk_Sg", "Akk_Pl", "Abl_Sg", "Abl_Pl"};
+    String[] faelle = {
+            DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG,
+            DeklinationsendungDB.FeedEntry.COLUMN_NOM_PL,
+            DeklinationsendungDB.FeedEntry.COLUMN_GEN_SG,
+            DeklinationsendungDB.FeedEntry.COLUMN_GEN_PL,
+            DeklinationsendungDB.FeedEntry.COLUMN_DAT_SG,
+            DeklinationsendungDB.FeedEntry.COLUMN_DAT_PL,
+            DeklinationsendungDB.FeedEntry.COLUMN_AKK_SG,
+            DeklinationsendungDB.FeedEntry.COLUMN_AKK_PL,
+            DeklinationsendungDB.FeedEntry.COLUMN_ABL_SG,
+            DeklinationsendungDB.FeedEntry.COLUMN_ABL_PL
+    };
+
+    int[] weights;
+
+    int weightNomSg;
+    int weightNomPl;
+    int weightGenSg;
+    int weightGenPl;
+    int weightDatSg;
+    int weightDatPl;
+    int weightAkkSg;
+    int weightAkkPl;
+    int weightAblSg;
+    int weightAblPl;
 
     DBHelper dbHelper;
 
     int lektion;
+
+    Vokabel currentVokabel;
+    String declination;
+
+    //TODO: make all DBHelper into a private variable that calls .close() on onDestroy()/onFinish()
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,17 +95,6 @@ public class GrammatikDeklination extends AppCompatActivity {
         akk_pl = findViewById(R.id.GrammatikDeklinationAkkPl);
         abl_sg = findViewById(R.id.GrammatikDeklinationAblSg);
         abl_pl = findViewById(R.id.GrammatikDeklinationAblPl);
-
-        int weightNomSg;
-        int weightNomPl;
-        int weightGenSg;
-        int weightGenPl;
-        int weightDatSg;
-        int weightDatPl;
-        int weightAkkSg;
-        int weightAkkPl;
-        int weightAblSg;
-        int weightAblPl;
 
         if (lektion == 1) {
 
@@ -176,29 +199,32 @@ public class GrammatikDeklination extends AppCompatActivity {
             weightAblPl = 0;
         }
 
+        weights = new int[]
+                {weightNomSg,
+                weightNomPl,
+                weightAkkSg,
+                weightAkkPl,
+                weightDatSg,
+                weightDatPl,
+                weightAblSg,
+                weightAblPl,
+                weightGenSg,
+                weightGenPl};
+
+        declination = faelle[getRandomVocabularyNumber()];
+
+        currentVokabel = dbHelper.getRandomSubstantiv(lektion);
+
+        if (Home.DEVELOPER && Vokabeltrainer.isDevCheatMode()){
+            latein.setText(dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination)
+                            + "\n" +declination);
+        }else {
+            latein.setText(dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination));
+        }
+
     }
 
-    public int getRandomVocabularyNumber(int weightNomSg,
-                                        int weightNomPl,
-                                        int weightGenSg,
-                                        int weightGenPl,
-                                        int weightDatSg,
-                                        int weightDatPl,
-                                        int weightAkkSg,
-                                        int weightAkkPl,
-                                        int weightAblSg,
-                                        int weightAblPl){
-
-        int[] weights = {weightNomSg,
-                        weightNomPl,
-                        weightAkkSg,
-                        weightAkkPl,
-                        weightDatSg,
-                        weightDatPl,
-                        weightAblSg,
-                        weightAblPl,
-                        weightGenSg,
-                        weightGenPl};
+    public int getRandomVocabularyNumber(){
         
         int max =  (weightNomSg +
                     weightNomPl +
