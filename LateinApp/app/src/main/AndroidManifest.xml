@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="true"
+
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
@@ -33,18 +34,6 @@
             android:name=".Activities.Vokabeltrainer"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible" />
-        <activity
-            android:name=".GrammatikManager"
-            android:screenOrientation="portrait"
-            android:theme="@style/noAnimationTheme" />
-        <activity
-            android:name=".Activities.GrammatikBManager"
-            android:screenOrientation="portrait"
-            android:theme="@style/noAnimationTheme" />
-        <activity
-            android:name=".Activities.GrammatikC"
-            android:screenOrientation="portrait"
-            android:theme="@style/noAnimationTheme" />
         <activity
             android:name=".Activities.Grammatikeinheiten.GrammatikDeklination"
             android:screenOrientation="portrait" />
