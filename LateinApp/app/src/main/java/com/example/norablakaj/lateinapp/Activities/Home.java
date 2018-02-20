@@ -41,9 +41,8 @@ public class Home extends DevActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Logs what Vokabeltrainer-lektions are completed
-        SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
 
+        SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
         //Sets the DEVELOPER state according to a variable saved in a previous instance of the app
         DEVELOPER = sharedPref.getBoolean("DEVELOPER", false);
 

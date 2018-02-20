@@ -1,6 +1,8 @@
 package com.example.norablakaj.lateinapp.Activities.Grammatikeinheiten;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,15 +13,13 @@ import android.widget.TextView;
 
 import com.example.norablakaj.lateinapp.Activities.DevActivity;
 import com.example.norablakaj.lateinapp.Activities.Home;
+import com.example.norablakaj.lateinapp.Activities.LektionUebersicht;
 import com.example.norablakaj.lateinapp.Activities.Vokabeltrainer;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.Tables.DeklinationsendungDB;
-import com.example.norablakaj.lateinapp.Databases.Tables.SubstantivDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.Vokabel;
 import com.example.norablakaj.lateinapp.R;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Random;
 
 public class GrammatikDeklination extends DevActivity {
@@ -34,6 +34,8 @@ public class GrammatikDeklination extends DevActivity {
             akk_sg, akk_pl,
             abl_sg, abl_pl;
 
+    Button weiter;
+    
     ProgressBar progressBar;
 
     String[] faelle = {
@@ -69,6 +71,8 @@ public class GrammatikDeklination extends DevActivity {
     Vokabel currentVokabel;
     String declination;
 
+    SharedPreferences sharedPref;
+
     //TODO: make all DBHelper into a private variable that calls .close() on onDestroy()/onFinish()
 
     @Override
@@ -95,17 +99,16 @@ public class GrammatikDeklination extends DevActivity {
         akk_pl = findViewById(R.id.GrammatikDeklinationAkkPl);
         abl_sg = findViewById(R.id.GrammatikDeklinationAblSg);
         abl_pl = findViewById(R.id.GrammatikDeklinationAblPl);
+        weiter = findViewById(R.id.GrammatikDeklinationWeiter);
+
+        weiter.setVisibility(View.GONE);
+
+        sharedPref = getSharedPreferences("SharedPreferences", 0);
+
+        progressBar = findViewById(R.id.GrammatikDeklinationProgressBar);
+        progressBar.setMax(20);
 
         if (lektion == 1) {
-
-            gen_sg.setVisibility(View.GONE);
-            gen_pl.setVisibility(View.GONE);
-            dat_sg.setVisibility(View.GONE);
-            dat_pl.setVisibility(View.GONE);
-            akk_sg.setVisibility(View.GONE);
-            akk_pl.setVisibility(View.GONE);
-            abl_sg.setVisibility(View.GONE);
-            abl_pl.setVisibility(View.GONE);
 
             weightNomSg = 1;
             weightNomPl = 1;
@@ -120,13 +123,6 @@ public class GrammatikDeklination extends DevActivity {
 
         } else if (lektion == 2) {
 
-            gen_sg.setVisibility(View.GONE);
-            gen_pl.setVisibility(View.GONE);
-            dat_sg.setVisibility(View.GONE);
-            dat_pl.setVisibility(View.GONE);
-            abl_sg.setVisibility(View.GONE);
-            abl_pl.setVisibility(View.GONE);
-
             weightNomSg = 1;
             weightNomPl = 1;
             weightGenSg = 0;
@@ -140,11 +136,6 @@ public class GrammatikDeklination extends DevActivity {
 
         } else if (lektion == 3) {
 
-            gen_sg.setVisibility(View.GONE);
-            gen_pl.setVisibility(View.GONE);
-            abl_sg.setVisibility(View.GONE);
-            abl_pl.setVisibility(View.GONE);
-
             weightNomSg = 1;
             weightNomPl = 1;
             weightGenSg = 0;
@@ -157,9 +148,6 @@ public class GrammatikDeklination extends DevActivity {
             weightAblPl = 0;
 
         } else if (lektion == 4) {
-
-            gen_sg.setVisibility(View.GONE);
-            gen_pl.setVisibility(View.GONE);
 
             weightNomSg = 1;
             weightNomPl = 1;
@@ -222,6 +210,8 @@ public class GrammatikDeklination extends DevActivity {
             latein.setText(dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination));
         }
 
+        setButtonsVisible(lektion);
+
     }
 
     public int getRandomVocabularyNumber(){
@@ -268,4 +258,188 @@ public class GrammatikDeklination extends DevActivity {
         return randomVocabulary;
     }
 
+    public void deklinationstrainerButtonClicked(View view){
+
+        if (view.getId() == R.id.GrammatikDeklinationNomSg){
+            if(faelle[0].equals(declination)){
+                deklinationChosen(true);
+            }else{
+                deklinationChosen(false);
+            }
+        }else if (view.getId() == R.id.GrammatikDeklinationNomPl){
+            if(faelle[1].equals(declination)){
+                deklinationChosen(true);
+            }else{
+                deklinationChosen(false);
+            }
+        }else if (view.getId() == R.id.GrammatikDeklinationGenSg){
+            if(faelle[2].equals(declination)){
+                deklinationChosen(true);
+            }else{
+                deklinationChosen(false);
+            }
+        }else if (view.getId() == R.id.GrammatikDeklinationGenPl){
+            if(faelle[3].equals(declination)){
+                deklinationChosen(true);
+            }else{
+                deklinationChosen(false);
+            }
+        }else if (view.getId() == R.id.GrammatikDeklinationDatSg){
+            if(faelle[4].equals(declination)){
+                deklinationChosen(true);
+            }else{
+                deklinationChosen(false);
+            }
+        }else if (view.getId() == R.id.GrammatikDeklinationDatPl){
+            if(faelle[5].equals(declination)){
+                deklinationChosen(true);
+            }else{
+                deklinationChosen(false);
+            }
+        }else if (view.getId() == R.id.GrammatikDeklinationAkkSg){
+            if(faelle[6].equals(declination)){
+                deklinationChosen(true);
+            }else{
+                deklinationChosen(false);
+            }
+        }else if (view.getId() == R.id.GrammatikDeklinationAkkPl){
+            if(faelle[7].equals(declination)){
+                deklinationChosen(true);
+            }else{
+                deklinationChosen(false);
+            }
+        }else if (view.getId() == R.id.GrammatikDeklinationAblSg){
+            if(faelle[8].equals(declination)){
+                deklinationChosen(true);
+            }else{
+                deklinationChosen(false);
+            }
+        }else if (view.getId() == R.id.GrammatikDeklinationAblPl){
+            if(faelle[9].equals(declination)){
+                deklinationChosen(true);
+            }else{
+                deklinationChosen(false);
+            }
+        }else if (view.getId() == R.id.GrammatikDeklinationWeiter){
+            
+            weiter.setVisibility(View.GONE);
+            nom_sg.setVisibility(View.VISIBLE);
+            nom_pl.setVisibility(View.VISIBLE);
+            gen_sg.setVisibility(View.VISIBLE);
+            gen_pl.setVisibility(View.VISIBLE);
+            dat_sg.setVisibility(View.VISIBLE);
+            dat_pl.setVisibility(View.VISIBLE);
+            akk_sg.setVisibility(View.VISIBLE);
+            akk_pl.setVisibility(View.VISIBLE);
+            abl_sg.setVisibility(View.VISIBLE);
+            abl_pl.setVisibility(View.VISIBLE);
+
+            declination = faelle[getRandomVocabularyNumber()];
+
+            currentVokabel = dbHelper.getRandomSubstantiv(lektion);
+
+            if (Home.DEVELOPER && Vokabeltrainer.isDevCheatMode()){
+                latein.setText(dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination)
+                        + "\n" +declination);
+            }else {
+                latein.setText(dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination));
+            }
+
+            int color = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+            latein.setBackgroundColor(color);
+
+            setButtonsVisible(lektion);
+        }
+
+    }
+
+    private void deklinationChosen(boolean correct){
+        
+        int color;
+        if (correct) {
+            color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt("Deklination"+lektion, sharedPref.getInt("Deklination"+lektion, 0) + 1);
+            editor.apply();
+
+            progressBar.setProgress(sharedPref.getInt("Deklination" +lektion, 0));
+        }else{
+            color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+        }
+        latein.setBackgroundColor(color);
+    
+        weiter.setVisibility(View.VISIBLE);
+        nom_sg.setVisibility(View.GONE);
+        nom_pl.setVisibility(View.GONE);
+        gen_sg.setVisibility(View.GONE);
+        gen_pl.setVisibility(View.GONE);
+        dat_sg.setVisibility(View.GONE);
+        dat_pl.setVisibility(View.GONE);
+        akk_sg.setVisibility(View.GONE);
+        akk_pl.setVisibility(View.GONE);
+        abl_sg.setVisibility(View.GONE);
+        abl_pl.setVisibility(View.GONE);
+    }
+
+    private void setButtonsVisible(int lektion){
+        if (lektion == 1){
+            nom_sg.setVisibility(View.VISIBLE);
+            nom_pl.setVisibility(View.VISIBLE);
+            gen_sg.setVisibility(View.GONE);
+            gen_pl.setVisibility(View.GONE);
+            dat_sg.setVisibility(View.GONE);
+            dat_pl.setVisibility(View.GONE);
+            akk_sg.setVisibility(View.GONE);
+            akk_pl.setVisibility(View.GONE);
+            abl_sg.setVisibility(View.GONE);
+            abl_pl.setVisibility(View.GONE);
+
+        }else if (lektion == 2){
+            nom_sg.setVisibility(View.VISIBLE);
+            nom_pl.setVisibility(View.VISIBLE);
+            gen_sg.setVisibility(View.GONE);
+            gen_pl.setVisibility(View.GONE);
+            dat_sg.setVisibility(View.GONE);
+            dat_pl.setVisibility(View.GONE);
+            akk_sg.setVisibility(View.VISIBLE);
+            akk_pl.setVisibility(View.VISIBLE);
+            abl_sg.setVisibility(View.GONE);
+            abl_pl.setVisibility(View.GONE);
+
+        }else if (lektion == 3){
+            nom_sg.setVisibility(View.VISIBLE);
+            nom_pl.setVisibility(View.VISIBLE);
+            gen_sg.setVisibility(View.GONE);
+            gen_pl.setVisibility(View.GONE);
+            dat_sg.setVisibility(View.VISIBLE);
+            dat_pl.setVisibility(View.VISIBLE);
+            akk_sg.setVisibility(View.VISIBLE);
+            akk_pl.setVisibility(View.VISIBLE);
+            abl_sg.setVisibility(View.GONE);
+            abl_pl.setVisibility(View.GONE);
+
+        }else if (lektion == 4){
+            nom_sg.setVisibility(View.VISIBLE);
+            nom_pl.setVisibility(View.VISIBLE);
+            gen_sg.setVisibility(View.GONE);
+            gen_pl.setVisibility(View.GONE);
+            dat_sg.setVisibility(View.VISIBLE);
+            dat_pl.setVisibility(View.VISIBLE);
+            akk_sg.setVisibility(View.VISIBLE);
+            akk_pl.setVisibility(View.VISIBLE);
+            abl_sg.setVisibility(View.VISIBLE);
+            abl_pl.setVisibility(View.VISIBLE);
+        }else if (lektion >= 5){
+            nom_sg.setVisibility(View.VISIBLE);
+            nom_pl.setVisibility(View.VISIBLE);
+            gen_sg.setVisibility(View.VISIBLE);
+            gen_pl.setVisibility(View.VISIBLE);
+            dat_sg.setVisibility(View.VISIBLE);
+            dat_pl.setVisibility(View.VISIBLE);
+            akk_sg.setVisibility(View.VISIBLE);
+            akk_pl.setVisibility(View.VISIBLE);
+            abl_sg.setVisibility(View.VISIBLE);
+            abl_pl.setVisibility(View.VISIBLE);
+        }
+    }
 }
