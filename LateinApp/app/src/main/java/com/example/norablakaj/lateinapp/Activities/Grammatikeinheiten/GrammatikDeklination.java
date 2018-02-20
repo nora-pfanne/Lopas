@@ -176,39 +176,6 @@ public class GrammatikDeklination extends AppCompatActivity {
             weightAblPl = 0;
         }
 
-        ArrayList<Integer> testList = new ArrayList<>();
-        for (int i = 0; i < 100; i++){
-            int declinationNr = getRandomVocabularyNumber(weightNomSg,
-                    weightNomPl,
-                    weightGenSg,
-                    weightGenPl,
-                    weightDatSg,
-                    weightDatPl,
-                    weightAkkSg,
-                    weightAkkPl,
-                    weightAblSg,
-                    weightAblPl);
-            testList.add(declinationNr);
-        }
-
-        Log.d("Length", ""+testList.size());
-        Log.d("OccCounter",
-                "NomSg: " + Collections.frequency(testList, 0) + "\t" +
-                "NomPl: " + Collections.frequency(testList, 1) + "\n" +
-
-                "GenSg: " + Collections.frequency(testList, 2) + "\t" +
-                "GenPl: " + Collections.frequency(testList, 3) + "\n" +
-
-                "DatSg: " + Collections.frequency(testList, 4) + "\t" +
-                "DatPl: " + Collections.frequency(testList, 5) + "\n" +
-
-                "AkkSg: " + Collections.frequency(testList, 6) + "\t" +
-                "AkkPl: " + Collections.frequency(testList, 7) + "\n" +
-
-                "AblSg: " + Collections.frequency(testList, 8) + "\t" +
-                "AblPl: " + Collections.frequency(testList, 9) + "\n");
-        //FIXME SOME BUGS HERE?
-
     }
 
     public int getRandomVocabularyNumber(int weightNomSg,
@@ -224,14 +191,14 @@ public class GrammatikDeklination extends AppCompatActivity {
 
         int[] weights = {weightNomSg,
                         weightNomPl,
-                        weightGenSg,
-                        weightGenPl,
-                        weightDatSg,
-                        weightDatPl,
                         weightAkkSg,
                         weightAkkPl,
+                        weightDatSg,
+                        weightDatPl,
                         weightAblSg,
-                        weightAblPl};
+                        weightAblPl,
+                        weightGenSg,
+                        weightGenPl};
         
         int max =  (weightNomSg +
                     weightNomPl +
@@ -248,26 +215,29 @@ public class GrammatikDeklination extends AppCompatActivity {
         int intRandom = randomNumber.nextInt(max);
         intRandom++;
         int sum = 1;
+        int sumNew;
 
         //TODO: Can we make this initialisation better? Can we prevent the error without?
         int randomVocabulary = -1;
-        //Log.d("0","intRandom: \t" + intRandom);
         for(int i = 0; i < weights.length; i++){
 
-            //Log.d("Log", "sum:   \t" + sum +"\n"
-            //                +"weight[i]: \t" + weights[i] + "\n");
+            sumNew = sum + weights[i];
 
-            if (intRandom == sum){
+            if (intRandom >= sum && intRandom < sumNew){
 
                 randomVocabulary = i;
-            //    Log.d("Found!", "randomVocabulary is "+randomVocabulary);
                 break;
             }
             else {
-                sum += weights[i];
+                sum = sumNew;
             }
         }
 
+        if(randomVocabulary == -1){
+            Log.e("randomVocabulary", "Getting a randomDeclination failed! Returned -1 for " +
+                    "\nrandomNumber: " + randomNumber +
+                    "\nlektion: " + lektion);
+        }
 
         return randomVocabulary;
     }
