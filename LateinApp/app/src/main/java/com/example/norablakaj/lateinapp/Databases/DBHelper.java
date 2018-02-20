@@ -902,7 +902,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param personalendung konjugation of the wanted verb (from Personalendung_Präsens/"Inf",... for infinitiv)
      * @return the final word in the right declination
      */
-    private String getKonjugiertesVerb(int vokabelID, String personalendung){
+    public String getKonjugiertesVerb(int vokabelID, String personalendung){
         //TODO: add parameter for tenses
         reopenDb();
 
@@ -927,7 +927,7 @@ public class DBHelper extends SQLiteOpenHelper {
             query = "SELECT "
                     + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME+"."+personalendung +
                     " FROM " +
-                    SprichwortDB.FeedEntry.TABLE_NAME + ", " +
+                    Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + ", " +
                     VerbDB.FeedEntry.TABLE_NAME +
                     " WHERE " +
                     VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry._ID +
@@ -944,7 +944,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             //Gets the last part of the word (Endung)
             query = "SELECT "
-                    + Personalendung_PräsensDB.FeedEntry.TABLE_NAME+".?" +
+                    + Personalendung_PräsensDB.FeedEntry.TABLE_NAME+"."+personalendung+
                     " FROM " +
                     Personalendung_PräsensDB.FeedEntry.TABLE_NAME + ", " +
                     VerbDB.FeedEntry.TABLE_NAME +
@@ -956,7 +956,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID +
                     " = " +
                     Personalendung_PräsensDB.FeedEntry.TABLE_NAME+"."+Personalendung_PräsensDB.FeedEntry._ID;
-            Cursor personalendungCursor = database.rawQuery(query , new String[] {personalendung, ""+vokabelID}
+            Cursor personalendungCursor = database.rawQuery(query , new String[] { ""+vokabelID}
             );
             personalendungCursor.moveToNext();
             endung = personalendungCursor.getString(0);
@@ -1121,6 +1121,35 @@ public class DBHelper extends SQLiteOpenHelper {
         deutsch = getColumnFromId(vokabelID, table, SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH);
 
         vokabelInstance = new SubstantivDB(vokabelID, lateinVokabel, deutsch);
+
+        return vokabelInstance;
+    }
+
+    public Vokabel getRandomVerb(int lektionNr){
+
+        int entryAmountVerb = countTableEntries(VerbDB.FeedEntry.TABLE_NAME, lektionNr, false);
+
+        Random rand = new Random();
+        int randomNumber = rand.nextInt(entryAmountVerb);
+        String lateinVokabel;
+        String table;
+        int count;
+        int vokabelID;
+        String deutsch;
+        Vokabel vokabelInstance;
+
+        //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
+        randomNumber++;
+
+        //constructs a instance of Verb from the given randomNumber
+        count = randomNumber;
+
+        table = VerbDB.FeedEntry.TABLE_NAME;
+        vokabelID = getIdFromCount(lektionNr, count, false, table);
+        lateinVokabel = getKonjugiertesVerb(vokabelID, "inf");
+        deutsch = getColumnFromId(vokabelID, table, VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH);
+
+        vokabelInstance = new VerbDB(vokabelID, lateinVokabel, deutsch);
 
         return vokabelInstance;
     }

@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.norablakaj.lateinapp.Activities.Grammatikeinheiten.GrammatikDeklination;
+import com.example.norablakaj.lateinapp.Activities.Grammatikeinheiten.GrammatikPersonalendung;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.R;
 
@@ -61,7 +62,8 @@ public class LektionUebersicht extends DevActivity {
         //TODO: Set this properly
         progressB = findViewById(R.id.ÜbersichtGrammarBProgressBar);
         progressB.setMax(20);
-        progressB.setProgress(0);
+        int completedB = sharedPref.getInt("Personalendung"+lektion, 0);
+        progressB.setProgress(completedB);
 
         //TODO: Set this properly
         progressC = findViewById(R.id.ÜbersichtGrammarCProgressBar);
@@ -92,8 +94,12 @@ public class LektionUebersicht extends DevActivity {
         super.onResume();
 
         progressVok.setProgress((int)(dbHelper.getGelerntProzent(lektion)*100));
+        
         int completedA = sharedPref.getInt("Deklination"+lektion, 0);
         progressA.setProgress(completedA);
+
+        int completedB = sharedPref.getInt("Personalendung"+lektion, 0);
+        progressB.setProgress(completedB);
     }
 
     private void grammarPartA(int lektion){
@@ -142,23 +148,33 @@ public class LektionUebersicht extends DevActivity {
         switch (lektion){
 
             case 1:
-
+                Intent intent1 = new Intent(getApplicationContext(), GrammatikPersonalendung.class);
+                intent1.putExtra("lektion",lektion);
+                startActivity(intent1);
                 break;
 
             case 2:
-
+                Intent intent2 = new Intent(getApplicationContext(), GrammatikPersonalendung.class);
+                intent2.putExtra("lektion",lektion);
+                startActivity(intent2);
                 break;
 
             case 3:
-
+                Intent intent3 = new Intent(getApplicationContext(), GrammatikPersonalendung.class);
+                intent3.putExtra("lektion",lektion);
+                startActivity(intent3);
                 break;
 
             case 4:
-
+                Intent intent4 = new Intent(getApplicationContext(), GrammatikPersonalendung.class);
+                intent4.putExtra("lektion",lektion);
+                startActivity(intent4);
                 break;
 
             case 5:
-
+                Intent intent5 = new Intent(getApplicationContext(), GrammatikPersonalendung.class);
+                intent5.putExtra("lektion",lektion);
+                startActivity(intent5);
                 break;
 
             default:

@@ -72,6 +72,7 @@
         android:layout_marginTop="256dp"
         android:textSize="16dp"
         android:text="1. Pers. Sg."
+        android:onClick="personalendungButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.107"
@@ -81,7 +82,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikPesonalendung1PersPl"
+        android:id="@+id/GrammatikPersonalendung1PersPl"
         android:layout_width="143dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
@@ -90,6 +91,7 @@
         android:layout_marginTop="256dp"
         android:textSize="16dp"
         android:text="1. Pers. Pl."
+        android:onClick="personalendungButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.892"
@@ -108,6 +110,7 @@
         android:layout_marginTop="256dp"
         android:textSize="16dp"
         android:text="2. Pers. Sg."
+        android:onClick="personalendungButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.107"
@@ -126,6 +129,7 @@
         android:layout_marginTop="256dp"
         android:textSize="16dp"
         android:text="2. Pers. Pl."
+        android:onClick="personalendungButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.892"
@@ -144,6 +148,7 @@
         android:layout_marginTop="256dp"
         android:textSize="16dp"
         android:text="3. Pers. Sg."
+        android:onClick="personalendungButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.107"
@@ -162,6 +167,7 @@
         android:layout_marginTop="256dp"
         android:textSize="16dp"
         android:text="3. Pers. Pl."
+        android:onClick="personalendungButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.892"
@@ -184,4 +190,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.014" />
+
+    <Button
+        android:id="@+id/GrammatikPersonalendungWeiter"
+        style="@style/BasicBlueButton"
+        android:layout_width="146dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Weiter"
+        android:onClick="personalendungButtonClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.757" />
 </android.support.constraint.ConstraintLayout>

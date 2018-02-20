@@ -75,6 +75,8 @@ public class GrammatikDeklination extends DevActivity {
 
     SharedPreferences sharedPref;
 
+    int maxProgress = 20;
+
     //TODO: make all DBHelper into a private variable that calls .close() on onDestroy()/onFinish()
 
     @Override
@@ -108,7 +110,13 @@ public class GrammatikDeklination extends DevActivity {
         sharedPref = getSharedPreferences("SharedPreferences", 0);
 
         progressBar = findViewById(R.id.GrammatikDeklinationProgressBar);
-        progressBar.setMax(20);
+        progressBar.setMax(maxProgress);
+        int progress = sharedPref.getInt("Deklination"+lektion, 0);
+        if (progress < maxProgress){
+            progressBar.setProgress(progress);
+        }else {
+            progressBar.setProgress(maxProgress);
+        }
 
         if (lektion == 1) {
 
@@ -238,16 +246,16 @@ public class GrammatikDeklination extends DevActivity {
 
     public int getRandomVocabularyNumber(){
         
-        int max =  (weightNomSg +
-                    weightNomPl +
-                    weightGenSg +
-                    weightGenPl +
-                    weightDatSg +
-                    weightDatPl +
-                    weightAkkSg +
-                    weightAkkPl +
-                    weightAblSg +
-                    weightAblPl);
+        int max =  (weights[0]+
+                weights[1]+
+                weights[2]+
+                weights[3]+
+                weights[4]+
+                weights[5]+
+                weights[6]+
+                weights[7]+
+                weights[8]+
+                weights[9]);
 
         Random randomNumber = new Random();
         int intRandom = randomNumber.nextInt(max);
@@ -346,16 +354,6 @@ public class GrammatikDeklination extends DevActivity {
         }else if (view.getId() == R.id.GrammatikDeklinationWeiter){
             
             weiter.setVisibility(View.GONE);
-            nom_sg.setVisibility(View.VISIBLE);
-            nom_pl.setVisibility(View.VISIBLE);
-            gen_sg.setVisibility(View.VISIBLE);
-            gen_pl.setVisibility(View.VISIBLE);
-            dat_sg.setVisibility(View.VISIBLE);
-            dat_pl.setVisibility(View.VISIBLE);
-            akk_sg.setVisibility(View.VISIBLE);
-            akk_pl.setVisibility(View.VISIBLE);
-            abl_sg.setVisibility(View.VISIBLE);
-            abl_pl.setVisibility(View.VISIBLE);
 
             declination = faelle[getRandomVocabularyNumber()];
 
