@@ -20,6 +20,8 @@ import com.example.norablakaj.lateinapp.Databases.Tables.DeklinationsendungDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.Vokabel;
 import com.example.norablakaj.lateinapp.R;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class GrammatikDeklination extends DevActivity {
@@ -190,17 +192,37 @@ public class GrammatikDeklination extends DevActivity {
         weights = new int[]
                 {weightNomSg,
                 weightNomPl,
-                weightAkkSg,
-                weightAkkPl,
+                weightGenSg,
+                weightGenPl,
                 weightDatSg,
                 weightDatPl,
+                weightAkkSg,
+                weightAkkPl,
                 weightAblSg,
-                weightAblPl,
-                weightGenSg,
-                weightGenPl};
+                weightAblPl};
+        /*
+        DEBUGGING
+
+        ArrayList<String> testList = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            declination = faelle[getRandomVocabularyNumber()];
+            testList.add(declination);
+        }
+
+        Log.d("TestResult",
+                faelle[0] + ": \t" + Collections.frequency(testList, faelle[0]) + "\n" +
+                faelle[1] + ": \t" + Collections.frequency(testList, faelle[1]) + "\n" +
+                faelle[2] + ": \t" + Collections.frequency(testList, faelle[2]) + "\n" +
+                faelle[3] + ": \t" + Collections.frequency(testList, faelle[3]) + "\n" +
+                faelle[4] + ": \t" + Collections.frequency(testList, faelle[4]) + "\n" +
+                faelle[5] + ": \t" + Collections.frequency(testList, faelle[5]) + "\n" +
+                faelle[6] + ": \t" + Collections.frequency(testList, faelle[6]) + "\n" +
+                faelle[7] + ": \t" + Collections.frequency(testList, faelle[7]) + "\n" +
+                faelle[8] + ": \t" + Collections.frequency(testList, faelle[8]) + "\n" +
+                faelle[9] + ": \t" + Collections.frequency(testList, faelle[9]) + "\n");
+        */
 
         declination = faelle[getRandomVocabularyNumber()];
-
         currentVokabel = dbHelper.getRandomSubstantiv(lektion);
 
         if (Home.DEVELOPER && Vokabeltrainer.isDevCheatMode()){
@@ -254,6 +276,7 @@ public class GrammatikDeklination extends DevActivity {
                     "\nrandomNumber: " + randomNumber +
                     "\nlektion: " + lektion);
         }
+
 
         return randomVocabulary;
     }
