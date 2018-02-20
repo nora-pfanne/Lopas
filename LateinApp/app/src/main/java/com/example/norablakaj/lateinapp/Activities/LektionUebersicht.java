@@ -1,6 +1,7 @@
 package com.example.norablakaj.lateinapp.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +22,7 @@ public class LektionUebersicht extends DevActivity {
     TextView lektionsUeberschrift;
     TextView lektionsText;
 
-    Button openVok;
+    SharedPreferences sharedPref;
 
     ProgressBar progressVok;
     ProgressBar progressA;
@@ -36,6 +37,8 @@ public class LektionUebersicht extends DevActivity {
         Intent intent = getIntent();
         lektion = intent.getIntExtra("lektion",0);
 
+        sharedPref = getSharedPreferences("SharedPreferences", 0);
+
         dbHelper = new DBHelper(getApplicationContext());
 
         lektionsUeberschrift = findViewById(R.id.lektionsueberschrift);
@@ -44,27 +47,42 @@ public class LektionUebersicht extends DevActivity {
         lektionsUeberschrift.setText(dbHelper.getLektionsUeberschrift(lektion));
         lektionsText.setText(dbHelper.getLektionsText(lektion));
 
-        openVok = findViewById(R.id.openVok);
-        openVok.setVisibility(View.GONE);
 
-        progressVok = findViewById(R.id.ÜbersichtProgressBarVokTrainer);
+        progressVok = findViewById(R.id.ÜbersichtVokTrainerProgressBar);
+        progressVok.setMax(100);
         progressVok.setProgress((int)(dbHelper.getGelerntProzent(lektion)*100));
+
+        progressA = findViewById(R.id.ÜbersichtGrammarAProgressBar);
+        progressA.setMax(20);
+        //TODO: Setting this is acually more complicated as not every lektion has A->Deklination
+        int completedA = sharedPref.getInt("Deklination"+lektion, 0);
+        progressA.setProgress(completedA);
+
+        //TODO: Set this properly
+        progressB = findViewById(R.id.ÜbersichtGrammarBProgressBar);
+        progressB.setMax(20);
+        progressB.setProgress(0);
+
+        //TODO: Set this properly
+        progressC = findViewById(R.id.ÜbersichtGrammarCProgressBar);
+        progressC.setMax(20);
+        progressC.setProgress(0);
     }
 
     public void buttonClicked (View view){
 
-        if(view.getId() == R.id.ÜbersichtProgressBarVokTrainer){
+        if(view.getId() == R.id.ÜbersichtVokTrainerProgressBar){
             Intent startVokabeltrainer = new Intent(view.getContext(), Vokabeltrainer.class);
             startVokabeltrainer.putExtra("lektion", lektion);
             startActivity(startVokabeltrainer);
         }
-        if(view.getId() == R.id.buttonA){
+        if(view.getId() == R.id.ÜbersichtGrammarAProgressBar){
             grammarPartA(lektion);
         }
-        if(view.getId() == R.id.buttonB){
+        if(view.getId() == R.id.ÜbersichtGrammarBProgressBar){
             grammarPartB(lektion);
         }
-        if (view.getId() == R.id.buttonC) {
+        if (view.getId() == R.id.ÜbersichtGrammarCProgressBar) {
             grammarPartC(lektion);
         }
     }
@@ -74,6 +92,8 @@ public class LektionUebersicht extends DevActivity {
         super.onResume();
 
         progressVok.setProgress((int)(dbHelper.getGelerntProzent(lektion)*100));
+        int completedA = sharedPref.getInt("Deklination"+lektion, 0);
+        progressA.setProgress(completedA);
     }
 
     private void grammarPartA(int lektion){
