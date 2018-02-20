@@ -94,7 +94,7 @@ public class LektionUebersicht extends DevActivity {
         super.onResume();
 
         progressVok.setProgress((int)(dbHelper.getGelerntProzent(lektion)*100));
-        
+
         int completedA = sharedPref.getInt("Deklination"+lektion, 0);
         progressA.setProgress(completedA);
 

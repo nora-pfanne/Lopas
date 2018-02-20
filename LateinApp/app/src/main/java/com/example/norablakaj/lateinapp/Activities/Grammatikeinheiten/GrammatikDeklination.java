@@ -3,7 +3,6 @@ package com.example.norablakaj.lateinapp.Activities.Grammatikeinheiten;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,15 +12,12 @@ import android.widget.TextView;
 
 import com.example.norablakaj.lateinapp.Activities.DevActivity;
 import com.example.norablakaj.lateinapp.Activities.Home;
-import com.example.norablakaj.lateinapp.Activities.LektionUebersicht;
 import com.example.norablakaj.lateinapp.Activities.Vokabeltrainer;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.Tables.DeklinationsendungDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.Vokabel;
 import com.example.norablakaj.lateinapp.R;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Random;
 
 public class GrammatikDeklination extends DevActivity {
@@ -54,6 +50,8 @@ public class GrammatikDeklination extends DevActivity {
     };
 
     int[] weights;
+
+    int progress;
 
     int weightNomSg;
     int weightNomPl;
@@ -111,7 +109,7 @@ public class GrammatikDeklination extends DevActivity {
 
         progressBar = findViewById(R.id.GrammatikDeklinationProgressBar);
         progressBar.setMax(maxProgress);
-        int progress = sharedPref.getInt("Deklination"+lektion, 0);
+        progress = sharedPref.getInt("Deklination"+lektion, 0);
         if (progress < maxProgress){
             progressBar.setProgress(progress);
         }else {
@@ -230,17 +228,43 @@ public class GrammatikDeklination extends DevActivity {
                 faelle[9] + ": \t" + Collections.frequency(testList, faelle[9]) + "\n");
         */
 
-        declination = faelle[getRandomVocabularyNumber()];
-        currentVokabel = dbHelper.getRandomSubstantiv(lektion);
+        newVocabulary();
+    }
 
-        if (Home.DEVELOPER && Vokabeltrainer.isDevCheatMode()){
-            latein.setText(dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination)
-                            + "\n" +declination);
+    private void newVocabulary(){
+        progress = sharedPref.getInt("Deklination"+lektion, 0);
+
+        int color = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+        latein.setBackgroundColor(color);
+
+        if (progress < maxProgress) {
+            declination = faelle[getRandomVocabularyNumber()];
+            currentVokabel = dbHelper.getRandomSubstantiv(lektion);
+
+            if (Home.DEVELOPER && Vokabeltrainer.isDevCheatMode()) {
+                latein.setText(dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination)
+                        + "\n" + declination);
+            } else {
+                latein.setText(dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination));
+            }
+
+            setButtonsVisible(lektion);
         }else {
-            latein.setText(dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination));
-        }
+            nom_sg.setVisibility(View.GONE);
+            nom_pl.setVisibility(View.GONE);
+            gen_sg.setVisibility(View.GONE);
+            gen_pl.setVisibility(View.GONE);
+            dat_sg.setVisibility(View.GONE);
+            dat_pl.setVisibility(View.GONE);
+            akk_sg.setVisibility(View.GONE);
+            akk_pl.setVisibility(View.GONE);
+            abl_sg.setVisibility(View.GONE);
+            abl_pl.setVisibility(View.GONE);
+            latein.setVisibility(View.GONE);
 
-        setButtonsVisible(lektion);
+            Button reset = findViewById(R.id.GrammatikDeklinationReset);
+            reset.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -355,21 +379,14 @@ public class GrammatikDeklination extends DevActivity {
             
             weiter.setVisibility(View.GONE);
 
-            declination = faelle[getRandomVocabularyNumber()];
+            newVocabulary();
 
-            currentVokabel = dbHelper.getRandomSubstantiv(lektion);
 
-            if (Home.DEVELOPER && Vokabeltrainer.isDevCheatMode()){
-                latein.setText(dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination)
-                        + "\n" +declination);
-            }else {
-                latein.setText(dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination));
-            }
-
-            int color = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
-            latein.setBackgroundColor(color);
-
-            setButtonsVisible(lektion);
+        }else if (view.getId() == R.id.GrammatikDeklinationReset){
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt("Deklination"+lektion, 0);
+            editor.apply();
+            finish();
         }
 
     }

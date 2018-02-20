@@ -140,17 +140,9 @@ public class GrammatikPersonalendung extends DevActivity {
                 weightZweitePl,
                 weightDrittePl};
 
-        konjugation = faelle[getRandomVocabularyNumber()];
 
-        currentVokabel = dbHelper.getRandomVerb(lektion);
-        if (Home.DEVELOPER && Vokabeltrainer.isDevCheatMode()){
-            latein.setText(dbHelper.getKonjugiertesVerb(currentVokabel.getId(), konjugation)
-                    + "\n" +konjugation);
-        }else {
-            latein.setText(dbHelper.getKonjugiertesVerb(currentVokabel.getId(), konjugation));
-        }
+        newVocabulary();
 
-        setButtonsVisible(lektion);
     }
 
     public void personalendungButtonClicked(View view){
@@ -194,23 +186,48 @@ public class GrammatikPersonalendung extends DevActivity {
         }else if (view.getId() == R.id.GrammatikPersonalendungWeiter){
             weiter.setVisibility(View.GONE);
 
+            newVocabulary();
+
+        }else if (view.getId() == R.id.GrammatikPersonalendungReset){
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt("Personalendung"+lektion, 0);
+            editor.apply();
+            finish();
+        }
+    }
+
+    private void newVocabulary(){
+        int progress = sharedPref.getInt("Personalendung"+lektion, 0);
+
+        int color = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+        latein.setBackgroundColor(color);
+
+        if (progress < maxProgress) {
             konjugation = faelle[getRandomVocabularyNumber()];
 
             currentVokabel = dbHelper.getRandomVerb(lektion);
-            if (Home.DEVELOPER && Vokabeltrainer.isDevCheatMode()){
+            if (Home.DEVELOPER && Vokabeltrainer.isDevCheatMode()) {
                 latein.setText(dbHelper.getKonjugiertesVerb(currentVokabel.getId(), konjugation)
-                        + "\n" +konjugation);
-            }else {
+                        + "\n" + konjugation);
+            } else {
                 latein.setText(dbHelper.getKonjugiertesVerb(currentVokabel.getId(), konjugation));
             }
-
-            int color = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
-            latein.setBackgroundColor(color);
-
             setButtonsVisible(lektion);
+        }else {
+            latein.setText("");
+            ersteSg.setVisibility(View.GONE);
+            zweiteSg.setVisibility(View.GONE);
+            dritteSg.setVisibility(View.GONE);
+            erstePl.setVisibility(View.GONE);
+            zweitePl.setVisibility(View.GONE);
+            drittePl.setVisibility(View.GONE);
+
+            Button reset = findViewById(R.id.GrammatikPersonalendungReset);
+            reset.setVisibility(View.VISIBLE);
         }
+
     }
-    
+
     public int getRandomVocabularyNumber(){
 
         int max =  (weights[0] +
