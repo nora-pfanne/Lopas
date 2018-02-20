@@ -63,7 +63,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikDeklinationNomSg"
+        android:id="@+id/GrammatikPersonalendung1PersSg"
         android:layout_width="143dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
@@ -81,7 +81,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikDeklinationNomPl"
+        android:id="@+id/GrammatikPesonalendung1PersPl"
         android:layout_width="143dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
@@ -99,7 +99,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikDeklinationGenSg"
+        android:id="@+id/GrammatikPersonalendung2PersSg"
         android:layout_width="143dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
@@ -117,7 +117,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikDeklinationGenPl"
+        android:id="@+id/GrammatikPersonalendung2PersPl"
         android:layout_width="143dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
@@ -135,7 +135,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikDeklinationDatSg"
+        android:id="@+id/GrammatikPersonalendung3PersSg"
         android:layout_width="143dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
@@ -153,7 +153,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikDeklinationDatPl"
+        android:id="@+id/GrammatikPersonalendung3PersPl"
         android:layout_width="143dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
@@ -168,4 +168,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.508" />
+
+    <ProgressBar
+        android:id="@+id/progressBarPersonalendung"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="393dp"
+        android:layout_height="12dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.014" />
 </android.support.constraint.ConstraintLayout>
