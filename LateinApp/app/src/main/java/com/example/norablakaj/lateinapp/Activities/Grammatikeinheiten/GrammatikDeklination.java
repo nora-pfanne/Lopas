@@ -22,21 +22,21 @@ import java.util.Random;
 
 public class GrammatikDeklination extends DevActivity {
 
-    TextView grammatikUeberschrift;
-    TextView grammatikAufgabenstellung;
-    TextView latein;
+    private TextView grammatikUeberschrift;
+    private TextView grammatikAufgabenstellung;
+    private TextView latein;
 
-    Button nom_sg, nom_pl,
+    private Button nom_sg, nom_pl,
             gen_sg, gen_pl,
             dat_sg, dat_pl,
             akk_sg, akk_pl,
             abl_sg, abl_pl;
 
-    Button weiter;
-    
-    ProgressBar progressBar;
+    private Button weiter;
 
-    String[] faelle = {
+    private ProgressBar progressBar;
+
+    private String[] faelle = {
             DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG,
             DeklinationsendungDB.FeedEntry.COLUMN_NOM_PL,
             DeklinationsendungDB.FeedEntry.COLUMN_GEN_SG,
@@ -49,31 +49,31 @@ public class GrammatikDeklination extends DevActivity {
             DeklinationsendungDB.FeedEntry.COLUMN_ABL_PL
     };
 
-    int[] weights;
+    private int[] weights;
 
-    int progress;
+    private int progress;
 
-    int weightNomSg;
-    int weightNomPl;
-    int weightGenSg;
-    int weightGenPl;
-    int weightDatSg;
-    int weightDatPl;
-    int weightAkkSg;
-    int weightAkkPl;
-    int weightAblSg;
-    int weightAblPl;
+    private int weightNomSg;
+    private int weightNomPl;
+    private int weightGenSg;
+    private int weightGenPl;
+    private int weightDatSg;
+    private int weightDatPl;
+    private int weightAkkSg;
+    private int weightAkkPl;
+    private int weightAblSg;
+    private int weightAblPl;
 
-    DBHelper dbHelper;
+    private DBHelper dbHelper;
 
-    int lektion;
+    private int lektion;
 
-    Vokabel currentVokabel;
-    String declination;
+    private Vokabel currentVokabel;
+    private String declination;
 
-    SharedPreferences sharedPref;
+    private SharedPreferences sharedPref;
 
-    int maxProgress = 20;
+    private static int maxProgress = 20;
 
     //TODO: make all DBHelper into a private variable that calls .close() on onDestroy()/onFinish()
 
@@ -264,11 +264,13 @@ public class GrammatikDeklination extends DevActivity {
 
             Button reset = findViewById(R.id.GrammatikDeklinationReset);
             reset.setVisibility(View.VISIBLE);
+            Button back = findViewById(R.id.GrammatikDeklinationZurück);
+            back.setVisibility(View.VISIBLE);
         }
 
     }
 
-    public int getRandomVocabularyNumber(){
+    private int getRandomVocabularyNumber(){
         
         int max =  (weights[0]+
                 weights[1]+
@@ -313,7 +315,7 @@ public class GrammatikDeklination extends DevActivity {
         return randomVocabulary;
     }
 
-    public void deklinationstrainerButtonClicked(View view){
+    private void deklinationstrainerButtonClicked(View view){
 
         if (view.getId() == R.id.GrammatikDeklinationNomSg){
             if(faelle[0].equals(declination)){
@@ -386,6 +388,8 @@ public class GrammatikDeklination extends DevActivity {
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putInt("Deklination"+lektion, 0);
             editor.apply();
+            finish();
+        }else if (view.getId() == R.id.GrammatikDeklinationZurück){
             finish();
         }
 
@@ -479,5 +483,15 @@ public class GrammatikDeklination extends DevActivity {
             abl_sg.setVisibility(View.VISIBLE);
             abl_pl.setVisibility(View.VISIBLE);
         }
+    }
+
+    public static int getMaxProgress() {
+        return maxProgress;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbHelper.close();
     }
 }

@@ -3,7 +3,6 @@ package com.example.norablakaj.lateinapp.Activities.Grammatikeinheiten;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,45 +29,45 @@ public class GrammatikPersonalendung extends DevActivity {
 
     is cognitare right? -> cogitare?
      */
-    DBHelper dbHelper;
+    private DBHelper dbHelper;
 
-    String konjugation;
+    private String konjugation;
     
-    Button ersteSg,
+    private Button ersteSg,
             zweiteSg,
             dritteSg,
             erstePl,
             zweitePl,
             drittePl;
 
-    int weightErsteSg,
+    private int weightErsteSg,
             weightZweiteSg,
             weightDritteSg,
             weightErstePl,
             weightZweitePl,
             weightDrittePl;
 
-    int[] weights;
+    private int[] weights;
 
-    String[] faelle = {Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG,
+    private String[] faelle = {Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG,
             Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG,
             Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG,
             Personalendung_PräsensDB.FeedEntry.COLUMN_1_PL,
             Personalendung_PräsensDB.FeedEntry.COLUMN_2_PL,
             Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL};
     
-    Button weiter;
+    private Button weiter;
 
-    TextView latein;
+    private TextView latein;
 
-    Vokabel currentVokabel;
+    private Vokabel currentVokabel;
     
-    SharedPreferences sharedPref;
+    private SharedPreferences sharedPref;
 
-    ProgressBar progressBar;
+    private ProgressBar progressBar;
 
-    int lektion;
-    int maxProgress = 20;
+    private int lektion;
+    private static int maxProgress = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,6 +192,8 @@ public class GrammatikPersonalendung extends DevActivity {
             editor.putInt("Personalendung"+lektion, 0);
             editor.apply();
             finish();
+        }else if (view.getId() == R.id.GrammatikPersonalendungZurück){
+            finish();
         }
     }
 
@@ -224,6 +225,8 @@ public class GrammatikPersonalendung extends DevActivity {
 
             Button reset = findViewById(R.id.GrammatikPersonalendungReset);
             reset.setVisibility(View.VISIBLE);
+            Button back = findViewById(R.id.GrammatikPersonalendungZurück);
+            back.setVisibility(View.VISIBLE);
         }
 
     }
@@ -311,5 +314,15 @@ public class GrammatikPersonalendung extends DevActivity {
         erstePl.setVisibility(View.GONE);
         zweitePl.setVisibility(View.GONE);
         drittePl.setVisibility(View.GONE);
+    }
+
+    public static int getMaxProgress() {
+        return maxProgress;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbHelper.close();
     }
 }
