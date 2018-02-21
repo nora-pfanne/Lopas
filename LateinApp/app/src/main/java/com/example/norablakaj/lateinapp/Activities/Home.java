@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +13,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.example.norablakaj.lateinapp.Databases.DBHelper;
+import com.example.norablakaj.lateinapp.Databases.Tables.Personalendung_PräsensDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
 import com.example.norablakaj.lateinapp.R;
 
 public class Home extends DevActivity
@@ -44,7 +48,30 @@ public class Home extends DevActivity
 
         SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
         //Sets the DEVELOPER state according to a variable saved in a previous instance of the app
-        DEVELOPER = sharedPref.getBoolean("DEVELOPER", true);
+        DEVELOPER = sharedPref.getBoolean("DEVELOPER", false);
+
+
+        DBHelper dbhelper = new DBHelper(getApplicationContext());
+        Log.d("1Sg",dbhelper.getKonjugiertesVerb(13, Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG));
+        Log.d("2Sg",dbhelper.getKonjugiertesVerb(13, Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG));
+        Log.d("3Sg",dbhelper.getKonjugiertesVerb(13, Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG));
+        Log.d("1Pl",dbhelper.getKonjugiertesVerb(13, Personalendung_PräsensDB.FeedEntry.COLUMN_1_PL));
+        Log.d("2Pl",dbhelper.getKonjugiertesVerb(13, Personalendung_PräsensDB.FeedEntry.COLUMN_2_PL));
+        Log.d("3Pl",dbhelper.getKonjugiertesVerb(13, Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL));
+
+        Log.d("1Sg",dbhelper.getKonjugiertesVerb(60, Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG));
+        Log.d("2Sg",dbhelper.getKonjugiertesVerb(60, Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG));
+        Log.d("3Sg",dbhelper.getKonjugiertesVerb(60, Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG));
+        Log.d("1Pl",dbhelper.getKonjugiertesVerb(60, Personalendung_PräsensDB.FeedEntry.COLUMN_1_PL));
+        Log.d("2Pl",dbhelper.getKonjugiertesVerb(60, Personalendung_PräsensDB.FeedEntry.COLUMN_2_PL));
+        Log.d("3Pl",dbhelper.getKonjugiertesVerb(60, Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL));
+
+        Log.d("1Sg",dbhelper.getKonjugiertesVerb(61, Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG));
+        Log.d("2Sg",dbhelper.getKonjugiertesVerb(61, Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG));
+        Log.d("3Sg",dbhelper.getKonjugiertesVerb(61, Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG));
+        Log.d("1Pl",dbhelper.getKonjugiertesVerb(61, Personalendung_PräsensDB.FeedEntry.COLUMN_1_PL));
+        Log.d("2Pl",dbhelper.getKonjugiertesVerb(61, Personalendung_PräsensDB.FeedEntry.COLUMN_2_PL));
+        Log.d("3Pl",dbhelper.getKonjugiertesVerb(61, Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL));
 
     }
 

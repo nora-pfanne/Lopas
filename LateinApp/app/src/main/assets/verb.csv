@@ -11,6 +11,7 @@ betrachten, anschauen, zuschauen;spect;a-Konjugation;1; ;a-Konjugation
 wagen;aude;e-Konjugation;1; ; 
 bitten, beten, anbeten;or;a-Konjugation;1; ;a-Konjugation
 sehen;vide;e-Konjugation;1; ; 
+sein, sich befinden; ;spezial;1;no;esse
 warten, erwarten;exspect;a-Konjugation;2; ;a-Konjugation
 eilen, sich beeilen;proper;a-Konjugation;2; ;a-Konjugation
 finden, wiederfinden;reperi;i-Konjugation;2; ;i-Konjugation
@@ -57,6 +58,8 @@ erschrecken;terre;e-Konjugation;4; ;
 meiden, vermeiden;vit;a-Konjugation;4; ;a-Konjugation
 veraeaendern, verwandeln;mut;a-Konjugation;4; ;a-Konjugation
 umringen, umzingeln;circumveni;i-Konjugation;4; ;i-Konjugation
+wollen; ;spezial;4;no;velle
+nicht wollen; ;spezial;4;no;nolle
 schenken;don;a-Konjugation;5; ;a-Konjugation
 fueuehren, ziehen;duc;kons-Konjugation;5; ;kons-Konjugation
 zeigen, erklaeaeren;ostend;kons-Konjugation;5; ;kons-Konjugation
@@ -73,6 +76,3 @@ lesen, auswaeaehlen;leg;kons-Konjugation;5; ;kons-Konjugation
 schreiben, beschreiben;scrib;kons-Konjugation;5; ;kons-Konjugation
 finden, erfinden;inveni;i-Konjugation;5; ;i-Konjugation
 aufstellen, grueuenden, festsetzen, beschlieszen;constitu;kons-Konjugation;5; ;kons-Konjugation
-sein, sich befinden; ;spezial;1; ;esse
-wollen; ;spezial;4; ;velle
-nicht wollen; ;spezial;4; ;nolle

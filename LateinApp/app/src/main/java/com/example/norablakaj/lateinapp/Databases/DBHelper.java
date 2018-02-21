@@ -289,10 +289,10 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(allColumnsSprechvokal_Präsens[1], titel);
         values.put(allColumnsSprechvokal_Präsens[2], erste_sg);
-        values.put(allColumnsSprechvokal_Präsens[3], erste_pl);
-        values.put(allColumnsSprechvokal_Präsens[4], zweite_sg);
-        values.put(allColumnsSprechvokal_Präsens[5], zweite_pl);
-        values.put(allColumnsSprechvokal_Präsens[6], dritte_sg);
+        values.put(allColumnsSprechvokal_Präsens[3], zweite_sg);
+        values.put(allColumnsSprechvokal_Präsens[4], dritte_sg);
+        values.put(allColumnsSprechvokal_Präsens[5], erste_pl);
+        values.put(allColumnsSprechvokal_Präsens[6], zweite_pl);
         values.put(allColumnsSprechvokal_Präsens[7], dritte_pl);
 
         database.insert(Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME, null, values);
@@ -457,6 +457,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 if(line != null){
                     String[] tokens = line.split(";");
 
+                    //Replacing all singleSpace column entries with empty column entries
+                    for (int j = 0; j < tokens.length; j++){
+                        if (tokens[j].equals(" ")){
+                            tokens[j] = tokens[j].replace(" ", "");
+                        }
+                    }
+
                     try {
 
                         //Checks for the wanted table and adds the row as a entry
@@ -539,7 +546,13 @@ public class DBHelper extends SQLiteOpenHelper {
                                 //TODO: Sprechvokale einfügen (nicht '1')
                                 //TODO: Personalendungen einfügen (nicht '1')
 
-                                //getting the sprechvokal _ID
+                                int personalendungID;
+                                if (tokens[4].equals("no")){
+                                    personalendungID = 2;
+                                }else {
+                                    personalendungID = 1;
+                                }
+
                                 int sprechvokalID;
                                 if (tokens[5].equals("")|| tokens[5] == null || tokens[5].equals(" ")){
                                     sprechvokalID = 1;
@@ -554,17 +567,14 @@ public class DBHelper extends SQLiteOpenHelper {
                                     sprechvokalCursor.moveToNext();
                                     sprechvokalID = sprechvokalCursor.getInt(0);
                                     sprechvokalCursor.close();
-
-
                                 }
+
                                 addRowVerb(tokens[0],
                                         tokens[1],
                                         tokens[2],
                                         false,
                                         Integer.parseInt(tokens[3]),
-                                        1,
-
-                                        //TODO TODO TODO: Hurry
+                                        personalendungID,
                                         sprechvokalID);
                                 break;
 
@@ -973,7 +983,6 @@ public class DBHelper extends SQLiteOpenHelper {
                     VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID +
                     " = " +
                     Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME+"."+Sprechvokal_PräsensDB.FeedEntry._ID;
-            Log.d("query is", query);
             Cursor sprechvokalCursor = database.rawQuery(query, new String[]{});
             sprechvokalCursor.moveToNext();
             sprechvokal = sprechvokalCursor.getString(0);
@@ -1002,7 +1011,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
         closeDb();
 
-        return (verbStamm + sprechvokal + endung);
+        String vokabel = (verbStamm + sprechvokal + endung);
+
+        return vokabel;
     }
 
     private int getIdFromCount(int lektion, int count, boolean gelernt, String table){
