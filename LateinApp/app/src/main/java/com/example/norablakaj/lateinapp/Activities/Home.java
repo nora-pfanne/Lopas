@@ -44,7 +44,7 @@ public class Home extends DevActivity
 
         SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
         //Sets the DEVELOPER state according to a variable saved in a previous instance of the app
-        DEVELOPER = sharedPref.getBoolean("DEVELOPER", false);
+        DEVELOPER = sharedPref.getBoolean("DEVELOPER", true);
 
     }
 
