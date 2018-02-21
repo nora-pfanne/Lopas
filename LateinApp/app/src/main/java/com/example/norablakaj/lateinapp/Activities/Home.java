@@ -49,30 +49,6 @@ public class Home extends DevActivity
         SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
         //Sets the DEVELOPER state according to a variable saved in a previous instance of the app
         DEVELOPER = sharedPref.getBoolean("DEVELOPER", false);
-
-
-        DBHelper dbhelper = new DBHelper(getApplicationContext());
-        Log.d("1Sg",dbhelper.getKonjugiertesVerb(13, Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG));
-        Log.d("2Sg",dbhelper.getKonjugiertesVerb(13, Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG));
-        Log.d("3Sg",dbhelper.getKonjugiertesVerb(13, Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG));
-        Log.d("1Pl",dbhelper.getKonjugiertesVerb(13, Personalendung_PräsensDB.FeedEntry.COLUMN_1_PL));
-        Log.d("2Pl",dbhelper.getKonjugiertesVerb(13, Personalendung_PräsensDB.FeedEntry.COLUMN_2_PL));
-        Log.d("3Pl",dbhelper.getKonjugiertesVerb(13, Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL));
-
-        Log.d("1Sg",dbhelper.getKonjugiertesVerb(60, Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG));
-        Log.d("2Sg",dbhelper.getKonjugiertesVerb(60, Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG));
-        Log.d("3Sg",dbhelper.getKonjugiertesVerb(60, Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG));
-        Log.d("1Pl",dbhelper.getKonjugiertesVerb(60, Personalendung_PräsensDB.FeedEntry.COLUMN_1_PL));
-        Log.d("2Pl",dbhelper.getKonjugiertesVerb(60, Personalendung_PräsensDB.FeedEntry.COLUMN_2_PL));
-        Log.d("3Pl",dbhelper.getKonjugiertesVerb(60, Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL));
-
-        Log.d("1Sg",dbhelper.getKonjugiertesVerb(61, Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG));
-        Log.d("2Sg",dbhelper.getKonjugiertesVerb(61, Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG));
-        Log.d("3Sg",dbhelper.getKonjugiertesVerb(61, Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG));
-        Log.d("1Pl",dbhelper.getKonjugiertesVerb(61, Personalendung_PräsensDB.FeedEntry.COLUMN_1_PL));
-        Log.d("2Pl",dbhelper.getKonjugiertesVerb(61, Personalendung_PräsensDB.FeedEntry.COLUMN_2_PL));
-        Log.d("3Pl",dbhelper.getKonjugiertesVerb(61, Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL));
-
     }
 
     @Override
