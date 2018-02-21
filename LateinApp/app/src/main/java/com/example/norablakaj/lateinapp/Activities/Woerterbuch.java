@@ -2,6 +2,7 @@ package com.example.norablakaj.lateinapp.Activities;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -117,6 +118,19 @@ public class Woerterbuch extends DevActivity implements AdapterView.OnItemSelect
             //Adding entries to the table layout
             DBHelper dbHelper = new DBHelper(getApplicationContext());
 
+            //Adding values for 'Verb'
+            columns = new String[]{
+                    VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH,
+                    VerbDB.FeedEntry.COLUMN_WORTSTAMM,
+                    VerbDB.FeedEntry._ID
+            };
+            String[][] valuesVerb = dbHelper.getColumns(VerbDB.FeedEntry.TABLE_NAME, columns, pos + 1);
+            for (int i = 0; i < valuesVerb.length; i++){
+                valuesVerb[i][1] = dbHelper.getKonjugiertesVerb(Integer.parseInt(valuesVerb[i][2]), "inf");
+                Log.d("Verb", valuesVerb[i][1]);
+            }
+            addTableRows(tl, valuesVerb);
+
             //Adding values for "Substantiv"
             columns = new String[]{
                     SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH,
@@ -131,19 +145,6 @@ public class Woerterbuch extends DevActivity implements AdapterView.OnItemSelect
                         DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG);
             }
             addTableRows(tl, valuesSubstantiv);
-
-            //Adding values for 'Verb'
-            columns = new String[]{
-                    VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH,
-                    VerbDB.FeedEntry.COLUMN_WORTSTAMM,
-                    VerbDB.FeedEntry._ID
-            };
-            String[][] valuesVerb = dbHelper.getColumns(VerbDB.FeedEntry.TABLE_NAME, columns, pos + 1);
-            for (int i = 0; i < valuesVerb.length; i++){
-                valuesVerb[i][1] += "re";
-            }
-            addTableRows(tl, valuesVerb);
-
 
             //Adding values for everything but "Substantiv" and "Verb"
             columns = new String[]{

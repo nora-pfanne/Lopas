@@ -73,10 +73,7 @@ public class Home extends DevActivity
 
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            //TODO: Maybe remove this item if unused?
-
-        } else if (id == R.id.nav_wörterbuch) {
+        if (id == R.id.nav_wörterbuch) {
             //Opening the activity 'Woerterbuch'
             Intent openWörterbuch = new Intent(this, Woerterbuch.class);
             startActivity(openWörterbuch);

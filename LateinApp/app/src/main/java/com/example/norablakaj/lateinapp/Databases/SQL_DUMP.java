@@ -11,6 +11,8 @@ import com.example.norablakaj.lateinapp.Databases.Tables.SprichwortDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.SubstantivDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
 
+//TODO: SQL_DUMP -> Ref: Hancl: https://github.com/LinuCC/babesk/tree/master/dbv/data/revisions
+
 /**
  * A dump for all the SQL-Statements and Arrays used in DBHelper.class
  */
@@ -135,6 +137,8 @@ public final class SQL_DUMP {
                     + " INTEGER PRIMARY KEY, "
                     + Sprechvokal_PräsensDB.FeedEntry.COLUMN_TITLE
                     + " TEXT, "
+                    + Sprechvokal_PräsensDB.FeedEntry.COLUMN_INFINITV
+                    + " TEXT, "
                     + Sprechvokal_PräsensDB.FeedEntry.COLUMN_1_SG
                     + " TEXT, "
                     + Sprechvokal_PräsensDB.FeedEntry.COLUMN_1_PL
@@ -159,6 +163,7 @@ public final class SQL_DUMP {
                     + Sprechvokal_SubstantivDB.FeedEntry.COLUMN_NOM_PL
                     + " TEXT, "
                     + Sprechvokal_SubstantivDB.FeedEntry.COLUMN_GEN_SG
+                    + " TEXT, "
                     + " TEXT, "
                     + Sprechvokal_SubstantivDB.FeedEntry.COLUMN_GEN_PL
                     + " TEXT, "
@@ -394,6 +399,7 @@ public final class SQL_DUMP {
      static final String[] allColumnsSprechvokal_Präsens = {
             Sprechvokal_PräsensDB.FeedEntry._ID,
             Sprechvokal_PräsensDB.FeedEntry.COLUMN_TITLE,
+            Sprechvokal_PräsensDB.FeedEntry.COLUMN_INFINITV,
             Sprechvokal_PräsensDB.FeedEntry.COLUMN_1_SG,
             Sprechvokal_PräsensDB.FeedEntry.COLUMN_2_SG,
             Sprechvokal_PräsensDB.FeedEntry.COLUMN_3_SG,

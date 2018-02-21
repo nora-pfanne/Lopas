@@ -1,4 +1,4 @@
-package com.example.norablakaj.lateinapp.Activities;
+package com.example.norablakaj.lateinapp.Activities.Einheiten;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.norablakaj.lateinapp.Activities.DevActivity;
+import com.example.norablakaj.lateinapp.Activities.Home;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.Tables.AdverbDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.PräpositionDB;

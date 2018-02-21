@@ -2,9 +2,6 @@ package com.example.norablakaj.lateinapp.Databases.Tables;
 
 import android.provider.BaseColumns;
 
-//TODO: Should this be private/package private?
-
-
 public class SprichwortDB extends Vokabel{
 
     public SprichwortDB(int id, String latein, String deutsch){

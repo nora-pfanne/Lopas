@@ -1,9 +1,8 @@
-package com.example.norablakaj.lateinapp.Activities.Grammatikeinheiten;
+package com.example.norablakaj.lateinapp.Activities.Einheiten;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 
 import com.example.norablakaj.lateinapp.Activities.DevActivity;
 import com.example.norablakaj.lateinapp.Activities.Home;
-import com.example.norablakaj.lateinapp.Activities.Vokabeltrainer;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.Tables.Personalendung_PräsensDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.Vokabel;
