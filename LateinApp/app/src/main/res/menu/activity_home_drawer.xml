@@ -6,7 +6,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_wörterbuch"
-            android:icon="@drawable/laurelwreath297675_1280"
+            android:icon="@drawable/lorbeerkranz_small"
             android:title="Wörterbuch" />
     </group>
 </menu>
