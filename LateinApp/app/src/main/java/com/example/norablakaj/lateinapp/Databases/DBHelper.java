@@ -939,7 +939,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME+"."+Sprechvokal_PräsensDB.FeedEntry._ID;
             Cursor sprechvokalCursor = database.rawQuery(query, new String[]{});
             sprechvokalCursor.moveToNext();
-            sprechvokal = sprechvokalCursor.getString(0);
+            sprechvokal = sprechvokalCursor.getString(sprechvokalCursor.getColumnIndex(personalendung));
             sprechvokalCursor.close();
 
             //Gets the last part of the word (Endung)
@@ -959,7 +959,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Cursor personalendungCursor = database.rawQuery(query , new String[] { ""+vokabelID}
             );
             personalendungCursor.moveToNext();
-            endung = personalendungCursor.getString(0);
+            endung = personalendungCursor.getString(personalendungCursor.getColumnIndex(personalendung));
             personalendungCursor.close();
         }
 
