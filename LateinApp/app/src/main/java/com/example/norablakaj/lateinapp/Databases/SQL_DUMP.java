@@ -11,6 +11,8 @@ import com.example.norablakaj.lateinapp.Databases.Tables.SprichwortDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.SubstantivDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
 
+//TODO: SQL_DUMP -> Ref: Hancl: https://github.com/LinuCC/babesk/tree/master/dbv/data/revisions
+
 /**
  * A dump for all the SQL-Statements and Arrays used in DBHelper.class
  */

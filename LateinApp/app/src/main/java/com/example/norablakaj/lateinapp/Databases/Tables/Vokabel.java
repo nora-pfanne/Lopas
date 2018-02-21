@@ -1,9 +1,5 @@
 package com.example.norablakaj.lateinapp.Databases.Tables;
 
-/**
- * Created by Alexander on 10.02.2018.
- */
-
 //TODO Where should this class be in the project structure
 public class Vokabel {
 

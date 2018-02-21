@@ -544,8 +544,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
                             //Verb
                             case VerbDB.FeedEntry.TABLE_NAME:
-                                //TODO: Sprechvokale einfügen (nicht '1')
-                                //TODO: Personalendungen einfügen (nicht '1')
 
                                 int personalendungID;
                                 if (tokens[4].equals("no")){
@@ -619,8 +617,6 @@ public class DBHelper extends SQLiteOpenHelper {
         if (database != null && database.isOpen()) close();
         database = getWritableDatabase();
     }
-
-    //TODO: combine all countTableEntries(..) into one method
 
     /**
      * Counts the entries of all tables in the tables Array with a specific 'Lektion_id'

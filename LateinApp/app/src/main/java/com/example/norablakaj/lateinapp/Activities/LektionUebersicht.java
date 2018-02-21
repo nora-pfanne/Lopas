@@ -55,17 +55,18 @@ public class LektionUebersicht extends DevActivity {
 
         progressA = findViewById(R.id.ÜbersichtGrammarAProgressBar);
         progressA.setMax(20);
+
         //TODO: Setting this is acually more complicated as not every lektion has A->Deklination
         int completedA = sharedPref.getInt("Deklination"+lektion, 0);
         progressA.setProgress(completedA);
 
-        //TODO: Set this properly
+        //TODO: Setting this is acually more complicated as not every lektion has B->Konjugation
         progressB = findViewById(R.id.ÜbersichtGrammarBProgressBar);
         progressB.setMax(20);
         int completedB = sharedPref.getInt("Personalendung"+lektion, 0);
         progressB.setProgress(completedB);
 
-        //TODO: Set this properly
+        //TODO: Setting this is acually more complicated as not every lektion has C->?
         progressC = findViewById(R.id.ÜbersichtGrammarCProgressBar);
         progressC.setMax(20);
         progressC.setProgress(0);
