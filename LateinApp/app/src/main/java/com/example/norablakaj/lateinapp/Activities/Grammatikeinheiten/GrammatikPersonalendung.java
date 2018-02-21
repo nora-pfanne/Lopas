@@ -297,17 +297,23 @@ public class GrammatikPersonalendung extends DevActivity {
     
     private void konjugationChosen(boolean correct){
 
+        SharedPreferences.Editor editor = sharedPref.edit();
+
         int color;
         if (correct) {
             color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putInt("Personalendung"+lektion, sharedPref.getInt("Personalendung"+lektion, 0) + 1);
-            editor.apply();
 
-            progressBar.setProgress(sharedPref.getInt("Personalendung" +lektion, 0));
-        }else{
+            editor.putInt("Personalendung"+lektion, sharedPref.getInt("Personalendung"+lektion, 0) + 1);
+        }else {
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+            if (sharedPref.getInt("Personalendung" + lektion, 0) > 0) {
+                editor.putInt("Personalendung" + lektion, sharedPref.getInt("Personalendung" + lektion, 0) - 1);
+            }
         }
+        editor.apply();
+
+        progressBar.setProgress(sharedPref.getInt("Personalendung" +lektion, 0));
+
         latein.setBackgroundColor(color);
 
         weiter.setVisibility(View.VISIBLE);
