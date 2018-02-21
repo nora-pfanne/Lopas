@@ -133,6 +133,8 @@ public final class SQL_DUMP {
                     + "( "
                     + Sprechvokal_PräsensDB.FeedEntry._ID
                     + " INTEGER PRIMARY KEY, "
+                    + Sprechvokal_PräsensDB.FeedEntry.COLUMN_TITLE
+                    + " TEXT, "
                     + Sprechvokal_PräsensDB.FeedEntry.COLUMN_1_SG
                     + " TEXT, "
                     + Sprechvokal_PräsensDB.FeedEntry.COLUMN_1_PL
@@ -391,6 +393,7 @@ public final class SQL_DUMP {
 
      static final String[] allColumnsSprechvokal_Präsens = {
             Sprechvokal_PräsensDB.FeedEntry._ID,
+            Sprechvokal_PräsensDB.FeedEntry.COLUMN_TITLE,
             Sprechvokal_PräsensDB.FeedEntry.COLUMN_1_SG,
             Sprechvokal_PräsensDB.FeedEntry.COLUMN_2_SG,
             Sprechvokal_PräsensDB.FeedEntry.COLUMN_3_SG,

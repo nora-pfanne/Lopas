@@ -1,75 +1,78 @@
-Inf_Deutsch;Wortstamm;Konjugation;Gelernt;Lektion;Personalendung;Sprechvokal
-stehen;st;a-Konjugation;1;1
-denken, nachdenken, beabsichtigen;cognit;a-Konjugation;1;1
-laut rufen, schreien;clam;a-Konjugation;1;1
-kommen;veni;i-Konjugation;1;5
-lachen, auslachen;ride;e-Konjugation;1;
-mueuessen, sollen, schulden;debe;e-Konjugation;1;
-zoeoegern, zweifeln;dubit;a-Konjugation;1;1
-sich freuen;gaude;e-Konjugation;1;
-betrachten, anschauen, zuschauen;spect;a-Konjugation;1;1
-wagen;aude;e-Konjugation;1;
-bitten, beten, anbeten;or;a-Konjugation;1;1
-sehen;vide;e-Konjugation;1;
-warten, erwarten;exspect;a-Konjugation;2;1
-eilen, sich beeilen;proper;a-Konjugation;2;1
-finden, wiederfinden;reperi;i-Konjugation;2;5
-betreten, hineingehen;intr;a-Konjugation;2;1
-oeoeffnen, aufdecken;aperi;i-Konjugation;2;5
-sitzen;sede;e-Konjugation;2;
-hoeoeren;audi;i-Konjugation;2;5
-halten, festhalten, besitzen;tene;e-Konjugation;2;
-fordern, verlangen;postul;a-Konjugation;2;1
-verletzen, beleidigen;viol;a-Konjugation;2;1
-gesund sein, start sein, Einfluss haben;vale;e-Konjugation;2;
-fragen, bitten;rog;a-Konjugation;2;1
-vermissen, verlangen, sich sehnen nach;desider;a-Konjugation;2;1
-wissen, kennen, verstehen;sci;i-Konjugation;2;5
-toeoeten;nec;a-Konjugation;2;1
-vorbereiten, bereiten, vorhaben, erwerben, (vor)bereiten;par;a-Konjugation;3;1
-ertragen, standhalten;sustine;e-Konjugation;3;
-abhalten, hindern, verhindern;prohibe;e-Konjugation;3;
-antworten;responde;e-Konjugation;3;
-anzeigen, melden;indic;a-Konjugation;3;1
-leugnen, verneinen, verweigern;neg;a-Konjugation;3;1
-prueuefen, beweisen, fueuer gut befinden;prob;a-Konjugation;3;1
-sorgen fueuer;provide;e-Konjugation;3;
-rufen, nennen;voc;a-Konjugation;3;1
-besiegen, ueueberwinden, ueuebertreffen;super;a-Konjugation;3;1
-versuchen, prueuefen, angreifen;tempt;a-Konjugation;3;1
-vorsichtig sein, sich hueueten, sich hueueten vor, sich hueueten (vor);cave;e-Konjugation;3;
-nicht dueuerfen, nicht mueuessen;non debe;e-Konjugation;3;
-gefallen;place;e-Konjugation;3;
-gehorchen;pare;e-Konjugation;3;
-ueuebergeben, einen Auftrag geben;mand;a-Konjugation;3;1
-bevorstehen, bedraeaengen, bedrohen;inst;a-Konjugation;3;1
-Dank schulden;gratiam debe;e-Konjugation;3;
-nicht wissen, nicht kennen nicht verstehen;nesci;i-Konjugation;4;5
-genau wissen, genau kennen;non nesci;i-Konjugation;4;5
-lieben;am;a-Konjugation;4;1
-im Gedaeaechtnis behalten;memoria tene;e-Konjugation;4;
-fueuerchten, Angst haben, Angst haben vor, Angst haben (vor);time;e-Konjugation;4;
-fueuehlen, meinen wahrnehmen;senti;i-Konjugation;4;5
-brennen;arde;e-Konjugation;4;
-rufen, anrufen, nennen;apell;a-Konjugation;4;1
-treiben, betreiben, ueueberlegen;agit;a-Konjugation;4;1
-erschrecken;terre;e-Konjugation;4;
-meiden, vermeiden;vit;a-Konjugation;4;1
-veraeaendern, verwandeln;mut;a-Konjugation;4;1
-umringen, umzingeln;circumveni;i-Konjugation;4;5
-schenken;don;a-Konjugation;5;5
-fueuehren, ziehen;duc;kons-Konjugation;5;6
-zeigen, erklaeaeren;ostend;kons-Konjugation;5;6
-erkennen, kennenlernen;cognosc;kons-Konjugation;5;6
-sagen, sprechen;dic;kons-Konjugation;5;6
-verehren, bewirtschaften, pflegen;col;kons-Konjugation;5;6
-leben;viv;kons-Konjugation;5;6
-zwingen etwas zu tun, zwingen, zwingen (etwas zu tun), sammeln, versammeln, (ver)sammeln;cog;kons-Konjugation;5;6
-stehen bleiben, Widerstand leisten;resist;kons-Konjugation;5;6
-bitten, verlangen, streben, streben nach, streben (nach), aufsuchen, angreifen;pet;kons-Konjugation;5;6
-berueuehren;tang;kons-Konjugation;5;6
-anzueuenden, anfueueren;accend;kons-Konjugation;5;6
-lesen, auswaeaehlen;leg;kons-Konjugation;5;6
-schreiben, beschreiben;scrib;kons-Konjugation;5;6
-finden, erfinden;inveni;i-Konjugation;5;5
-aufstellen, grueuenden, festsetzen, beschlieszen;constitu;kons-Konjugation;5;6
+Inf_Deutsch;Wortstamm;Konjugation;Lektion;Personalendung;Sprechvokal
+stehen;st;a-Konjugation;1; ;a-Konjugation
+denken, nachdenken, beabsichtigen;cognit;a-Konjugation;1; ;a-Konjugation
+laut rufen, schreien;clam;a-Konjugation;1; ;a-Konjugation
+kommen;veni;i-Konjugation;1; ;i-Konjugation
+lachen, auslachen;ride;e-Konjugation;1; ; 
+mueuessen, sollen, schulden;debe;e-Konjugation;1; ; 
+zoeoegern, zweifeln;dubit;a-Konjugation;1; ;a-Konjugation
+sich freuen;gaude;e-Konjugation;1; ; 
+betrachten, anschauen, zuschauen;spect;a-Konjugation;1; ;a-Konjugation
+wagen;aude;e-Konjugation;1; ; 
+bitten, beten, anbeten;or;a-Konjugation;1; ;a-Konjugation
+sehen;vide;e-Konjugation;1; ; 
+sein, sich befinden; ;spezial;1;no;esse
+warten, erwarten;exspect;a-Konjugation;2; ;a-Konjugation
+eilen, sich beeilen;proper;a-Konjugation;2; ;a-Konjugation
+finden, wiederfinden;reperi;i-Konjugation;2; ;i-Konjugation
+betreten, hineingehen;intr;a-Konjugation;2; ;a-Konjugation
+oeoeffnen, aufdecken;aperi;i-Konjugation;2; ;i-Konjugation
+sitzen;sede;e-Konjugation;2; ; 
+hoeoeren;audi;i-Konjugation;2; ;i-Konjugation
+halten, festhalten, besitzen;tene;e-Konjugation;2; ; 
+fordern, verlangen;postul;a-Konjugation;2; ;a-Konjugation
+verletzen, beleidigen;viol;a-Konjugation;2; ;a-Konjugation
+gesund sein, start sein, Einfluss haben;vale;e-Konjugation;2; ; 
+fragen, bitten;rog;a-Konjugation;2; ;a-Konjugation
+vermissen, verlangen, sich sehnen nach;desider;a-Konjugation;2; ;a-Konjugation
+wissen, kennen, verstehen;sci;i-Konjugation;2; ;i-Konjugation
+toeoeten;nec;a-Konjugation;2; ;a-Konjugation
+vorbereiten, bereiten, vorhaben, erwerben, (vor)bereiten;par;a-Konjugation;3; ;a-Konjugation
+ertragen, standhalten;sustine;e-Konjugation;3; ; 
+abhalten, hindern, verhindern;prohibe;e-Konjugation;3; ; 
+antworten;responde;e-Konjugation;3; ; 
+anzeigen, melden;indic;a-Konjugation;3; ;a-Konjugation
+leugnen, verneinen, verweigern;neg;a-Konjugation;3; ;a-Konjugation
+prueuefen, beweisen, fueuer gut befinden;prob;a-Konjugation;3; ;a-Konjugation
+sorgen fueuer;provide;e-Konjugation;3; ; 
+rufen, nennen;voc;a-Konjugation;3; ;a-Konjugation
+besiegen, ueueberwinden, ueuebertreffen;super;a-Konjugation;3; ;a-Konjugation
+versuchen, prueuefen, angreifen;tempt;a-Konjugation;3; ;a-Konjugation
+vorsichtig sein, sich hueueten, sich hueueten vor, sich hueueten (vor);cave;e-Konjugation;3; ; 
+nicht dueuerfen, nicht mueuessen;non debe;e-Konjugation;3; ; 
+gefallen;place;e-Konjugation;3; ; 
+gehorchen;pare;e-Konjugation;3; ; 
+ueuebergeben, einen Auftrag geben;mand;a-Konjugation;3; ;a-Konjugation
+bevorstehen, bedraeaengen, bedrohen;inst;a-Konjugation;3; ;a-Konjugation
+Dank schulden;gratiam debe;e-Konjugation;3; ; 
+nicht wissen, nicht kennen nicht verstehen;nesci;i-Konjugation;4; ;i-Konjugation
+genau wissen, genau kennen;non nesci;i-Konjugation;4; ;i-Konjugation
+lieben;am;a-Konjugation;4; ;a-Konjugation
+im Gedaeaechtnis behalten;memoria tene;e-Konjugation;4; ; 
+fueuerchten, Angst haben, Angst haben vor, Angst haben (vor);time;e-Konjugation;4; ; 
+fueuehlen, meinen wahrnehmen;senti;i-Konjugation;4; ;i-Konjugation
+brennen;arde;e-Konjugation;4; ; 
+rufen, anrufen, nennen;apell;a-Konjugation;4; ;a-Konjugation
+treiben, betreiben, ueueberlegen;agit;a-Konjugation;4; ;a-Konjugation
+erschrecken;terre;e-Konjugation;4; ; 
+meiden, vermeiden;vit;a-Konjugation;4; ;a-Konjugation
+veraeaendern, verwandeln;mut;a-Konjugation;4; ;a-Konjugation
+umringen, umzingeln;circumveni;i-Konjugation;4; ;i-Konjugation
+wollen; ;spezial;4;no;velle
+nicht wollen; ;spezial;4;no;nolle
+schenken;don;a-Konjugation;5; ;a-Konjugation
+fueuehren, ziehen;duc;kons-Konjugation;5; ;kons-Konjugation
+zeigen, erklaeaeren;ostend;kons-Konjugation;5; ;kons-Konjugation
+erkennen, kennenlernen;cognosc;kons-Konjugation;5; ;kons-Konjugation
+sagen, sprechen;dic;kons-Konjugation;5; ;kons-Konjugation
+verehren, bewirtschaften, pflegen;col;kons-Konjugation;5; ;kons-Konjugation
+leben;viv;kons-Konjugation;5; ;kons-Konjugation
+zwingen etwas zu tun, zwingen, zwingen (etwas zu tun), sammeln, versammeln, (ver)sammeln;cog;kons-Konjugation;5; ;kons-Konjugation
+stehen bleiben, Widerstand leisten;resist;kons-Konjugation;5; ;kons-Konjugation
+bitten, verlangen, streben, streben nach, streben (nach), aufsuchen, angreifen;pet;kons-Konjugation;5; ;kons-Konjugation
+berueuehren;tang;kons-Konjugation;5; ;kons-Konjugation
+anzueuenden, anfueueren;accend;kons-Konjugation;5; ;kons-Konjugation
+lesen, auswaeaehlen;leg;kons-Konjugation;5; ;kons-Konjugation
+schreiben, beschreiben;scrib;kons-Konjugation;5; ;kons-Konjugation
+finden, erfinden;inveni;i-Konjugation;5; ;i-Konjugation
+aufstellen, grueuenden, festsetzen, beschlieszen;constitu;kons-Konjugation;5; ;kons-Konjugation
