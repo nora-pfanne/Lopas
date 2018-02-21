@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.norablakaj.lateinapp.Activities.Einheiten.Vokabeltrainer;
 import com.example.norablakaj.lateinapp.R;
 
 //TODO: Find a better name for this

@@ -8,8 +8,9 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.norablakaj.lateinapp.Activities.Grammatikeinheiten.GrammatikDeklination;
-import com.example.norablakaj.lateinapp.Activities.Grammatikeinheiten.GrammatikPersonalendung;
+import com.example.norablakaj.lateinapp.Activities.Einheiten.GrammatikDeklination;
+import com.example.norablakaj.lateinapp.Activities.Einheiten.GrammatikPersonalendung;
+import com.example.norablakaj.lateinapp.Activities.Einheiten.Vokabeltrainer;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.R;
 

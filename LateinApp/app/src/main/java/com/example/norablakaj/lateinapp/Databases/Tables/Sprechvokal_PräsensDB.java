@@ -17,6 +17,7 @@ public class Sprechvokal_PräsensDB {
 
         // Table columns
         public static final String  COLUMN_TITLE = "Titel",
+                                    COLUMN_INFINITV = "Infinitiv",
                                     COLUMN_1_SG = "Erste_Sg",
                                     COLUMN_2_SG = "Zweite_Sg",
                                     COLUMN_3_SG = "Dritte_Sg",
