@@ -29,7 +29,7 @@ public class LektionUebersicht extends DevActivity {
     ProgressBar progressA;
     ProgressBar progressB;
     ProgressBar progressC;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -58,6 +58,7 @@ public class GrammatikPersonalendung extends DevActivity {
             Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL};
     
     Button weiter;
+    Button zurück;
 
     TextView latein;
 
@@ -89,6 +90,7 @@ public class GrammatikPersonalendung extends DevActivity {
 
         weiter = findViewById(R.id.GrammatikPersonalendungWeiter);
         weiter.setVisibility(View.GONE);
+        zurück = findViewById(R.id.GrammatikPersonalendungZurück);
 
         sharedPref = getSharedPreferences("SharedPreferences", 0);
         dbHelper = new DBHelper(getApplicationContext());
@@ -193,6 +195,8 @@ public class GrammatikPersonalendung extends DevActivity {
             editor.putInt("Personalendung"+lektion, 0);
             editor.apply();
             finish();
+        }else if (view.getId() == R.id.GrammatikPersonalendungZurück){
+            finish();
         }
     }
 
@@ -224,6 +228,8 @@ public class GrammatikPersonalendung extends DevActivity {
 
             Button reset = findViewById(R.id.GrammatikPersonalendungReset);
             reset.setVisibility(View.VISIBLE);
+            zurück.setVisibility(View.VISIBLE);
+
         }
 
     }

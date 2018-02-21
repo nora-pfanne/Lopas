@@ -34,6 +34,7 @@ public class Vokabeltrainer extends DevActivity {
     Button bestaetigung;
     Button weiter;
     Button resetButton;
+    Button zurückButton;
 
     TextView überschrift;
 
@@ -62,6 +63,7 @@ public class Vokabeltrainer extends DevActivity {
         bestaetigung = findViewById(R.id.VokabeltrainerEingabeBestätigt);
         weiter = findViewById(R.id.VokabeltrainerNächsteVokabel);
         resetButton = findViewById(R.id.VokabeltrainerFortschrittLöschen);
+        zurückButton = findViewById(R.id.VokabeltrainerZurück);
 
         deutsch.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
@@ -157,6 +159,8 @@ public class Vokabeltrainer extends DevActivity {
         }else if (view.getId() == R.id.VokabeltrainerFortschrittLöschen){
 
             dbHelper.resetLektion(lektion);
+            finish();
+        }else if (view.getId() == R.id.VokabeltrainerZurück){
             finish();
         }
     }
@@ -269,6 +273,7 @@ public class Vokabeltrainer extends DevActivity {
         weiter.setVisibility(View.GONE);
 
         resetButton.setVisibility(View.VISIBLE);
+        zurückButton.setVisibility(View.VISIBLE);
 
         SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
         SharedPreferences.Editor editor = sharedPref.edit();

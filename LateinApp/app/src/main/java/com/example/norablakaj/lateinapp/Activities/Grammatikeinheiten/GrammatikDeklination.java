@@ -33,7 +33,8 @@ public class GrammatikDeklination extends DevActivity {
             abl_sg, abl_pl;
 
     Button weiter;
-    
+    Button zurück;
+
     ProgressBar progressBar;
 
     String[] faelle = {
@@ -104,6 +105,7 @@ public class GrammatikDeklination extends DevActivity {
         weiter = findViewById(R.id.GrammatikDeklinationWeiter);
 
         weiter.setVisibility(View.GONE);
+        zurück = findViewById(R.id.GrammatikDeklinationZurück);
 
         sharedPref = getSharedPreferences("SharedPreferences", 0);
 
@@ -264,6 +266,7 @@ public class GrammatikDeklination extends DevActivity {
 
             Button reset = findViewById(R.id.GrammatikDeklinationReset);
             reset.setVisibility(View.VISIBLE);
+            zurück.setVisibility(View.VISIBLE);
         }
 
     }
@@ -386,6 +389,8 @@ public class GrammatikDeklination extends DevActivity {
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putInt("Deklination"+lektion, 0);
             editor.apply();
+            finish();
+        }else if (view.getId() == R.id.GrammatikDeklinationZurück){
             finish();
         }
 
