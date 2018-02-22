@@ -22,26 +22,10 @@ public class SettingsActivity extends DevActivity {
         setContentView(R.layout.activity_settings);
 
         toggleDevModeSwitch = findViewById(R.id.toggleDevModeSwitch);
-
         toggleDevModeSwitch.setChecked(Home.DEVELOPER);
-
         toggleDevModeSwitch.setVisibility(View.GONE);
 
-        Button buttonTopLeft = findViewById(R.id.settingsInvisTopLeft);
-        Button buttonTopRight = findViewById(R.id.settingsInvisTopRight);
-        Button buttonBottomLeft = findViewById(R.id.settingsInvisBottomLeft);
-        Button buttonBottomRight = findViewById(R.id.settingsInvisBottomRight);
-
-        buttonTopLeft.setVisibility(View.INVISIBLE);
-        buttonTopRight.setVisibility(View.INVISIBLE);
-        buttonBottomLeft.setVisibility(View.INVISIBLE);
-        buttonBottomRight.setVisibility(View.INVISIBLE);
-        //TODO: Make this work for invisible buttons
-        buttonTopLeft.setVisibility(View.VISIBLE);
-        buttonTopRight.setVisibility(View.VISIBLE);
-        buttonBottomLeft.setVisibility(View.VISIBLE);
-        buttonBottomRight.setVisibility(View.VISIBLE);
-
+        //TODO currently making the buttons transperent in the .xml file. Can we do this with getVisible(View.INVISIBLE)
     }
 
     public void switchPressed(View v){
@@ -51,7 +35,7 @@ public class SettingsActivity extends DevActivity {
             SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putBoolean("DEVELOPER", toggleDevModeSwitch.isChecked());
-            editor.commit();
+            editor.apply();
         }
     }
 

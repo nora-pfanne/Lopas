@@ -2,9 +2,6 @@ package com.example.norablakaj.lateinapp.Databases.Tables;
 
 import android.provider.BaseColumns;
 
-//TODO: Should this be private/package private?
-
-
 public class DeklinationsendungDB {
 
     private DeklinationsendungDB(){}

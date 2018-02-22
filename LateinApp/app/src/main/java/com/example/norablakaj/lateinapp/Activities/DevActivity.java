@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.norablakaj.lateinapp.Activities.Einheiten.Vokabeltrainer;
 import com.example.norablakaj.lateinapp.R;
 
 //TODO: Find a better name for this
@@ -34,7 +35,7 @@ public abstract class DevActivity extends AppCompatActivity{
             temp = "OFF";
         }
         MenuItem devVokCheat = this.menu.findItem(R.id.action_dev_Vokabeltrainer_Cheat);
-        devVokCheat.setTitle("DEV: Vokabeltrainer-Cheat: " + temp);
+        devVokCheat.setTitle("DEV: Cheat-Mode: " + temp);
 
         return true;
     }
