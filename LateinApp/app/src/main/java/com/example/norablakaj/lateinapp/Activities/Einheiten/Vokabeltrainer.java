@@ -26,8 +26,6 @@ import com.example.norablakaj.lateinapp.R;
 
 public class Vokabeltrainer extends DevActivity {
 
-    private static boolean devCheatMode = false;
-
     TextView latein;
     TextView deutsch;
     EditText userInput;
@@ -90,7 +88,7 @@ public class Vokabeltrainer extends DevActivity {
                     +"Deutsch: \t" + currentVokabel.getDeutsch()+"\n");
 
             latein.setText(currentVokabel.getLatein());
-            if (Home.DEVELOPER && devCheatMode){
+            if (Home.isDEVELOPER() && Home.isDevCheatMode()){
                 latein.setText(currentVokabel.getLatein() + "\n" + currentVokabel.getDeutsch());
             }
         }
@@ -124,7 +122,7 @@ public class Vokabeltrainer extends DevActivity {
                 userInput.setBackgroundColor(color);
                 userInput.setFocusableInTouchMode(true);
 
-                if (Home.DEVELOPER && devCheatMode){
+                if (Home.isDEVELOPER() && Home.isDevCheatMode()){
                     latein.setText(currentVokabel.getLatein() + "\n" + currentVokabel.getDeutsch());
                 }
             }
@@ -281,13 +279,6 @@ public class Vokabeltrainer extends DevActivity {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("Vokabeltrainer"+lektion, true);
         editor.commit();
-    }
-
-    public static boolean isDevCheatMode() {
-        return devCheatMode;
-    }
-    public static void setDevCheatMode(boolean devCheatMode) {
-        Vokabeltrainer.devCheatMode = devCheatMode;
     }
 }
 

@@ -22,7 +22,7 @@ public class SettingsActivity extends DevActivity {
         setContentView(R.layout.activity_settings);
 
         toggleDevModeSwitch = findViewById(R.id.toggleDevModeSwitch);
-        toggleDevModeSwitch.setChecked(Home.DEVELOPER);
+        toggleDevModeSwitch.setChecked(Home.isDEVELOPER());
         toggleDevModeSwitch.setVisibility(View.GONE);
 
         //TODO currently making the buttons transperent in the .xml file. Can we do this with getVisible(View.INVISIBLE)
@@ -31,7 +31,7 @@ public class SettingsActivity extends DevActivity {
     public void switchPressed(View v){
 
         if (v.getId() == R.id.toggleDevModeSwitch){
-            Home.DEVELOPER = (toggleDevModeSwitch.isChecked());
+            Home.setDEVELOPER(toggleDevModeSwitch.isChecked());
             SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putBoolean("DEVELOPER", toggleDevModeSwitch.isChecked());

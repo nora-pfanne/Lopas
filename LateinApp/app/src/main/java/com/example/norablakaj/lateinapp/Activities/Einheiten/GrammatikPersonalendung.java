@@ -208,7 +208,7 @@ public class GrammatikPersonalendung extends DevActivity {
             konjugation = faelle[getRandomVocabularyNumber()];
 
             currentVokabel = dbHelper.getRandomVerb(lektion);
-            if (Home.DEVELOPER && Vokabeltrainer.isDevCheatMode()) {
+            if (Home.isDEVELOPER() && Home.isDevCheatMode()) {
                 latein.setText(dbHelper.getKonjugiertesVerb(currentVokabel.getId(), konjugation)
                         + "\n" + konjugation);
             } else {

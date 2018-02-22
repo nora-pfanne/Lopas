@@ -242,7 +242,7 @@ public class GrammatikDeklination extends DevActivity {
             declination = faelle[getRandomVocabularyNumber()];
             currentVokabel = dbHelper.getRandomSubstantiv(lektion);
 
-            if (Home.DEVELOPER && Vokabeltrainer.isDevCheatMode()) {
+            if (Home.isDEVELOPER() && Home.isDevCheatMode()) {
                 latein.setText(dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination)
                         + "\n" + declination);
             } else {

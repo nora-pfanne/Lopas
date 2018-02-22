@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,7 +17,8 @@ import com.example.norablakaj.lateinapp.R;
 public class Home extends DevActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static boolean DEVELOPER = true;
+    private static boolean DEVELOPER = true;
+    private static boolean devCheatMode = false;
 
     /**
      * Creating drawer
@@ -115,5 +115,18 @@ public class Home extends DevActivity
 
         startActivity(startLektionUebersicht);
 
+    }
+
+    public static boolean isDevCheatMode() {
+        return devCheatMode;
+    }
+    public static void setDevCheatMode(boolean devCheatMode) {
+        devCheatMode = devCheatMode;
+    }
+    public static boolean isDEVELOPER() {
+        return DEVELOPER;
+    }
+    public static void setDEVELOPER(boolean DEVELOPER) {
+        Home.DEVELOPER = DEVELOPER;
     }
 }
