@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -60,13 +61,13 @@ public class LektionUebersicht extends DevActivity {
 
         //TODO: Set this properly
         progressB = findViewById(R.id.ÜbersichtGrammarBProgressBar);
-        progressB.setMax(GrammatikDeklination.getMaxProgress());
+        progressB.setMax(20);
         int completedB = sharedPref.getInt("Personalendung"+lektion, 0);
         progressB.setProgress(completedB);
 
         //TODO: Set this properly
         progressC = findViewById(R.id.ÜbersichtGrammarCProgressBar);
-        progressB.setMax(GrammatikPersonalendung.getMaxProgress());
+        progressC.setMax(20);
         progressC.setProgress(0);
     }
 
