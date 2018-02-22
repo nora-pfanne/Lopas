@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +13,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.example.norablakaj.lateinapp.Databases.DBHelper;
+import com.example.norablakaj.lateinapp.Databases.Tables.Personalendung_PräsensDB;
+import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
 import com.example.norablakaj.lateinapp.R;
 
 public class Home extends DevActivity
@@ -45,7 +49,6 @@ public class Home extends DevActivity
         SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
         //Sets the DEVELOPER state according to a variable saved in a previous instance of the app
         DEVELOPER = sharedPref.getBoolean("DEVELOPER", false);
-
     }
 
     @Override
@@ -70,10 +73,7 @@ public class Home extends DevActivity
 
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            //TODO: Maybe remove this item if unused?
-
-        } else if (id == R.id.nav_wörterbuch) {
+        if (id == R.id.nav_wörterbuch) {
             //Opening the activity 'Woerterbuch'
             Intent openWörterbuch = new Intent(this, Woerterbuch.class);
             startActivity(openWörterbuch);

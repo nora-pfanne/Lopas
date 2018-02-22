@@ -1,4 +1,4 @@
-package com.example.norablakaj.lateinapp.Activities;
+package com.example.norablakaj.lateinapp.Activities.Einheiten;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.norablakaj.lateinapp.Activities.DevActivity;
+import com.example.norablakaj.lateinapp.Activities.Home;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.Tables.AdverbDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.PräpositionDB;
@@ -34,6 +36,7 @@ public class Vokabeltrainer extends DevActivity {
     Button bestaetigung;
     Button weiter;
     Button resetButton;
+    Button zurückButton;
 
     TextView überschrift;
 
@@ -62,6 +65,7 @@ public class Vokabeltrainer extends DevActivity {
         bestaetigung = findViewById(R.id.VokabeltrainerEingabeBestätigt);
         weiter = findViewById(R.id.VokabeltrainerNächsteVokabel);
         resetButton = findViewById(R.id.VokabeltrainerFortschrittLöschen);
+        zurückButton = findViewById(R.id.VokabeltrainerZurück);
 
         deutsch.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
@@ -157,6 +161,8 @@ public class Vokabeltrainer extends DevActivity {
         }else if (view.getId() == R.id.VokabeltrainerFortschrittLöschen){
 
             dbHelper.resetLektion(lektion);
+            finish();
+        }else if (view.getId() == R.id.VokabeltrainerZurück){
             finish();
         }
     }
@@ -269,6 +275,7 @@ public class Vokabeltrainer extends DevActivity {
         weiter.setVisibility(View.GONE);
 
         resetButton.setVisibility(View.VISIBLE);
+        zurückButton.setVisibility(View.VISIBLE);
 
         SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
         SharedPreferences.Editor editor = sharedPref.edit();

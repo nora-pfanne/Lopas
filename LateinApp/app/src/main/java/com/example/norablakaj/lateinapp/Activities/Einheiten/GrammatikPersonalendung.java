@@ -1,9 +1,8 @@
-package com.example.norablakaj.lateinapp.Activities.Grammatikeinheiten;
+package com.example.norablakaj.lateinapp.Activities.Einheiten;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 
 import com.example.norablakaj.lateinapp.Activities.DevActivity;
 import com.example.norablakaj.lateinapp.Activities.Home;
-import com.example.norablakaj.lateinapp.Activities.Vokabeltrainer;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.Tables.Personalendung_PräsensDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.Vokabel;
@@ -58,6 +56,7 @@ public class GrammatikPersonalendung extends DevActivity {
             Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL};
     
     Button weiter;
+    Button zurück;
 
     TextView latein;
 
@@ -89,6 +88,7 @@ public class GrammatikPersonalendung extends DevActivity {
 
         weiter = findViewById(R.id.GrammatikPersonalendungWeiter);
         weiter.setVisibility(View.GONE);
+        zurück = findViewById(R.id.GrammatikPersonalendungZurück);
 
         sharedPref = getSharedPreferences("SharedPreferences", 0);
         dbHelper = new DBHelper(getApplicationContext());
@@ -193,6 +193,8 @@ public class GrammatikPersonalendung extends DevActivity {
             editor.putInt("Personalendung"+lektion, 0);
             editor.apply();
             finish();
+        }else if (view.getId() == R.id.GrammatikPersonalendungZurück){
+            finish();
         }
     }
 
@@ -224,6 +226,8 @@ public class GrammatikPersonalendung extends DevActivity {
 
             Button reset = findViewById(R.id.GrammatikPersonalendungReset);
             reset.setVisibility(View.VISIBLE);
+            zurück.setVisibility(View.VISIBLE);
+
         }
 
     }
@@ -291,17 +295,23 @@ public class GrammatikPersonalendung extends DevActivity {
     
     private void konjugationChosen(boolean correct){
 
+        SharedPreferences.Editor editor = sharedPref.edit();
+
         int color;
         if (correct) {
             color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putInt("Personalendung"+lektion, sharedPref.getInt("Personalendung"+lektion, 0) + 1);
-            editor.apply();
 
-            progressBar.setProgress(sharedPref.getInt("Personalendung" +lektion, 0));
-        }else{
+            editor.putInt("Personalendung"+lektion, sharedPref.getInt("Personalendung"+lektion, 0) + 1);
+        }else {
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+            if (sharedPref.getInt("Personalendung" + lektion, 0) > 0) {
+                editor.putInt("Personalendung" + lektion, sharedPref.getInt("Personalendung" + lektion, 0) - 1);
+            }
         }
+        editor.apply();
+
+        progressBar.setProgress(sharedPref.getInt("Personalendung" +lektion, 0));
+
         latein.setBackgroundColor(color);
 
         weiter.setVisibility(View.VISIBLE);

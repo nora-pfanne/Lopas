@@ -2,8 +2,6 @@ package com.example.norablakaj.lateinapp.Databases.Tables;
 
 import android.provider.BaseColumns;
 
-//TODO: Should this be private/package private?
-
 public class Personalendung_PräsensDB {
 
     private Personalendung_PräsensDB(){}
