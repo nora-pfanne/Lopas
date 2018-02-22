@@ -88,7 +88,7 @@ public class Vokabeltrainer extends DevActivity {
                     +"Deutsch: \t" + currentVokabel.getDeutsch()+"\n");
 
             latein.setText(currentVokabel.getLatein());
-            if (Home.isDEVELOPER() && Home.isDevCheatMode()){
+            if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()){
                 latein.setText(currentVokabel.getLatein() + "\n" + currentVokabel.getDeutsch());
             }
         }
@@ -122,7 +122,7 @@ public class Vokabeltrainer extends DevActivity {
                 userInput.setBackgroundColor(color);
                 userInput.setFocusableInTouchMode(true);
 
-                if (Home.isDEVELOPER() && Home.isDevCheatMode()){
+                if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()){
                     latein.setText(currentVokabel.getLatein() + "\n" + currentVokabel.getDeutsch());
                 }
             }

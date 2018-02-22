@@ -71,8 +71,6 @@ public class GrammatikDeklination extends DevActivity {
     Vokabel currentVokabel;
     String declination;
 
-    SharedPreferences sharedPref;
-
     int maxProgress = 20;
 
     //TODO: make all DBHelper into a private variable that calls .close() on onDestroy()/onFinish()
@@ -242,7 +240,7 @@ public class GrammatikDeklination extends DevActivity {
             declination = faelle[getRandomVocabularyNumber()];
             currentVokabel = dbHelper.getRandomSubstantiv(lektion);
 
-            if (Home.isDEVELOPER() && Home.isDevCheatMode()) {
+            if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) {
                 latein.setText(dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination)
                         + "\n" + declination);
             } else {

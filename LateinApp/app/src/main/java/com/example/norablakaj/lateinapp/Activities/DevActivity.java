@@ -1,11 +1,12 @@
 package com.example.norablakaj.lateinapp.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.norablakaj.lateinapp.Activities.Einheiten.Vokabeltrainer;
 import com.example.norablakaj.lateinapp.R;
 
 //TODO: Find a better name for this
@@ -18,6 +19,9 @@ public abstract class DevActivity extends AppCompatActivity{
     private Menu menu;
     private MenuItem devDBHelper,
                     devVokCheat;
+
+    public SharedPreferences sharedPref;
+
     /**
      * inflate your menu resource (defined in XML) into the Menu
      * @param menu the menu object
@@ -31,6 +35,8 @@ public abstract class DevActivity extends AppCompatActivity{
         this.menu = menu;
         devDBHelper = this.menu.findItem(R.id.action_dev_DB_Helper);
         devVokCheat = this.menu.findItem(R.id.action_dev_Vokabeltrainer_Cheat);
+
+        sharedPref = getSharedPreferences("SharedPreferences", 0);
 
         adjustSettings();
 
@@ -52,15 +58,20 @@ public abstract class DevActivity extends AppCompatActivity{
                 startActivity(settingsActivity);
                 break;
 
+            //#DEVELOPER
             //Opening the dbManager-activity
             case (R.id.action_dev_DB_Helper):
                 Intent dbManager = new Intent(this, AndroidDatabaseManager.class);
                 startActivity(dbManager);
                 break;
 
+            //#DEVELOPER
             //toggles the DevCheatMode
             case (R.id.action_dev_Vokabeltrainer_Cheat):
-                Home.setDevCheatMode(!Home.isDevCheatMode());
+                SharedPreferences.Editor editor = sharedPref.edit();
+                Home.setDEV_CHEAT_MODE(!Home.isDEV_CHEAT_MODE());
+                editor.putBoolean("DEV_CHEAT_MODE", Home.isDEV_CHEAT_MODE());
+                editor.apply();
                 adjustSettings();
                 break;
         }
@@ -96,13 +107,14 @@ public abstract class DevActivity extends AppCompatActivity{
 
     private void adjustSettings(){
 
+        //#DEVELOPER
         if (Home.isDEVELOPER()) {
             devDBHelper.setVisible(true);
             devVokCheat.setVisible(true);
 
             //Setting the text of the
             String temp;
-            if (Home.isDevCheatMode()){
+            if (Home.isDEV_CHEAT_MODE()){
                 temp = "ON";
             }else{
                 temp = "OFF";

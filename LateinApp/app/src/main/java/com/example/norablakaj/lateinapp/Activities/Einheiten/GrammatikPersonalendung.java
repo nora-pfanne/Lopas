@@ -61,8 +61,6 @@ public class GrammatikPersonalendung extends DevActivity {
     TextView latein;
 
     Vokabel currentVokabel;
-    
-    SharedPreferences sharedPref;
 
     ProgressBar progressBar;
 
@@ -208,7 +206,7 @@ public class GrammatikPersonalendung extends DevActivity {
             konjugation = faelle[getRandomVocabularyNumber()];
 
             currentVokabel = dbHelper.getRandomVerb(lektion);
-            if (Home.isDEVELOPER() && Home.isDevCheatMode()) {
+            if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) {
                 latein.setText(dbHelper.getKonjugiertesVerb(currentVokabel.getId(), konjugation)
                         + "\n" + konjugation);
             } else {

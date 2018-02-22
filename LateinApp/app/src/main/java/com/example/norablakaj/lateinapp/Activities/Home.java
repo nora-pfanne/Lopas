@@ -17,16 +17,23 @@ import com.example.norablakaj.lateinapp.R;
 public class Home extends DevActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    //#DEVELOPER
     private static boolean DEVELOPER = true;
-    private static boolean devCheatMode = false;
+    private static boolean DEV_CHEAT_MODE = false;
 
     /**
      * Creating drawer
-     * Initializing buttons
+     *
      * @param savedInstanceState Used for passing data between activities
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
+        //Sets the DEVELOPER state according to a variable saved in a previous instance of the app
+        //#DEVELOPER
+        DEVELOPER = sharedPref.getBoolean("DEVELOPER", false);
+        DEV_CHEAT_MODE = sharedPref.getBoolean("DEV_CHEAT_MODE", false);
 
         super.onCreate(savedInstanceState);
 
@@ -43,10 +50,6 @@ public class Home extends DevActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
-        //Sets the DEVELOPER state according to a variable saved in a previous instance of the app
-        DEVELOPER = sharedPref.getBoolean("DEVELOPER", false);
     }
 
     @Override
@@ -117,11 +120,11 @@ public class Home extends DevActivity
 
     }
 
-    public static boolean isDevCheatMode() {
-        return devCheatMode;
+    public static boolean isDEV_CHEAT_MODE() {
+        return DEV_CHEAT_MODE;
     }
-    public static void setDevCheatMode(boolean devCheatMode) {
-        devCheatMode = devCheatMode;
+    public static void setDEV_CHEAT_MODE(boolean DEV_CHEAT_MODE) {
+        Home.DEV_CHEAT_MODE = DEV_CHEAT_MODE;
     }
     public static boolean isDEVELOPER() {
         return DEVELOPER;

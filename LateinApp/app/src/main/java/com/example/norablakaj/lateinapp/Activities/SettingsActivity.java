@@ -43,21 +43,18 @@ public class SettingsActivity extends DevActivity {
         int id = v.getId();
         //Code: 2-2-3-1-4
         if (id == R.id.settingsInvisTopLeft){
-            Log.d("Button1", "Button 1 was pressed");
             if (devSwitchState == 3){
                 devSwitchState++;
             }else{
                 devSwitchState = 0;
             }
         }else if (id == R.id.settingsInvisTopRight){
-            Log.d("Button2", "Button 2 was pressed");
             if (devSwitchState == 0 || devSwitchState == 1){
                 devSwitchState++;
             }else{
                 devSwitchState = 0;
             }
         }else if (id == R.id.settingsInvisBottomLeft){
-            Log.d("Button3", "Button 3 was pressed");
             if (devSwitchState == 2){
                 devSwitchState++;
             }else{
