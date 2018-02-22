@@ -13,9 +13,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.example.norablakaj.lateinapp.Databases.DBHelper;
-import com.example.norablakaj.lateinapp.Databases.Tables.Personalendung_PräsensDB;
-import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
 import com.example.norablakaj.lateinapp.R;
 
 public class Home extends DevActivity
@@ -32,6 +29,7 @@ public class Home extends DevActivity
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
