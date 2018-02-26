@@ -3,7 +3,6 @@ package com.example.norablakaj.lateinapp.Activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -20,7 +19,10 @@ public abstract class DevActivity extends AppCompatActivity{
     private MenuItem devDBHelper,
                     devVokCheat;
 
+    //Make this accessible to all subclasses.
     public SharedPreferences sharedPref;
+    //Add a for all subclasses accessible DBHelper
+    //This DBHelper should automatically initalize in onCreate() and close()/closeDB() in onDestroy()
 
     /**
      * inflate your menu resource (defined in XML) into the Menu

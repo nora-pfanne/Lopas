@@ -7,7 +7,7 @@
     tools:context="com.example.norablakaj.lateinapp.Activities.Einheiten.GrammatikDeklination">
 
     <TextView
-        android:id="@+id/GrammatikDeklinationÜberschrift"
+        android:id="@+id/textGrammatikDeklinationÜberschrift"
         android:layout_width="288dp"
         android:layout_height="35dp"
         android:layout_marginBottom="8dp"
@@ -27,7 +27,7 @@
         app:layout_constraintVertical_bias="0.014" />
 
     <TextView
-        android:id="@+id/GrammatikDeklinationLatein"
+        android:id="@+id/textGrammatikDeklinationLatein"
         android:layout_width="341dp"
         android:layout_height="105dp"
         android:layout_marginBottom="8dp"
@@ -46,7 +46,7 @@
         app:layout_constraintVertical_bias="0.3" />
 
     <TextView
-        android:id="@+id/GrammatikDeklinationAufgabe"
+        android:id="@+id/textGrammatikDeklinationAufgabe"
         android:layout_width="341dp"
         android:layout_height="52dp"
         android:layout_marginBottom="8dp"
@@ -64,7 +64,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikDeklinationNomSg"
+        android:id="@+id/buttonGrammatikDeklinationNomSg"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -83,7 +83,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikDeklinationNomPl"
+        android:id="@+id/buttonGrammatikDeklinationNomPl"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -102,7 +102,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikDeklinationGenSg"
+        android:id="@+id/buttonGrammatikDeklinationGenSg"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -121,7 +121,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikDeklinationGenPl"
+        android:id="@+id/buttonGrammatikDeklinationGenPl"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -140,7 +140,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikDeklinationDatSg"
+        android:id="@+id/buttonGrammatikDeklinationDatSg"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -159,7 +159,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikDeklinationDatPl"
+        android:id="@+id/buttonGrammatikDeklinationDatPl"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -178,7 +178,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikDeklinationAkkSg"
+        android:id="@+id/buttonGrammatikDeklinationAkkSg"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -197,7 +197,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikDeklinationAkkPl"
+        android:id="@+id/buttonGrammatikDeklinationAkkPl"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -216,7 +216,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikDeklinationAblSg"
+        android:id="@+id/buttonGrammatikDeklinationAblSg"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -235,7 +235,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikDeklinationAblPl"
+        android:id="@+id/buttonGrammatikDeklinationAblPl"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -253,7 +253,7 @@
         app:layout_constraintVertical_bias="0.916" />
 
     <ProgressBar
-        android:id="@+id/GrammatikDeklinationProgressBar"
+        android:id="@+id/progressBarGrammatikDeklination"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="340dp"
         android:layout_height="56dp"
@@ -270,7 +270,7 @@
         app:layout_constraintVertical_bias="0.064" />
 
     <Button
-        android:id="@+id/GrammatikDeklinationWeiter"
+        android:id="@+id/buttonGrammatikDeklinationWeiter"
         style="@style/BasicBlueButton"
         android:layout_width="146dp"
         android:layout_height="75dp"
@@ -287,7 +287,7 @@
         app:layout_constraintVertical_bias="0.757" />
 
     <Button
-        android:id="@+id/GrammatikDeklinationReset"
+        android:id="@+id/buttonGrammatikDeklinationReset"
         style="@style/BasicBlueButton"
         android:visibility="invisible"
         android:layout_width="153dp"
@@ -307,7 +307,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikDeklinationZurück"
+        android:id="@+id/buttonGrammatikDeklinationZurück"
         android:layout_width="253dp"
         android:layout_height="155dp"
         android:layout_marginBottom="8dp"

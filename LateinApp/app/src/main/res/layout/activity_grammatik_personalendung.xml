@@ -7,7 +7,7 @@
     tools:context="com.example.norablakaj.lateinapp.Activities.Einheiten.GrammatikPersonalendung">
 
     <TextView
-        android:id="@+id/GrammatikPersonalendungÜberschrift"
+        android:id="@+id/textGrammatikPersonalendungÜberschrift"
         android:layout_width="288dp"
         android:layout_height="35dp"
         android:layout_marginBottom="8dp"
@@ -27,7 +27,7 @@
         app:layout_constraintVertical_bias="0.014" />
 
     <TextView
-        android:id="@+id/GrammatikPersonalendungLatein"
+        android:id="@+id/textGrammatikPersonalendungLatein"
         android:layout_width="341dp"
         android:layout_height="105dp"
         android:layout_marginBottom="8dp"
@@ -46,7 +46,7 @@
         app:layout_constraintVertical_bias="0.3" />
 
     <TextView
-        android:id="@+id/GrammatikPersonalendungAufgabe"
+        android:id="@+id/textGrammatikPersonalendungAufgabe"
         android:layout_width="341dp"
         android:layout_height="52dp"
         android:layout_marginBottom="8dp"
@@ -64,7 +64,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikPersonalendung1PersSg"
+        android:id="@+id/buttonGrammatikPersonalendung1PersSg"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -83,7 +83,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikPersonalendung1PersPl"
+        android:id="@+id/buttonGrammatikPersonalendung1PersPl"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -102,7 +102,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikPersonalendung2PersSg"
+        android:id="@+id/buttonGrammatikPersonalendung2PersSg"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -121,7 +121,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikPersonalendung2PersPl"
+        android:id="@+id/buttonGrammatikPersonalendung2PersPl"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -140,7 +140,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikPersonalendung3PersSg"
+        android:id="@+id/buttonGrammatikPersonalendung3PersSg"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -159,7 +159,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikPersonalendung3PersPl"
+        android:id="@+id/buttonGrammatikPersonalendung3PersPl"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -194,7 +194,7 @@
         app:layout_constraintVertical_bias="0.057" />
 
     <Button
-        android:id="@+id/GrammatikPersonalendungWeiter"
+        android:id="@+id/buttonGrammatikPersonalendungWeiter"
         style="@style/BasicBlueButton"
         android:layout_width="146dp"
         android:layout_height="75dp"
@@ -211,7 +211,7 @@
         app:layout_constraintVertical_bias="0.757" />
 
     <Button
-        android:id="@+id/GrammatikPersonalendungReset"
+        android:id="@+id/buttonGrammatikPersonalendungReset"
         android:visibility="invisible"
         style="@style/BasicBlueButton"
         android:layout_width="153dp"
@@ -231,7 +231,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/GrammatikPersonalendungZurück"
+        android:id="@+id/buttonGrammatikPersonalendungZurück"
         android:layout_width="253dp"
         android:layout_height="155dp"
         android:layout_marginBottom="8dp"

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +22,8 @@ public class Home extends DevActivity
     private static boolean DEVELOPER = true;
     private static boolean DEV_CHEAT_MODE = false;
 
+    private SharedPreferences sharedPref;
+
     /**
      * Creating drawer
      *
@@ -29,13 +32,13 @@ public class Home extends DevActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
+        super.onCreate(savedInstanceState);
+
         //Sets the DEVELOPER state according to a variable saved in a previous instance of the app
         //#DEVELOPER
+        sharedPref = getSharedPreferences("SharedPreferences", 0);
         DEVELOPER = sharedPref.getBoolean("DEVELOPER", false);
         DEV_CHEAT_MODE = sharedPref.getBoolean("DEV_CHEAT_MODE", false);
-
-        super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -72,12 +75,19 @@ public class Home extends DevActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
 
-        int id = item.getItemId();
+        switch (item.getItemId()){
 
-        if (id == R.id.nav_wörterbuch) {
             //Opening the activity 'Woerterbuch'
-            Intent openWörterbuch = new Intent(this, Woerterbuch.class);
-            startActivity(openWörterbuch);
+
+            case (R.id.nav_wörterbuch):
+                Intent openWörterbuch = new Intent(this, Woerterbuch.class);
+                startActivity(openWörterbuch);
+                break;
+
+                default:
+                    Log.e("NavigationItemNotFound", "The selected navigation item was not found.\n" +
+                            "id: " + item.getItemId() + ".");
+                    break;
         }
 
         //Closing the drawer
@@ -90,32 +100,35 @@ public class Home extends DevActivity
      * Handles the button presses
      * @param view Contains information about which Button was pressed
      */
-    public void buttonClicked(View view){
+    public void homeButtonClicked(View view){
 
-        Intent startLektionUebersicht= new Intent(view.getContext(), LektionUebersicht.class);
+        Intent startLektionUebersicht = new Intent(view.getContext(), LektionUebersicht.class);
 
-        //opens a new activity
-        if (view.getId() == R.id.lektion1){
+        //passing over which 'lektion' was selected depending on the button clicked
+        switch (view.getId()){
 
-            startLektionUebersicht.putExtra("lektion",1);
+            case (R.id.buttonOpenLektion1):
+                startLektionUebersicht.putExtra("lektion",1);
+                break;
 
-        }else if (view.getId() == R.id.lektion2){
+            case (R.id.buttonOpenLektion2):
+                startLektionUebersicht.putExtra("lektion", 2);
+                break;
 
-            startLektionUebersicht.putExtra("lektion",2);
+            case (R.id.buttonOpenLektion3):
+                startLektionUebersicht.putExtra("lektion", 3);
+                break;
 
-        }else if (view.getId() == R.id.lektion3){
+            case (R.id.buttonOpenLektion4):
+                startLektionUebersicht.putExtra("lektion", 4);
+                break;
 
-            startLektionUebersicht.putExtra("lektion",3);
-
-        }else if (view.getId() == R.id.lektion4){
-
-            startLektionUebersicht.putExtra("lektion",4);
-
-        }else if (view.getId() == R.id.lektion5){
-
-            startLektionUebersicht.putExtra("lektion", 5);
+            case (R.id.buttonOpenLektion5):
+                startLektionUebersicht.putExtra("lektion", 5);
+                break;
         }
 
+        //starting the activity
         startActivity(startLektionUebersicht);
 
     }
