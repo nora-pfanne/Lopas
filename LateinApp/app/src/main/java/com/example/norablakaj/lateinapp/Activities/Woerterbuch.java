@@ -2,12 +2,10 @@ package com.example.norablakaj.lateinapp.Activities;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -23,7 +21,7 @@ import com.example.norablakaj.lateinapp.Databases.Tables.SubstantivDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
 import com.example.norablakaj.lateinapp.R;
 
-public class Woerterbuch extends DevActivity implements AdapterView.OnItemSelectedListener{
+public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItemSelectedListener{
 
     private TableLayout tl;
     private Spinner spinner;

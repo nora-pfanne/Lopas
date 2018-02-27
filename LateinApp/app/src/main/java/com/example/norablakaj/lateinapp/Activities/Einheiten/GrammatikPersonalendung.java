@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.norablakaj.lateinapp.Activities.DevActivity;
+import com.example.norablakaj.lateinapp.Activities.LateinAppActivity;
 import com.example.norablakaj.lateinapp.Activities.Home;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.Tables.Personalendung_PräsensDB;
@@ -19,7 +19,7 @@ import com.example.norablakaj.lateinapp.R;
 
 import java.util.Random;
 
-public class GrammatikPersonalendung extends DevActivity {
+public class GrammatikPersonalendung extends LateinAppActivity {
     
     private DBHelper dbHelper;
     private SharedPreferences sharedPref;

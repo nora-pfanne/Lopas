@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.norablakaj.lateinapp.Activities.DevActivity;
+import com.example.norablakaj.lateinapp.Activities.LateinAppActivity;
 import com.example.norablakaj.lateinapp.Activities.Home;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.Tables.AdverbDB;
@@ -24,7 +24,7 @@ import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.Vokabel;
 import com.example.norablakaj.lateinapp.R;
 
-public class Vokabeltrainer extends DevActivity {
+public class Vokabeltrainer extends LateinAppActivity {
 
     private SharedPreferences sharedPref;
     private DBHelper dbHelper;
@@ -184,8 +184,8 @@ public class Vokabeltrainer extends DevActivity {
      */
     private boolean compareTranslation(String userInput, String wantedTranslation){
 
-        String[] userTokens = userInput.split(",");
-        String[] translationTokens = wantedTranslation.split(",");
+        String[] userTokens = userInput.split(",", -1);
+        String[] translationTokens = wantedTranslation.split(",", -1);
 
         //Checking if every userToken[]-element matches with a translation
         for (String user : userTokens){

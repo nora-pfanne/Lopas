@@ -7,7 +7,7 @@ import android.widget.Switch;
 
 import com.example.norablakaj.lateinapp.R;
 
-public class SettingsActivity extends DevActivity {
+public class SettingsActivity extends LateinAppActivity {
 
     private Switch toggleDevModeSwitch;
 

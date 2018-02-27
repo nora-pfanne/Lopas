@@ -469,15 +469,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 line = replaceWithUmlaut(line);
 
                 if(line != null){
-                    String[] tokens = line.split(";");
-
-                    //TODO: Why do we need this? Crash when a token is empty.
-                    //Replacing all singleSpace column entries with empty column entries
-                    for (int j = 0; j < tokens.length; j++){
-                        if (tokens[j].equals(" ")){
-                            tokens[j] = tokens[j].replace(" ", "");
-                        }
-                    }
+                    String[] tokens = line.split(";", -1);
 
                     try {
                         //Checks for the wanted table and adds the row as a entry

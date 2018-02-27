@@ -15,7 +15,7 @@ import android.view.MenuItem;
 
 import com.example.norablakaj.lateinapp.R;
 
-public class Home extends DevActivity
+public class Home extends LateinAppActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     //#DEVELOPER

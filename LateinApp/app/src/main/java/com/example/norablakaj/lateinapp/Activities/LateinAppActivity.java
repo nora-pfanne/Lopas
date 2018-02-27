@@ -11,7 +11,7 @@ import com.example.norablakaj.lateinapp.R;
 //TODO: Find a better name for this
 
 //TODO: Use Fragments
-public abstract class DevActivity extends AppCompatActivity{
+public abstract class LateinAppActivity extends AppCompatActivity{
 
     private boolean onPause = false;
 

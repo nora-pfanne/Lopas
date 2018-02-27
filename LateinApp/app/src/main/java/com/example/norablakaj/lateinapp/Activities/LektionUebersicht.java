@@ -14,7 +14,7 @@ import com.example.norablakaj.lateinapp.Activities.Einheiten.Vokabeltrainer;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.R;
 
-public class LektionUebersicht extends DevActivity {
+public class LektionUebersicht extends LateinAppActivity {
 
     private int lektion;
 
