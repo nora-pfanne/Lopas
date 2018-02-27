@@ -1,7 +1,6 @@
 package com.example.norablakaj.lateinapp.Activities;
 
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,35 +12,41 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.database.Cursor;
 import android.widget.TableRow.LayoutParams;
 
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.Tables.AdverbDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.DeklinationsendungDB;
-import com.example.norablakaj.lateinapp.Databases.Tables.Personalendung_PräsensDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.PräpositionDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.SprichwortDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.SubstantivDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
 import com.example.norablakaj.lateinapp.R;
 
-public class Woerterbuch extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class Woerterbuch extends DevActivity implements AdapterView.OnItemSelectedListener{
 
-    TableLayout tl;
-    LinearLayout linearLayout;
-    Spinner spinner;
-    int currentSpinnerPos;
-    String[] columns;
+    private TableLayout tl;
+    private Spinner spinner;
+    private int currentSpinnerPos;
+    private String[] columns;
+    private DBHelper dbHelper;
 
+
+    /**
+     * Configuration the spinner
+     * @param savedInstanceState Used for passing data between activities
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_woerterbuch);
 
         tl = findViewById(R.id.table_layout);
-        linearLayout = findViewById(R.id.linear_layout);
 
+        dbHelper = new DBHelper(getApplicationContext());
+
+        //Configurating the spinner
+        //TODO: Set spinner text color to something readable
         spinner = findViewById(R.id.lektionSpinner);
         spinner.setOnItemSelectedListener(this);
         String[] spinnerElements = {
@@ -51,7 +56,7 @@ public class Woerterbuch extends AppCompatActivity implements AdapterView.OnItem
                 "Lektion 4",
                 "Lektion 5"
         };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_spinner_item,
                 spinnerElements);
@@ -61,20 +66,30 @@ public class Woerterbuch extends AppCompatActivity implements AdapterView.OnItem
 
     }
 
-
+    /**
+     * Adding new rows to a already existing TableLayout.
+     * @param tl TableLayout
+     * @param values 2-dimensional-array:
+     *               first dimension:
+     *                  Every entry corresponds to one vocabulary-entry
+     *               second dimension:
+     *                  [i][0]: german-translation-column of the vocabulary-entry
+     *                  [i][1]: latin-column of the vocabulary-entry
+     */
     private void addTableRows(TableLayout tl, String[][] values) {
 
-        //TODO: set space between columns on rows
+        //TODO: What do we do if the line to be printed is longer than the smartphone width
 
-        for(int i = 0; i < values.length; i++) {
+        //Going through every row of the values[][]-array and adding one TableRow for each
+        for (String[] strings : values){
 
-            String deutsch = values[i][0];
-            String latein = values[i][1];
+            String deutsch = strings[0];
+            String latein = strings[1];
 
             // Create the table row
+            TableRow tr = new TableRow(this);
 
             //Changing the appearance to a alternating grey and black pattern for better readability
-            TableRow tr = new TableRow(this);
             if (tl.getChildCount() % 2 != 0) {
                 tr.setBackgroundColor(Color.GRAY);
             } else {
@@ -86,75 +101,74 @@ public class Woerterbuch extends AppCompatActivity implements AdapterView.OnItem
                     LayoutParams.MATCH_PARENT,
                     LayoutParams.MATCH_PARENT));
 
-            //Create the columns to add as table data
-
-            /*
-            TextView labelID = new TextView(this);
-            labelID.setId(200 + tl.getChildCount());
-            labelID.setText(tl.getChildCount());
-            labelID.setTextColor(Color.WHITE);
-            tr.addView(labelID);
-*/
-//TODO: Add a \n for every possible translation
-
+            //Creating the label for the latin word
             TextView labelLatein = new TextView(this);
             labelLatein.setId(200 + tl.getChildCount());
             labelLatein.setText(latein + "\t");
             labelLatein.setTextColor(Color.WHITE);
-            tr.addView(labelLatein);
-
+            //Creating the label for the german translation
             TextView labelDeutsch = new TextView(this);
             labelDeutsch.setId(200 + tl.getChildCount());
             labelDeutsch.setText(deutsch);
             labelDeutsch.setTextColor(Color.WHITE);
+
+            //Adding the created labels to the TableRow new
+            tr.addView(labelLatein);
             tr.addView(labelDeutsch);
 
-            // finally add this to the table row
+            //Adding the created TableRow to the TableLayout
             tl.addView(tr);
         }
     }
 
+    /**
+     * Handling the calls to 'addTableRow(..)' depending on the newly selected item of the spinner
+     * @param parent
+     * @param view
+     * @param pos position of the newly selected item
+     * @param id
+     */
     public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
 
         if (currentSpinnerPos != pos) {
             currentSpinnerPos = pos;
 
-            //remove all rows
+            //Removing all rows
             for (int i = 0; i < tl.getChildCount(); i++) {
                 View child = tl.getChildAt(i);
                 if (child instanceof TableRow) ((ViewGroup) child).removeAllViews();
             }
 
+
             //Adding entries to the table layout
-            DBHelper dbHelper = new DBHelper(getApplicationContext());
-
-            //Adding values for "Substantiv"
-            columns = new String[]{
-                    SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH,
-                    SubstantivDB.FeedEntry.COLUMN_WORTSTAMM,
-                    SubstantivDB.FeedEntry._ID
-            };
-
-            String[][] valuesSubstantiv = dbHelper.getColumns(SubstantivDB.FeedEntry.TABLE_NAME, columns, pos + 1);
-            for (int i = 0; i < valuesSubstantiv.length; i++){
-                valuesSubstantiv[i][1] = dbHelper.getDekliniertenSubstantiv(
-                        Integer.parseInt(valuesSubstantiv[i][2]),
-                        DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG);
-            }
-            addTableRows(tl, valuesSubstantiv);
 
             //Adding values for 'Verb'
             columns = new String[]{
                     VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH,
-                    VerbDB.FeedEntry.COLUMN_WORTSTAMM,
                     VerbDB.FeedEntry._ID
             };
             String[][] valuesVerb = dbHelper.getColumns(VerbDB.FeedEntry.TABLE_NAME, columns, pos + 1);
+            //replacing the _ID column with the right conjugation of the corresponding verb
             for (int i = 0; i < valuesVerb.length; i++){
-                valuesVerb[i][1] += "re";
+                valuesVerb[i][1] = dbHelper.getKonjugiertesVerb(
+                        Integer.parseInt(valuesVerb[i][1]),
+                        "inf");
             }
             addTableRows(tl, valuesVerb);
 
+            //Adding values for "Substantiv"
+            columns = new String[]{
+                    SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH,
+                    SubstantivDB.FeedEntry._ID
+            };
+            String[][] valuesSubstantiv = dbHelper.getColumns(SubstantivDB.FeedEntry.TABLE_NAME, columns, pos + 1);
+            //replacing the _ID column with the right declination of the corresponding subjective
+            for (int i = 0; i < valuesSubstantiv.length; i++){
+                valuesSubstantiv[i][1] = dbHelper.getDekliniertenSubstantiv(
+                        Integer.parseInt(valuesSubstantiv[i][1]),
+                        DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG);
+            }
+            addTableRows(tl, valuesSubstantiv);
 
             //Adding values for everything but "Substantiv" and "Verb"
             columns = new String[]{
@@ -173,13 +187,19 @@ public class Woerterbuch extends AppCompatActivity implements AdapterView.OnItem
 
 
             dbHelper.closeDb();
-            dbHelper.close();
         }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        dbHelper.closeDb();
     }
 }
 

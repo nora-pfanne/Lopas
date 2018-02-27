@@ -2,9 +2,6 @@ package com.example.norablakaj.lateinapp.Databases.Tables;
 
 import android.provider.BaseColumns;
 
-//TODO: Should this be private/package private?
-
-
 public class Sprechvokal_PräsensDB {
 
     private Sprechvokal_PräsensDB(){}
@@ -16,7 +13,9 @@ public class Sprechvokal_PräsensDB {
         public static final String TABLE_NAME = "Sprechvokal_Praesens";
 
         // Table columns
-        public static final String  COLUMN_1_SG = "Erste_Sg",
+        public static final String  COLUMN_TITLE = "Titel",
+                                    COLUMN_INFINITV = "Infinitiv",
+                                    COLUMN_1_SG = "Erste_Sg",
                                     COLUMN_2_SG = "Zweite_Sg",
                                     COLUMN_3_SG = "Dritte_Sg",
                                     COLUMN_1_PL = "Erste_Pl",

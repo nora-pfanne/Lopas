@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.norablakaj.lateinapp.Activities.Einheiten.GrammatikDeklination">
+    tools:context="com.example.norablakaj.lateinapp.Activities.Einheiten.GrammatikPersonalendung">
 
     <TextView
-        android:id="@+id/textGrammatikDeklinationÜberschrift"
+        android:id="@+id/textGrammatikPersonalendungÜberschrift"
         android:layout_width="288dp"
         android:layout_height="35dp"
         android:layout_marginBottom="8dp"
@@ -15,7 +15,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/hind_light"
-        android:text="Deklinationsendungen"
+        android:text="Personalendung"
         android:textAlignment="center"
         android:textSize="22dp"
         android:textStyle="bold"
@@ -27,7 +27,7 @@
         app:layout_constraintVertical_bias="0.014" />
 
     <TextView
-        android:id="@+id/textGrammatikDeklinationLatein"
+        android:id="@+id/textGrammatikPersonalendungLatein"
         android:layout_width="341dp"
         android:layout_height="105dp"
         android:layout_marginBottom="8dp"
@@ -46,14 +46,14 @@
         app:layout_constraintVertical_bias="0.3" />
 
     <TextView
-        android:id="@+id/textGrammatikDeklinationAufgabe"
+        android:id="@+id/textGrammatikPersonalendungAufgabe"
         android:layout_width="341dp"
         android:layout_height="52dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Bestimme den Kasus und den Numerus!"
+        android:text="Bestimme die Personalendung!"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +64,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/buttonGrammatikDeklinationNomSg"
+        android:id="@+id/buttonGrammatikPersonalendung1PersSg"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -72,8 +72,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16dp"
-        android:text="Nom. Sg."
-        android:onClick="deklinationstrainerButtonClicked"
+        android:text="1. Pers. Sg."
+        android:onClick="personalendungButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.107"
@@ -83,7 +83,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/buttonGrammatikDeklinationNomPl"
+        android:id="@+id/buttonGrammatikPersonalendung1PersPl"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -91,8 +91,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16dp"
-        android:text="Nom. Pl."
-        android:onClick="deklinationstrainerButtonClicked"
+        android:text="1. Pers. Pl."
+        android:onClick="personalendungButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.892"
@@ -102,7 +102,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/buttonGrammatikDeklinationGenSg"
+        android:id="@+id/buttonGrammatikPersonalendung2PersSg"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -110,8 +110,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16dp"
-        android:text="Gen. Sg."
-        android:onClick="deklinationstrainerButtonClicked"
+        android:text="2. Pers. Sg."
+        android:onClick="personalendungButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.107"
@@ -121,7 +121,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/buttonGrammatikDeklinationGenPl"
+        android:id="@+id/buttonGrammatikPersonalendung2PersPl"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -129,8 +129,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16dp"
-        android:text="Gen. Pl."
-        android:onClick="deklinationstrainerButtonClicked"
+        android:text="2. Pers. Pl."
+        android:onClick="personalendungButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.892"
@@ -140,7 +140,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/buttonGrammatikDeklinationDatSg"
+        android:id="@+id/buttonGrammatikPersonalendung3PersSg"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -148,8 +148,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16dp"
-        android:text="Dat. Sg."
-        android:onClick="deklinationstrainerButtonClicked"
+        android:text="3. Pers. Sg."
+        android:onClick="personalendungButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.107"
@@ -159,7 +159,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/buttonGrammatikDeklinationDatPl"
+        android:id="@+id/buttonGrammatikPersonalendung3PersPl"
         android:layout_width="143dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -167,96 +167,20 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16dp"
-        android:text="Dat. Pl."
-        android:onClick="deklinationstrainerButtonClicked"
+        android:text="3. Pers. Pl."
+        android:onClick="personalendungButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.892"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.508" />
-
-    <Button
-        style="@style/BasicBlueButton"
-        android:id="@+id/buttonGrammatikDeklinationAkkSg"
-        android:layout_width="143dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="256dp"
-        android:textSize="16dp"
-        android:text="Akk. Sg."
-        android:onClick="deklinationstrainerButtonClicked"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.107"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.712" />
-
-    <Button
-        style="@style/BasicBlueButton"
-        android:id="@+id/buttonGrammatikDeklinationAkkPl"
-        android:layout_width="143dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="256dp"
-        android:textSize="16dp"
-        android:text="Akk. Pl."
-        android:onClick="deklinationstrainerButtonClicked"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.892"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.712" />
-
-    <Button
-        style="@style/BasicBlueButton"
-        android:id="@+id/buttonGrammatikDeklinationAblSg"
-        android:layout_width="143dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="256dp"
-        android:textSize="16dp"
-        android:text="Abl. Sg."
-        android:onClick="deklinationstrainerButtonClicked"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.107"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.916" />
-
-    <Button
-        style="@style/BasicBlueButton"
-        android:id="@+id/buttonGrammatikDeklinationAblPl"
-        android:layout_width="143dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="256dp"
-        android:textSize="16dp"
-        android:text="Abl. Pl."
-        android:onClick="deklinationstrainerButtonClicked"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.892"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.916" />
 
     <ProgressBar
-        android:id="@+id/progressBarGrammatikDeklination"
+        android:id="@+id/progressBarPersonalendung"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="340dp"
-        android:layout_height="56dp"
+        android:layout_height="61dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -267,10 +191,10 @@
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.064" />
+        app:layout_constraintVertical_bias="0.057" />
 
     <Button
-        android:id="@+id/buttonGrammatikDeklinationWeiter"
+        android:id="@+id/buttonGrammatikPersonalendungWeiter"
         style="@style/BasicBlueButton"
         android:layout_width="146dp"
         android:layout_height="75dp"
@@ -279,7 +203,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Weiter"
-        android:onClick="deklinationstrainerButtonClicked"
+        android:onClick="personalendungButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -287,9 +211,9 @@
         app:layout_constraintVertical_bias="0.757" />
 
     <Button
-        android:id="@+id/buttonGrammatikDeklinationReset"
-        style="@style/BasicBlueButton"
+        android:id="@+id/buttonGrammatikPersonalendungReset"
         android:visibility="invisible"
+        style="@style/BasicBlueButton"
         android:layout_width="153dp"
         android:layout_height="85dp"
         android:layout_marginBottom="8dp"
@@ -297,17 +221,17 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Fortschritt zurücksetzen"
-        android:onClick="deklinationstrainerButtonClicked"
-        app:layout_constraintHorizontal_bias="0.855"
+        android:onClick="personalendungButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.927" />
+        app:layout_constraintVertical_bias="0.927"
+        app:layout_constraintHorizontal_bias="0.855"/>
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/buttonGrammatikDeklinationZurück"
+        android:id="@+id/buttonGrammatikPersonalendungZurück"
         android:layout_width="253dp"
         android:layout_height="155dp"
         android:layout_marginBottom="8dp"
@@ -315,11 +239,12 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Zurück"
-        android:onClick="deklinationstrainerButtonClicked"
+        android:onClick="personalendungButtonClicked"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.4" />
+
 </android.support.constraint.ConstraintLayout>

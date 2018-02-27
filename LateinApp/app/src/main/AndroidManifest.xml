@@ -4,6 +4,7 @@
 
     <application
         android:allowBackup="true"
+
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
@@ -12,6 +13,7 @@
         <activity
             android:name=".Activities.Home"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,18 +21,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.LektionUebersicht" />
-        <activity android:name=".Activities.AndroidDatabaseManager" />
-        <activity android:name=".Activities.Woerterbuch" />
-        <activity android:name=".Activities.Vokabeltrainer" android:windowSoftInputMode="stateVisible"/>
-        <activity android:name=".Activities.GrammatikA" android:theme="@style/noAnimationTheme"/>
-        <activity android:name=".Activities.GrammatikB" android:theme="@style/noAnimationTheme"/>
-        <activity android:name=".Activities.GrammatikC" android:theme="@style/noAnimationTheme"/>
-        <activity android:name=".Activities.Grammatikeinheiten.GrammatikDeklination"></activity>
+        <activity
+            android:name=".Activities.LektionUebersicht"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.AndroidDatabaseManager"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Woerterbuch"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Einheiten.Vokabeltrainer"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible" />
+        <activity
+            android:name=".Activities.Einheiten.GrammatikDeklination"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".Activities.SettingsActivity" />
+        <activity android:name=".Activities.Einheiten.GrammatikPersonalendung"></activity>
     </application>
 
 </manifest>

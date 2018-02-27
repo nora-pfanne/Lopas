@@ -2,10 +2,6 @@ package com.example.norablakaj.lateinapp.Databases.Tables;
 
 import android.provider.BaseColumns;
 
-
-//TODO: Should this be private/package private?
-//TODO: SQL_DUMP -> Ref: Hancl: https://github.com/LinuCC/babesk/tree/master/dbv/data/revisions
-
 public class AdverbDB extends Vokabel{
 
     public AdverbDB(int id, String latein, String deutsch){
