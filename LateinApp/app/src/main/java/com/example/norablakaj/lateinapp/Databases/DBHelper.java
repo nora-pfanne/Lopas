@@ -732,7 +732,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param column wanted column
      * @return a String of the content of the entry in the wanted column
      */
-    private String getColumnFromId(int id, String table, String column){
+    public String getColumnFromId(int id, String table, String column){
 
         openDb();
 
@@ -1282,54 +1282,6 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor4.close();
 
         closeDb();
-    }
-
-    /**
-     * Returns the title of a 'lektion'
-     * TODO: Maybe combine with 'getColumnFromId()'
-     * @param lektionNr the lektion where the title is needed
-     * @return the title of a 'lektion'
-     */
-    public String getLektionsUeberschrift(int lektionNr){
-
-        openDb();
-
-        String query = "SELECT Titel FROM " + LektionDB.FeedEntry.TABLE_NAME +
-                " WHERE " + LektionDB.FeedEntry._ID + " = ?";
-        Cursor lektionCursor = database.rawQuery(query,
-                                                    new String[]{"" + lektionNr});
-
-        lektionCursor.moveToNext();
-        String lektionsUeberschrift = lektionCursor.getString(lektionCursor.getColumnIndex("Titel"));
-        lektionCursor.close();
-
-        closeDb();
-
-        return lektionsUeberschrift;
-    }
-
-    /**
-     * Returns the intro text to a 'lektion'
-     * TODO: Maybe combine with 'getColumnFromId()'
-     * @param lektionNr the 'lektion' where the intro text is wanted
-     * @return the intro text of a 'lektion'
-     */
-    public String getLektionsText(int lektionNr){
-
-        openDb();
-
-        String query = "SELECT Thema FROM " + LektionDB.FeedEntry.TABLE_NAME +
-                " WHERE " + LektionDB.FeedEntry._ID + " = ?";
-        Cursor lektionCursor = database.rawQuery(query,
-                new String[]{"" + lektionNr});
-
-        lektionCursor.moveToNext();
-        String lektionsText = lektionCursor.getString(lektionCursor.getColumnIndex("Thema"));
-        lektionCursor.close();
-
-        closeDb();
-
-        return lektionsText;
     }
 
     /**

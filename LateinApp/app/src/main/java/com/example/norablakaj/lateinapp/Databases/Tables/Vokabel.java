@@ -1,7 +1,6 @@
 package com.example.norablakaj.lateinapp.Databases.Tables;
 
-//TODO Where should this class be in the project structure
-public class Vokabel {
+abstract public class Vokabel {
 
     private final int id;
     private final String latein,

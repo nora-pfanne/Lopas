@@ -197,48 +197,55 @@ public class Vokabeltrainer extends LateinAppActivity {
 
             //Deleting all whitespaces at the start of the token
             while (user.charAt(0) == ' '){
-                if (user.length() == 1) break;
                 user = user.substring(1, user.length()-1);
+                if (user.length() == 1) break;
             }
             //Deleting all whitespaces at the end of the token
             while (user.charAt(user.length()-1) == ' '){
+                user = user.substring(0, user.length()-1);
                 if (user.length() == 1) break;
-                user = user.substring(1, user.length()-1);
             }
+
+            Log.d("user", user);
+            boolean found = false;
 
             for (String translation : translationTokens){
 
                 //Deleting all whitespaces at the start of the token
                 while (translation.charAt(0) == ' '){
-                    if (user.length() == 1) break;
-                    translation = translation.substring(1, translation.length()-1);
-                }
-                //Deleting all whitespaces at the end of the token
-                while (translation.charAt(user.length()-1) == ' '){
-                    if (user.length() == 1) break;
+                    if (translation.length() == 1) break;
                     translation = translation.substring(1, translation.length()-1);
                 }
 
+                //Deleting all whitespaces at the end of the token
+                while (translation.charAt(translation.length()-1) == ' '){
+                    if (translation.length() == 1) break;
+                    translation = translation.substring(0, translation.length()-1);
+                }
                 //Checking with pronouns
                 if (user.equalsIgnoreCase(translation)){
-                    return false;
+                    found = true;
                 }
                 //Checking without pronouns
                 if (translation.contains("der") || translation.contains("die") || translation.contains("das") ||
                     translation.contains("Der") || translation.contains("Die") || translation.contains("Das")){
 
                     if (user.equalsIgnoreCase(translation.substring(4))){
-                        return false;
+                        found = true;
                     }
                 }
                 //Checking without 'Sich'/'sich'
                 if (translation.contains("sich") || translation.contains("Sich")){
 
                     if (user.equalsIgnoreCase(translation.substring(5))){
-                        return false;
+                        found = true;
                     }
                 }
 
+            }
+
+            if (!found){
+                return false;
             }
 
         }

@@ -12,6 +12,7 @@ import com.example.norablakaj.lateinapp.Activities.Einheiten.GrammatikDeklinatio
 import com.example.norablakaj.lateinapp.Activities.Einheiten.GrammatikPersonalendung;
 import com.example.norablakaj.lateinapp.Activities.Einheiten.Vokabeltrainer;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
+import com.example.norablakaj.lateinapp.Databases.Tables.LektionDB;
 import com.example.norablakaj.lateinapp.R;
 
 public class LektionUebersicht extends LateinAppActivity {
@@ -48,8 +49,12 @@ public class LektionUebersicht extends LateinAppActivity {
         progressBarB = findViewById(R.id.progressBarÜbersichtGrammarB);
         progressBarC = findViewById(R.id.progressBarÜbersichtGrammarC);
 
-        lektionsUeberschrift.setText(dbHelper.getLektionsUeberschrift(lektion));
-        lektionsText.setText(dbHelper.getLektionsText(lektion));
+        lektionsUeberschrift.setText(dbHelper.getColumnFromId(lektion,
+                                                              LektionDB.FeedEntry.TABLE_NAME,
+                                                              LektionDB.FeedEntry.COLUMN_TITEL));
+        lektionsText.setText(dbHelper.getColumnFromId(lektion,
+                                                      LektionDB.FeedEntry.TABLE_NAME,
+                                                      LektionDB.FeedEntry.COLUMN_THEMA));
 
         adjustProgressBars();
     }
