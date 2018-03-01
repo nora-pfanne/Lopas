@@ -1,0 +1,51 @@
+Kundengespräche
+
+17.01.2018 - Fachschaftskonferenz in Latein
+
+- Besprechung über mögliche Funktionen der App und ihrem Einsatz im Unterricht
+- Wünsche der Lateinlehrer:
+	- Vokabeltrainer für die einzelnen Lektionen
+	- Grammatikeinheiten, wie sich auch im Buch "ROMA" vorhanden sind
+	- Spiel, in welchem die Kinder Satzglieder erkennen und damit das Übersetzen üben
+- Einsatzmöglichkeiten im Lateinunterricht:
+	- Besuche in den derzeitigen 6. Klassen, welches erstmals mit dem neuen Schulbuch arbeiten
+
+
+*längere Entwicklungsphase*
+
+
+05.02.2018 - Erste Vorstellung des Vokabeltrainers bei Herrn Birnstiel
+
+- Richtige und falsche Antworten sollten durch die Farben rot und grün sofort kenntlich gemacht werden
+- Das Keyboard sollte nach Eingabebestätigung minimiert werden, sodass die richtige deutsche Übersetzung schneller ins Auge fällt
+- Design / Overlay für den Benutzer noch zu minimalistisch
+
+
+14.02.2018 - Vorstellung des Grafikdesigns (Bi)
+
+- Bilder/Logo noch stärker verwenden
+- Grammatikeinheiten durch die Betitlungen "A", "B" und "C" nicht selbsterklärend
+	-> Umbenennung in "Substanstiv" und "Verb"
+- Der Fortschritt, welcher ein Schüler in den einzelnen Einheiten und Lektionen macht, sollte deutlich angezeigt werden
+
+
+19.02.2018 - Vorstellung der neuesten Veränderungen (Bi)
+
+- Grafikdesign / Overlay noch zu überarbeiten
+
+
+20.02.2018 - Vereinbarung des erste Unterrichtsbesuch bei Frau Kratz
+
+- Kinder/Schüler sollen die Bedienung vor allem durch Ausprobieren testen (-> Ist die App jetzt selbsterklärend genug?)
+
+
+22.02.2018 - Unterrichtsbesuch bei Frau Kratz
+
+s. Anlagen
+
+
+28.02.2018 - Nachbesprechung mit Herrn Birnstiel
+
+- Einführung von Jahresabschlüssen auch hier erwünscht
+- Fortschrittsanzeige könnt durch einen Lorbeerkranz ersetzt werden
+	- Blätter färben sih entsprechend der Leistung, die der Schüler erbracht hat
