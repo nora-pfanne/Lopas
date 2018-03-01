@@ -7,12 +7,11 @@ Source: https://github.com/sanathp/DatabaseManager_For_Android
 
 -------------------------------------------------------------------------
 
-Wir haben mit dem Latein-Buch der Roma gearbeitet.
+Wir haben mit dem Latein-Buch Roma gearbeitet.
 Die Texte und die Komposition der Vokabeln sind Urheberrechtlich geschützt.
 Deshalb dürfte die App ohne Zustimmung des Verlags nicht veröffentlicht werden.
 
-(Prima App?)
-
-(Verwendung in der Schule)
+Die non-kommerzielle Verwendung im schulinternen Bereich sollte keine Probleme darstellen, da die Schule
+durch das Kaufen des Bandes die Rechte zur Verwendung des Inhaltes erworben hat.
 
 

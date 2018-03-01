@@ -1,0 +1,6 @@
+Der Code zum aktivieren des Developer-Modes im Settings-Menu ist
+
+2 - 2 - 3 - 1 - 4
+
+Die unsichtbaren Buttons, die wie in der Benutzeranleitung angeordnet sind
+müssen in dieser Reihenfolge gedrückt werden, damit die Option sichtbar wird
