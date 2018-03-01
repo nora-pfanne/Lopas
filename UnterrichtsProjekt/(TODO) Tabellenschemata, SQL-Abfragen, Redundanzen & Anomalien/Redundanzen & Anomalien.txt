@@ -1,0 +1,13 @@
+Da mehrere Übersetzungen in einem Eintrag gespeichert werden, können bei der Modifizierung der Spalte Anomalien entstehen. Dies ist allerding nicht relevant, da die Übersetzungen für jede Vokabel statisch sind und nicht verändert werden.
+
+Aus DBHelper.java
+/*
+TODO: Reorganize the database:
+    add every translation as a new row
+    -> 3 Line Database:     _ID, Substantiv_ID, Translation
+    -> 3 Line Database:     _ID, Verb_ID, Translation
+    -> 3 Line Database:     _ID, Präposition_ID, Translation
+    -> ...
+
+    Momentan keine Priorität, da die Übersetzungen nicht modifiziert wird.
+*/

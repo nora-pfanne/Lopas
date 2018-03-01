@@ -1,0 +1,4 @@
+Zahlreiche SQL-Abfragen können in der Klasse DBHelper gefunden werden.
+
+Pfad:
+AppLATEIN\LateinApp\app\src\main\java\com\example\norablakaj\lateinapp\Databases\DBHelper.java
