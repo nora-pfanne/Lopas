@@ -36,7 +36,7 @@ import com.example.norablakaj.lateinapp.Databases.DBHelper;
 /**
  * This class is for debugging purposes only
  * Source: https://github.com/sanathp/DatabaseManager_For_Android
- * TODO: privacy: can this stay in the released app
+ * TODO: privacy: Remove this in the released app
  *
  *
  * This Activity is used to view and edit all used databases on the mobile device

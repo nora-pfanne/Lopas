@@ -12,23 +12,23 @@ import com.example.norablakaj.lateinapp.Activities.Einheiten.GrammatikDeklinatio
 import com.example.norablakaj.lateinapp.Activities.Einheiten.GrammatikPersonalendung;
 import com.example.norablakaj.lateinapp.Activities.Einheiten.Vokabeltrainer;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
+import com.example.norablakaj.lateinapp.Databases.Tables.LektionDB;
 import com.example.norablakaj.lateinapp.R;
 
-public class LektionUebersicht extends DevActivity {
+public class LektionUebersicht extends LateinAppActivity {
 
-    int lektion;
+    private int lektion;
 
-    DBHelper dbHelper;
+    private DBHelper dbHelper;
+    private SharedPreferences sharedPref;
 
-    TextView lektionsUeberschrift;
-    TextView lektionsText;
+    private TextView lektionsUeberschrift;
+    private TextView lektionsText;
 
-    SharedPreferences sharedPref;
-
-    ProgressBar progressVok;
-    ProgressBar progressA;
-    ProgressBar progressB;
-    ProgressBar progressC;
+    private ProgressBar progressBarVok;
+    private ProgressBar progressBarA;
+    private ProgressBar progressBarB;
+    private ProgressBar progressBarC;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,51 +42,65 @@ public class LektionUebersicht extends DevActivity {
 
         dbHelper = new DBHelper(getApplicationContext());
 
-        lektionsUeberschrift = findViewById(R.id.lektionsueberschrift);
-        lektionsText = findViewById(R.id.lektionsText);
+        lektionsUeberschrift = findViewById(R.id.textLektionsübersicht);
+        lektionsText = findViewById(R.id.textLektionsbeschreibung);
+        progressBarVok = findViewById(R.id.progressBarÜbersichtVokTrainer);
+        progressBarA = findViewById(R.id.progressBarÜbersichtGrammarA);
+        progressBarB = findViewById(R.id.progressBarÜbersichtGrammarB);
+        progressBarC = findViewById(R.id.progressBarÜbersichtGrammarC);
 
-        lektionsUeberschrift.setText(dbHelper.getLektionsUeberschrift(lektion));
-        lektionsText.setText(dbHelper.getLektionsText(lektion));
+        lektionsUeberschrift.setText(dbHelper.getColumnFromId(lektion,
+                                                              LektionDB.FeedEntry.TABLE_NAME,
+                                                              LektionDB.FeedEntry.COLUMN_TITEL));
+        lektionsText.setText(dbHelper.getColumnFromId(lektion,
+                                                      LektionDB.FeedEntry.TABLE_NAME,
+                                                      LektionDB.FeedEntry.COLUMN_THEMA));
 
-
-        progressVok = findViewById(R.id.ÜbersichtVokTrainerProgressBar);
-        progressVok.setMax(100);
-        progressVok.setProgress((int)(dbHelper.getGelerntProzent(lektion)*100));
-
-        progressA = findViewById(R.id.ÜbersichtGrammarAProgressBar);
-        progressA.setMax(20);
-
-        //TODO: Setting this is acually more complicated as not every lektion has A->Deklination
-        int completedA = sharedPref.getInt("Deklination"+lektion, 0);
-        progressA.setProgress(completedA);
-
-        //TODO: Setting this is acually more complicated as not every lektion has B->Konjugation
-        progressB = findViewById(R.id.ÜbersichtGrammarBProgressBar);
-        progressB.setMax(20);
-        int completedB = sharedPref.getInt("Personalendung"+lektion, 0);
-        progressB.setProgress(completedB);
-
-        //TODO: Setting this is acually more complicated as not every lektion has C->?
-        progressC = findViewById(R.id.ÜbersichtGrammarCProgressBar);
-        progressC.setMax(20);
-        progressC.setProgress(0);
+        adjustProgressBars();
     }
 
-    public void buttonClicked (View view){
+    private void adjustProgressBars(){
+        //TODO: Setting this is acually more complicated as not every lektion has A->Deklination and so on
 
-        if(view.getId() == R.id.ÜbersichtVokTrainerProgressBar){
-            Intent startVokabeltrainer = new Intent(view.getContext(), Vokabeltrainer.class);
-            startVokabeltrainer.putExtra("lektion", lektion);
-            startActivity(startVokabeltrainer);
-        }
-        if(view.getId() == R.id.ÜbersichtGrammarAProgressBar){
-            grammarPartA(lektion);
-        }
-        if(view.getId() == R.id.ÜbersichtGrammarBProgressBar){
-            grammarPartB(lektion);
-        }
-        if (view.getId() == R.id.ÜbersichtGrammarCProgressBar) {
-            grammarPartC(lektion);
+        progressBarVok.setMax(100);
+        progressBarVok.setProgress((int)(dbHelper.getGelerntProzent(lektion)*100));
+
+        progressBarA.setMax(20);
+
+        int completedA = sharedPref.getInt("Deklination"+lektion, 0);
+        progressBarA.setProgress(completedA);
+
+        progressBarB.setMax(20);
+        int completedB = sharedPref.getInt("Personalendung"+lektion, 0);
+        progressBarB.setProgress(completedB);
+
+        progressBarC.setMax(20);
+        progressBarC.setProgress(0);
+
+    }
+
+    public void übersichtButtonClicked (View view){
+
+
+        switch (view.getId()) {
+
+            case (R.id.progressBarÜbersichtVokTrainer):
+                Intent startVokabeltrainer = new Intent(view.getContext(), Vokabeltrainer.class);
+                startVokabeltrainer.putExtra("lektion", lektion);
+                startActivity(startVokabeltrainer);
+                break;
+
+            case (R.id.progressBarÜbersichtGrammarA):
+                grammarPartA(lektion);
+                break;
+
+            case (R.id.progressBarÜbersichtGrammarB):
+                grammarPartB(lektion);
+                break;
+
+            case (R.id.progressBarÜbersichtGrammarC):
+                grammarPartC(lektion);
+                break;
         }
     }
 
@@ -94,13 +108,7 @@ public class LektionUebersicht extends DevActivity {
     protected void onResume() {
         super.onResume();
 
-        progressVok.setProgress((int)(dbHelper.getGelerntProzent(lektion)*100));
-
-        int completedA = sharedPref.getInt("Deklination"+lektion, 0);
-        progressA.setProgress(completedA);
-
-        int completedB = sharedPref.getInt("Personalendung"+lektion, 0);
-        progressB.setProgress(completedB);
+        adjustProgressBars();
     }
 
     private void grammarPartA(int lektion){

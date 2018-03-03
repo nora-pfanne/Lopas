@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.norablakaj.lateinapp.Activities.DevActivity;
+import com.example.norablakaj.lateinapp.Activities.LateinAppActivity;
 import com.example.norablakaj.lateinapp.Activities.Home;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.Tables.Personalendung_PräsensDB;
@@ -19,55 +19,36 @@ import com.example.norablakaj.lateinapp.R;
 
 import java.util.Random;
 
-public class GrammatikPersonalendung extends DevActivity {
-
-    /*
-    WRONG FORMS
-
-    3. PL venire -> vebi(u)nt
-
-    is cognitare right? -> cogitare?
-     */
-    DBHelper dbHelper;
-
-    String konjugation;
+public class GrammatikPersonalendung extends LateinAppActivity {
     
-    Button ersteSg,
+    private DBHelper dbHelper;
+    private SharedPreferences sharedPref;
+
+    private Button ersteSg,
             zweiteSg,
             dritteSg,
             erstePl,
             zweitePl,
-            drittePl;
+            drittePl,
+            weiter,
+            zurück,
+            reset;
+    private ProgressBar progressBar;
+    private TextView latein;
 
-    int weightErsteSg,
-            weightZweiteSg,
-            weightDritteSg,
-            weightErstePl,
-            weightZweitePl,
-            weightDrittePl;
-
-    int[] weights;
-
-    String[] faelle = {Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG,
+    private String[] faelle = {
+            Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG,
             Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG,
             Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG,
             Personalendung_PräsensDB.FeedEntry.COLUMN_1_PL,
             Personalendung_PräsensDB.FeedEntry.COLUMN_2_PL,
             Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL};
-    
-    Button weiter;
-    Button zurück;
+    private int[] weights;
 
-    TextView latein;
-
-    Vokabel currentVokabel;
-    
-    SharedPreferences sharedPref;
-
-    ProgressBar progressBar;
-
-    int lektion;
-    int maxProgress = 20;
+    private String konjugation;
+    private int backgroundColor;
+    private int lektion;
+    private int maxProgress = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,31 +58,45 @@ public class GrammatikPersonalendung extends DevActivity {
         Intent intent = getIntent();
         lektion = intent.getIntExtra("lektion", 0);
 
-        latein = findViewById(R.id.GrammatikPersonalendungLatein);
-
-        ersteSg = findViewById(R.id.GrammatikPersonalendung1PersSg);
-        zweiteSg = findViewById(R.id.GrammatikPersonalendung2PersSg);
-        dritteSg = findViewById(R.id.GrammatikPersonalendung3PersSg);
-        erstePl = findViewById(R.id.GrammatikPersonalendung1PersPl);
-        zweitePl = findViewById(R.id.GrammatikPersonalendung2PersPl);
-        drittePl = findViewById(R.id.GrammatikPersonalendung3PersPl);
-
-        weiter = findViewById(R.id.GrammatikPersonalendungWeiter);
-        weiter.setVisibility(View.GONE);
-        zurück = findViewById(R.id.GrammatikPersonalendungZurück);
-
-        sharedPref = getSharedPreferences("SharedPreferences", 0);
         dbHelper = new DBHelper(getApplicationContext());
-
+        
+        sharedPref = getSharedPreferences("SharedPreferences", 0);
+        
+        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);;
+        latein = findViewById(R.id.textGrammatikPersonalendungLatein);
+        ersteSg = findViewById(R.id.buttonGrammatikPersonalendung1PersSg);
+        zweiteSg = findViewById(R.id.buttonGrammatikPersonalendung2PersSg);
+        dritteSg = findViewById(R.id.buttonGrammatikPersonalendung3PersSg);
+        erstePl = findViewById(R.id.buttonGrammatikPersonalendung1PersPl);
+        zweitePl = findViewById(R.id.buttonGrammatikPersonalendung2PersPl);
+        drittePl = findViewById(R.id.buttonGrammatikPersonalendung3PersPl);
         progressBar = findViewById(R.id.progressBarPersonalendung);
+        weiter = findViewById(R.id.buttonGrammatikPersonalendungWeiter);
+        zurück = findViewById(R.id.buttonGrammatikPersonalendungZurück);
+        reset = findViewById(R.id.buttonGrammatikPersonalendungReset);
+        
+        weiter.setVisibility(View.GONE);
+        
         progressBar.setMax(maxProgress);
-        int progress = sharedPref.getInt("Personalendung"+lektion, 0);
-        if (progress < maxProgress){
-            progressBar.setProgress(progress);
-        }else {
-            progressBar.setProgress(maxProgress);
-        }
 
+        weightSubjects(lektion);
+        
+        newVocabulary();
+
+    }
+
+    /**
+     * Sets weights for all entries of 'faelle' depending on the current value of lektion
+     */
+    private void weightSubjects(int lektion){
+
+        int weightErsteSg,
+            weightZweiteSg,
+            weightDritteSg,
+            weightErstePl,
+            weightZweitePl,
+            weightDrittePl;
+        
         if (lektion == 1){
             weightErsteSg = 0;
             weightZweiteSg = 0;
@@ -116,21 +111,13 @@ public class GrammatikPersonalendung extends DevActivity {
             weightErstePl = 2;
             weightZweitePl = 2;
             weightDrittePl = 1;
-        }else if (lektion > 2){
+        }else {
             weightErsteSg = 1;
             weightZweiteSg = 1;
             weightDritteSg = 1;
             weightErstePl = 1;
             weightZweitePl = 1;
             weightDrittePl = 1;
-        }else{
-            Log.e("LektionNotFound", "Lektion '" + lektion + "' was not found in GrammatikPersonalendung.class");
-            weightErsteSg = 0;
-            weightZweiteSg = 0;
-            weightDritteSg = 0;
-            weightErstePl = 0;
-            weightZweitePl = 0;
-            weightDrittePl = 0;
         }
 
         weights = new int[] {weightErsteSg,
@@ -139,82 +126,97 @@ public class GrammatikPersonalendung extends DevActivity {
                 weightErstePl,
                 weightZweitePl,
                 weightDrittePl};
-
-
-        newVocabulary();
-
     }
 
+    /**
+     * Handles button-clicks
+     * @param view the clicked element
+     */
     public void personalendungButtonClicked(View view){
 
-        if (view.getId() == R.id.GrammatikPersonalendung1PersSg){
-            if(faelle[0].equals(konjugation)){
-                konjugationChosen(true);
-            }else{
-                konjugationChosen(false);
-            }
-        }else if (view.getId() == R.id.GrammatikPersonalendung2PersSg){
-            if(faelle[1].equals(konjugation)){
-                konjugationChosen(true);
-            }else{
-                konjugationChosen(false);
-            }
-        }else if (view.getId() == R.id.GrammatikPersonalendung3PersSg){
-            if(faelle[2].equals(konjugation)){
-                konjugationChosen(true);
-            }else{
-                konjugationChosen(false);
-            }
-        }else if (view.getId() == R.id.GrammatikPersonalendung1PersPl){
-            if(faelle[3].equals(konjugation)){
-                konjugationChosen(true);
-            }else{
-                konjugationChosen(false);
-            }
-        }else if (view.getId() == R.id.GrammatikPersonalendung2PersPl){
-            if(faelle[4].equals(konjugation)){
-                konjugationChosen(true);
-            }else{
-                konjugationChosen(false);
-            }
-        }else if (view.getId() == R.id.GrammatikPersonalendung3PersPl){
-            if(faelle[5].equals(konjugation)){
-                konjugationChosen(true);
-            }else{
-                konjugationChosen(false);
-            }
-        }else if (view.getId() == R.id.GrammatikPersonalendungWeiter){
-            weiter.setVisibility(View.GONE);
+        switch (view.getId()){
+            case (R.id.buttonGrammatikPersonalendung1PersSg):
 
-            newVocabulary();
+                if(faelle[0].equals(konjugation)) konjugationChosen(true);
+                else konjugationChosen(false);
+                break;
 
-        }else if (view.getId() == R.id.GrammatikPersonalendungReset){
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putInt("Personalendung"+lektion, 0);
-            editor.apply();
-            finish();
-        }else if (view.getId() == R.id.GrammatikPersonalendungZurück){
-            finish();
+            case (R.id.buttonGrammatikPersonalendung2PersSg):
+
+                if(faelle[1].equals(konjugation)) konjugationChosen(true);
+                else konjugationChosen(false);
+                break;
+
+            case (R.id.buttonGrammatikPersonalendung3PersSg):
+
+                if(faelle[2].equals(konjugation)) konjugationChosen(true);
+                else konjugationChosen(false);
+                break;
+
+            case (R.id.buttonGrammatikPersonalendung1PersPl):
+
+                if(faelle[3].equals(konjugation)) konjugationChosen(true);
+                else konjugationChosen(false);
+                break;
+
+            case (R.id.buttonGrammatikPersonalendung2PersPl):
+
+                if(faelle[4].equals(konjugation)) konjugationChosen(true);
+                else konjugationChosen(false);
+                break;
+
+            case (R.id.buttonGrammatikPersonalendung3PersPl):
+
+                if(faelle[5].equals(konjugation)) konjugationChosen(true);
+                else konjugationChosen(false);
+                break;
+
+            //Gets the next vocabulary
+            case (R.id.buttonGrammatikPersonalendungWeiter):
+
+                weiter.setVisibility(View.GONE);
+                newVocabulary();
+                break;
+
+            //Resets all progress up to this point
+            case (R.id.buttonGrammatikPersonalendungReset):
+
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt("Personalendung"+lektion, 0);
+                editor.apply();
+                finish();
+
+            //Closes the activity and returns to the last one
+            case (R.id.buttonGrammatikPersonalendungZurück):
+
+                finish();
+                break;
         }
     }
 
+    /**
+     * Checks if the user already completed the 'grammatikKonjugation'.
+     * Retrieves a new vocabulary and sets it to be the current one.
+     */
     private void newVocabulary(){
+        
         int progress = sharedPref.getInt("Personalendung"+lektion, 0);
+        latein.setBackgroundColor(backgroundColor);
 
-        int color = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
-        latein.setBackgroundColor(color);
-
+        //Checks if the user has had enough correct inputs to complete the 'grammatikKonjugation'
         if (progress < maxProgress) {
+            
             konjugation = faelle[getRandomVocabularyNumber()];
-
-            currentVokabel = dbHelper.getRandomVerb(lektion);
-            if (Home.DEVELOPER && Vokabeltrainer.isDevCheatMode()) {
-                latein.setText(dbHelper.getKonjugiertesVerb(currentVokabel.getId(), konjugation)
-                        + "\n" + konjugation);
-            } else {
-                latein.setText(dbHelper.getKonjugiertesVerb(currentVokabel.getId(), konjugation));
-            }
+            Vokabel currentVokabel = dbHelper.getRandomVerb(lektion);
+            String lateinText = dbHelper.getKonjugiertesVerb(currentVokabel.getId(), konjugation);
+            
+            //#DEVELOPER
+            if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) lateinText += "\n" + konjugation;
+          
+            latein.setText(lateinText);
+            
             setButtonsVisible(lektion);
+            
         }else {
             latein.setText("");
             ersteSg.setVisibility(View.GONE);
@@ -223,8 +225,6 @@ public class GrammatikPersonalendung extends DevActivity {
             erstePl.setVisibility(View.GONE);
             zweitePl.setVisibility(View.GONE);
             drittePl.setVisibility(View.GONE);
-
-            Button reset = findViewById(R.id.GrammatikPersonalendungReset);
             reset.setVisibility(View.VISIBLE);
             zurück.setVisibility(View.VISIBLE);
 
@@ -232,8 +232,13 @@ public class GrammatikPersonalendung extends DevActivity {
 
     }
 
+    /**
+     * @return a int corresponding to to position of a case in faelle[] with respect to the
+     *          previously set weights[]-arr
+     */
     public int getRandomVocabularyNumber(){
 
+        //Getting a upper bound for the random number being retrieved afterwards
         int max =  (weights[0] +
                 weights[1] +
                 weights[2] +
@@ -242,17 +247,20 @@ public class GrammatikPersonalendung extends DevActivity {
                 weights[5]);
 
         Random randomNumber = new Random();
-        int intRandom = randomNumber.nextInt(max);
-        intRandom++;
+        int intRandom = randomNumber.nextInt(max) + 1;
         int sum = 1;
         int sumNew;
 
-        //TODO: Can we make this initialisation better? Can we prevent the error without?
+        /*
+        Each case gets a width corresponding to the 'weights'-arr.
+        Goes through every case and checks if the 'randomInt' is in the area of the current case
+         */
         int randomVocabulary = -1;
         for(int i = 0; i < weights.length; i++){
 
             sumNew = sum + weights[i];
 
+            //checks if 'intRandom' is between the 'sum' and 'sumNew' and thus in the area of the current case
             if (intRandom >= sum && intRandom < sumNew){
 
                 randomVocabulary = i;
@@ -264,6 +272,7 @@ public class GrammatikPersonalendung extends DevActivity {
         }
 
         if(randomVocabulary == -1){
+            //Something went wrong. Log error-message
             Log.e("randomVocabulary", "Getting a randomKonjugation failed! Returned -1 for " +
                     "\nrandomNumber: " + randomNumber +
                     "\nlektion: " + lektion);
@@ -273,7 +282,12 @@ public class GrammatikPersonalendung extends DevActivity {
         return randomVocabulary;
     }
 
+    /**
+     * Sets the button-visibility corresponding to the current lektion
+     * @param lektion the current lektion
+     */
     private void setButtonsVisible(int lektion){
+
         if (lektion == 1){
             ersteSg.setVisibility(View.GONE);
             zweiteSg.setVisibility(View.GONE);
@@ -292,20 +306,28 @@ public class GrammatikPersonalendung extends DevActivity {
             drittePl.setVisibility(View.VISIBLE);
         }
     }
-    
+
+    /**
+     * @param correct was the chosen konjugation correct
+     */
     private void konjugationChosen(boolean correct){
 
         SharedPreferences.Editor editor = sharedPref.edit();
-
         int color;
+
         if (correct) {
             color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
 
-            editor.putInt("Personalendung"+lektion, sharedPref.getInt("Personalendung"+lektion, 0) + 1);
+            //Increasing the counter by 1
+            editor.putInt("Personalendung" + lektion,
+                          sharedPref.getInt("Personalendung"+lektion, 0) + 1);
         }else {
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+
+            //Decreases the counter by 1
             if (sharedPref.getInt("Personalendung" + lektion, 0) > 0) {
-                editor.putInt("Personalendung" + lektion, sharedPref.getInt("Personalendung" + lektion, 0) - 1);
+                editor.putInt("Personalendung" + lektion,
+                              sharedPref.getInt("Personalendung" + lektion, 0) - 1);
             }
         }
         editor.apply();
@@ -322,4 +344,12 @@ public class GrammatikPersonalendung extends DevActivity {
         zweitePl.setVisibility(View.GONE);
         drittePl.setVisibility(View.GONE);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbHelper.closeDb();
+        dbHelper.close();
+    }
+
 }

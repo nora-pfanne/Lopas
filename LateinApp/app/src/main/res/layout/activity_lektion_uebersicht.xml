@@ -7,7 +7,7 @@
     tools:context="com.example.norablakaj.lateinapp.Activities.LektionUebersicht">
 
     <TextView
-        android:id="@+id/lektionsText"
+        android:id="@+id/textLektionsbeschreibung"
         android:layout_width="314dp"
         android:layout_height="245dp"
         android:layout_marginBottom="8dp"
@@ -25,7 +25,7 @@
         app:layout_constraintVertical_bias="0.211" />
 
     <TextView
-        android:id="@+id/lektionsueberschrift"
+        android:id="@+id/textLektionsübersicht"
         android:layout_width="314dp"
         android:layout_height="46dp"
         android:layout_marginBottom="8dp"
@@ -44,7 +44,7 @@
         app:layout_constraintVertical_bias="0.038" />
 
     <ProgressBar
-        android:id="@+id/ÜbersichtVokTrainerProgressBar"
+        android:id="@+id/progressBarÜbersichtVokTrainer"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="314dp"
         android:layout_height="4dp"
@@ -58,12 +58,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.63"
         android:scaleY="19"
-        android:onClick="buttonClicked"
+        android:onClick="übersichtButtonClicked"
         android:background="@color/BurgundyLight"
         />
 
     <TextView
-        android:id="@+id/ÜbersichtVokTrainerText"
+        android:id="@+id/textÜbersichtVokTrainer"
         android:layout_width="314dp"
         android:layout_height="76dp"
         android:layout_marginBottom="8dp"
@@ -76,14 +76,14 @@
         android:textSize="22dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/ÜbersichtVokTrainerProgressBar"
+        app:layout_constraintEnd_toEndOf="@+id/progressBarÜbersichtVokTrainer"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/ÜbersichtVokTrainerProgressBar"
+        app:layout_constraintStart_toStartOf="@+id/progressBarÜbersichtVokTrainer"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.651" />
 
     <ProgressBar
-        android:id="@+id/ÜbersichtGrammarAProgressBar"
+        android:id="@+id/progressBarÜbersichtGrammarA"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="90dp"
         android:layout_height="4dp"
@@ -98,13 +98,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:scaleY="22.5"
-        android:onClick="buttonClicked"
+        android:onClick="übersichtButtonClicked"
         android:progressTint="@color/PrussianBlue"
         android:background="@color/PrussianBlueLight"
         />
 
     <TextView
-        android:id="@+id/ÜbersichtGrammarAText"
+        android:id="@+id/textÜbersichtGrammarA"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_marginBottom="8dp"
@@ -117,14 +117,14 @@
         android:textSize="16.5dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/ÜbersichtGrammarAProgressBar"
+        app:layout_constraintEnd_toEndOf="@+id/progressBarÜbersichtGrammarA"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/ÜbersichtGrammarAProgressBar"
+        app:layout_constraintStart_toStartOf="@+id/progressBarÜbersichtGrammarA"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.855" />
 
     <ProgressBar
-        android:id="@+id/ÜbersichtGrammarBProgressBar"
+        android:id="@+id/progressBarÜbersichtGrammarB"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="90dp"
         android:layout_height="4dp"
@@ -133,7 +133,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:background="@color/PrussianBlueLight"
-        android:onClick="buttonClicked"
+        android:onClick="übersichtButtonClicked"
         android:progressTint="@color/PrussianBlue"
         android:scaleY="22.5"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -143,7 +143,7 @@
         app:layout_constraintVertical_bias="0.801" />
 
     <TextView
-        android:id="@+id/ÜbersichtGrammarBText"
+        android:id="@+id/textÜbersichtGrammarB"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_marginBottom="8dp"
@@ -156,14 +156,14 @@
         android:textSize="16.5dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/ÜbersichtGrammarBProgressBar"
+        app:layout_constraintEnd_toEndOf="@+id/progressBarÜbersichtGrammarB"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/ÜbersichtGrammarBProgressBar"
+        app:layout_constraintStart_toStartOf="@+id/progressBarÜbersichtGrammarB"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.855" />
 
     <ProgressBar
-        android:id="@+id/ÜbersichtGrammarCProgressBar"
+        android:id="@+id/progressBarÜbersichtGrammarC"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="90dp"
         android:layout_height="4dp"
@@ -178,13 +178,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:scaleY="22.5"
-        android:onClick="buttonClicked"
+        android:onClick="übersichtButtonClicked"
         android:progressTint="@color/PrussianBlue"
         android:background="@color/PrussianBlueLight"
         />
 
     <TextView
-        android:id="@+id/ÜbersichtGrammarCText"
+        android:id="@+id/textÜbersichtGrammarC"
         android:layout_width="90dp"
         android:layout_height="90dp"
         android:layout_marginBottom="8dp"
@@ -197,9 +197,9 @@
         android:textSize="16.5dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/ÜbersichtGrammarCProgressBar"
+        app:layout_constraintEnd_toEndOf="@+id/progressBarÜbersichtGrammarC"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/ÜbersichtGrammarCProgressBar"
+        app:layout_constraintStart_toStartOf="@+id/progressBarÜbersichtGrammarC"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.855" />
 

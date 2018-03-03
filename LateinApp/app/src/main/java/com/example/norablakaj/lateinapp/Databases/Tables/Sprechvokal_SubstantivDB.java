@@ -11,6 +11,7 @@ public class Sprechvokal_SubstantivDB {
         //Table name
         public static final String TABLE_NAME = "Sprechvokal_Substantiv";
 
+        //TODO: Maybe add a 'name' Column like in the 'Sprechvokal_Präsens' table.
         //Table columns
         public static final String
                 COLUMN_NOM_SG = "Nom_Sg",

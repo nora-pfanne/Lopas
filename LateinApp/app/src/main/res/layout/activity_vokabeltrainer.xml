@@ -8,7 +8,7 @@
     android:id="@+id/constraint_Layout">
 
     <TextView
-        android:id="@+id/VokabeltrainerÜberschrift"
+        android:id="@+id/textVokabeltrainerÜberschrift"
         android:layout_width="288dp"
         android:layout_height="35dp"
         android:layout_marginBottom="8dp"
@@ -28,7 +28,7 @@
         app:layout_constraintVertical_bias="0.032" />
 
     <TextView
-        android:id="@+id/VokabeltrainerLatein"
+        android:id="@+id/textVokabeltrainerLatein"
         android:layout_width="341dp"
         android:layout_height="155dp"
         android:layout_marginBottom="8dp"
@@ -47,7 +47,7 @@
         app:layout_constraintVertical_bias="0.252" />
 
     <TextView
-        android:id="@+id/VokabeltrainerDeutsch"
+        android:id="@+id/textVokabeltrainerDeutsch"
         android:layout_width="341dp"
         android:layout_height="155dp"
         android:layout_marginBottom="8dp"
@@ -66,7 +66,7 @@
         app:layout_constraintVertical_bias="0.837" />
 
     <EditText
-        android:id="@+id/VokabeltrainerUserInput"
+        android:id="@+id/textVokabeltrainerUserInput"
         android:layout_width="251dp"
         android:layout_height="56dp"
         android:layout_marginBottom="8dp"
@@ -85,7 +85,7 @@
         app:layout_constraintVertical_bias="0.541" />
 
     <ProgressBar
-        android:id="@+id/VokabeltrainerProgressBar"
+        android:id="@+id/progressBarVokabeltrainer"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="340dp"
         android:layout_height="56dp"
@@ -102,7 +102,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/VokabeltrainerEingabeBestätigt"
+        android:id="@+id/buttonVokabeltrainerEingabeBestätigt"
         android:layout_width="85dp"
         android:layout_height="56dp"
         android:layout_marginBottom="8dp"
@@ -121,7 +121,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/VokabeltrainerNächsteVokabel"
+        android:id="@+id/buttonVokabeltrainerNächsteVokabel"
         android:layout_width="85dp"
         android:layout_height="56dp"
         android:layout_marginBottom="8dp"
@@ -139,7 +139,7 @@
         app:layout_constraintVertical_bias="0.541" />
 
     <Button
-        android:id="@+id/VokabeltrainerFortschrittLöschen"
+        android:id="@+id/buttonVokabeltrainerFortschrittLöschen"
         style="@style/BasicBlueButton"
         android:layout_width="153dp"
         android:layout_height="85dp"
@@ -159,7 +159,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/VokabeltrainerZurück"
+        android:id="@+id/buttonVokabeltrainerZurück"
         android:layout_width="253dp"
         android:layout_height="155dp"
         android:layout_marginBottom="8dp"

@@ -9,7 +9,7 @@
     tools:showIn="@layout/app_bar_home">
 
     <Button
-        android:id="@+id/lektion1"
+        android:id="@+id/buttonOpenLektion1"
         style="@style/BasicBlueButtonHome"
         android:layout_width="200dp"
         android:layout_height="50dp"
@@ -17,7 +17,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="buttonClicked"
+        android:onClick="homeButtonClicked"
         android:text="Lektion 1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +26,7 @@
         app:layout_constraintVertical_bias="0.040" />
 
     <Button
-        android:id="@+id/lektion2"
+        android:id="@+id/buttonOpenLektion2"
         style="@style/BasicBlueButtonHome"
         android:layout_width="200dp"
         android:layout_height="50dp"
@@ -34,7 +34,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="buttonClicked"
+        android:onClick="homeButtonClicked"
         android:text="Lektion 2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +43,7 @@
         app:layout_constraintVertical_bias="0.230" />
 
     <Button
-        android:id="@+id/lektion3"
+        android:id="@+id/buttonOpenLektion3"
         style="@style/BasicBlueButtonHome"
         android:layout_width="200dp"
         android:layout_height="50dp"
@@ -51,7 +51,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="buttonClicked"
+        android:onClick="homeButtonClicked"
         android:text="Lektion 3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +60,7 @@
         app:layout_constraintVertical_bias="0.420" />
 
     <Button
-        android:id="@+id/lektion4"
+        android:id="@+id/buttonOpenLektion4"
         style="@style/BasicBlueButtonHome"
         android:layout_width="200dp"
         android:layout_height="50dp"
@@ -68,7 +68,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="buttonClicked"
+        android:onClick="homeButtonClicked"
         android:text="Lektion 4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -77,7 +77,7 @@
         app:layout_constraintVertical_bias="0.610"/>
 
     <Button
-        android:id="@+id/lektion5"
+        android:id="@+id/buttonOpenLektion5"
         style="@style/BasicBlueButtonHome"
         android:layout_width="200dp"
         android:layout_height="50dp"
@@ -85,7 +85,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="buttonClicked"
+        android:onClick="homeButtonClicked"
         android:text="Lektion 5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +94,7 @@
         app:layout_constraintVertical_bias="0.800" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/imageLorbeerkranz1"
         android:layout_width="46dp"
         android:layout_height="43dp"
         android:layout_marginBottom="8dp"
@@ -110,7 +110,7 @@
         app:srcCompat="@drawable/lorbeerkranz_small" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imageLorbeerkranz2"
         android:layout_width="46dp"
         android:layout_height="43dp"
         android:layout_marginBottom="8dp"
@@ -126,7 +126,7 @@
         app:srcCompat="@drawable/lorbeerkranz_small" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/imageLorbeerkranz3"
         android:layout_width="46dp"
         android:layout_height="43dp"
         android:layout_marginBottom="8dp"
@@ -142,7 +142,7 @@
         app:srcCompat="@drawable/lorbeerkranz_small"/>
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/imageLorbeerkranz4"
         android:layout_width="46dp"
         android:layout_height="43dp"
         android:layout_marginBottom="8dp"

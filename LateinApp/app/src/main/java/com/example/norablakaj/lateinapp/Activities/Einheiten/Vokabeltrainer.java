@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.norablakaj.lateinapp.Activities.DevActivity;
+import com.example.norablakaj.lateinapp.Activities.LateinAppActivity;
 import com.example.norablakaj.lateinapp.Activities.Home;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.Tables.AdverbDB;
@@ -24,28 +24,25 @@ import com.example.norablakaj.lateinapp.Databases.Tables.VerbDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.Vokabel;
 import com.example.norablakaj.lateinapp.R;
 
-public class Vokabeltrainer extends DevActivity {
+public class Vokabeltrainer extends LateinAppActivity {
 
-    private static boolean devCheatMode = false;
+    private SharedPreferences sharedPref;
+    private DBHelper dbHelper;
 
-    TextView latein;
-    TextView deutsch;
-    EditText userInput;
-    
+    private TextView latein,
+         deutsch;
+    private EditText userInput;
+    private ProgressBar progressBar;
     //TODO: Remove button elevation to make it align with 'userInput'-EditText
-    Button bestaetigung;
-    Button weiter;
-    Button resetButton;
-    Button zurückButton;
+    private Button bestaetigung,
+        weiter,
+        reset,
+        zurück;
 
-    TextView überschrift;
+    private Vokabel currentVokabel;
 
-    DBHelper dbHelper;
-    Vokabel currentVokabel;
-
-    ProgressBar progressBar;
-
-    int lektion;
+    private int lektion;
+    private int backgroundColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,26 +52,28 @@ public class Vokabeltrainer extends DevActivity {
         Intent intent = getIntent();
         lektion = intent.getIntExtra("lektion",0);
 
+        sharedPref = getSharedPreferences("SharedPreferences", 0);
         dbHelper = new DBHelper(getApplicationContext());
 
-        überschrift = findViewById(R.id.VokabeltrainerÜberschrift);
-        latein = findViewById(R.id.VokabeltrainerLatein);
-        deutsch = findViewById(R.id.VokabeltrainerDeutsch);
-        userInput = findViewById(R.id.VokabeltrainerUserInput);
-        progressBar = findViewById(R.id.VokabeltrainerProgressBar);
-        bestaetigung = findViewById(R.id.VokabeltrainerEingabeBestätigt);
-        weiter = findViewById(R.id.VokabeltrainerNächsteVokabel);
-        resetButton = findViewById(R.id.VokabeltrainerFortschrittLöschen);
-        zurückButton = findViewById(R.id.VokabeltrainerZurück);
+        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+        latein = findViewById(R.id.textVokabeltrainerLatein);
+        deutsch = findViewById(R.id.textVokabeltrainerDeutsch);
+        userInput = findViewById(R.id.textVokabeltrainerUserInput);
+        progressBar = findViewById(R.id.progressBarVokabeltrainer);
+        bestaetigung = findViewById(R.id.buttonVokabeltrainerEingabeBestätigt);
+        weiter = findViewById(R.id.buttonVokabeltrainerNächsteVokabel);
+        reset = findViewById(R.id.buttonVokabeltrainerFortschrittLöschen);
+        zurück = findViewById(R.id.buttonVokabeltrainerZurück);
 
         deutsch.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
-
-        progressBar.animate();
+        
         progressBar.setMax(100);
         progressBar.setProgress((int)(dbHelper.getGelerntProzent(lektion) * 100));
 
+        //Checks if all vocabularies have been learned already
         if (dbHelper.getGelerntProzent(lektion) == 1) {
+            //Hiding the keyboard.
             InputMethodManager imm = (InputMethodManager)getSystemService(
                     Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
@@ -82,126 +81,147 @@ public class Vokabeltrainer extends DevActivity {
             allLearned();
 
         } else {
-
+            //Getting a new vocabulary.
             currentVokabel = dbHelper.getRandomVocabulary(lektion);
-
-
-            Log.d("currentVok", "Latein: \t" + currentVokabel.getLatein() + "\n"
-                    +"Deutsch: \t" + currentVokabel.getDeutsch()+"\n");
-
-            latein.setText(currentVokabel.getLatein());
-            if (Home.DEVELOPER && devCheatMode){
-                latein.setText(currentVokabel.getLatein() + "\n" + currentVokabel.getDeutsch());
-            }
+            String lateinText = currentVokabel.getLatein();
+            //#DEVELOPER
+            if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) lateinText += "\n" + currentVokabel.getDeutsch();
+            latein.setText(lateinText);
         }
     }
 
+    /**
+     * Handling the button-presses
+     * @param view the view of the pressed button
+     */
     public void buttonClicked(View view){
 
-        if(view.getId() == R.id.VokabeltrainerNächsteVokabel){
+        switch (view.getId()){
 
-            progressBar.setProgress((int)(dbHelper.getGelerntProzent(lektion) * 100));
+            //Checking if all vocabularies have been learned already and getting a new one
+            case (R.id.buttonVokabeltrainerNächsteVokabel):
 
-            if (dbHelper.getGelerntProzent(lektion) == 1) {
-                allLearned();
-            } else {
+                progressBar.setProgress((int)(dbHelper.getGelerntProzent(lektion) * 100));
 
-                InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                //Checks if all vocabularies have been learned already
+                if (dbHelper.getGelerntProzent(lektion) == 1) {
+                    allLearned();
+                } else {
 
-                currentVokabel = dbHelper.getRandomVocabulary(lektion);
-                latein.setText(currentVokabel.getLatein());
-                userInput.setText("");
+                    userInput.setText("");
+                    userInput.setBackgroundColor(backgroundColor);
+                    userInput.setFocusableInTouchMode(true);
 
-                Log.d("currentVok", "Latein: \t" + currentVokabel.getLatein() + "\n"
-                        +"Deutsch: \t" + currentVokabel.getDeutsch()+"\n");
+                    //Showing the keyboard
+                    InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
-                bestaetigung.setVisibility(View.VISIBLE);
-                weiter.setVisibility(View.GONE);
-                deutsch.setVisibility(View.GONE);
+                    //Getting a new vocabulary.
+                    currentVokabel = dbHelper.getRandomVocabulary(lektion);
+                    String lateinText = currentVokabel.getLatein();
+                    //#DEVELOPER
+                    if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) lateinText += "\n" + currentVokabel.getDeutsch();
+                    latein.setText(lateinText);
 
-                int color = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
-                userInput.setBackgroundColor(color);
-                userInput.setFocusableInTouchMode(true);
-
-                if (Home.DEVELOPER && devCheatMode){
-                    latein.setText(currentVokabel.getLatein() + "\n" + currentVokabel.getDeutsch());
+                    bestaetigung.setVisibility(View.VISIBLE);
+                    weiter.setVisibility(View.GONE);
+                    deutsch.setVisibility(View.GONE);
                 }
-            }
+                break;
 
+            //Checking if the user input was correct
+            case (R.id.buttonVokabeltrainerEingabeBestätigt):
 
-        }else if (view.getId() == R.id.VokabeltrainerEingabeBestätigt){
+                userInput.setFocusable(false);
 
-            View v = this.getCurrentFocus();
-            if (v != null){
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-            }
+                //Hiding the keyboard
+                View v = this.getCurrentFocus();
+                if (v != null){
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
 
-            userInput.setFocusable(false);
+                //Checking the userInput against the translation
+                int color;
+                if(compareTranslation(userInput.getText().toString(), currentVokabel.getDeutsch())){
 
-            if(compareTranslation(userInput.getText().toString(), currentVokabel.getDeutsch())){
+                    //Checking the vocabulary as learned
+                    dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
 
-                dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
+                    color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
 
-                int color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
+                }else {
+                    color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+                }
                 userInput.setBackgroundColor(color);
 
-            }else {
-                int color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
-                userInput.setBackgroundColor(color);
-            }
+                //Showing the correct translation
+                deutsch.setText(currentVokabel.getDeutsch());
 
-            deutsch.setText(currentVokabel.getDeutsch());
+                bestaetigung.setVisibility(View.GONE);
+                weiter.setVisibility(View.VISIBLE);
+                deutsch.setVisibility(View.VISIBLE);
+                break;
 
-            bestaetigung.setVisibility(View.GONE);
-            weiter.setVisibility(View.VISIBLE);
-            deutsch.setVisibility(View.VISIBLE);
+            //Setting the 'learned' state of all vocabularies of the current lektion to false
+            case (R.id.buttonVokabeltrainerFortschrittLöschen):
+                dbHelper.resetLektion(lektion);
+                finish();
+                break;
 
-        }else if (view.getId() == R.id.VokabeltrainerFortschrittLöschen){
-
-            dbHelper.resetLektion(lektion);
-            finish();
-        }else if (view.getId() == R.id.VokabeltrainerZurück){
-            finish();
+            //Returning to the previous activity
+            case (R.id.buttonVokabeltrainerZurück):
+                finish();
+                break;
         }
     }
 
+    /**
+     * Compares the userInput with a wanted translation and returns if the comparison was successful.
+     * @param userInput String to be compared with the translation
+     * @param wantedTranslation the original translation to be compared with
+     * @return Was the comparison successful
+     */
     private boolean compareTranslation(String userInput, String wantedTranslation){
 
-        if (userInput.equals("") || userInput.equals(" ") || userInput.equals("  ")){
-            return false;
-        }
+        String[] userTokens = userInput.split(",", -1);
+        String[] translationTokens = wantedTranslation.split(",", -1);
 
-        String[] userTokens = userInput.split(",");
-        String[] tokensTranslation = wantedTranslation.split(",");
-
-        boolean found;
-
+        //Checking if every userToken[]-element matches with a translation
         for (String user : userTokens){
 
-            //Deleting the first char of the user if it is a space
-            user = user.replaceFirst("^ *", "");
-
-            //Deleting the last char of the user if it is a space
-            char lastChar = user.charAt(user.length() - 1);
-            if (lastChar == ' ') {
-                user = user.substring(0, user.length() - 1);
+            // Returns false for empty tokens
+            if (user.equals("")){
+                return false;
             }
 
-            found = false;
+            //Deleting all whitespaces at the start of the token
+            while (user.charAt(0) == ' '){
+                user = user.substring(1, user.length()-1);
+                if (user.length() == 1) break;
+            }
+            //Deleting all whitespaces at the end of the token
+            while (user.charAt(user.length()-1) == ' '){
+                user = user.substring(0, user.length()-1);
+                if (user.length() == 1) break;
+            }
 
-            for (String translation : tokensTranslation){
+            Log.d("user", user);
+            boolean found = false;
 
-                //Deleting the first char of the translation if it is a space
-                translation = translation.replaceFirst("^ *", "");
+            for (String translation : translationTokens){
 
-                //Deleting the last char of the translation if it is a space
-                lastChar = translation.charAt(translation.length() - 1);
-                if (lastChar == ' ') {
-                    translation = translation.substring(0, translation.length() - 1);
+                //Deleting all whitespaces at the start of the token
+                while (translation.charAt(0) == ' '){
+                    if (translation.length() == 1) break;
+                    translation = translation.substring(1, translation.length()-1);
                 }
 
+                //Deleting all whitespaces at the end of the token
+                while (translation.charAt(translation.length()-1) == ' '){
+                    if (translation.length() == 1) break;
+                    translation = translation.substring(0, translation.length()-1);
+                }
                 //Checking with pronouns
                 if (user.equalsIgnoreCase(translation)){
                     found = true;
@@ -209,18 +229,15 @@ public class Vokabeltrainer extends DevActivity {
                 //Checking without pronouns
                 if (translation.contains("der") || translation.contains("die") || translation.contains("das") ||
                     translation.contains("Der") || translation.contains("Die") || translation.contains("Das")){
-                    translation = translation.substring(4);
 
-                    if (user.equalsIgnoreCase(translation)){
+                    if (user.equalsIgnoreCase(translation.substring(4))){
                         found = true;
                     }
                 }
-
+                //Checking without 'Sich'/'sich'
                 if (translation.contains("sich") || translation.contains("Sich")){
 
-                    translation = translation.substring(5);
-
-                    if (user.equalsIgnoreCase(translation)){
+                    if (user.equalsIgnoreCase(translation.substring(5))){
                         found = true;
                     }
                 }
@@ -233,9 +250,15 @@ public class Vokabeltrainer extends DevActivity {
 
         }
 
+        //Everything was correct if we got here without returning false.
         return true;
     }
 
+    /**
+     * Determines what subclass of 'Vokabel' the given object is.
+     * @param vokabel the 'Vokabel' where the type is to be determined
+     * @return type of the 'Vokabel'-instance
+     */
     private String getVokabelTable(Vokabel vokabel){
 
         if(vokabel instanceof SubstantivDB){
@@ -266,6 +289,9 @@ public class Vokabeltrainer extends DevActivity {
         }
     }
 
+    /**
+     * Executed when all vocabularies are learned.
+     */
     private void allLearned(){
 
         latein.setVisibility(View.GONE);
@@ -273,21 +299,12 @@ public class Vokabeltrainer extends DevActivity {
         userInput.setVisibility(View.GONE);
         bestaetigung.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
+        reset.setVisibility(View.VISIBLE);
+        zurück.setVisibility(View.VISIBLE);
 
-        resetButton.setVisibility(View.VISIBLE);
-        zurückButton.setVisibility(View.VISIBLE);
-
-        SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("Vokabeltrainer"+lektion, true);
         editor.commit();
-    }
-
-    public static boolean isDevCheatMode() {
-        return devCheatMode;
-    }
-    public static void setDevCheatMode(boolean devCheatMode) {
-        Vokabeltrainer.devCheatMode = devCheatMode;
     }
 }
 

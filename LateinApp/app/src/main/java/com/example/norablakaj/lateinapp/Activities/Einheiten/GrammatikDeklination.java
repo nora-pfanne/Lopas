@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.norablakaj.lateinapp.Activities.DevActivity;
+import com.example.norablakaj.lateinapp.Activities.LateinAppActivity;
 import com.example.norablakaj.lateinapp.Activities.Home;
 import com.example.norablakaj.lateinapp.Databases.DBHelper;
 import com.example.norablakaj.lateinapp.Databases.Tables.DeklinationsendungDB;
@@ -19,24 +19,24 @@ import com.example.norablakaj.lateinapp.R;
 
 import java.util.Random;
 
-public class GrammatikDeklination extends DevActivity {
+public class GrammatikDeklination extends LateinAppActivity {
 
-    TextView grammatikUeberschrift;
-    TextView grammatikAufgabenstellung;
-    TextView latein;
+    private DBHelper dbHelper;
+    private SharedPreferences sharedPref;
 
-    Button nom_sg, nom_pl,
+    private TextView lateinVokabel;
+    private Button nom_sg, nom_pl,
             gen_sg, gen_pl,
             dat_sg, dat_pl,
             akk_sg, akk_pl,
-            abl_sg, abl_pl;
+            abl_sg, abl_pl,
+            weiter,
+            zurück,
+            reset;
+    private ProgressBar progressBar;
 
-    Button weiter;
-    Button zurück;
-
-    ProgressBar progressBar;
-
-    String[] faelle = {
+    private int[] weights;
+    private String[] faelle = {
             DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG,
             DeklinationsendungDB.FeedEntry.COLUMN_NOM_PL,
             DeklinationsendungDB.FeedEntry.COLUMN_GEN_SG,
@@ -49,33 +49,11 @@ public class GrammatikDeklination extends DevActivity {
             DeklinationsendungDB.FeedEntry.COLUMN_ABL_PL
     };
 
-    int[] weights;
+    private int lektion;
+    private int backgroundColor;
+    private int maxProgress = 20;
 
-    int progress;
-
-    int weightNomSg;
-    int weightNomPl;
-    int weightGenSg;
-    int weightGenPl;
-    int weightDatSg;
-    int weightDatPl;
-    int weightAkkSg;
-    int weightAkkPl;
-    int weightAblSg;
-    int weightAblPl;
-
-    DBHelper dbHelper;
-
-    int lektion;
-
-    Vokabel currentVokabel;
-    String declination;
-
-    SharedPreferences sharedPref;
-
-    int maxProgress = 20;
-
-    //TODO: make all DBHelper into a private variable that calls .close() on onDestroy()/onFinish()
+    private String declination;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,170 +65,171 @@ public class GrammatikDeklination extends DevActivity {
 
         dbHelper = new DBHelper(getApplicationContext());
 
-        grammatikUeberschrift = findViewById(R.id.GrammatikDeklinationÜberschrift);
-        grammatikAufgabenstellung = findViewById(R.id.GrammatikDeklinationAufgabe);
-        latein = findViewById(R.id.GrammatikDeklinationLatein);
-
-        nom_sg = findViewById(R.id.GrammatikDeklinationNomSg);
-        nom_pl = findViewById(R.id.GrammatikDeklinationNomPl);
-        gen_sg = findViewById(R.id.GrammatikDeklinationGenSg);
-        gen_pl = findViewById(R.id.GrammatikDeklinationGenPl);
-        dat_sg = findViewById(R.id.GrammatikDeklinationDatSg);
-        dat_pl = findViewById(R.id.GrammatikDeklinationDatPl);
-        akk_sg = findViewById(R.id.GrammatikDeklinationAkkSg);
-        akk_pl = findViewById(R.id.GrammatikDeklinationAkkPl);
-        abl_sg = findViewById(R.id.GrammatikDeklinationAblSg);
-        abl_pl = findViewById(R.id.GrammatikDeklinationAblPl);
-        weiter = findViewById(R.id.GrammatikDeklinationWeiter);
-
-        weiter.setVisibility(View.GONE);
-        zurück = findViewById(R.id.GrammatikDeklinationZurück);
-
         sharedPref = getSharedPreferences("SharedPreferences", 0);
 
-        progressBar = findViewById(R.id.GrammatikDeklinationProgressBar);
+        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+        lateinVokabel = findViewById(R.id.textGrammatikDeklinationLatein);
+        nom_sg = findViewById(R.id.buttonGrammatikDeklinationNomSg);
+        nom_pl = findViewById(R.id.buttonGrammatikDeklinationNomPl);
+        gen_sg = findViewById(R.id.buttonGrammatikDeklinationGenSg);
+        gen_pl = findViewById(R.id.buttonGrammatikDeklinationGenPl);
+        dat_sg = findViewById(R.id.buttonGrammatikDeklinationDatSg);
+        dat_pl = findViewById(R.id.buttonGrammatikDeklinationDatPl);
+        akk_sg = findViewById(R.id.buttonGrammatikDeklinationAkkSg);
+        akk_pl = findViewById(R.id.buttonGrammatikDeklinationAkkPl);
+        abl_sg = findViewById(R.id.buttonGrammatikDeklinationAblSg);
+        abl_pl = findViewById(R.id.buttonGrammatikDeklinationAblPl);
+        weiter = findViewById(R.id.buttonGrammatikDeklinationWeiter);
+        zurück = findViewById(R.id.buttonGrammatikDeklinationZurück);
+        progressBar = findViewById(R.id.progressBarGrammatikDeklination);
+        reset = findViewById(R.id.buttonGrammatikDeklinationReset);
+
+        weiter.setVisibility(View.GONE);
+
         progressBar.setMax(maxProgress);
-        progress = sharedPref.getInt("Deklination"+lektion, 0);
-        if (progress < maxProgress){
-            progressBar.setProgress(progress);
-        }else {
-            progressBar.setProgress(maxProgress);
-        }
 
-        if (lektion == 1) {
-
-            weightNomSg = 1;
-            weightNomPl = 1;
-            weightGenSg = 0;
-            weightGenPl = 0;
-            weightDatSg = 0;
-            weightDatPl = 0;
-            weightAkkSg = 0;
-            weightAkkPl = 0;
-            weightAblSg = 0;
-            weightAblPl = 0;
-
-        } else if (lektion == 2) {
-
-            weightNomSg = 1;
-            weightNomPl = 1;
-            weightGenSg = 0;
-            weightGenPl = 0;
-            weightDatSg = 0;
-            weightDatPl = 0;
-            weightAkkSg = 2;
-            weightAkkPl = 2;
-            weightAblSg = 0;
-            weightAblPl = 0;
-
-        } else if (lektion == 3) {
-
-            weightNomSg = 1;
-            weightNomPl = 1;
-            weightGenSg = 0;
-            weightGenPl = 0;
-            weightDatSg = 4;
-            weightDatPl = 4;
-            weightAkkSg = 1;
-            weightAkkPl = 1;
-            weightAblSg = 0;
-            weightAblPl = 0;
-
-        } else if (lektion == 4) {
-
-            weightNomSg = 1;
-            weightNomPl = 1;
-            weightGenSg = 0;
-            weightGenPl = 0;
-            weightDatSg = 1;
-            weightDatPl = 1;
-            weightAkkSg = 1;
-            weightAkkPl = 1;
-            weightAblSg = 6;
-            weightAblPl = 6;
-
-        } else if (lektion >= 5) {
-
-            weightNomSg = 1;
-            weightNomPl = 1;
-            weightGenSg = 8;
-            weightGenPl = 8;
-            weightDatSg = 1;
-            weightDatPl = 1;
-            weightAkkSg = 1;
-            weightAkkPl = 1;
-            weightAblSg = 1;
-            weightAblPl = 1;
-
-        } else {
-            Log.e("LektionNotFound", "Lektion " + lektion + " in GrammatikDeklination.java not found");
-            weightNomSg = 0;
-            weightNomPl = 0;
-            weightGenSg = 0;
-            weightGenPl = 0;
-            weightDatSg = 0;
-            weightDatPl = 0;
-            weightAkkSg = 0;
-            weightAkkPl = 0;
-            weightAblSg = 0;
-            weightAblPl = 0;
-        }
-
-        weights = new int[]
-                {weightNomSg,
-                weightNomPl,
-                weightGenSg,
-                weightGenPl,
-                weightDatSg,
-                weightDatPl,
-                weightAkkSg,
-                weightAkkPl,
-                weightAblSg,
-                weightAblPl};
-        /*
-        DEBUGGING
-
-        ArrayList<String> testList = new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
-            declination = faelle[getRandomVocabularyNumber()];
-            testList.add(declination);
-        }
-
-        Log.d("TestResult",
-                faelle[0] + ": \t" + Collections.frequency(testList, faelle[0]) + "\n" +
-                faelle[1] + ": \t" + Collections.frequency(testList, faelle[1]) + "\n" +
-                faelle[2] + ": \t" + Collections.frequency(testList, faelle[2]) + "\n" +
-                faelle[3] + ": \t" + Collections.frequency(testList, faelle[3]) + "\n" +
-                faelle[4] + ": \t" + Collections.frequency(testList, faelle[4]) + "\n" +
-                faelle[5] + ": \t" + Collections.frequency(testList, faelle[5]) + "\n" +
-                faelle[6] + ": \t" + Collections.frequency(testList, faelle[6]) + "\n" +
-                faelle[7] + ": \t" + Collections.frequency(testList, faelle[7]) + "\n" +
-                faelle[8] + ": \t" + Collections.frequency(testList, faelle[8]) + "\n" +
-                faelle[9] + ": \t" + Collections.frequency(testList, faelle[9]) + "\n");
-        */
+        weightSubjects(lektion);
 
         newVocabulary();
     }
 
+    /**
+     * Sets weights for all entries of 'faelle' depending on the current value of lektion
+     */
+    private void weightSubjects(int lektion){
+
+        int weightNomSg;
+        int weightNomPl;
+        int weightGenSg;
+        int weightGenPl;
+        int weightDatSg;
+        int weightDatPl;
+        int weightAkkSg;
+        int weightAkkPl;
+        int weightAblSg;
+        int weightAblPl;
+
+        switch (lektion){
+
+            case 1:
+                weightNomSg = 1;
+                weightNomPl = 1;
+                weightGenSg = 0;
+                weightGenPl = 0;
+                weightDatSg = 0;
+                weightDatPl = 0;
+                weightAkkSg = 0;
+                weightAkkPl = 0;
+                weightAblSg = 0;
+                weightAblPl = 0;
+                break;
+
+            case 2:
+                weightNomSg = 1;
+                weightNomPl = 1;
+                weightGenSg = 0;
+                weightGenPl = 0;
+                weightDatSg = 0;
+                weightDatPl = 0;
+                weightAkkSg = 2;
+                weightAkkPl = 2;
+                weightAblSg = 0;
+                weightAblPl = 0;
+                break;
+
+            case 3:
+
+                weightNomSg = 1;
+                weightNomPl = 1;
+                weightGenSg = 0;
+                weightGenPl = 0;
+                weightDatSg = 4;
+                weightDatPl = 4;
+                weightAkkSg = 1;
+                weightAkkPl = 1;
+                weightAblSg = 0;
+                weightAblPl = 0;
+                break;
+
+            case 4:
+                weightNomSg = 1;
+                weightNomPl = 1;
+                weightGenSg = 0;
+                weightGenPl = 0;
+                weightDatSg = 1;
+                weightDatPl = 1;
+                weightAkkSg = 1;
+                weightAkkPl = 1;
+                weightAblSg = 6;
+                weightAblPl = 6;
+                break;
+
+            case 5:
+
+                weightNomSg = 1;
+                weightNomPl = 1;
+                weightGenSg = 8;
+                weightGenPl = 8;
+                weightDatSg = 1;
+                weightDatPl = 1;
+                weightAkkSg = 1;
+                weightAkkPl = 1;
+                weightAblSg = 1;
+                weightAblPl = 1;
+                break;
+
+            // lektion > 5
+            default:
+                weightNomSg = 1;
+                weightNomPl = 1;
+                weightGenSg = 1;
+                weightGenPl = 1;
+                weightDatSg = 1;
+                weightDatPl = 1;
+                weightAkkSg = 1;
+                weightAkkPl = 1;
+                weightAblSg = 1;
+                weightAblPl = 1;
+        }
+
+        weights = new int[]{
+                        weightNomSg,
+                        weightNomPl,
+                        weightGenSg,
+                        weightGenPl,
+                        weightDatSg,
+                        weightDatPl,
+                        weightAkkSg,
+                        weightAkkPl,
+                        weightAblSg,
+                        weightAblPl};
+    }
+
+    /**
+     * Checks if the user already completed the 'grammatikDeklination'.
+     * Retrieves a new vocabulary and sets it to be the current one.
+     */
     private void newVocabulary(){
-        progress = sharedPref.getInt("Deklination"+lektion, 0);
 
-        int color = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
-        latein.setBackgroundColor(color);
+        int progress = sharedPref.getInt("Deklination"+lektion, 0);
+        lateinVokabel.setBackgroundColor(backgroundColor);
 
+        //Checks if the user has had enough correct inputs to complete the 'grammatikDeklination'
         if (progress < maxProgress) {
-            declination = faelle[getRandomVocabularyNumber()];
-            currentVokabel = dbHelper.getRandomSubstantiv(lektion);
 
-            if (Home.DEVELOPER && Vokabeltrainer.isDevCheatMode()) {
-                latein.setText(dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination)
-                        + "\n" + declination);
-            } else {
-                latein.setText(dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination));
-            }
+            declination = faelle[getRandomVocabularyNumber()];
+            Vokabel currentVokabel = dbHelper.getRandomSubstantiv(lektion);
+            String lateinText = (dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(),
+                                 declination));
+
+            //#DEVELOPER
+            if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) lateinText += "\n" + declination;
+
+            lateinVokabel.setText(lateinText);
 
             setButtonsVisible(lektion);
         }else {
+
             nom_sg.setVisibility(View.GONE);
             nom_pl.setVisibility(View.GONE);
             gen_sg.setVisibility(View.GONE);
@@ -261,42 +240,47 @@ public class GrammatikDeklination extends DevActivity {
             akk_pl.setVisibility(View.GONE);
             abl_sg.setVisibility(View.GONE);
             abl_pl.setVisibility(View.GONE);
-            latein.setVisibility(View.GONE);
-
-            Button reset = findViewById(R.id.GrammatikDeklinationReset);
+            lateinVokabel.setVisibility(View.GONE);
             reset.setVisibility(View.VISIBLE);
             zurück.setVisibility(View.VISIBLE);
         }
 
     }
 
-    public int getRandomVocabularyNumber(){
-        
+    /**
+     * @return a int corresponding to to position of a case in faelle[] with respect to the
+     *          previously set weights[]-arr
+     */
+    private int getRandomVocabularyNumber(){
+
+        //Getting a upper bound for the random number being retrieved afterwards
         int max =  (weights[0]+
-                weights[1]+
-                weights[2]+
-                weights[3]+
-                weights[4]+
-                weights[5]+
-                weights[6]+
-                weights[7]+
-                weights[8]+
-                weights[9]);
+                    weights[1]+
+                    weights[2]+
+                    weights[3]+
+                    weights[4]+
+                    weights[5]+
+                    weights[6]+
+                    weights[7]+
+                    weights[8]+
+                    weights[9]);
 
         Random randomNumber = new Random();
-        int intRandom = randomNumber.nextInt(max);
-        intRandom++;
+        int intRandom = randomNumber.nextInt(max) + 1;
         int sum = 1;
         int sumNew;
 
-        //TODO: Can we make this initialisation better? Can we prevent the error without?
+        /*
+        Each case gets a width corresponding to the 'weights'-arr.
+        Goes through every case and checks if the 'randomInt' is in the area of the current case
+         */
         int randomVocabulary = -1;
         for(int i = 0; i < weights.length; i++){
 
             sumNew = sum + weights[i];
 
+            //checks if 'intRandom' is between the 'sum' and 'sumNew' and thus in the area of the current case
             if (intRandom >= sum && intRandom < sumNew){
-
                 randomVocabulary = i;
                 break;
             }
@@ -306,115 +290,132 @@ public class GrammatikDeklination extends DevActivity {
         }
 
         if(randomVocabulary == -1){
+            //Something went wrong. Log error-message
             Log.e("randomVocabulary", "Getting a randomDeclination failed! Returned -1 for " +
                     "\nrandomNumber: " + randomNumber +
                     "\nlektion: " + lektion);
         }
 
-
         return randomVocabulary;
     }
 
+    /**
+     * Handles button-clicks
+     * @param view the clicked element
+     */
     public void deklinationstrainerButtonClicked(View view){
 
-        if (view.getId() == R.id.GrammatikDeklinationNomSg){
-            if(faelle[0].equals(declination)){
-                deklinationChosen(true);
-            }else{
-                deklinationChosen(false);
-            }
-        }else if (view.getId() == R.id.GrammatikDeklinationNomPl){
-            if(faelle[1].equals(declination)){
-                deklinationChosen(true);
-            }else{
-                deklinationChosen(false);
-            }
-        }else if (view.getId() == R.id.GrammatikDeklinationGenSg){
-            if(faelle[2].equals(declination)){
-                deklinationChosen(true);
-            }else{
-                deklinationChosen(false);
-            }
-        }else if (view.getId() == R.id.GrammatikDeklinationGenPl){
-            if(faelle[3].equals(declination)){
-                deklinationChosen(true);
-            }else{
-                deklinationChosen(false);
-            }
-        }else if (view.getId() == R.id.GrammatikDeklinationDatSg){
-            if(faelle[4].equals(declination)){
-                deklinationChosen(true);
-            }else{
-                deklinationChosen(false);
-            }
-        }else if (view.getId() == R.id.GrammatikDeklinationDatPl){
-            if(faelle[5].equals(declination)){
-                deklinationChosen(true);
-            }else{
-                deklinationChosen(false);
-            }
-        }else if (view.getId() == R.id.GrammatikDeklinationAkkSg){
-            if(faelle[6].equals(declination)){
-                deklinationChosen(true);
-            }else{
-                deklinationChosen(false);
-            }
-        }else if (view.getId() == R.id.GrammatikDeklinationAkkPl){
-            if(faelle[7].equals(declination)){
-                deklinationChosen(true);
-            }else{
-                deklinationChosen(false);
-            }
-        }else if (view.getId() == R.id.GrammatikDeklinationAblSg){
-            if(faelle[8].equals(declination)){
-                deklinationChosen(true);
-            }else{
-                deklinationChosen(false);
-            }
-        }else if (view.getId() == R.id.GrammatikDeklinationAblPl){
-            if(faelle[9].equals(declination)){
-                deklinationChosen(true);
-            }else{
-                deklinationChosen(false);
-            }
-        }else if (view.getId() == R.id.GrammatikDeklinationWeiter){
-            
-            weiter.setVisibility(View.GONE);
+        switch (view.getId()){
+            case (R.id.buttonGrammatikDeklinationNomSg):
 
-            newVocabulary();
+                if(faelle[0].equals(declination)) deklinationChosen(true);
+                else deklinationChosen(false);
+                break;
 
+            case (R.id.buttonGrammatikDeklinationNomPl):
 
-        }else if (view.getId() == R.id.GrammatikDeklinationReset){
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putInt("Deklination"+lektion, 0);
-            editor.apply();
-            finish();
-        }else if (view.getId() == R.id.GrammatikDeklinationZurück){
-            finish();
+                if(faelle[1].equals(declination)) deklinationChosen(true);
+                else deklinationChosen(false);
+                break;
+
+            case (R.id.buttonGrammatikDeklinationGenSg):
+
+                if(faelle[2].equals(declination)) deklinationChosen(true);
+                else deklinationChosen(false);
+                break;
+
+            case (R.id.buttonGrammatikDeklinationGenPl):
+
+                if(faelle[3].equals(declination)) deklinationChosen(true);
+                else deklinationChosen(false);
+                break;
+
+            case (R.id.buttonGrammatikDeklinationDatSg):
+
+                if(faelle[4].equals(declination)) deklinationChosen(true);
+                else deklinationChosen(false);
+                break;
+
+            case (R.id.buttonGrammatikDeklinationDatPl):
+
+                if(faelle[5].equals(declination)) deklinationChosen(true);
+                else deklinationChosen(false);
+                break;
+
+            case (R.id.buttonGrammatikDeklinationAkkSg):
+
+                if(faelle[6].equals(declination)) deklinationChosen(true);
+                else deklinationChosen(false);
+                break;
+
+            case (R.id.buttonGrammatikDeklinationAkkPl):
+
+                if(faelle[7].equals(declination)) deklinationChosen(true);
+                else deklinationChosen(false);
+                break;
+
+            case (R.id.buttonGrammatikDeklinationAblSg):
+
+                if(faelle[8].equals(declination)) deklinationChosen(true);
+                else deklinationChosen(false);
+                break;
+
+            case (R.id.buttonGrammatikDeklinationAblPl):
+
+                if(faelle[9].equals(declination)) deklinationChosen(true);
+                else deklinationChosen(false);
+                break;
+
+            //Gets the next vocabulary
+            case (R.id.buttonGrammatikDeklinationWeiter):
+
+                weiter.setVisibility(View.GONE);
+                newVocabulary();
+                break;
+
+            //Resets all progress up to this point
+            case (R.id.buttonGrammatikDeklinationReset):
+
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt("Deklination"+lektion, 0);
+                editor.apply();
+                finish();
+
+            //Closes the activity and returns to the last one
+            case (R.id.buttonGrammatikDeklinationZurück):
+
+                finish();
+                break;
         }
-
     }
 
+    /**
+     * @param correct was the chosen declination correct
+     */
     private void deklinationChosen(boolean correct){
 
         SharedPreferences.Editor editor = sharedPref.edit();
-
         int color;
+
         if (correct) {
             color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
-            editor.putInt("Deklination"+lektion, sharedPref.getInt("Deklination"+lektion, 0) + 1);
+
+            //Increasing the counter by 1
+            editor.putInt("Deklination" + lektion,
+                          sharedPref.getInt("Deklination"+lektion, 0) + 1);
         }else {
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+
+            //Decreasing the counter by 1
             if (sharedPref.getInt("Deklination" + lektion, 0) > 0) {
-                editor.putInt("Deklination" + lektion, sharedPref.getInt("Deklination" + lektion, 0) - 1);
+                editor.putInt("Deklination" + lektion,
+                              sharedPref.getInt("Deklination" + lektion, 0) - 1);
             }
         }
-
         editor.apply();
 
         progressBar.setProgress(sharedPref.getInt("Deklination" +lektion, 0));
-
-        latein.setBackgroundColor(color);
+        lateinVokabel.setBackgroundColor(color);
     
         weiter.setVisibility(View.VISIBLE);
         nom_sg.setVisibility(View.GONE);
@@ -429,65 +430,88 @@ public class GrammatikDeklination extends DevActivity {
         abl_pl.setVisibility(View.GONE);
     }
 
+    /**
+     * Sets the button-visibility corresponding to the current lektion
+     * @param lektion the current lektion
+     */
     private void setButtonsVisible(int lektion){
-        if (lektion == 1){
-            nom_sg.setVisibility(View.VISIBLE);
-            nom_pl.setVisibility(View.VISIBLE);
-            gen_sg.setVisibility(View.GONE);
-            gen_pl.setVisibility(View.GONE);
-            dat_sg.setVisibility(View.GONE);
-            dat_pl.setVisibility(View.GONE);
-            akk_sg.setVisibility(View.GONE);
-            akk_pl.setVisibility(View.GONE);
-            abl_sg.setVisibility(View.GONE);
-            abl_pl.setVisibility(View.GONE);
 
-        }else if (lektion == 2){
-            nom_sg.setVisibility(View.VISIBLE);
-            nom_pl.setVisibility(View.VISIBLE);
-            gen_sg.setVisibility(View.GONE);
-            gen_pl.setVisibility(View.GONE);
-            dat_sg.setVisibility(View.GONE);
-            dat_pl.setVisibility(View.GONE);
-            akk_sg.setVisibility(View.VISIBLE);
-            akk_pl.setVisibility(View.VISIBLE);
-            abl_sg.setVisibility(View.GONE);
-            abl_pl.setVisibility(View.GONE);
+        switch (lektion){
 
-        }else if (lektion == 3){
-            nom_sg.setVisibility(View.VISIBLE);
-            nom_pl.setVisibility(View.VISIBLE);
-            gen_sg.setVisibility(View.GONE);
-            gen_pl.setVisibility(View.GONE);
-            dat_sg.setVisibility(View.VISIBLE);
-            dat_pl.setVisibility(View.VISIBLE);
-            akk_sg.setVisibility(View.VISIBLE);
-            akk_pl.setVisibility(View.VISIBLE);
-            abl_sg.setVisibility(View.GONE);
-            abl_pl.setVisibility(View.GONE);
+            case 1:
+                nom_sg.setVisibility(View.VISIBLE);
+                nom_pl.setVisibility(View.VISIBLE);
+                gen_sg.setVisibility(View.GONE);
+                gen_pl.setVisibility(View.GONE);
+                dat_sg.setVisibility(View.GONE);
+                dat_pl.setVisibility(View.GONE);
+                akk_sg.setVisibility(View.GONE);
+                akk_pl.setVisibility(View.GONE);
+                abl_sg.setVisibility(View.GONE);
+                abl_pl.setVisibility(View.GONE);
+                break;
 
-        }else if (lektion == 4){
-            nom_sg.setVisibility(View.VISIBLE);
-            nom_pl.setVisibility(View.VISIBLE);
-            gen_sg.setVisibility(View.GONE);
-            gen_pl.setVisibility(View.GONE);
-            dat_sg.setVisibility(View.VISIBLE);
-            dat_pl.setVisibility(View.VISIBLE);
-            akk_sg.setVisibility(View.VISIBLE);
-            akk_pl.setVisibility(View.VISIBLE);
-            abl_sg.setVisibility(View.VISIBLE);
-            abl_pl.setVisibility(View.VISIBLE);
-        }else if (lektion >= 5){
-            nom_sg.setVisibility(View.VISIBLE);
-            nom_pl.setVisibility(View.VISIBLE);
-            gen_sg.setVisibility(View.VISIBLE);
-            gen_pl.setVisibility(View.VISIBLE);
-            dat_sg.setVisibility(View.VISIBLE);
-            dat_pl.setVisibility(View.VISIBLE);
-            akk_sg.setVisibility(View.VISIBLE);
-            akk_pl.setVisibility(View.VISIBLE);
-            abl_sg.setVisibility(View.VISIBLE);
-            abl_pl.setVisibility(View.VISIBLE);
+            case 2:
+
+                nom_sg.setVisibility(View.VISIBLE);
+                nom_pl.setVisibility(View.VISIBLE);
+                gen_sg.setVisibility(View.GONE);
+                gen_pl.setVisibility(View.GONE);
+                dat_sg.setVisibility(View.GONE);
+                dat_pl.setVisibility(View.GONE);
+                akk_sg.setVisibility(View.VISIBLE);
+                akk_pl.setVisibility(View.VISIBLE);
+                abl_sg.setVisibility(View.GONE);
+                abl_pl.setVisibility(View.GONE);
+                break;
+
+            case 3:
+
+                nom_sg.setVisibility(View.VISIBLE);
+                nom_pl.setVisibility(View.VISIBLE);
+                gen_sg.setVisibility(View.GONE);
+                gen_pl.setVisibility(View.GONE);
+                dat_sg.setVisibility(View.VISIBLE);
+                dat_pl.setVisibility(View.VISIBLE);
+                akk_sg.setVisibility(View.VISIBLE);
+                akk_pl.setVisibility(View.VISIBLE);
+                abl_sg.setVisibility(View.GONE);
+                abl_pl.setVisibility(View.GONE);
+                break;
+
+            case 4:
+
+                nom_sg.setVisibility(View.VISIBLE);
+                nom_pl.setVisibility(View.VISIBLE);
+                gen_sg.setVisibility(View.GONE);
+                gen_pl.setVisibility(View.GONE);
+                dat_sg.setVisibility(View.VISIBLE);
+                dat_pl.setVisibility(View.VISIBLE);
+                akk_sg.setVisibility(View.VISIBLE);
+                akk_pl.setVisibility(View.VISIBLE);
+                abl_sg.setVisibility(View.VISIBLE);
+                abl_pl.setVisibility(View.VISIBLE);
+                break;
+
+            default:
+
+                nom_sg.setVisibility(View.VISIBLE);
+                nom_pl.setVisibility(View.VISIBLE);
+                gen_sg.setVisibility(View.VISIBLE);
+                gen_pl.setVisibility(View.VISIBLE);
+                dat_sg.setVisibility(View.VISIBLE);
+                dat_pl.setVisibility(View.VISIBLE);
+                akk_sg.setVisibility(View.VISIBLE);
+                akk_pl.setVisibility(View.VISIBLE);
+                abl_sg.setVisibility(View.VISIBLE);
+                abl_pl.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbHelper.closeDb();
+        dbHelper.close();
     }
 }
