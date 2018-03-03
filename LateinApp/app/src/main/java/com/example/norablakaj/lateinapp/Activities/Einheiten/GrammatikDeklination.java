@@ -17,8 +17,10 @@ import com.example.norablakaj.lateinapp.Databases.Tables.DeklinationsendungDB;
 import com.example.norablakaj.lateinapp.Databases.Tables.Vokabel;
 import com.example.norablakaj.lateinapp.R;
 
+import java.util.ArrayList;
 import java.util.Random;
 
+//TODO: Make the user choose all correct cases -> not just one
 public class GrammatikDeklination extends LateinAppActivity {
 
     private DBHelper dbHelper;
@@ -53,7 +55,9 @@ public class GrammatikDeklination extends LateinAppActivity {
     private int backgroundColor;
     private int maxProgress = 20;
 
-    private String declination;
+    private ArrayList<String> allCorrectCases;
+
+    Vokabel currentVokabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,8 @@ public class GrammatikDeklination extends LateinAppActivity {
         dbHelper = new DBHelper(getApplicationContext());
 
         sharedPref = getSharedPreferences("SharedPreferences", 0);
+
+        allCorrectCases = new ArrayList<>();
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
         lateinVokabel = findViewById(R.id.textGrammatikDeklinationLatein);
@@ -217,13 +223,46 @@ public class GrammatikDeklination extends LateinAppActivity {
         //Checks if the user has had enough correct inputs to complete the 'grammatikDeklination'
         if (progress < maxProgress) {
 
-            declination = faelle[getRandomVocabularyNumber()];
-            Vokabel currentVokabel = dbHelper.getRandomSubstantiv(lektion);
+            String declination = faelle[getRandomVocabularyNumber()];
+            currentVokabel = dbHelper.getRandomSubstantiv(lektion);
+            allCorrectCases.clear();
+            allCorrectCases.add(declination);
+            //Adding all declinations that have the same form of the substantive:
+            //Example: templum is  nom & akk Sg. -> both should be correct
+            for (String fall : faelle){
+
+                if (!declination.equals(fall)){
+
+                    //Comparing if the declinated vocabulary in both cases are the same
+                    if (
+                            dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination).equals(
+                                    dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), fall))
+                            ){
+                        allCorrectCases.add(fall);
+                    }
+
+                }
+            }
+
             String lateinText = (dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(),
-                                 declination));
+                    allCorrectCases.get(0)));
 
             //#DEVELOPER
-            if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) lateinText += "\n" + declination;
+            if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) {
+                //Lowering the text size if more than 2 correct cases exist so it fits the screen.
+                if (allCorrectCases.size() > 2) {
+                    lateinVokabel.setTextSize(24);
+                }else{
+                    lateinVokabel.setTextSize(30);
+                }
+
+                //Setting the text containing the right declinations.
+                lateinText += "\n";
+                for (String correctCase : allCorrectCases) {
+                    if (allCorrectCases.indexOf(correctCase) != 0) lateinText += " & ";
+                    lateinText += correctCase;
+                }
+            }
 
             lateinVokabel.setText(lateinText);
 
@@ -308,61 +347,61 @@ public class GrammatikDeklination extends LateinAppActivity {
         switch (view.getId()){
             case (R.id.buttonGrammatikDeklinationNomSg):
 
-                if(faelle[0].equals(declination)) deklinationChosen(true);
+                if(allCorrectCases.contains(faelle[0])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationNomPl):
 
-                if(faelle[1].equals(declination)) deklinationChosen(true);
+                if(allCorrectCases.contains(faelle[1])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationGenSg):
 
-                if(faelle[2].equals(declination)) deklinationChosen(true);
+                if(allCorrectCases.contains(faelle[2])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationGenPl):
 
-                if(faelle[3].equals(declination)) deklinationChosen(true);
+                if(allCorrectCases.contains(faelle[3])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationDatSg):
 
-                if(faelle[4].equals(declination)) deklinationChosen(true);
+                if(allCorrectCases.contains(faelle[4])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationDatPl):
 
-                if(faelle[5].equals(declination)) deklinationChosen(true);
+                if(allCorrectCases.contains(faelle[5])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAkkSg):
 
-                if(faelle[6].equals(declination)) deklinationChosen(true);
+                if(allCorrectCases.contains(faelle[6])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAkkPl):
 
-                if(faelle[7].equals(declination)) deklinationChosen(true);
+                if(allCorrectCases.contains(faelle[7])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAblSg):
 
-                if(faelle[8].equals(declination)) deklinationChosen(true);
+                if(allCorrectCases.contains(faelle[8])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAblPl):
 
-                if(faelle[9].equals(declination)) deklinationChosen(true);
+                if(allCorrectCases.contains(faelle[9])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
