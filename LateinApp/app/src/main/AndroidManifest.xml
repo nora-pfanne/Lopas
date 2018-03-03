@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activities.Home"
+            android:name=".activities.Home"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -22,28 +22,32 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.LektionUebersicht"
+            android:name=".activities.LektionUebersicht"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.AndroidDatabaseManager"
+            android:name=".activities.AndroidDatabaseManager"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.Woerterbuch"
+            android:name=".activities.Woerterbuch"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.Einheiten.Vokabeltrainer"
+            android:name=".activities.einheiten.Vokabeltrainer"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible" />
         <activity
-            android:name=".Activities.Einheiten.GrammatikDeklination"
+            android:name=".activities.einheiten.GrammatikDeklination"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.einheiten.GrammatikPersonalendung"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
-        <activity android:name=".Activities.SettingsActivity" />
-        <activity android:name=".Activities.Einheiten.GrammatikPersonalendung"></activity>
     </application>
 
 </manifest>
