@@ -1,4 +1,4 @@
-General:
+﻿General:
 Fehler bei schnellem Öffnen und Minimieren (wenn die Tastatur im Vokabeltrainer geöffnet ist?)
 -> Grafischer Fehler in der Ecke oben links im Home-Screen
 
@@ -6,16 +6,11 @@ Layout:
 Internationalization
 
 Vokabeltrainer:
-
--> Wenn 2/3/... Spaces hinter dem Wort sind, soll es trotzdem richtig sein
 -> Internationalization: Übersetzung etwas weiter nach unten für breite Handys
 
-
 Deklinatoinstrainer/Konjugatoinstrainer:
-
 -> Lösung anzeigen, wenn es falsch war
 -> Anzeigen, was gedrückt wurde, wenn es richtig war
--> Wenn Akk&Nom gleich sind, sollen beide korrekt sein
 
 Neu:
 Deutsch -> Latein

@@ -74,9 +74,13 @@ public class Vokabeltrainer extends LateinAppActivity {
         //Checks if all vocabularies have been learned already
         if (dbHelper.getGelerntProzent(lektion) == 1) {
             //Hiding the keyboard.
-            InputMethodManager imm = (InputMethodManager)getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+            try {
+                InputMethodManager imm = (InputMethodManager)getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+            }catch (NullPointerException npe){
+                npe.printStackTrace();
+            }
 
             allLearned();
 
@@ -113,8 +117,12 @@ public class Vokabeltrainer extends LateinAppActivity {
                     userInput.setFocusableInTouchMode(true);
 
                     //Showing the keyboard
-                    InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                    try {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                    }catch (NullPointerException npe){
+                        npe.printStackTrace();
+                    }
 
                     //Getting a new vocabulary.
                     currentVokabel = dbHelper.getRandomVocabulary(lektion);
@@ -135,11 +143,15 @@ public class Vokabeltrainer extends LateinAppActivity {
                 userInput.setFocusable(false);
 
                 //Hiding the keyboard
-                View v = this.getCurrentFocus();
-                if (v != null){
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                //TODO: Why do we need to use the RootView instead of sth like: this.getCurrentFocus();
+                try {
+                    View v = getWindow().getDecorView().getRootView();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }catch (NullPointerException npe){
+                    npe.printStackTrace();
                 }
+
 
                 //Checking the userInput against the translation
                 int color;
@@ -196,17 +208,20 @@ public class Vokabeltrainer extends LateinAppActivity {
             }
 
             //Deleting all whitespaces at the start of the token
-            while (user.charAt(0) == ' '){
-                user = user.substring(1, user.length()-1);
-                if (user.length() == 1) break;
+            if (user.length() > 1) {
+                while (user.charAt(0) == ' ') {
+                    user = user.substring(1, user.length());
+                    if (user.length() == 1) break;
+                }
             }
             //Deleting all whitespaces at the end of the token
-            while (user.charAt(user.length()-1) == ' '){
-                user = user.substring(0, user.length()-1);
-                if (user.length() == 1) break;
+            if (user.length() > 1) {
+                while (user.charAt(user.length() - 1) == ' ') {
+                    user = user.substring(0, user.length() - 1);
+                    if (user.length() == 1) break;
+                }
             }
 
-            Log.d("user", user);
             boolean found = false;
 
             for (String translation : translationTokens){
@@ -214,7 +229,7 @@ public class Vokabeltrainer extends LateinAppActivity {
                 //Deleting all whitespaces at the start of the token
                 while (translation.charAt(0) == ' '){
                     if (translation.length() == 1) break;
-                    translation = translation.substring(1, translation.length()-1);
+                    translation = translation.substring(1, translation.length());
                 }
 
                 //Deleting all whitespaces at the end of the token
@@ -229,14 +244,12 @@ public class Vokabeltrainer extends LateinAppActivity {
                 //Checking without pronouns
                 if (translation.contains("der") || translation.contains("die") || translation.contains("das") ||
                     translation.contains("Der") || translation.contains("Die") || translation.contains("Das")){
-
                     if (user.equalsIgnoreCase(translation.substring(4))){
                         found = true;
                     }
                 }
                 //Checking without 'Sich'/'sich'
                 if (translation.contains("sich") || translation.contains("Sich")){
-
                     if (user.equalsIgnoreCase(translation.substring(5))){
                         found = true;
                     }
@@ -304,7 +317,7 @@ public class Vokabeltrainer extends LateinAppActivity {
 
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("Vokabeltrainer"+lektion, true);
-        editor.commit();
+        editor.apply();
     }
 }
 
