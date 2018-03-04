@@ -56,6 +56,12 @@ public class LektionUebersicht extends LateinAppActivity {
                                                       LektionDB.FeedEntry.TABLE_NAME,
                                                       LektionDB.FeedEntry.COLUMN_THEMA));
 
+
+        //TODO: Remove this again. For early pushing to user only
+        TextView textC = findViewById(R.id.textÜbersichtGrammarC);
+        textC.setVisibility(View.GONE);
+        progressBarC.setVisibility(View.GONE);
+
         adjustProgressBars();
     }
 
