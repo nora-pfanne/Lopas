@@ -50,7 +50,11 @@ public class GrammatikDeklination extends LateinAppActivity {
             DeklinationsendungDB.FeedEntry.COLUMN_ABL_SG,
             DeklinationsendungDB.FeedEntry.COLUMN_ABL_PL
     };
+    private boolean[] buttonClicked;
+    private Button[] buttons;
 
+    private int colorButtonInactive;
+    private int colorButtonActive;
     private int lektion;
     private int backgroundColor;
     private int maxProgress = 20;
@@ -71,10 +75,17 @@ public class GrammatikDeklination extends LateinAppActivity {
 
         sharedPref = getSharedPreferences("SharedPreferences", 0);
 
+        colorButtonActive = ResourcesCompat.getColor(getResources(), R.color.PrussianBlueLight, null);
+        colorButtonInactive = ResourcesCompat.getColor(getResources(), R.color.PrussianBlue, null);
+
         allCorrectCases = new ArrayList<>();
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
         lateinVokabel = findViewById(R.id.textGrammatikDeklinationLatein);
+        weiter = findViewById(R.id.buttonGrammatikDeklinationWeiter);
+        zurück = findViewById(R.id.buttonGrammatikDeklinationZurück);
+        progressBar = findViewById(R.id.progressBarGrammatikDeklination);
+        reset = findViewById(R.id.buttonGrammatikDeklinationReset);
         nom_sg = findViewById(R.id.buttonGrammatikDeklinationNomSg);
         nom_pl = findViewById(R.id.buttonGrammatikDeklinationNomPl);
         gen_sg = findViewById(R.id.buttonGrammatikDeklinationGenSg);
@@ -85,10 +96,32 @@ public class GrammatikDeklination extends LateinAppActivity {
         akk_pl = findViewById(R.id.buttonGrammatikDeklinationAkkPl);
         abl_sg = findViewById(R.id.buttonGrammatikDeklinationAblSg);
         abl_pl = findViewById(R.id.buttonGrammatikDeklinationAblPl);
-        weiter = findViewById(R.id.buttonGrammatikDeklinationWeiter);
-        zurück = findViewById(R.id.buttonGrammatikDeklinationZurück);
-        progressBar = findViewById(R.id.progressBarGrammatikDeklination);
-        reset = findViewById(R.id.buttonGrammatikDeklinationReset);
+
+        buttons = new Button[]{
+                nom_sg,
+                nom_pl,
+                gen_sg,
+                gen_pl,
+                dat_sg,
+                dat_pl,
+                akk_sg,
+                akk_pl,
+                abl_sg,
+                abl_pl
+        };
+
+        buttonClicked = new boolean[]{
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+        };
 
         weiter.setVisibility(View.GONE);
 
@@ -347,60 +380,70 @@ public class GrammatikDeklination extends LateinAppActivity {
         switch (view.getId()){
             case (R.id.buttonGrammatikDeklinationNomSg):
 
+                buttonClicked[0] = !buttonClicked[0];
                 if(allCorrectCases.contains(faelle[0])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationNomPl):
 
+                buttonClicked[1] = !buttonClicked[1];
                 if(allCorrectCases.contains(faelle[1])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationGenSg):
 
+                buttonClicked[2] = !buttonClicked[2];
                 if(allCorrectCases.contains(faelle[2])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationGenPl):
 
+                buttonClicked[3] = !buttonClicked[3];
                 if(allCorrectCases.contains(faelle[3])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationDatSg):
 
+                buttonClicked[4] = !buttonClicked[4];
                 if(allCorrectCases.contains(faelle[4])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationDatPl):
 
+                buttonClicked[5] = !buttonClicked[5];
                 if(allCorrectCases.contains(faelle[5])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAkkSg):
 
+                buttonClicked[6] = !buttonClicked[6];
                 if(allCorrectCases.contains(faelle[6])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAkkPl):
 
+                buttonClicked[7] = !buttonClicked[7];
                 if(allCorrectCases.contains(faelle[7])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAblSg):
 
+                buttonClicked[8] = !buttonClicked[8];
                 if(allCorrectCases.contains(faelle[8])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAblPl):
 
+                buttonClicked[9] = !buttonClicked[9];
                 if(allCorrectCases.contains(faelle[9])) deklinationChosen(true);
                 else deklinationChosen(false);
                 break;
@@ -408,6 +451,18 @@ public class GrammatikDeklination extends LateinAppActivity {
             //Gets the next vocabulary
             case (R.id.buttonGrammatikDeklinationWeiter):
 
+                buttonClicked = new boolean[]{
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                };
                 weiter.setVisibility(View.GONE);
                 newVocabulary();
                 break;
@@ -425,6 +480,22 @@ public class GrammatikDeklination extends LateinAppActivity {
 
                 finish();
                 break;
+        }
+
+        updateButtons();
+    }
+
+    /**
+     * Updating the color of the buttons depending on if the button has been selected or deselected
+     */
+    private void updateButtons(){
+        for (int i = 0; i < buttonClicked.length; i++){
+
+            if (buttonClicked[i]){
+                buttons[i].setBackgroundColor(colorButtonActive);
+            }else {
+                buttons[i].setBackgroundColor(colorButtonInactive);
+            }
         }
     }
 

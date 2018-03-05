@@ -209,7 +209,7 @@ public class GrammatikPersonalendung extends LateinAppActivity {
             konjugation = faelle[getRandomVocabularyNumber()];
             Vokabel currentVokabel = dbHelper.getRandomVerb(lektion);
             String lateinText = dbHelper.getKonjugiertesVerb(currentVokabel.getId(), konjugation);
-            
+
             //#DEVELOPER
             if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) lateinText += "\n" + konjugation;
           
