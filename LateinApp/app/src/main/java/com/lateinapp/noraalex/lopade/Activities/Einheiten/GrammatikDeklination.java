@@ -34,7 +34,8 @@ public class GrammatikDeklination extends LateinAppActivity {
             abl_sg, abl_pl,
             weiter,
             zurück,
-            reset;
+            reset,
+            checkInput;
     private ProgressBar progressBar;
 
     private int[] weights;
@@ -86,6 +87,7 @@ public class GrammatikDeklination extends LateinAppActivity {
         zurück = findViewById(R.id.buttonGrammatikDeklinationZurück);
         progressBar = findViewById(R.id.progressBarGrammatikDeklination);
         reset = findViewById(R.id.buttonGrammatikDeklinationReset);
+        checkInput = findViewById(R.id.buttonGrammatikDeklinationCheckInput);
         nom_sg = findViewById(R.id.buttonGrammatikDeklinationNomSg);
         nom_pl = findViewById(R.id.buttonGrammatikDeklinationNomPl);
         gen_sg = findViewById(R.id.buttonGrammatikDeklinationGenSg);
@@ -381,71 +383,55 @@ public class GrammatikDeklination extends LateinAppActivity {
             case (R.id.buttonGrammatikDeklinationNomSg):
 
                 buttonClicked[0] = !buttonClicked[0];
-                if(allCorrectCases.contains(faelle[0])) deklinationChosen(true);
-                else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationNomPl):
 
                 buttonClicked[1] = !buttonClicked[1];
-                if(allCorrectCases.contains(faelle[1])) deklinationChosen(true);
-                else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationGenSg):
 
                 buttonClicked[2] = !buttonClicked[2];
-                if(allCorrectCases.contains(faelle[2])) deklinationChosen(true);
-                else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationGenPl):
 
                 buttonClicked[3] = !buttonClicked[3];
-                if(allCorrectCases.contains(faelle[3])) deklinationChosen(true);
-                else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationDatSg):
 
                 buttonClicked[4] = !buttonClicked[4];
-                if(allCorrectCases.contains(faelle[4])) deklinationChosen(true);
-                else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationDatPl):
 
                 buttonClicked[5] = !buttonClicked[5];
-                if(allCorrectCases.contains(faelle[5])) deklinationChosen(true);
-                else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAkkSg):
 
                 buttonClicked[6] = !buttonClicked[6];
-                if(allCorrectCases.contains(faelle[6])) deklinationChosen(true);
-                else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAkkPl):
 
                 buttonClicked[7] = !buttonClicked[7];
-                if(allCorrectCases.contains(faelle[7])) deklinationChosen(true);
-                else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAblSg):
 
                 buttonClicked[8] = !buttonClicked[8];
-                if(allCorrectCases.contains(faelle[8])) deklinationChosen(true);
-                else deklinationChosen(false);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAblPl):
 
                 buttonClicked[9] = !buttonClicked[9];
-                if(allCorrectCases.contains(faelle[9])) deklinationChosen(true);
-                else deklinationChosen(false);
+                break;
+
+            case (R.id.buttonGrammatikDeklinationCheckInput):
+                checkInput();
                 break;
 
             //Gets the next vocabulary
@@ -499,10 +485,72 @@ public class GrammatikDeklination extends LateinAppActivity {
         }
     }
 
-    /**
-     * @param correct was the chosen declination correct
-     */
-    private void deklinationChosen(boolean correct){
+    private void checkInput(){
+
+
+        //Checking through the inputs and comparing it with the wanted input
+        boolean correct = true;
+
+        for (int i = 0; i < buttonClicked.length; i++){
+
+            //Checking lektion dependent as lektion 1 only has Nom Sg./Pl. and so on
+            switch (lektion){
+
+                case 1:
+                    if (i == 0 || i == 1){
+                        if(buttonClicked[i]){
+                            if (!allCorrectCases.contains(faelle[i])) correct = false;
+                        }else {
+                            if (allCorrectCases.contains(faelle[i])) correct = false;
+                        }
+                    }
+                    break;
+
+                case 2:
+                    if (i == 0 || i == 1 ||
+                        i == 6 || i == 7){
+                        if(buttonClicked[i]){
+                            if (!allCorrectCases.contains(faelle[i])) correct = false;
+                        }else {
+                            if (allCorrectCases.contains(faelle[i])) correct = false;
+                        }
+                    }
+                    break;
+
+                case 3:
+                    if (i == 0 || i == 1 ||
+                        i == 4 || i == 5 ||
+                        i == 6 || i == 7){
+                        if(buttonClicked[i]){
+                            if (!allCorrectCases.contains(faelle[i])) correct = false;
+                        }else {
+                            if (allCorrectCases.contains(faelle[i])) correct = false;
+                        }
+                    }
+                    break;
+
+                case 4:
+                    if (i == 0 || i == 1 ||
+                        i == 4 || i == 5 ||
+                        i == 6 || i == 7 ||
+                        i == 8 || i == 9){
+                        if(buttonClicked[i]){
+                            if (!allCorrectCases.contains(faelle[i])) correct = false;
+                        }else {
+                            if (allCorrectCases.contains(faelle[i])) correct = false;
+                        }
+                    }
+                    break;
+
+                default:
+                    if(buttonClicked[i]){
+                        if (!allCorrectCases.contains(faelle[i])) correct = false;
+                    }else {
+                        if (allCorrectCases.contains(faelle[i])) correct = false;
+                    }
+
+            }
+        }
 
         SharedPreferences.Editor editor = sharedPref.edit();
         int color;
@@ -538,6 +586,7 @@ public class GrammatikDeklination extends LateinAppActivity {
         akk_pl.setVisibility(View.GONE);
         abl_sg.setVisibility(View.GONE);
         abl_pl.setVisibility(View.GONE);
+        checkInput.setVisibility(View.GONE);
     }
 
     /**
@@ -546,8 +595,9 @@ public class GrammatikDeklination extends LateinAppActivity {
      */
     private void setButtonsVisible(int lektion){
 
-        switch (lektion){
+        checkInput.setVisibility(View.VISIBLE);
 
+        switch (lektion){
             case 1:
                 nom_sg.setVisibility(View.VISIBLE);
                 nom_pl.setVisibility(View.VISIBLE);
