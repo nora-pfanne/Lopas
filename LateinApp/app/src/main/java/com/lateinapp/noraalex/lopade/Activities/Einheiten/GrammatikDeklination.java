@@ -56,8 +56,13 @@ public class GrammatikDeklination extends LateinAppActivity {
     private boolean[] buttonClicked;
     private Button[] buttons;
 
-    private int colorButtonInactive;
-    private int colorButtonActive;
+
+    private int colorActiveCorrect,
+                colorActiveIncorrect,
+                colorInactiveCorrect,
+                colorInactiveIncorrect,
+                colorButtonInactive,
+                colorButtonActive;
     private int lektion;
     private int backgroundColor;
     private int maxProgress = 20;
@@ -78,6 +83,11 @@ public class GrammatikDeklination extends LateinAppActivity {
 
         sharedPref = getSharedPreferences("SharedPreferences", 0);
 
+
+        colorActiveCorrect = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
+        colorInactiveIncorrect = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+        colorInactiveCorrect = ResourcesCompat.getColor(getResources(), R.color.InputRightGreenLight, null);
+        colorActiveIncorrect = ResourcesCompat.getColor(getResources(), R.color.InputWrongRedLight, null);
         colorButtonActive = ResourcesCompat.getColor(getResources(), R.color.PrussianBlueLight, null);
         colorButtonInactive = ResourcesCompat.getColor(getResources(), R.color.PrussianBlue, null);
 
@@ -303,6 +313,9 @@ public class GrammatikDeklination extends LateinAppActivity {
 
             lateinVokabel.setText(lateinText);
 
+            for (Button b : buttons){
+                b.setEnabled(true);
+            }
             setButtonsVisible(lektion);
         }else {
 
@@ -385,53 +398,64 @@ public class GrammatikDeklination extends LateinAppActivity {
             case (R.id.buttonGrammatikDeklinationNomSg):
 
                 buttonClicked[0] = !buttonClicked[0];
+                updateButtons();
                 break;
 
             case (R.id.buttonGrammatikDeklinationNomPl):
 
                 buttonClicked[1] = !buttonClicked[1];
+                updateButtons();
                 break;
 
             case (R.id.buttonGrammatikDeklinationGenSg):
 
                 buttonClicked[2] = !buttonClicked[2];
+                updateButtons();
                 break;
 
             case (R.id.buttonGrammatikDeklinationGenPl):
 
                 buttonClicked[3] = !buttonClicked[3];
+                updateButtons();
                 break;
 
             case (R.id.buttonGrammatikDeklinationDatSg):
 
                 buttonClicked[4] = !buttonClicked[4];
+                updateButtons();
                 break;
 
             case (R.id.buttonGrammatikDeklinationDatPl):
 
                 buttonClicked[5] = !buttonClicked[5];
+                updateButtons();
                 break;
 
             case (R.id.buttonGrammatikDeklinationAkkSg):
 
                 buttonClicked[6] = !buttonClicked[6];
+                updateButtons();
                 break;
 
             case (R.id.buttonGrammatikDeklinationAkkPl):
 
                 buttonClicked[7] = !buttonClicked[7];
+                updateButtons();
                 break;
 
             case (R.id.buttonGrammatikDeklinationAblSg):
 
                 buttonClicked[8] = !buttonClicked[8];
+                updateButtons();
                 break;
 
             case (R.id.buttonGrammatikDeklinationAblPl):
 
                 buttonClicked[9] = !buttonClicked[9];
+                updateButtons();
                 break;
 
+            //Checks the user input
             case (R.id.buttonGrammatikDeklinationCheckInput):
                 checkInput();
                 break;
@@ -453,6 +477,7 @@ public class GrammatikDeklination extends LateinAppActivity {
                 };
                 weiter.setVisibility(View.GONE);
                 newVocabulary();
+                updateButtons();
                 break;
 
             //Resets all progress up to this point
@@ -469,8 +494,6 @@ public class GrammatikDeklination extends LateinAppActivity {
                 finish();
                 break;
         }
-
-        updateButtons();
     }
 
     /**
@@ -501,9 +524,19 @@ public class GrammatikDeklination extends LateinAppActivity {
                 case 1:
                     if (i == 0 || i == 1){
                         if(buttonClicked[i]){
-                            if (!allCorrectCases.contains(faelle[i])) correct = false;
+                            if (!allCorrectCases.contains(faelle[i])) {
+                                correct = false;
+                                buttons[i].setBackgroundColor(colorActiveIncorrect);
+                            }else {
+                                buttons[i].setBackgroundColor(colorActiveCorrect);
+                            }
                         }else {
-                            if (allCorrectCases.contains(faelle[i])) correct = false;
+                            if (allCorrectCases.contains(faelle[i])) {
+                                correct = false;
+                                buttons[i].setBackgroundColor(colorInactiveCorrect);
+                            }else {
+                                buttons[i].setBackgroundColor(colorInactiveIncorrect);
+                            }
                         }
                     }
                     break;
@@ -512,9 +545,19 @@ public class GrammatikDeklination extends LateinAppActivity {
                     if (i == 0 || i == 1 ||
                         i == 6 || i == 7){
                         if(buttonClicked[i]){
-                            if (!allCorrectCases.contains(faelle[i])) correct = false;
+                            if (!allCorrectCases.contains(faelle[i])) {
+                                correct = false;
+                                buttons[i].setBackgroundColor(colorActiveIncorrect);
+                            }else {
+                                buttons[i].setBackgroundColor(colorActiveCorrect);
+                            }
                         }else {
-                            if (allCorrectCases.contains(faelle[i])) correct = false;
+                            if (allCorrectCases.contains(faelle[i])) {
+                                correct = false;
+                                buttons[i].setBackgroundColor(colorInactiveCorrect);
+                            }else {
+                                buttons[i].setBackgroundColor(colorInactiveIncorrect);
+                            }
                         }
                     }
                     break;
@@ -524,9 +567,19 @@ public class GrammatikDeklination extends LateinAppActivity {
                         i == 4 || i == 5 ||
                         i == 6 || i == 7){
                         if(buttonClicked[i]){
-                            if (!allCorrectCases.contains(faelle[i])) correct = false;
+                            if (!allCorrectCases.contains(faelle[i])) {
+                                correct = false;
+                                buttons[i].setBackgroundColor(colorActiveIncorrect);
+                            }else {
+                                buttons[i].setBackgroundColor(colorActiveCorrect);
+                            }
                         }else {
-                            if (allCorrectCases.contains(faelle[i])) correct = false;
+                            if (allCorrectCases.contains(faelle[i])) {
+                                correct = false;
+                                buttons[i].setBackgroundColor(colorInactiveCorrect);
+                            }else {
+                                buttons[i].setBackgroundColor(colorInactiveIncorrect);
+                            }
                         }
                     }
                     break;
@@ -537,18 +590,38 @@ public class GrammatikDeklination extends LateinAppActivity {
                         i == 6 || i == 7 ||
                         i == 8 || i == 9){
                         if(buttonClicked[i]){
-                            if (!allCorrectCases.contains(faelle[i])) correct = false;
+                            if (!allCorrectCases.contains(faelle[i])) {
+                                correct = false;
+                                buttons[i].setBackgroundColor(colorActiveIncorrect);
+                            }else {
+                                buttons[i].setBackgroundColor(colorActiveCorrect);
+                            }
                         }else {
-                            if (allCorrectCases.contains(faelle[i])) correct = false;
+                            if (allCorrectCases.contains(faelle[i])) {
+                                correct = false;
+                                buttons[i].setBackgroundColor(colorInactiveCorrect);
+                            }else {
+                                buttons[i].setBackgroundColor(colorInactiveIncorrect);
+                            }
                         }
                     }
                     break;
 
                 default:
                     if(buttonClicked[i]){
-                        if (!allCorrectCases.contains(faelle[i])) correct = false;
+                        if (!allCorrectCases.contains(faelle[i])) {
+                            correct = false;
+                            buttons[i].setBackgroundColor(colorActiveIncorrect);
+                        }else {
+                            buttons[i].setBackgroundColor(colorActiveCorrect);
+                        }
                     }else {
-                        if (allCorrectCases.contains(faelle[i])) correct = false;
+                        if (allCorrectCases.contains(faelle[i])) {
+                            correct = false;
+                            buttons[i].setBackgroundColor(colorInactiveIncorrect);
+                        }else {
+                            buttons[i].setBackgroundColor(colorInactiveCorrect);
+                        }
                     }
 
             }
@@ -576,18 +649,12 @@ public class GrammatikDeklination extends LateinAppActivity {
 
         progressBar.setProgress(sharedPref.getInt("Deklination" +lektion, 0));
         lateinVokabel.setBackgroundColor(color);
-    
+
+        for (Button b : buttons){
+            b.setEnabled(false);
+        }
+
         weiter.setVisibility(View.VISIBLE);
-        nom_sg.setVisibility(View.GONE);
-        nom_pl.setVisibility(View.GONE);
-        gen_sg.setVisibility(View.GONE);
-        gen_pl.setVisibility(View.GONE);
-        dat_sg.setVisibility(View.GONE);
-        dat_pl.setVisibility(View.GONE);
-        akk_sg.setVisibility(View.GONE);
-        akk_pl.setVisibility(View.GONE);
-        abl_sg.setVisibility(View.GONE);
-        abl_pl.setVisibility(View.GONE);
         checkInput.setVisibility(View.GONE);
     }
 

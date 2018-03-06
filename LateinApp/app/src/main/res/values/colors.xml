@@ -10,7 +10,9 @@
     <color name="BurgundyLight">#BC7F93</color>
     <color name="GhostWhite">#FAFAFF</color>
     <color name="InputWrongRed">#FF4242</color>
+    <color name="InputWrongRedLight">#ff7979</color>
     <color name="InputRightGreen">#AAFF86</color>
+    <color name="InputRightGreenLight">#ceffb9</color>
     <color name="Grey">#564E58</color>
     <color name="Gold">#f6b461</color>
     <color name="LightGold">#fff6bd</color>
