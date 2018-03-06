@@ -534,8 +534,6 @@ public class GrammatikDeklination extends LateinAppActivity {
                             if (allCorrectCases.contains(faelle[i])) {
                                 correct = false;
                                 buttons[i].setBackgroundColor(colorInactiveCorrect);
-                            }else {
-                                buttons[i].setBackgroundColor(colorInactiveIncorrect);
                             }
                         }
                     }
@@ -555,8 +553,6 @@ public class GrammatikDeklination extends LateinAppActivity {
                             if (allCorrectCases.contains(faelle[i])) {
                                 correct = false;
                                 buttons[i].setBackgroundColor(colorInactiveCorrect);
-                            }else {
-                                buttons[i].setBackgroundColor(colorInactiveIncorrect);
                             }
                         }
                     }
@@ -577,8 +573,6 @@ public class GrammatikDeklination extends LateinAppActivity {
                             if (allCorrectCases.contains(faelle[i])) {
                                 correct = false;
                                 buttons[i].setBackgroundColor(colorInactiveCorrect);
-                            }else {
-                                buttons[i].setBackgroundColor(colorInactiveIncorrect);
                             }
                         }
                     }
@@ -600,8 +594,6 @@ public class GrammatikDeklination extends LateinAppActivity {
                             if (allCorrectCases.contains(faelle[i])) {
                                 correct = false;
                                 buttons[i].setBackgroundColor(colorInactiveCorrect);
-                            }else {
-                                buttons[i].setBackgroundColor(colorInactiveIncorrect);
                             }
                         }
                     }
@@ -619,8 +611,6 @@ public class GrammatikDeklination extends LateinAppActivity {
                         if (allCorrectCases.contains(faelle[i])) {
                             correct = false;
                             buttons[i].setBackgroundColor(colorInactiveIncorrect);
-                        }else {
-                            buttons[i].setBackgroundColor(colorInactiveCorrect);
                         }
                     }
 
