@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 //TODO: Make the user choose all correct cases -> not just one
+
+//TODO: We got a weighting problem: if a case is the same 3 times it is 3 times more likely to show up
 public class GrammatikDeklination extends LateinAppActivity {
 
     private DBHelper dbHelper;
@@ -166,14 +168,14 @@ public class GrammatikDeklination extends LateinAppActivity {
                 break;
 
             case 2:
-                weightNomSg = 1;
-                weightNomPl = 1;
+                weightNomSg = 2;
+                weightNomPl = 2;
                 weightGenSg = 0;
                 weightGenPl = 0;
                 weightDatSg = 0;
                 weightDatPl = 0;
-                weightAkkSg = 2;
-                weightAkkPl = 2;
+                weightAkkSg = 3;
+                weightAkkPl = 3;
                 weightAblSg = 0;
                 weightAblPl = 0;
                 break;
@@ -184,8 +186,8 @@ public class GrammatikDeklination extends LateinAppActivity {
                 weightNomPl = 1;
                 weightGenSg = 0;
                 weightGenPl = 0;
-                weightDatSg = 4;
-                weightDatPl = 4;
+                weightDatSg = 2;
+                weightDatPl = 2;
                 weightAkkSg = 1;
                 weightAkkPl = 1;
                 weightAblSg = 0;
@@ -201,16 +203,16 @@ public class GrammatikDeklination extends LateinAppActivity {
                 weightDatPl = 1;
                 weightAkkSg = 1;
                 weightAkkPl = 1;
-                weightAblSg = 6;
-                weightAblPl = 6;
+                weightAblSg = 3;
+                weightAblPl = 3;
                 break;
 
             case 5:
 
                 weightNomSg = 1;
                 weightNomPl = 1;
-                weightGenSg = 8;
-                weightGenPl = 8;
+                weightGenSg = 4;
+                weightGenPl = 4;
                 weightDatSg = 1;
                 weightDatPl = 1;
                 weightAkkSg = 1;
