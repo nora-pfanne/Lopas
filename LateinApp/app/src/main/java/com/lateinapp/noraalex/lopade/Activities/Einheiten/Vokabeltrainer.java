@@ -98,7 +98,7 @@ public class Vokabeltrainer extends LateinAppActivity {
      * Handling the button-presses
      * @param view the view of the pressed button
      */
-    public void buttonClicked(View view){
+    public void vokabeltrainerButtonClicked(View view){
 
         switch (view.getId()){
 
