@@ -19,7 +19,7 @@ import com.lateinapp.noraalex.lopade.R;
 
 import java.util.Random;
 
-public class GrammatikPersonalendung extends LateinAppActivity {
+public class GrammatikPersonalendungErmitteln extends LateinAppActivity {
     
     private DBHelper dbHelper;
     private SharedPreferences sharedPref;

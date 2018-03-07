@@ -23,7 +23,7 @@ import java.util.Random;
 //TODO: Make the user choose all correct cases -> not just one
 
 //TODO: We got a weighting problem: if a case is the same 3 times it is 3 times more likely to show up
-public class GrammatikDeklination extends LateinAppActivity {
+public class GrammatikDeklinationErmitteln extends LateinAppActivity {
 
     private DBHelper dbHelper;
     private SharedPreferences sharedPref;

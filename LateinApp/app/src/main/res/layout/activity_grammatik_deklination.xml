@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikDeklination">
+    tools:context="com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikDeklinationErmitteln">
 
     <TextView
         android:id="@+id/textGrammatikDeklinationÜberschrift"

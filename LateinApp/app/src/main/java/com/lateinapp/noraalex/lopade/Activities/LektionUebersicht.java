@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikDeklination;
-import com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikPersonalendung;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikDeklinationErmitteln;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikPersonalendungErmitteln;
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.Vokabeltrainer;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.LektionDB;
@@ -122,31 +122,31 @@ public class LektionUebersicht extends LateinAppActivity {
         switch (lektion){
 
             case 1:
-                Intent intent1 = new Intent(getApplicationContext(), GrammatikDeklination.class);
+                Intent intent1 = new Intent(getApplicationContext(), GrammatikDeklinationErmitteln.class);
                 intent1.putExtra("lektion",lektion);
                 startActivity(intent1);
                 break;
 
             case 2:
-                Intent intent2 = new Intent(getApplicationContext(), GrammatikDeklination.class);
+                Intent intent2 = new Intent(getApplicationContext(), GrammatikDeklinationErmitteln.class);
                 intent2.putExtra("lektion",lektion);
                 startActivity(intent2);
                 break;
 
             case 3:
-                Intent intent3 = new Intent(getApplicationContext(), GrammatikDeklination.class);
+                Intent intent3 = new Intent(getApplicationContext(), GrammatikDeklinationErmitteln.class);
                 intent3.putExtra("lektion",lektion);
                 startActivity(intent3);
                 break;
 
             case 4:
-                Intent intent4 = new Intent(getApplicationContext(), GrammatikDeklination.class);
+                Intent intent4 = new Intent(getApplicationContext(), GrammatikDeklinationErmitteln.class);
                 intent4.putExtra("lektion",lektion);
                 startActivity(intent4);
                 break;
 
             case 5:
-                Intent intent5 = new Intent(getApplicationContext(), GrammatikDeklination.class);
+                Intent intent5 = new Intent(getApplicationContext(), GrammatikDeklinationErmitteln.class);
                 intent5.putExtra("lektion",lektion);
                 startActivity(intent5);
                 break;
@@ -163,31 +163,31 @@ public class LektionUebersicht extends LateinAppActivity {
         switch (lektion){
 
             case 1:
-                Intent intent1 = new Intent(getApplicationContext(), GrammatikPersonalendung.class);
+                Intent intent1 = new Intent(getApplicationContext(), GrammatikPersonalendungErmitteln.class);
                 intent1.putExtra("lektion",lektion);
                 startActivity(intent1);
                 break;
 
             case 2:
-                Intent intent2 = new Intent(getApplicationContext(), GrammatikPersonalendung.class);
+                Intent intent2 = new Intent(getApplicationContext(), GrammatikPersonalendungErmitteln.class);
                 intent2.putExtra("lektion",lektion);
                 startActivity(intent2);
                 break;
 
             case 3:
-                Intent intent3 = new Intent(getApplicationContext(), GrammatikPersonalendung.class);
+                Intent intent3 = new Intent(getApplicationContext(), GrammatikPersonalendungErmitteln.class);
                 intent3.putExtra("lektion",lektion);
                 startActivity(intent3);
                 break;
 
             case 4:
-                Intent intent4 = new Intent(getApplicationContext(), GrammatikPersonalendung.class);
+                Intent intent4 = new Intent(getApplicationContext(), GrammatikPersonalendungErmitteln.class);
                 intent4.putExtra("lektion",lektion);
                 startActivity(intent4);
                 break;
 
             case 5:
-                Intent intent5 = new Intent(getApplicationContext(), GrammatikPersonalendung.class);
+                Intent intent5 = new Intent(getApplicationContext(), GrammatikPersonalendungErmitteln.class);
                 intent5.putExtra("lektion",lektion);
                 startActivity(intent5);
                 break;

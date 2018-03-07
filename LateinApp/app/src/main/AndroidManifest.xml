@@ -34,14 +34,14 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible" />
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikDeklination"
+            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikDeklinationErmitteln"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.lateinapp.noraalex.lopade.Activities.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikPersonalendung"
+            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikPersonalendungErmitteln"
             android:screenOrientation="portrait" />
 
         <meta-data

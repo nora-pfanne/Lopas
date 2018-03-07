@@ -30,7 +30,8 @@ public class Vokabeltrainer extends LateinAppActivity {
     private DBHelper dbHelper;
 
     private TextView latein,
-         deutsch;
+         deutsch,
+         titel;
     private EditText userInput;
     private ProgressBar progressBar;
     //TODO: Remove button elevation to make it align with 'userInput'-EditText
@@ -64,6 +65,10 @@ public class Vokabeltrainer extends LateinAppActivity {
         weiter = findViewById(R.id.buttonVokabeltrainerNächsteVokabel);
         reset = findViewById(R.id.buttonVokabeltrainerFortschrittLöschen);
         zurück = findViewById(R.id.buttonVokabeltrainerZurück);
+        titel = findViewById(R.id.textVokabeltrainerÜberschrift);
+
+        userInput.setHint("Übersetzung");
+        titel.setText("Vokabeltrainer");
 
         deutsch.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
