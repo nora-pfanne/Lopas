@@ -44,6 +44,10 @@
             android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikPersonalendungErmitteln"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikDekliniereVokabel"
+            android:screenOrientation="portrait" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikDeklinationErmitteln;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikDekliniereVokabel;
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikPersonalendungErmitteln;
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.Vokabeltrainer;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
@@ -57,10 +58,12 @@ public class LektionUebersicht extends LateinAppActivity {
                                                       LektionDB.FeedEntry.COLUMN_THEMA));
 
 
-        //TODO: Remove this again. For early pushing to user only
+        /*
+        //TODO: Add this for deployment until it is finished. For early pushing to user only
         TextView textC = findViewById(R.id.textÜbersichtGrammarC);
         textC.setVisibility(View.GONE);
         progressBarC.setVisibility(View.GONE);
+        */
 
         adjustProgressBars();
     }
@@ -204,23 +207,33 @@ public class LektionUebersicht extends LateinAppActivity {
         switch (lektion){
 
             case 1:
-
+                Intent intent1 = new Intent(getApplicationContext(), GrammatikDekliniereVokabel.class);
+                intent1.putExtra("lektion",lektion);
+                startActivity(intent1);
                 break;
 
             case 2:
-
+                Intent intent2 = new Intent(getApplicationContext(), GrammatikDekliniereVokabel.class);
+                intent2.putExtra("lektion",lektion);
+                startActivity(intent2);
                 break;
 
             case 3:
-
+                Intent intent3 = new Intent(getApplicationContext(), GrammatikDekliniereVokabel.class);
+                intent3.putExtra("lektion",lektion);
+                startActivity(intent3);
                 break;
 
             case 4:
-
+                Intent intent4 = new Intent(getApplicationContext(), GrammatikDekliniereVokabel.class);
+                intent4.putExtra("lektion",lektion);
+                startActivity(intent4);
                 break;
 
             case 5:
-
+                Intent intent5 = new Intent(getApplicationContext(), GrammatikDekliniereVokabel.class);
+                intent5.putExtra("lektion",lektion);
+                startActivity(intent5);
                 break;
 
             default:
