@@ -70,6 +70,13 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_user_input);
 
+        setup();
+
+        newVocabulary();
+    }
+
+    private void setup(){
+
         Intent intent = getIntent();
         lektion = intent.getIntExtra("lektion",0);
 
@@ -96,8 +103,6 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
         weightSubjects(lektion);
 
         progressBar.setMax(maxProgress);
-
-        newVocabulary();
     }
 
     private void newVocabulary(){
@@ -122,10 +127,10 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
 
             //Getting a new vocabulary.
             currentVokabel = dbHelper.getRandomVocabulary(lektion);
-            currentDeclination = faelle[getRandomVocabularyNumber()];
+            currentDeclination = getRandomDeklination();
             //FIXME Remove nom_sg
             while (currentDeclination.equals(faelle[0])){
-                currentDeclination = faelle[getRandomVocabularyNumber()];
+                currentDeclination = getRandomDeklination();
             }
             String lateinText = dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG);
 
@@ -285,19 +290,19 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
      * Copied from GrammatikUserInputDeklinationsendung.class
      * @return
      */
-    private int getRandomVocabularyNumber(){
+    private String getRandomDeklination(){
 
         //Getting a upper bound for the random number being retrieved afterwards
         int max =  (weights[0]+
-                weights[1]+
-                weights[2]+
-                weights[3]+
-                weights[4]+
-                weights[5]+
-                weights[6]+
-                weights[7]+
-                weights[8]+
-                weights[9]);
+                    weights[1]+
+                    weights[2]+
+                    weights[3]+
+                    weights[4]+
+                    weights[5]+
+                    weights[6]+
+                    weights[7]+
+                    weights[8]+
+                    weights[9]);
 
         Random randomNumber = new Random();
         int intRandom = randomNumber.nextInt(max) + 1;
@@ -330,82 +335,51 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
                     "\nlektion: " + lektion);
         }
 
-        return randomVocabulary;
+        return faelle[randomVocabulary];
     }
 
-    /**
-     * Handling the button-presses
-     * @param view the view of the pressed button
-     */
-    public void vokabeltrainerButtonClicked(View view){
+    private void checkInput(){
+        userInput.setFocusable(false);
 
-        switch (view.getId()){
-
-            //Checking if all vocabularies have been learned already and getting a new one
-            case (R.id.buttonUserInputNächsteVokabel):
-
-                newVocabulary();
-                break;
-
-            //Checking if the user input was correct
-            case (R.id.buttonUserInputEingabeBestätigt):
-
-                userInput.setFocusable(false);
-
-                //Hiding the keyboard
-                //TODO: Why do we need to use the RootView instead of sth like: this.getCurrentFocus();
-                try {
-                    View v = getWindow().getDecorView().getRootView();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }catch (NullPointerException npe){
-                    npe.printStackTrace();
-                }
-
-
-                //Checking the userInput against the translation
-                int color;
-                if(compareString(userInput.getText().toString(), dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), currentDeclination))){
-                    color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
-
-                    SharedPreferences.Editor editor = sharedPref.edit();
-
-                    //Increasing the counter by 1
-                    editor.putInt("UserInputDeklinationsendung" + lektion,
-                            sharedPref.getInt("UserInputDeklinationsendung"+lektion, 0) + 1);
-                    editor.apply();
-                }else {
-                    color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
-
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    //Decreasing the counter by 1
-                    editor.putInt("UserInputDeklinationsendung" + lektion,
-                            sharedPref.getInt("UserInputDeklinationsendung"+lektion, 0) - 1);
-                    editor.apply();
-                }
-                userInput.setBackgroundColor(color);
-
-                //Showing the correct translation
-                solution.setText(dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), currentDeclination));
-
-                bestaetigung.setVisibility(View.GONE);
-                weiter.setVisibility(View.VISIBLE);
-                solution.setVisibility(View.VISIBLE);
-                break;
-
-            //Setting the 'learned' state of all vocabularies of the current lektion to false
-            case (R.id.buttonUserInputFortschrittLöschen):
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("UserInputDeklinationsendung"+lektion, 0);
-                editor.apply();
-                finish();
-                break;
-
-            //Returning to the previous activity
-            case (R.id.buttonUserInputZurück):
-                finish();
-                break;
+        //Hiding the keyboard
+        //TODO: Why do we need to use the RootView instead of sth like: this.getCurrentFocus();
+        try {
+            View v = getWindow().getDecorView().getRootView();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }catch (NullPointerException npe){
+            npe.printStackTrace();
         }
+
+
+        //Checking the userInput against the translation
+        int color;
+        if(compareString(userInput.getText().toString(), dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), currentDeclination))){
+            color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+
+            //Increasing the counter by 1
+            editor.putInt("UserInputDeklinationsendung" + lektion,
+                    sharedPref.getInt("UserInputDeklinationsendung"+lektion, 0) + 1);
+            editor.apply();
+        }else {
+            color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+            //Decreasing the counter by 1
+            editor.putInt("UserInputDeklinationsendung" + lektion,
+                    sharedPref.getInt("UserInputDeklinationsendung"+lektion, 0) - 1);
+            editor.apply();
+        }
+        userInput.setBackgroundColor(color);
+
+        //Showing the correct translation
+        solution.setText(dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), currentDeclination));
+
+        bestaetigung.setVisibility(View.GONE);
+        weiter.setVisibility(View.VISIBLE);
+        solution.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -455,4 +429,38 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
         zurück.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Handling the button-presses
+     * @param view the view of the pressed button
+     */
+    public void userInputButtonClicked(View view){
+
+        switch (view.getId()){
+
+            //Checking if all vocabularies have been learned already and getting a new one
+            case (R.id.buttonUserInputNächsteVokabel):
+
+                newVocabulary();
+                break;
+
+            //Checking if the user input was correct
+            case (R.id.buttonUserInputEingabeBestätigt):
+
+                checkInput();
+                break;
+
+            //Setting the 'learned' state of all vocabularies of the current lektion to false
+            case (R.id.buttonUserInputFortschrittLöschen):
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt("UserInputDeklinationsendung"+lektion, 0);
+                editor.apply();
+                finish();
+                break;
+
+            //Returning to the previous activity
+            case (R.id.buttonUserInputZurück):
+                finish();
+                break;
+        }
+    }
 }

@@ -30,8 +30,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
     private SharedPreferences sharedPref;
     private DBHelper dbHelper;
 
-    private TextView latein,
-         deutsch,
+    private TextView request,
+         solution,
          titel;
     private EditText userInput;
     private ProgressBar progressBar;
@@ -51,6 +51,13 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_user_input);
 
+        setup();
+
+        newRequest();
+    }
+
+    private void setup(){
+
         Intent intent = getIntent();
         lektion = intent.getIntExtra("lektion",0);
 
@@ -58,8 +65,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
         dbHelper = new DBHelper(getApplicationContext());
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
-        latein = findViewById(R.id.textUserInputLatein);
-        deutsch = findViewById(R.id.textUserInputDeutsch);
+        request = findViewById(R.id.textUserInputLatein);
+        solution = findViewById(R.id.textUserInputDeutsch);
         userInput = findViewById(R.id.textUserInputUserInput);
         progressBar = findViewById(R.id.progressBarUserInput);
         bestaetigung = findViewById(R.id.buttonUserInputEingabeBestätigt);
@@ -71,127 +78,85 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
         userInput.setHint("Übersetzung");
         titel.setText("Vokabeltrainer");
 
-        deutsch.setVisibility(View.GONE);
+        solution.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
-        
+
         progressBar.setMax(100);
+        progressBar.setProgress((int)(dbHelper.getGelerntProzent(lektion) * 100));
+    }
+
+    private void newRequest(){
+
         progressBar.setProgress((int)(dbHelper.getGelerntProzent(lektion) * 100));
 
         //Checks if all vocabularies have been learned already
         if (dbHelper.getGelerntProzent(lektion) == 1) {
             //Hiding the keyboard.
-            try {
-                InputMethodManager imm = (InputMethodManager)getSystemService(
-                        Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
-            }catch (NullPointerException npe){
-                npe.printStackTrace();
-            }
+            InputMethodManager imm = (InputMethodManager)getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
 
             allLearned();
 
+
         } else {
+            userInput.setText("");
+            userInput.setBackgroundColor(backgroundColor);
+            userInput.setFocusableInTouchMode(true);
+
+            //Showing the keyboard
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
             //Getting a new vocabulary.
             currentVokabel = dbHelper.getRandomVocabulary(lektion);
             String lateinText = currentVokabel.getLatein();
             //#DEVELOPER
             if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) lateinText += "\n" + currentVokabel.getDeutsch();
-            latein.setText(lateinText);
+            request.setText(lateinText);
+
+            //Adjusting the visibility of the buttons.
+            bestaetigung.setVisibility(View.VISIBLE);
+            weiter.setVisibility(View.GONE);
+            solution.setVisibility(View.GONE);
         }
     }
 
-    /**
-     * Handling the button-presses
-     * @param view the view of the pressed button
-     */
-    public void vokabeltrainerButtonClicked(View view){
+    private void checkInput(){
+        userInput.setFocusable(false);
 
-        switch (view.getId()){
-
-            //Checking if all vocabularies have been learned already and getting a new one
-            case (R.id.buttonUserInputNächsteVokabel):
-
-                progressBar.setProgress((int)(dbHelper.getGelerntProzent(lektion) * 100));
-
-                //Checks if all vocabularies have been learned already
-                if (dbHelper.getGelerntProzent(lektion) == 1) {
-                    allLearned();
-                } else {
-
-                    userInput.setText("");
-                    userInput.setBackgroundColor(backgroundColor);
-                    userInput.setFocusableInTouchMode(true);
-
-                    //Showing the keyboard
-                    try {
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                    }catch (NullPointerException npe){
-                        npe.printStackTrace();
-                    }
-
-                    //Getting a new vocabulary.
-                    currentVokabel = dbHelper.getRandomVocabulary(lektion);
-                    String lateinText = currentVokabel.getLatein();
-                    //#DEVELOPER
-                    if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) lateinText += "\n" + currentVokabel.getDeutsch();
-                    latein.setText(lateinText);
-
-                    bestaetigung.setVisibility(View.VISIBLE);
-                    weiter.setVisibility(View.GONE);
-                    deutsch.setVisibility(View.GONE);
-                }
-                break;
-
-            //Checking if the user input was correct
-            case (R.id.buttonUserInputEingabeBestätigt):
-
-                userInput.setFocusable(false);
-
-                //Hiding the keyboard
-                //TODO: Why do we need to use the RootView instead of sth like: this.getCurrentFocus();
-                try {
-                    View v = getWindow().getDecorView().getRootView();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }catch (NullPointerException npe){
-                    npe.printStackTrace();
-                }
-
-
-                //Checking the userInput against the translation
-                int color;
-                if(compareTranslation(userInput.getText().toString(), currentVokabel.getDeutsch())){
-
-                    //Checking the vocabulary as learned
-                    dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
-
-                    color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
-
-                }else {
-                    color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
-                }
-                userInput.setBackgroundColor(color);
-
-                //Showing the correct translation
-                deutsch.setText(currentVokabel.getDeutsch());
-
-                bestaetigung.setVisibility(View.GONE);
-                weiter.setVisibility(View.VISIBLE);
-                deutsch.setVisibility(View.VISIBLE);
-                break;
-
-            //Setting the 'learned' state of all vocabularies of the current lektion to false
-            case (R.id.buttonUserInputFortschrittLöschen):
-                dbHelper.resetLektion(lektion);
-                finish();
-                break;
-
-            //Returning to the previous activity
-            case (R.id.buttonUserInputZurück):
-                finish();
-                break;
+        //Hiding the keyboard
+        //TODO: Why do we need to use the RootView instead of sth like: this.getCurrentFocus();
+        try {
+            //Hiding the Keyboard.
+            View v = getWindow().getDecorView().getRootView();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }catch (NullPointerException npe){
+            npe.printStackTrace();
         }
+
+
+        //Checking the userInput against the translation
+        int color;
+        if(compareTranslation(userInput.getText().toString(), currentVokabel.getDeutsch())){
+
+            //Checking the vocabulary as learned
+            dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
+
+            color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
+
+        }else {
+            color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+        }
+        userInput.setBackgroundColor(color);
+
+        //Showing the correct translation
+        solution.setText(currentVokabel.getDeutsch());
+
+        bestaetigung.setVisibility(View.GONE);
+        weiter.setVisibility(View.VISIBLE);
+        solution.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -313,8 +278,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
      */
     private void allLearned(){
 
-        latein.setVisibility(View.GONE);
-        deutsch.setVisibility(View.GONE);
+        request.setVisibility(View.GONE);
+        solution.setVisibility(View.GONE);
         userInput.setVisibility(View.GONE);
         bestaetigung.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
@@ -324,6 +289,41 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("UserInputVokabeltrainer"+lektion, true);
         editor.apply();
+    }
+
+    /**
+     * Handling the button-presses
+     * @param view the view of the pressed button
+     */
+    public void userInputButtonClicked(View view){
+
+        switch (view.getId()){
+
+            //Checking if all vocabularies have been learned already and getting a new one
+            case (R.id.buttonUserInputNächsteVokabel):
+
+                newRequest();
+                break;
+
+            //Checking if the user input was correct
+            case (R.id.buttonUserInputEingabeBestätigt):
+
+                checkInput();
+                break;
+
+            //Setting the 'learned' state of all vocabularies of the current lektion to false
+            case (R.id.buttonUserInputFortschrittLöschen):
+
+                dbHelper.resetLektion(lektion);
+                finish();
+                break;
+
+            //Returning to the previous activity
+            case (R.id.buttonUserInputZurück):
+
+                finish();
+                break;
+        }
     }
 }
 

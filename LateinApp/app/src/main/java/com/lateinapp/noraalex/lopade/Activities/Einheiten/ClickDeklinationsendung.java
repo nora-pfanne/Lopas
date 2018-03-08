@@ -76,6 +76,12 @@ public class ClickDeklinationsendung extends LateinAppActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_click_deklination);
 
+        setup();
+
+        newVocabulary();
+    }
+
+    private void setup(){
         Intent intent = getIntent();
         lektion = intent.getIntExtra("lektion", 0);
 
@@ -142,8 +148,6 @@ public class ClickDeklinationsendung extends LateinAppActivity {
         progressBar.setMax(maxProgress);
 
         weightSubjects(lektion);
-
-        newVocabulary();
     }
 
     /**
@@ -270,7 +274,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
         //Checks if the user has had enough correct inputs to complete the 'grammatikDeklination'
         if (progress < maxProgress) {
 
-            String declination = faelle[getRandomVocabularyNumber()];
+            String declination = getRandomDeklination();
             currentVokabel = dbHelper.getRandomSubstantiv(lektion);
             allCorrectCases.clear();
             allCorrectCases.add(declination);
@@ -341,7 +345,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
      * @return a int corresponding to to position of a case in faelle[] with respect to the
      *          previously set weights[]-arr
      */
-    private int getRandomVocabularyNumber(){
+    private String getRandomDeklination(){
 
         //Getting a upper bound for the random number being retrieved afterwards
         int max =  (weights[0]+
@@ -386,7 +390,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                     "\nlektion: " + lektion);
         }
 
-        return randomVocabulary;
+        return faelle[randomVocabulary];
     }
 
     /**

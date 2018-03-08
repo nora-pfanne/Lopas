@@ -64,6 +64,12 @@ public class UserInputPersonalendung extends LateinAppActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_user_input);
 
+        setup();
+
+        newVocabulary();
+    }
+
+    private void setup(){
         Intent intent = getIntent();
         lektion = intent.getIntExtra("lektion",0);
 
@@ -91,7 +97,6 @@ public class UserInputPersonalendung extends LateinAppActivity{
 
         progressBar.setMax(maxProgress);
 
-        newVocabulary();
     }
 
     private void newVocabulary(){
@@ -102,12 +107,10 @@ public class UserInputPersonalendung extends LateinAppActivity{
 
             progressBar.setProgress(progress);
 
-            try {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-            }catch (NullPointerException npe){
-                npe.printStackTrace();
-            }
+            //Showing the Keyboard.
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
 
             //Resetting the userInput.
             userInput.setText("");
@@ -116,7 +119,7 @@ public class UserInputPersonalendung extends LateinAppActivity{
 
             //Getting a new vocabulary.
             currentVokabel = dbHelper.getRandomVocabulary(lektion);
-            currentPersonalendung = faelle[getRandomVocabularyNumber()];
+            currentPersonalendung = getRandomPersonalendung();
 
             String lateinText = dbHelper.getKonjugiertesVerb(currentVokabel.getId(), "Inf");
             String personalendungUser = currentPersonalendung.replace("_", " ");
@@ -126,13 +129,13 @@ public class UserInputPersonalendung extends LateinAppActivity{
             personalendungUser = personalendungUser.replace("Sg", "Pers. Sg.");
             personalendungUser = personalendungUser.replace("Pl", "Pers. Pl.");
             lateinText += "\n" + personalendungUser + " Präsens";
-
             //#DEVELOPER
             if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()){
                 lateinText += "\n" + dbHelper.getKonjugiertesVerb(currentVokabel.getId(), currentPersonalendung);
             }
             request.setText(lateinText);
 
+            //Adjusting the button visibility.
             bestaetigung.setVisibility(View.VISIBLE);
             weiter.setVisibility(View.GONE);
             solution.setVisibility(View.GONE);
@@ -142,18 +145,58 @@ public class UserInputPersonalendung extends LateinAppActivity{
             progressBar.setProgress(maxProgress);
 
             //Hiding the keyboard.
-            try {
-                InputMethodManager imm = (InputMethodManager)getSystemService(
-                        Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
-            }catch (NullPointerException npe){
-                npe.printStackTrace();
-            }
+            InputMethodManager imm = (InputMethodManager)getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
 
             allLearned();
         }
 
 
+    }
+
+    private void checkInput(){
+        userInput.setFocusable(false);
+
+        //Hiding the keyboard
+        //TODO: Why do we need to use the RootView instead of sth like: this.getCurrentFocus();
+        try {
+            View v = getWindow().getDecorView().getRootView();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }catch (NullPointerException npe){
+            npe.printStackTrace();
+        }
+
+
+        //Checking the userInput against the translation
+        int color;
+        if(compareString(userInput.getText().toString(), dbHelper.getKonjugiertesVerb(currentVokabel.getId(), currentPersonalendung))){
+            color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+
+            //Increasing the counter by 1
+            editor.putInt("UserInputPersonalendung" + lektion,
+                    sharedPref.getInt("UserInputPersonalendung"+lektion, 0) + 1);
+            editor.apply();
+        }else {
+            color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+            //Decreasing the counter by 1
+            editor.putInt("UserInputPersonalendung" + lektion,
+                    sharedPref.getInt("UserInputPersonalendung"+lektion, 0) - 1);
+            editor.apply();
+        }
+        userInput.setBackgroundColor(color);
+
+        //Showing the correct translation
+        solution.setText(dbHelper.getKonjugiertesVerb(currentVokabel.getId(), currentPersonalendung));
+
+        bestaetigung.setVisibility(View.GONE);
+        weiter.setVisibility(View.VISIBLE);
+        solution.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -203,7 +246,7 @@ public class UserInputPersonalendung extends LateinAppActivity{
      * @return a int corresponding to to position of a case in faelle[] with respect to the
      *          previously set weights[]-arr
      */
-    public int getRandomVocabularyNumber(){
+    public String getRandomPersonalendung(){
 
         //Getting a upper bound for the random number being retrieved afterwards
         int max =  (weights[0] +
@@ -246,82 +289,7 @@ public class UserInputPersonalendung extends LateinAppActivity{
         }
 
 
-        return randomVocabulary;
-    }
-
-    /**
-     * Handling the button-presses
-     * @param view the view of the pressed button
-     */
-    public void vokabeltrainerButtonClicked(View view){
-
-        switch (view.getId()){
-
-            //Checking if all vocabularies have been learned already and getting a new one
-            case (R.id.buttonUserInputNächsteVokabel):
-
-                newVocabulary();
-                break;
-
-            //Checking if the user input was correct
-            case (R.id.buttonUserInputEingabeBestätigt):
-
-                userInput.setFocusable(false);
-
-                //Hiding the keyboard
-                //TODO: Why do we need to use the RootView instead of sth like: this.getCurrentFocus();
-                try {
-                    View v = getWindow().getDecorView().getRootView();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }catch (NullPointerException npe){
-                    npe.printStackTrace();
-                }
-
-
-                //Checking the userInput against the translation
-                int color;
-                if(compareString(userInput.getText().toString(), dbHelper.getKonjugiertesVerb(currentVokabel.getId(), currentPersonalendung))){
-                    color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
-
-                    SharedPreferences.Editor editor = sharedPref.edit();
-
-                    //Increasing the counter by 1
-                    editor.putInt("UserInputPersonalendung" + lektion,
-                            sharedPref.getInt("UserInputPersonalendung"+lektion, 0) + 1);
-                    editor.apply();
-                }else {
-                    color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
-
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    //Decreasing the counter by 1
-                    editor.putInt("UserInputPersonalendung" + lektion,
-                            sharedPref.getInt("UserInputPersonalendung"+lektion, 0) - 1);
-                    editor.apply();
-                }
-                userInput.setBackgroundColor(color);
-
-                //Showing the correct translation
-                solution.setText(dbHelper.getKonjugiertesVerb(currentVokabel.getId(), currentPersonalendung));
-
-                bestaetigung.setVisibility(View.GONE);
-                weiter.setVisibility(View.VISIBLE);
-                solution.setVisibility(View.VISIBLE);
-                break;
-
-            //Setting the 'learned' state of all vocabularies of the current lektion to false
-            case (R.id.buttonUserInputFortschrittLöschen):
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("UserInputPersonalendung"+lektion, 0);
-                editor.apply();
-                finish();
-                break;
-
-            //Returning to the previous activity
-            case (R.id.buttonUserInputZurück):
-                finish();
-                break;
-        }
+        return faelle[randomVocabulary];
     }
 
     /**
@@ -371,4 +339,38 @@ public class UserInputPersonalendung extends LateinAppActivity{
         zurück.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Handling the button-presses
+     * @param view the view of the pressed button
+     */
+    public void userInputButtonClicked(View view){
+
+        switch (view.getId()){
+
+            //Checking if all vocabularies have been learned already and getting a new one
+            case (R.id.buttonUserInputNächsteVokabel):
+
+                newVocabulary();
+                break;
+
+            //Checking if the user input was correct
+            case (R.id.buttonUserInputEingabeBestätigt):
+
+                checkInput();
+                break;
+
+            //Setting the 'learned' state of all vocabularies of the current lektion to false
+            case (R.id.buttonUserInputFortschrittLöschen):
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt("UserInputPersonalendung"+lektion, 0);
+                editor.apply();
+                finish();
+                break;
+
+            //Returning to the previous activity
+            case (R.id.buttonUserInputZurück):
+                finish();
+                break;
+        }
+    }
 }

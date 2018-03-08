@@ -60,11 +60,18 @@ public class ClickPersonalendung extends LateinAppActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_click_personalendung);
 
+        setup();
+
+        newVocabulary();
+
+    }
+
+    private void setup(){
         Intent intent = getIntent();
         lektion = intent.getIntExtra("lektion", 0);
 
         dbHelper = new DBHelper(getApplicationContext());
-        
+
         sharedPref = getSharedPreferences("SharedPreferences", 0);
 
         colorButtonCorrect = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
@@ -99,9 +106,6 @@ public class ClickPersonalendung extends LateinAppActivity {
 
         weightSubjects(lektion);
         setButtonsVisible(lektion);
-
-        newVocabulary();
-
     }
 
     /**
@@ -225,7 +229,7 @@ public class ClickPersonalendung extends LateinAppActivity {
         //Checks if the user has had enough correct inputs to complete the 'grammatikKonjugation'
         if (progress < maxProgress) {
             
-            konjugation = faelle[getRandomVocabularyNumber()];
+            konjugation = getRandomPersonalendung();
             Vokabel currentVokabel = dbHelper.getRandomVerb(lektion);
             String lateinText = dbHelper.getKonjugiertesVerb(currentVokabel.getId(), konjugation);
 
@@ -258,15 +262,15 @@ public class ClickPersonalendung extends LateinAppActivity {
      * @return a int corresponding to to position of a case in faelle[] with respect to the
      *          previously set weights[]-arr
      */
-    public int getRandomVocabularyNumber(){
+    public String getRandomPersonalendung(){
 
         //Getting a upper bound for the random number being retrieved afterwards
         int max =  (weights[0] +
-                weights[1] +
-                weights[2] +
-                weights[3] +
-                weights[4] +
-                weights[5]);
+                    weights[1] +
+                    weights[2] +
+                    weights[3] +
+                    weights[4] +
+                    weights[5]);
 
         Random randomNumber = new Random();
         int intRandom = randomNumber.nextInt(max) + 1;
@@ -301,7 +305,7 @@ public class ClickPersonalendung extends LateinAppActivity {
         }
 
 
-        return randomVocabulary;
+        return faelle[randomVocabulary];
     }
 
     /**
