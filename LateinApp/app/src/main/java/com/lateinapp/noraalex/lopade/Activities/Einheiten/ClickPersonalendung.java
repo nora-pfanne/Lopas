@@ -19,7 +19,7 @@ import com.lateinapp.noraalex.lopade.R;
 
 import java.util.Random;
 
-public class GrammatikPersonalendung extends LateinAppActivity {
+public class ClickPersonalendung extends LateinAppActivity {
     
     private DBHelper dbHelper;
     private SharedPreferences sharedPref;
@@ -43,6 +43,7 @@ public class GrammatikPersonalendung extends LateinAppActivity {
             Personalendung_PräsensDB.FeedEntry.COLUMN_1_PL,
             Personalendung_PräsensDB.FeedEntry.COLUMN_2_PL,
             Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL};
+    private Button[] buttons;
     private int[] weights;
 
     private String konjugation;
@@ -50,19 +51,34 @@ public class GrammatikPersonalendung extends LateinAppActivity {
     private int lektion;
     private int maxProgress = 20;
 
+    private int colorButtonCorrect,
+                colorButtonIncorrect,
+                colorButtonDefault;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_grammatik_personalendung);
+        setContentView(R.layout.activity_trainer_click_personalendung);
 
+        setup();
+
+        newVocabulary();
+
+    }
+
+    private void setup(){
         Intent intent = getIntent();
         lektion = intent.getIntExtra("lektion", 0);
 
         dbHelper = new DBHelper(getApplicationContext());
-        
+
         sharedPref = getSharedPreferences("SharedPreferences", 0);
-        
-        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);;
+
+        colorButtonCorrect = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
+        colorButtonIncorrect = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+        colorButtonDefault = ResourcesCompat.getColor(getResources(), R.color.PrussianBlue, null);
+
+        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
         latein = findViewById(R.id.textGrammatikPersonalendungLatein);
         ersteSg = findViewById(R.id.buttonGrammatikPersonalendung1PersSg);
         zweiteSg = findViewById(R.id.buttonGrammatikPersonalendung2PersSg);
@@ -74,15 +90,22 @@ public class GrammatikPersonalendung extends LateinAppActivity {
         weiter = findViewById(R.id.buttonGrammatikPersonalendungWeiter);
         zurück = findViewById(R.id.buttonGrammatikPersonalendungZurück);
         reset = findViewById(R.id.buttonGrammatikPersonalendungReset);
-        
+
+        buttons = new Button[]{
+                ersteSg,
+                zweiteSg,
+                dritteSg,
+                erstePl,
+                zweitePl,
+                drittePl
+        };
+
         weiter.setVisibility(View.GONE);
-        
+
         progressBar.setMax(maxProgress);
 
         weightSubjects(lektion);
-        
-        newVocabulary();
-
+        setButtonsVisible(lektion);
     }
 
     /**
@@ -137,38 +160,38 @@ public class GrammatikPersonalendung extends LateinAppActivity {
         switch (view.getId()){
             case (R.id.buttonGrammatikPersonalendung1PersSg):
 
-                if(faelle[0].equals(konjugation)) konjugationChosen(true);
-                else konjugationChosen(false);
+                if(faelle[0].equals(konjugation)) konjugationChosen(true, buttons[0]);
+                else konjugationChosen(false, buttons[0]);
                 break;
 
             case (R.id.buttonGrammatikPersonalendung2PersSg):
 
-                if(faelle[1].equals(konjugation)) konjugationChosen(true);
-                else konjugationChosen(false);
+                if(faelle[1].equals(konjugation)) konjugationChosen(true, buttons[1]);
+                else konjugationChosen(false, buttons[1]);
                 break;
 
             case (R.id.buttonGrammatikPersonalendung3PersSg):
 
-                if(faelle[2].equals(konjugation)) konjugationChosen(true);
-                else konjugationChosen(false);
+                if(faelle[2].equals(konjugation)) konjugationChosen(true, buttons[2]);
+                else konjugationChosen(false, buttons[2]);
                 break;
 
             case (R.id.buttonGrammatikPersonalendung1PersPl):
 
-                if(faelle[3].equals(konjugation)) konjugationChosen(true);
-                else konjugationChosen(false);
+                if(faelle[3].equals(konjugation)) konjugationChosen(true, buttons[3]);
+                else konjugationChosen(false, buttons[3]);
                 break;
 
             case (R.id.buttonGrammatikPersonalendung2PersPl):
 
-                if(faelle[4].equals(konjugation)) konjugationChosen(true);
-                else konjugationChosen(false);
+                if(faelle[4].equals(konjugation)) konjugationChosen(true, buttons[4]);
+                else konjugationChosen(false, buttons[4]);
                 break;
 
             case (R.id.buttonGrammatikPersonalendung3PersPl):
 
-                if(faelle[5].equals(konjugation)) konjugationChosen(true);
-                else konjugationChosen(false);
+                if(faelle[5].equals(konjugation)) konjugationChosen(true, buttons[5]);
+                else konjugationChosen(false, buttons[5]);
                 break;
 
             //Gets the next vocabulary
@@ -182,7 +205,7 @@ public class GrammatikPersonalendung extends LateinAppActivity {
             case (R.id.buttonGrammatikPersonalendungReset):
 
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("Personalendung"+lektion, 0);
+                editor.putInt("ClickPersonalendung"+lektion, 0);
                 editor.apply();
                 finish();
 
@@ -200,22 +223,25 @@ public class GrammatikPersonalendung extends LateinAppActivity {
      */
     private void newVocabulary(){
         
-        int progress = sharedPref.getInt("Personalendung"+lektion, 0);
+        int progress = sharedPref.getInt("ClickPersonalendung"+lektion, 0);
         latein.setBackgroundColor(backgroundColor);
 
         //Checks if the user has had enough correct inputs to complete the 'grammatikKonjugation'
         if (progress < maxProgress) {
             
-            konjugation = faelle[getRandomVocabularyNumber()];
+            konjugation = getRandomPersonalendung();
             Vokabel currentVokabel = dbHelper.getRandomVerb(lektion);
             String lateinText = dbHelper.getKonjugiertesVerb(currentVokabel.getId(), konjugation);
-            
+
             //#DEVELOPER
             if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) lateinText += "\n" + konjugation;
           
             latein.setText(lateinText);
-            
-            setButtonsVisible(lektion);
+
+            for (Button b : buttons){
+                b.setEnabled(true);
+                b.setBackgroundColor(colorButtonDefault);
+            }
             
         }else {
             latein.setText("");
@@ -236,15 +262,15 @@ public class GrammatikPersonalendung extends LateinAppActivity {
      * @return a int corresponding to to position of a case in faelle[] with respect to the
      *          previously set weights[]-arr
      */
-    public int getRandomVocabularyNumber(){
+    public String getRandomPersonalendung(){
 
         //Getting a upper bound for the random number being retrieved afterwards
         int max =  (weights[0] +
-                weights[1] +
-                weights[2] +
-                weights[3] +
-                weights[4] +
-                weights[5]);
+                    weights[1] +
+                    weights[2] +
+                    weights[3] +
+                    weights[4] +
+                    weights[5]);
 
         Random randomNumber = new Random();
         int intRandom = randomNumber.nextInt(max) + 1;
@@ -279,7 +305,7 @@ public class GrammatikPersonalendung extends LateinAppActivity {
         }
 
 
-        return randomVocabulary;
+        return faelle[randomVocabulary];
     }
 
     /**
@@ -310,39 +336,39 @@ public class GrammatikPersonalendung extends LateinAppActivity {
     /**
      * @param correct was the chosen konjugation correct
      */
-    private void konjugationChosen(boolean correct){
+    private void konjugationChosen(boolean correct, Button button){
 
         SharedPreferences.Editor editor = sharedPref.edit();
         int color;
 
         if (correct) {
-            color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
+            color = colorButtonCorrect;
 
             //Increasing the counter by 1
-            editor.putInt("Personalendung" + lektion,
-                          sharedPref.getInt("Personalendung"+lektion, 0) + 1);
+            editor.putInt("ClickPersonalendung" + lektion,
+                          sharedPref.getInt("ClickPersonalendung"+lektion, 0) + 1);
         }else {
-            color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+            color = colorButtonIncorrect;
 
-            //Decreases the counter by 1
-            if (sharedPref.getInt("Personalendung" + lektion, 0) > 0) {
-                editor.putInt("Personalendung" + lektion,
-                              sharedPref.getInt("Personalendung" + lektion, 0) - 1);
+
+            for (int i = 0; i < faelle.length; i++){
+                if (faelle[i].equals(konjugation)){
+                    buttons[i].setBackgroundColor(colorButtonCorrect);
+                }
             }
         }
         editor.apply();
 
-        progressBar.setProgress(sharedPref.getInt("Personalendung" +lektion, 0));
+        progressBar.setProgress(sharedPref.getInt("ClickPersonalendung" +lektion, 0));
 
+        button.setBackgroundColor(color);
         latein.setBackgroundColor(color);
 
         weiter.setVisibility(View.VISIBLE);
-        ersteSg.setVisibility(View.GONE);
-        zweiteSg.setVisibility(View.GONE);
-        dritteSg.setVisibility(View.GONE);
-        erstePl.setVisibility(View.GONE);
-        zweitePl.setVisibility(View.GONE);
-        drittePl.setVisibility(View.GONE);
+
+        for (Button b : buttons){
+            b.setEnabled(false);
+        }
     }
 
     @Override

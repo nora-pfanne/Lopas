@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikDeklination">
+    tools:context="com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickDeklinationsendung">
 
     <TextView
         android:id="@+id/textGrammatikDeklinationÜberschrift"
@@ -270,23 +270,6 @@
         app:layout_constraintVertical_bias="0.064" />
 
     <Button
-        android:id="@+id/buttonGrammatikDeklinationWeiter"
-        style="@style/BasicBlueButton"
-        android:layout_width="146dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Weiter"
-        android:onClick="deklinationstrainerButtonClicked"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.757" />
-
-    <Button
         android:id="@+id/buttonGrammatikDeklinationReset"
         style="@style/BasicBlueButton"
         android:visibility="invisible"
@@ -308,8 +291,8 @@
     <Button
         style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikDeklinationZurück"
-        android:layout_width="253dp"
-        android:layout_height="155dp"
+        android:layout_width="106dp"
+        android:layout_height="54dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -322,4 +305,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.4" />
+
+    <Button
+        android:id="@+id/buttonGrammatikDeklinationWeiter"
+        style="@style/BasicBlueButton"
+        android:layout_width="106dp"
+        android:layout_height="54dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="deklinationstrainerButtonClicked"
+        android:text="Weiter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.969"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.418" />
+
+    <Button
+        style="@style/BasicBlueButton"
+        android:id="@+id/buttonGrammatikDeklinationCheckInput"
+        android:layout_width="106dp"
+        android:layout_height="54dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="deklinationstrainerButtonClicked"
+        android:text="Bestätigen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.969"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.418" />
 </android.support.constraint.ConstraintLayout>

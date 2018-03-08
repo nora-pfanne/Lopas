@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lateinapp.noraalex.lopade.Activities.Einheiten.Vokabeltrainer"
+    tools:context="com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputVokabeltrainer"
     android:id="@+id/constraint_Layout">
 
     <TextView
-        android:id="@+id/textVokabeltrainerÜberschrift"
+        android:id="@+id/textUserInputÜberschrift"
         android:layout_width="288dp"
         android:layout_height="35dp"
         android:layout_marginBottom="8dp"
@@ -19,7 +19,7 @@
         android:textAlignment="center"
         android:textStyle="bold"
         android:textSize="22dp"
-        android:text="Vokabeltrainer"
+        android:text="Placeholder: Überschrift"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -28,7 +28,7 @@
         app:layout_constraintVertical_bias="0.032" />
 
     <TextView
-        android:id="@+id/textVokabeltrainerLatein"
+        android:id="@+id/textUserInputLatein"
         android:layout_width="341dp"
         android:layout_height="155dp"
         android:layout_marginBottom="8dp"
@@ -39,7 +39,7 @@
         android:textStyle="normal"
         android:textAlignment="center"
         android:textSize="30dp"
-        android:text="Hier steht die lateinische Vokabel"
+        android:text="Placeholder: Frage an den User"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
         app:layout_constraintVertical_bias="0.252" />
 
     <TextView
-        android:id="@+id/textVokabeltrainerDeutsch"
+        android:id="@+id/textUserInputDeutsch"
         android:layout_width="341dp"
         android:layout_height="155dp"
         android:layout_marginBottom="8dp"
@@ -55,7 +55,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/hind_light"
-        android:text="Hier steht die Übersetzung der lateininschen Vokabel"
+        android:text="Placeholder: Antwort auf die Frage an den User"
         android:textAlignment="center"
         android:textSize="30dp"
         android:textStyle="normal"
@@ -67,7 +67,7 @@
         app:layout_constraintVertical_bias="0.914" />
 
     <EditText
-        android:id="@+id/textVokabeltrainerUserInput"
+        android:id="@+id/textUserInputUserInput"
         android:layout_width="251dp"
         android:layout_height="56dp"
         android:layout_marginBottom="8dp"
@@ -75,7 +75,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Übersetzung"
+        android:hint="Placeholder: UserInputHint"
         android:inputType="text"
         android:textColorHighlight="#7A0028"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -86,7 +86,7 @@
         app:layout_constraintVertical_bias="0.541" />
 
     <ProgressBar
-        android:id="@+id/progressBarVokabeltrainer"
+        android:id="@+id/progressBarUserInput"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="340dp"
         android:layout_height="56dp"
@@ -103,7 +103,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/buttonVokabeltrainerEingabeBestätigt"
+        android:id="@+id/buttonUserInputEingabeBestätigt"
         android:layout_width="85dp"
         android:layout_height="56dp"
         android:layout_marginBottom="8dp"
@@ -111,7 +111,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:textSize="14dp"
-        android:onClick="buttonClicked"
+        android:onClick="userInputButtonClicked"
         android:text="\u2713"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -122,7 +122,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/buttonVokabeltrainerNächsteVokabel"
+        android:id="@+id/buttonUserInputNächsteVokabel"
         android:layout_width="85dp"
         android:layout_height="56dp"
         android:layout_marginBottom="8dp"
@@ -130,7 +130,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:textSize="16dp"
-        android:onClick="buttonClicked"
+        android:onClick="userInputButtonClicked"
         android:text="Weiter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -140,7 +140,7 @@
         app:layout_constraintVertical_bias="0.541" />
 
     <Button
-        android:id="@+id/buttonVokabeltrainerFortschrittLöschen"
+        android:id="@+id/buttonUserInputFortschrittLöschen"
         style="@style/BasicBlueButton"
         android:layout_width="153dp"
         android:layout_height="85dp"
@@ -148,7 +148,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="buttonClicked"
+        android:onClick="userInputButtonClicked"
         android:text="Fortschritt zurücksetzen?"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -160,7 +160,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/buttonVokabeltrainerZurück"
+        android:id="@+id/buttonUserInputZurück"
         android:layout_width="253dp"
         android:layout_height="155dp"
         android:layout_marginBottom="8dp"
@@ -168,7 +168,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Zurück"
-        android:onClick="buttonClicked"
+        android:onClick="userInputButtonClicked"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -30,18 +30,26 @@
             android:name="com.lateinapp.noraalex.lopade.Activities.Woerterbuch"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.Vokabeltrainer"
+            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputVokabeltrainer"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible" />
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikDeklination"
+            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickDeklinationsendung"
             android:screenOrientation="portrait" />
 
         <activity
             android:name="com.lateinapp.noraalex.lopade.Activities.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.GrammatikPersonalendung"
+            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickPersonalendung"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputDeklinationsendung"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputPersonalendung"
             android:screenOrientation="portrait" />
 
         <meta-data
