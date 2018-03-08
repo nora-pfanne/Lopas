@@ -23,7 +23,7 @@ import java.util.Random;
 //TODO: Make the user choose all correct cases -> not just one
 
 //TODO: We got a weighting problem: if a case is the same 3 times it is 3 times more likely to show up
-public class GrammatikDeklinationErmitteln extends LateinAppActivity {
+public class ClickDeklinationsendung extends LateinAppActivity {
 
     private DBHelper dbHelper;
     private SharedPreferences sharedPref;
@@ -74,7 +74,7 @@ public class GrammatikDeklinationErmitteln extends LateinAppActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_grammatik_deklination);
+        setContentView(R.layout.activity_trainer_click_deklination);
 
         Intent intent = getIntent();
         lektion = intent.getIntExtra("lektion", 0);
@@ -264,7 +264,7 @@ public class GrammatikDeklinationErmitteln extends LateinAppActivity {
      */
     private void newVocabulary(){
 
-        int progress = sharedPref.getInt("Deklination"+lektion, 0);
+        int progress = sharedPref.getInt("ClickDeklinationsendung"+lektion, 0);
         lateinVokabel.setBackgroundColor(backgroundColor);
 
         //Checks if the user has had enough correct inputs to complete the 'grammatikDeklination'
@@ -330,6 +330,7 @@ public class GrammatikDeklinationErmitteln extends LateinAppActivity {
             abl_sg.setVisibility(View.GONE);
             abl_pl.setVisibility(View.GONE);
             lateinVokabel.setVisibility(View.GONE);
+            checkInput.setVisibility(View.GONE);
             reset.setVisibility(View.VISIBLE);
             zurück.setVisibility(View.VISIBLE);
         }
@@ -484,7 +485,7 @@ public class GrammatikDeklinationErmitteln extends LateinAppActivity {
             case (R.id.buttonGrammatikDeklinationReset):
 
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("Deklination"+lektion, 0);
+                editor.putInt("ClickDeklinationsendung"+lektion, 0);
                 editor.apply();
                 finish();
 
@@ -624,20 +625,20 @@ public class GrammatikDeklinationErmitteln extends LateinAppActivity {
             color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
 
             //Increasing the counter by 1
-            editor.putInt("Deklination" + lektion,
-                          sharedPref.getInt("Deklination"+lektion, 0) + 1);
+            editor.putInt("ClickDeklinationsendung" + lektion,
+                          sharedPref.getInt("ClickDeklinationsendung"+lektion, 0) + 1);
         }else {
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
 
             //Decreasing the counter by 1
-            if (sharedPref.getInt("Deklination" + lektion, 0) > 0) {
-                editor.putInt("Deklination" + lektion,
-                              sharedPref.getInt("Deklination" + lektion, 0) - 1);
+            if (sharedPref.getInt("ClickDeklinationsendung" + lektion, 0) > 0) {
+                editor.putInt("ClickDeklinationsendung" + lektion,
+                              sharedPref.getInt("ClickDeklinationsendung" + lektion, 0) - 1);
             }
         }
         editor.apply();
 
-        progressBar.setProgress(sharedPref.getInt("Deklination" +lektion, 0));
+        progressBar.setProgress(sharedPref.getInt("ClickDeklinationsendung" +lektion, 0));
         lateinVokabel.setBackgroundColor(color);
 
         for (Button b : buttons){

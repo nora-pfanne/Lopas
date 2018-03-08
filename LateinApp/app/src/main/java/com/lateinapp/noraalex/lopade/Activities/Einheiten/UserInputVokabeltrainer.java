@@ -24,7 +24,7 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
 import com.lateinapp.noraalex.lopade.R;
 
-public class Vokabeltrainer extends LateinAppActivity {
+public class UserInputVokabeltrainer extends LateinAppActivity {
 
     private SharedPreferences sharedPref;
     private DBHelper dbHelper;
@@ -48,7 +48,7 @@ public class Vokabeltrainer extends LateinAppActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vokabeltrainer);
+        setContentView(R.layout.activity_trainer_user_input);
 
         Intent intent = getIntent();
         lektion = intent.getIntExtra("lektion",0);
@@ -321,7 +321,7 @@ public class Vokabeltrainer extends LateinAppActivity {
         zurück.setVisibility(View.VISIBLE);
 
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean("Vokabeltrainer"+lektion, true);
+        editor.putBoolean("UserInputVokabeltrainer"+lektion, true);
         editor.apply();
     }
 }

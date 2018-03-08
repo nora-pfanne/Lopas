@@ -26,7 +26,9 @@ import java.util.Random;
  * Created by Alexander on 07.03.2018.
  */
 
-public class GrammatikDekliniereVokabel extends LateinAppActivity{
+
+//TODO: Make compatible with multiple tenses
+public class UserInputDeklinationsendung extends LateinAppActivity{
 
     private SharedPreferences sharedPref;
     private DBHelper dbHelper;
@@ -66,7 +68,7 @@ public class GrammatikDekliniereVokabel extends LateinAppActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vokabeltrainer);
+        setContentView(R.layout.activity_trainer_user_input);
 
         Intent intent = getIntent();
         lektion = intent.getIntExtra("lektion",0);
@@ -100,7 +102,7 @@ public class GrammatikDekliniereVokabel extends LateinAppActivity{
 
     private void newVocabulary(){
 
-        int progress = sharedPref.getInt("DeklinationErmitteln"+lektion, 0);
+        int progress = sharedPref.getInt("UserInputDeklinationsendung"+lektion, 0);
 
         if (progress < maxProgress) {
 
@@ -126,7 +128,7 @@ public class GrammatikDekliniereVokabel extends LateinAppActivity{
                 currentDeclination = faelle[getRandomVocabularyNumber()];
             }
             String lateinText = dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG);
-            lateinText += "\n" + currentDeclination;
+            lateinText += "\n" + currentDeclination + " Präsens";
 
             //#DEVELOPER
             if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()){
@@ -161,7 +163,7 @@ public class GrammatikDekliniereVokabel extends LateinAppActivity{
 
     /**
      * Sets weights for all entries of 'faelle' depending on the current value of lektion
-     * Copied from GrammatikDeklinationErmitteln.class
+     * Copied from GrammatikUserInputDeklinationsendung.class
      */
     private void weightSubjects(int lektion){
 
@@ -273,7 +275,7 @@ public class GrammatikDekliniereVokabel extends LateinAppActivity{
     }
 
     /**
-     * Copied from GrammatikDeklinationErmitteln.class
+     * Copied from GrammatikUserInputDeklinationsendung.class
      * @return
      */
     private int getRandomVocabularyNumber(){
@@ -362,19 +364,17 @@ public class GrammatikDekliniereVokabel extends LateinAppActivity{
                     SharedPreferences.Editor editor = sharedPref.edit();
 
                     //Increasing the counter by 1
-                    editor.putInt("DeklinationErmitteln" + lektion,
-                            sharedPref.getInt("DeklinationErmitteln"+lektion, 0) + 1);
+                    editor.putInt("UserInputDeklinationsendung" + lektion,
+                            sharedPref.getInt("UserInputDeklinationsendung"+lektion, 0) + 1);
                     editor.apply();
-                    Log.d("Added+1",""+sharedPref.getInt("DeklinationErmitteln"+lektion, 0));
                 }else {
                     color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
 
                     SharedPreferences.Editor editor = sharedPref.edit();
                     //Decreasing the counter by 1
-                    editor.putInt("DeklinationErmitteln" + lektion,
-                            sharedPref.getInt("DeklinationErmitteln"+lektion, 0) - 1);
+                    editor.putInt("UserInputDeklinationsendung" + lektion,
+                            sharedPref.getInt("UserInputDeklinationsendung"+lektion, 0) - 1);
                     editor.apply();
-                    Log.d("Added-1",""+sharedPref.getInt("DeklinationErmitteln"+lektion, 0));
                 }
                 userInput.setBackgroundColor(color);
 
@@ -389,7 +389,7 @@ public class GrammatikDekliniereVokabel extends LateinAppActivity{
             //Setting the 'learned' state of all vocabularies of the current lektion to false
             case (R.id.buttonVokabeltrainerFortschrittLöschen):
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("DeklinationErmitteln"+lektion, 0);
+                editor.putInt("UserInputDeklinationsendung"+lektion, 0);
                 editor.apply();
                 finish();
                 break;

@@ -19,7 +19,7 @@ import com.lateinapp.noraalex.lopade.R;
 
 import java.util.Random;
 
-public class GrammatikPersonalendungErmitteln extends LateinAppActivity {
+public class ClickPersonalendung extends LateinAppActivity {
     
     private DBHelper dbHelper;
     private SharedPreferences sharedPref;
@@ -58,7 +58,7 @@ public class GrammatikPersonalendungErmitteln extends LateinAppActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_grammatik_personalendung);
+        setContentView(R.layout.activity_trainer_click_personalendung);
 
         Intent intent = getIntent();
         lektion = intent.getIntExtra("lektion", 0);
@@ -71,7 +71,7 @@ public class GrammatikPersonalendungErmitteln extends LateinAppActivity {
         colorButtonIncorrect = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
         colorButtonDefault = ResourcesCompat.getColor(getResources(), R.color.PrussianBlue, null);
 
-        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);;
+        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
         latein = findViewById(R.id.textGrammatikPersonalendungLatein);
         ersteSg = findViewById(R.id.buttonGrammatikPersonalendung1PersSg);
         zweiteSg = findViewById(R.id.buttonGrammatikPersonalendung2PersSg);
@@ -94,7 +94,7 @@ public class GrammatikPersonalendungErmitteln extends LateinAppActivity {
         };
 
         weiter.setVisibility(View.GONE);
-        
+
         progressBar.setMax(maxProgress);
 
         weightSubjects(lektion);
@@ -201,7 +201,7 @@ public class GrammatikPersonalendungErmitteln extends LateinAppActivity {
             case (R.id.buttonGrammatikPersonalendungReset):
 
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("Personalendung"+lektion, 0);
+                editor.putInt("ClickPersonalendung"+lektion, 0);
                 editor.apply();
                 finish();
 
@@ -219,7 +219,7 @@ public class GrammatikPersonalendungErmitteln extends LateinAppActivity {
      */
     private void newVocabulary(){
         
-        int progress = sharedPref.getInt("Personalendung"+lektion, 0);
+        int progress = sharedPref.getInt("ClickPersonalendung"+lektion, 0);
         latein.setBackgroundColor(backgroundColor);
 
         //Checks if the user has had enough correct inputs to complete the 'grammatikKonjugation'
@@ -341,8 +341,8 @@ public class GrammatikPersonalendungErmitteln extends LateinAppActivity {
             color = colorButtonCorrect;
 
             //Increasing the counter by 1
-            editor.putInt("Personalendung" + lektion,
-                          sharedPref.getInt("Personalendung"+lektion, 0) + 1);
+            editor.putInt("ClickPersonalendung" + lektion,
+                          sharedPref.getInt("ClickPersonalendung"+lektion, 0) + 1);
         }else {
             color = colorButtonIncorrect;
 
@@ -352,17 +352,10 @@ public class GrammatikPersonalendungErmitteln extends LateinAppActivity {
                     buttons[i].setBackgroundColor(colorButtonCorrect);
                 }
             }
-
-
-            //Decreases the counter by 1
-            if (sharedPref.getInt("Personalendung" + lektion, 0) > 0) {
-                editor.putInt("Personalendung" + lektion,
-                              sharedPref.getInt("Personalendung" + lektion, 0) - 1);
-            }
         }
         editor.apply();
 
-        progressBar.setProgress(sharedPref.getInt("Personalendung" +lektion, 0));
+        progressBar.setProgress(sharedPref.getInt("ClickPersonalendung" +lektion, 0));
 
         button.setBackgroundColor(color);
         latein.setBackgroundColor(color);
