@@ -1,0 +1,91 @@
+
+Bis 12.03
+
+    TODO: Bei ClickPersonalendung/ClickDeklinationsendung sind die Buttons von fehlenden Deklinationen da,
+          sind aber ausgegraut und nicht clickbar
+
+    TODO: Erklärungsfolie vor allen Einheiten
+    TODO: Button zum Aufrufen des Erklärungsfolie
+
+    TODO: Input bestätigen mit Enter
+----------------------------------------------------------------------------------------------------
+Bis 19.03
+
+    TODO: Einfügen einer Spalte bei Substantiv/Verb in DB: Kategorie (Mensch/...)
+
+    TODO: Point System
+          Wo Punkte?
+          Was für Belohnungen?
+          Zusatzeinheit?
+
+    TODO: Einheit: Satzglieder bestimmen
+                   mit AcI (Hardcoded)
+                   (Nora)
+    TODO: Einheit: Präposition erkennen -> "in + Abl" & "in + Akk" haben berschiedene Bedeutungen
+                    Overlay (Nora)
+                    SQL / Java (Alex)
+    TODO: Einheit: Unregeläßige Verben in konjugationen bilden: esse, velle, nolle
+                   Unregelmäßige Verben  + Posse
+                   (Nora)
+----------------------------------------------------------------------------------------------------
+Danach:
+
+    TODO: Einheit: Präpositionstrainer (schreiben) -> für Präposition die richtige Deklination bestimmen/bilden
+    TODO: Einheit: Nach Deklination fragen -> Akk: Wen oder Was?
+    TODO: Einheit: Konsonantische Konjugation -> capere/...
+    TODO: Einheit: Konjugation bestimmen -> a/e/... - Konjugation
+    TODO: Einheit: Adjektiv KNG bilden -> Adjektiv in der richtigen Form bilden
+    TODO: Einheit: KNG verwechslungsgefahr -> Fokus auf schweren Fällen
+    TODO: Einheit: Anclicken von richtiger Übersetzung
+    TODO: Einheit: Inperativ/Vokativ bilden
+    TODO: Einheit: Deutsch -> Latein
+
+    TODO: Nach Vokabeltrainer Rückblick
+        -> wie oft Falsch
+        -> schlechteste Vokabel
+
+----------------------------------------------------------------------------------------------------
+Gliederung:
+
+    Lektion 1:
+        A: UserInputDeklinationsendung
+        B: ClickPersonalendung
+        C: (WIP) Satzglieder bestimmen
+
+    Lektion 2:
+        A: ClickDeklinationsendung
+        B: ClickPersonalendung
+        C: (WIP) Satzglieder bestimmen
+
+    Lektion 3:
+        A: ClickDeklinationsendung
+        B: UserInputPersonalendung
+        C: (WIP) Konjugation bestimmen
+
+        Z: (WIP) Inperativ/Vokativ bilden
+
+    Lektion 4:
+        A: ClickDeklinationsendung
+        B: UserInputPersonalendung
+        C: (WIP) Unregelmäßige Verben
+
+        Z: (WIP) Nach Deklination fragen
+
+    Lektion 5:
+        A: ClickDeklinationsendung
+        B: (WIP) Konsonantische Konjugation
+        C: (WIP) Präpositoinstrainer (clicken)
+
+        Z: (WIP) Präpositionstrainer (schreiben)
+
+    Lektion 6:
+        A: (WIP) Adjektiv KNG bilden
+        B: (WIP) KNG/Verwechslungsgefahr
+        C: (WIP) Konsonantische Konjugation (i-Erweiterung)
+
+    Lektion 7:
+        A: (WIP) Satzglieder mit AcI
+        B: (WIP) Anklicken von richtiger Übersetzung
+        C: (WIP) Deklinationsendung 3. Dekl.
+
+        Z: (WIP) Unregelmäßig: Posse

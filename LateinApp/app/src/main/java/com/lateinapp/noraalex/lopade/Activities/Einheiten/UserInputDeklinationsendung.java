@@ -26,7 +26,7 @@ import java.util.Random;
  * Created by Alexander on 07.03.2018.
  */
 
-
+//TODO: Input bestätigen mit Enter
 //TODO: Make compatible with multiple tenses
 public class UserInputDeklinationsendung extends LateinAppActivity{
 

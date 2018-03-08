@@ -24,6 +24,7 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
 import com.lateinapp.noraalex.lopade.R;
 
+//TODO: Input bestätigen mit Enter
 public class UserInputVokabeltrainer extends LateinAppActivity {
 
     private SharedPreferences sharedPref;

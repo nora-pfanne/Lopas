@@ -26,6 +26,7 @@ import java.util.Random;
  * Created by Alexander on 07.03.2018.
  */
 
+//TODO: Input bestätigen mit Enter
 public class UserInputPersonalendung extends LateinAppActivity{
 
     private SharedPreferences sharedPref;
