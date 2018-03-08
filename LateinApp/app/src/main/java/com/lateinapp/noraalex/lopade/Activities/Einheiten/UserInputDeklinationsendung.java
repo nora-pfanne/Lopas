@@ -77,15 +77,15 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
         dbHelper = new DBHelper(getApplicationContext());
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
-        request = findViewById(R.id.textVokabeltrainerLatein);
-        solution = findViewById(R.id.textVokabeltrainerDeutsch);
-        userInput = findViewById(R.id.textVokabeltrainerUserInput);
-        progressBar = findViewById(R.id.progressBarVokabeltrainer);
-        bestaetigung = findViewById(R.id.buttonVokabeltrainerEingabeBestätigt);
-        weiter = findViewById(R.id.buttonVokabeltrainerNächsteVokabel);
-        reset = findViewById(R.id.buttonVokabeltrainerFortschrittLöschen);
-        zurück = findViewById(R.id.buttonVokabeltrainerZurück);
-        titel = findViewById(R.id.textVokabeltrainerÜberschrift);
+        request = findViewById(R.id.textUserInputLatein);
+        solution = findViewById(R.id.textUserInputDeutsch);
+        userInput = findViewById(R.id.textUserInputUserInput);
+        progressBar = findViewById(R.id.progressBarUserInput);
+        bestaetigung = findViewById(R.id.buttonUserInputEingabeBestätigt);
+        weiter = findViewById(R.id.buttonUserInputNächsteVokabel);
+        reset = findViewById(R.id.buttonUserInputFortschrittLöschen);
+        zurück = findViewById(R.id.buttonUserInputZurück);
+        titel = findViewById(R.id.textUserInputÜberschrift);
 
         userInput.setHint("Deklinierter Substantiv");
         titel.setText("Deklinationstrainer");
@@ -335,13 +335,13 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
         switch (view.getId()){
 
             //Checking if all vocabularies have been learned already and getting a new one
-            case (R.id.buttonVokabeltrainerNächsteVokabel):
+            case (R.id.buttonUserInputNächsteVokabel):
 
                 newVocabulary();
                 break;
 
             //Checking if the user input was correct
-            case (R.id.buttonVokabeltrainerEingabeBestätigt):
+            case (R.id.buttonUserInputEingabeBestätigt):
 
                 userInput.setFocusable(false);
 
@@ -387,7 +387,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
                 break;
 
             //Setting the 'learned' state of all vocabularies of the current lektion to false
-            case (R.id.buttonVokabeltrainerFortschrittLöschen):
+            case (R.id.buttonUserInputFortschrittLöschen):
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putInt("UserInputDeklinationsendung"+lektion, 0);
                 editor.apply();
@@ -395,7 +395,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
                 break;
 
             //Returning to the previous activity
-            case (R.id.buttonVokabeltrainerZurück):
+            case (R.id.buttonUserInputZurück):
                 finish();
                 break;
         }
