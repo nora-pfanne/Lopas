@@ -118,7 +118,13 @@ public class UserInputPersonalendung extends LateinAppActivity{
             currentPersonalendung = faelle[getRandomVocabularyNumber()];
 
             String lateinText = dbHelper.getKonjugiertesVerb(currentVokabel.getId(), "Inf");
-            lateinText += "\n" + currentPersonalendung;
+            String personalendungUser = currentPersonalendung.replace("_", " ");
+            personalendungUser = personalendungUser.replace("Erste", "1.");
+            personalendungUser = personalendungUser.replace("Zweite", "2.");
+            personalendungUser = personalendungUser.replace("Dritte", "3.");
+            personalendungUser = personalendungUser.replace("Sg", "Pers. Sg.");
+            personalendungUser = personalendungUser.replace("Pl", "Pers. Pl.");
+            lateinText += "\n" + personalendungUser + " Präsens";
 
             //#DEVELOPER
             if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()){

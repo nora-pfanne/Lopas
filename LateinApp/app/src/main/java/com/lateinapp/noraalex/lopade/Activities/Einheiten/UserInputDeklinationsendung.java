@@ -128,12 +128,19 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
                 currentDeclination = faelle[getRandomVocabularyNumber()];
             }
             String lateinText = dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG);
-            lateinText += "\n" + currentDeclination + " Präsens";
+
+            String personalendungUser = currentDeclination.replace("_", " ");
+            personalendungUser = personalendungUser.replace("Sg", "Sg.");
+            personalendungUser = personalendungUser.replace("Pl", "Pl.");
+            personalendungUser = personalendungUser.replace("Nom", "Nom.");
+            personalendungUser = personalendungUser.replace("Gen", "Gen.");
+            personalendungUser = personalendungUser.replace("Dat", "Dat.");
+            personalendungUser = personalendungUser.replace("Akk", "Akk.");
+            personalendungUser = personalendungUser.replace("Abl", "Abl.");
+            lateinText += "\n" + personalendungUser;
 
             //#DEVELOPER
             if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()){
-                //TODO maybe remove changing the text size
-                //request.setTextSize(24);
                 lateinText += "\n" + dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), currentDeclination);
             }
             request.setText(lateinText);

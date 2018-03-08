@@ -20,7 +20,7 @@ public class DeklinationsendungDB {
                 COLUMN_DAT_SG = "Dat_Sg",
                 COLUMN_DAT_PL = "Dat_Pl",
                 COLUMN_AKK_SG = "Akk_Sg",
-                COLUMN_AKK_PL = "Akk_PL",
+                COLUMN_AKK_PL = "Akk_Pl",
                 COLUMN_ABL_SG = "Abl_Sg",
                 COLUMN_ABL_PL = "Abl_Pl";
     }

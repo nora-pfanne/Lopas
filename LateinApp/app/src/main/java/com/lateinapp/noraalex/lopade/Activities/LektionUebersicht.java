@@ -215,25 +215,25 @@ public class LektionUebersicht extends LateinAppActivity {
                 break;
 
             case 2:
-                Intent intent2 = new Intent(getApplicationContext(), UserInputDeklinationsendung.class);
+                Intent intent2 = new Intent(getApplicationContext(), UserInputPersonalendung.class);
                 intent2.putExtra("lektion",lektion);
                 startActivity(intent2);
                 break;
 
             case 3:
-                Intent intent3 = new Intent(getApplicationContext(), UserInputPersonalendung.class);
+                Intent intent3 = new Intent(getApplicationContext(), UserInputDeklinationsendung.class);
                 intent3.putExtra("lektion",lektion);
                 startActivity(intent3);
                 break;
 
             case 4:
-                Intent intent4 = new Intent(getApplicationContext(), UserInputDeklinationsendung.class);
+                Intent intent4 = new Intent(getApplicationContext(), UserInputPersonalendung.class);
                 intent4.putExtra("lektion",lektion);
                 startActivity(intent4);
                 break;
 
             case 5:
-                Intent intent5 = new Intent(getApplicationContext(), UserInputPersonalendung.class);
+                Intent intent5 = new Intent(getApplicationContext(), UserInputDeklinationsendung.class);
                 intent5.putExtra("lektion",lektion);
                 startActivity(intent5);
                 break;
