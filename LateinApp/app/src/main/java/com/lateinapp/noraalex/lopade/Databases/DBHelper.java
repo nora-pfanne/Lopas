@@ -82,15 +82,15 @@ public class DBHelper extends SQLiteOpenHelper {
             addRowSprechvokal_Präsens("","","", "", "", "", "", "");
 
 
-            addEntriesFromFile("deklinationsendung.csv", DeklinationsendungDB.FeedEntry.TABLE_NAME ,context);
-            addEntriesFromFile("lektion.csv", LektionDB.FeedEntry.TABLE_NAME, context);
-            addEntriesFromFile("personalendung_präsens.csv", Personalendung_PräsensDB.FeedEntry.TABLE_NAME, context);
-            addEntriesFromFile("sprechvokal_Präsens.csv", Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME, context);
-            addEntriesFromFile("substantiv.csv", SubstantivDB.FeedEntry.TABLE_NAME, context);
-            addEntriesFromFile("verb.csv", VerbDB.FeedEntry.TABLE_NAME, context);
-            addEntriesFromFile("adverbTable.csv", AdverbDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("db_initialisation/deklinationsendung.csv", DeklinationsendungDB.FeedEntry.TABLE_NAME ,context);
+            addEntriesFromFile("db_initialisation/lektion.csv", LektionDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("db_initialisation/personalendung_präsens.csv", Personalendung_PräsensDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("db_initialisation/sprechvokal_Präsens.csv", Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("db_initialisation/substantiv.csv", SubstantivDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("db_initialisation/verb.csv", VerbDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("db_initialisation/adverbTable.csv", AdverbDB.FeedEntry.TABLE_NAME, context);
             //addEntriesFromFile("", SprichwortDB.FeedEntry.TABLE_NAME, context);
-            //addEntriesFromFile("", PräpositionDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("db_initialisation/präposition.csv", PräpositionDB.FeedEntry.TABLE_NAME, context);
         }
 
     }
@@ -269,9 +269,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(allColumnsPraeposition[1], deutsch);
-        values.put(allColumnsPraeposition[1], latein);
-        values.put(allColumnsPraeposition[1], gelernt ? 1 : 0);
-        values.put(allColumnsPraeposition[1], lektion_id);
+        values.put(allColumnsPraeposition[2], latein);
+        values.put(allColumnsPraeposition[3], gelernt ? 1 : 0);
+        values.put(allColumnsPraeposition[4], lektion_id);
 
         database.insert(PräpositionDB.FeedEntry.TABLE_NAME, null, values);
 
