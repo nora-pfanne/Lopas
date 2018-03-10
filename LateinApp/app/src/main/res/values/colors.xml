@@ -11,4 +11,5 @@
     <color name="InputRightGreen">#AAFF86</color>
     <color name="InputRightGreenLight">#ceffb9</color>
     <color name="Gold">#f6b461</color>
+    <color name="ButtonGrey">#515151</color>
 </resources>

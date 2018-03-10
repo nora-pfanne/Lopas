@@ -53,7 +53,8 @@ public class ClickPersonalendung extends LateinAppActivity {
 
     private int colorButtonCorrect,
                 colorButtonIncorrect,
-                colorButtonDefault;
+                colorButtonDefault,
+                colorButtonGrey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class ClickPersonalendung extends LateinAppActivity {
         colorButtonCorrect = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
         colorButtonIncorrect = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
         colorButtonDefault = ResourcesCompat.getColor(getResources(), R.color.PrussianBlue, null);
+        colorButtonGrey = ResourcesCompat.getColor(getResources(), R.color.ButtonGrey, null);
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
         latein = findViewById(R.id.textGrammatikPersonalendungLatein);
@@ -105,7 +107,7 @@ public class ClickPersonalendung extends LateinAppActivity {
         progressBar.setMax(maxProgress);
 
         weightSubjects(lektion);
-        setButtonsVisible(lektion);
+        setButtonsState(lektion);
     }
 
     /**
@@ -238,10 +240,7 @@ public class ClickPersonalendung extends LateinAppActivity {
           
             latein.setText(lateinText);
 
-            for (Button b : buttons){
-                b.setEnabled(true);
-                b.setBackgroundColor(colorButtonDefault);
-            }
+            setButtonsState(lektion);
             
         }else {
             latein.setText("");
@@ -312,24 +311,46 @@ public class ClickPersonalendung extends LateinAppActivity {
      * Sets the button-visibility corresponding to the current lektion
      * @param lektion the current lektion
      */
-    private void setButtonsVisible(int lektion){
+    private void setButtonsState(int lektion){
 
         if (lektion == 1){
-            ersteSg.setVisibility(View.GONE);
-            zweiteSg.setVisibility(View.GONE);
-            dritteSg.setVisibility(View.VISIBLE);
-            erstePl.setVisibility(View.GONE);
-            zweitePl.setVisibility(View.GONE);
-            drittePl.setVisibility(View.VISIBLE);
+            ersteSg.setBackgroundColor(colorButtonGrey);
+            ersteSg.setEnabled(false);
+
+            zweiteSg.setBackgroundColor(colorButtonGrey);
+            zweiteSg.setEnabled(false);
+
+            dritteSg.setBackgroundColor(colorButtonDefault);
+            dritteSg.setEnabled(true);
+
+            erstePl.setBackgroundColor(colorButtonGrey);
+            erstePl.setEnabled(false);
+
+            zweitePl.setBackgroundColor(colorButtonGrey);
+            zweitePl.setEnabled(false);
+
+            drittePl.setBackgroundColor(colorButtonDefault);
+            drittePl.setEnabled(true);
 
         }else{
 
-            ersteSg.setVisibility(View.VISIBLE);
-            zweiteSg.setVisibility(View.VISIBLE);
-            dritteSg.setVisibility(View.VISIBLE);
-            erstePl.setVisibility(View.VISIBLE);
-            zweitePl.setVisibility(View.VISIBLE);
-            drittePl.setVisibility(View.VISIBLE);
+            ersteSg.setBackgroundColor(colorButtonDefault);
+            ersteSg.setEnabled(true);
+
+            zweiteSg.setBackgroundColor(colorButtonDefault);
+            zweiteSg.setEnabled(true);
+
+            dritteSg.setBackgroundColor(colorButtonDefault);
+            dritteSg.setEnabled(true);
+
+            erstePl.setBackgroundColor(colorButtonDefault);
+            erstePl.setEnabled(true);
+
+            zweitePl.setBackgroundColor(colorButtonDefault);
+            zweitePl.setEnabled(true);
+
+            drittePl.setBackgroundColor(colorButtonDefault);
+            drittePl.setEnabled(true);
         }
     }
 

@@ -62,7 +62,8 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                 colorInactiveCorrect,
                 colorInactiveIncorrect,
                 colorButtonInactive,
-                colorButtonActive;
+                colorButtonActive,
+                colorButtonGrey;
     private int lektion;
     private int backgroundColor;
     private int maxProgress = 20;
@@ -96,6 +97,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
         colorActiveIncorrect = ResourcesCompat.getColor(getResources(), R.color.InputWrongRedLight, null);
         colorButtonActive = ResourcesCompat.getColor(getResources(), R.color.PrussianBlueLight, null);
         colorButtonInactive = ResourcesCompat.getColor(getResources(), R.color.PrussianBlue, null);
+        colorButtonGrey = ResourcesCompat.getColor(getResources(), R.color.ButtonGrey, null);
 
         allCorrectCases = new ArrayList<>();
 
@@ -317,10 +319,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
 
             lateinVokabel.setText(lateinText);
 
-            for (Button b : buttons){
-                b.setEnabled(true);
-            }
-            setButtonsVisible(lektion);
+            updateButtons(lektion);
         }else {
 
             nom_sg.setVisibility(View.GONE);
@@ -403,61 +402,61 @@ public class ClickDeklinationsendung extends LateinAppActivity {
             case (R.id.buttonGrammatikDeklinationNomSg):
 
                 buttonClicked[0] = !buttonClicked[0];
-                updateButtons();
+                updateButtons(lektion);
                 break;
 
             case (R.id.buttonGrammatikDeklinationNomPl):
 
                 buttonClicked[1] = !buttonClicked[1];
-                updateButtons();
+                updateButtons(lektion);
                 break;
 
             case (R.id.buttonGrammatikDeklinationGenSg):
 
                 buttonClicked[2] = !buttonClicked[2];
-                updateButtons();
+                updateButtons(lektion);
                 break;
 
             case (R.id.buttonGrammatikDeklinationGenPl):
 
                 buttonClicked[3] = !buttonClicked[3];
-                updateButtons();
+                updateButtons(lektion);
                 break;
 
             case (R.id.buttonGrammatikDeklinationDatSg):
 
                 buttonClicked[4] = !buttonClicked[4];
-                updateButtons();
+                updateButtons(lektion);
                 break;
 
             case (R.id.buttonGrammatikDeklinationDatPl):
 
                 buttonClicked[5] = !buttonClicked[5];
-                updateButtons();
+                updateButtons(lektion);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAkkSg):
 
                 buttonClicked[6] = !buttonClicked[6];
-                updateButtons();
+                updateButtons(lektion);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAkkPl):
 
                 buttonClicked[7] = !buttonClicked[7];
-                updateButtons();
+                updateButtons(lektion);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAblSg):
 
                 buttonClicked[8] = !buttonClicked[8];
-                updateButtons();
+                updateButtons(lektion);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAblPl):
 
                 buttonClicked[9] = !buttonClicked[9];
-                updateButtons();
+                updateButtons(lektion);
                 break;
 
             //Checks the user input
@@ -482,7 +481,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                 };
                 weiter.setVisibility(View.GONE);
                 newVocabulary();
-                updateButtons();
+                updateButtons(lektion);
                 break;
 
             //Resets all progress up to this point
@@ -504,13 +503,151 @@ public class ClickDeklinationsendung extends LateinAppActivity {
     /**
      * Updating the color of the buttons depending on if the button has been selected or deselected
      */
-    private void updateButtons(){
-        for (int i = 0; i < buttonClicked.length; i++){
+    private void updateButtons(int lektion){
 
+        checkInput.setVisibility(View.VISIBLE);
+
+        switch (lektion){
+            case 1:
+                nom_sg.setEnabled(true);
+                nom_sg.setBackgroundColor(colorButtonInactive);
+                nom_pl.setEnabled(true);
+                nom_pl.setBackgroundColor(colorButtonInactive);
+
+                gen_sg.setEnabled(false);
+                gen_sg.setBackgroundColor(colorButtonGrey);
+                gen_pl.setEnabled(false);
+                gen_pl.setBackgroundColor(colorButtonGrey);
+
+                dat_sg.setEnabled(false);
+                dat_sg.setBackgroundColor(colorButtonGrey);
+                dat_pl.setEnabled(false);
+                dat_pl.setBackgroundColor(colorButtonGrey);
+
+                akk_sg.setEnabled(false);
+                akk_sg.setBackgroundColor(colorButtonGrey);
+                akk_pl.setEnabled(false);
+                akk_pl.setBackgroundColor(colorButtonGrey);
+
+                abl_sg.setEnabled(false);
+                abl_sg.setBackgroundColor(colorButtonGrey);
+                abl_pl.setEnabled(false);
+                abl_pl.setBackgroundColor(colorButtonGrey);
+                break;
+
+            case 2:
+                nom_sg.setEnabled(true);
+                nom_sg.setBackgroundColor(colorButtonInactive);
+                nom_pl.setEnabled(true);
+                nom_pl.setBackgroundColor(colorButtonInactive);
+
+                gen_sg.setEnabled(false);
+                gen_sg.setBackgroundColor(colorButtonGrey);
+                gen_pl.setEnabled(false);
+                gen_pl.setBackgroundColor(colorButtonGrey);
+
+                dat_sg.setEnabled(false);
+                dat_sg.setBackgroundColor(colorButtonGrey);
+                dat_pl.setEnabled(false);
+                dat_pl.setBackgroundColor(colorButtonGrey );
+
+                akk_sg.setEnabled(true);
+                akk_sg.setBackgroundColor(colorButtonInactive);
+                akk_pl.setEnabled(true);
+                akk_pl.setBackgroundColor(colorButtonInactive);
+
+                abl_sg.setEnabled(false);
+                abl_sg.setBackgroundColor(colorButtonGrey);
+                abl_pl.setEnabled(false);
+                abl_pl.setBackgroundColor(colorButtonGrey);
+                break;
+
+            case 3:
+                nom_sg.setEnabled(true);
+                nom_sg.setBackgroundColor(colorButtonInactive);
+                nom_pl.setEnabled(true);
+                nom_pl.setBackgroundColor(colorButtonInactive);
+
+                gen_sg.setEnabled(false);
+                gen_sg.setBackgroundColor(colorButtonGrey);
+                gen_pl.setEnabled(false);
+                gen_pl.setBackgroundColor(colorButtonGrey);
+
+                dat_sg.setEnabled(true);
+                dat_sg.setBackgroundColor(colorButtonInactive);
+                dat_pl.setEnabled(true);
+                dat_pl.setBackgroundColor(colorButtonInactive);
+
+                akk_sg.setEnabled(true);
+                akk_sg.setBackgroundColor(colorButtonInactive);
+                akk_pl.setEnabled(true);
+                akk_pl.setBackgroundColor(colorButtonInactive);
+
+                abl_sg.setEnabled(false);
+                abl_sg.setBackgroundColor(colorButtonGrey);
+                abl_pl.setEnabled(false);
+                abl_pl.setBackgroundColor(colorButtonGrey);
+                break;
+
+            case 4:
+
+                nom_sg.setEnabled(true);
+                nom_sg.setBackgroundColor(colorButtonInactive);
+                nom_pl.setEnabled(true);
+                nom_pl.setBackgroundColor(colorButtonInactive);
+
+                gen_sg.setEnabled(false);
+                gen_sg.setBackgroundColor(colorButtonGrey);
+                gen_pl.setEnabled(false);
+                gen_pl.setBackgroundColor(colorButtonGrey);
+
+                dat_sg.setEnabled(true);
+                dat_sg.setBackgroundColor(colorButtonInactive);
+                dat_pl.setEnabled(true);
+                dat_pl.setBackgroundColor(colorButtonInactive);
+
+                akk_sg.setEnabled(true);
+                akk_sg.setBackgroundColor(colorButtonInactive);
+                akk_pl.setEnabled(true);
+                akk_pl.setBackgroundColor(colorButtonInactive);
+
+                abl_sg.setEnabled(true);
+                abl_sg.setBackgroundColor(colorButtonInactive);
+                abl_pl.setEnabled(true);
+                abl_pl.setBackgroundColor(colorButtonInactive);
+                break;
+
+            default:
+
+                nom_sg.setEnabled(true);
+                nom_sg.setBackgroundColor(colorButtonInactive);
+                nom_pl.setEnabled(true);
+                nom_pl.setBackgroundColor(colorButtonInactive);
+
+                gen_sg.setEnabled(true);
+                gen_sg.setBackgroundColor(colorButtonInactive);
+                gen_pl.setEnabled(true);
+                gen_pl.setBackgroundColor(colorButtonInactive);
+
+                dat_sg.setEnabled(true);
+                dat_sg.setBackgroundColor(colorButtonInactive);
+                dat_pl.setEnabled(true);
+                dat_pl.setBackgroundColor(colorButtonInactive);
+
+                akk_sg.setEnabled(true);
+                akk_sg.setBackgroundColor(colorButtonInactive);
+                akk_pl.setEnabled(true);
+                akk_pl.setBackgroundColor(colorButtonInactive);
+
+                abl_sg.setEnabled(true);
+                abl_sg.setBackgroundColor(colorButtonInactive);
+                abl_pl.setEnabled(true);
+                abl_pl.setBackgroundColor(colorButtonInactive);
+        }
+
+        for (int i = 0; i < buttonClicked.length; i++){
             if (buttonClicked[i]){
                 buttons[i].setBackgroundColor(colorButtonActive);
-            }else {
-                buttons[i].setBackgroundColor(colorButtonInactive);
             }
         }
     }
@@ -651,85 +788,6 @@ public class ClickDeklinationsendung extends LateinAppActivity {
 
         weiter.setVisibility(View.VISIBLE);
         checkInput.setVisibility(View.GONE);
-    }
-
-    /**
-     * Sets the button-visibility corresponding to the current lektion
-     * @param lektion the current lektion
-     */
-    private void setButtonsVisible(int lektion){
-
-        checkInput.setVisibility(View.VISIBLE);
-
-        switch (lektion){
-            case 1:
-                nom_sg.setVisibility(View.VISIBLE);
-                nom_pl.setVisibility(View.VISIBLE);
-                gen_sg.setVisibility(View.GONE);
-                gen_pl.setVisibility(View.GONE);
-                dat_sg.setVisibility(View.GONE);
-                dat_pl.setVisibility(View.GONE);
-                akk_sg.setVisibility(View.GONE);
-                akk_pl.setVisibility(View.GONE);
-                abl_sg.setVisibility(View.GONE);
-                abl_pl.setVisibility(View.GONE);
-                break;
-
-            case 2:
-
-                nom_sg.setVisibility(View.VISIBLE);
-                nom_pl.setVisibility(View.VISIBLE);
-                gen_sg.setVisibility(View.GONE);
-                gen_pl.setVisibility(View.GONE);
-                dat_sg.setVisibility(View.GONE);
-                dat_pl.setVisibility(View.GONE);
-                akk_sg.setVisibility(View.VISIBLE);
-                akk_pl.setVisibility(View.VISIBLE);
-                abl_sg.setVisibility(View.GONE);
-                abl_pl.setVisibility(View.GONE);
-                break;
-
-            case 3:
-
-                nom_sg.setVisibility(View.VISIBLE);
-                nom_pl.setVisibility(View.VISIBLE);
-                gen_sg.setVisibility(View.GONE);
-                gen_pl.setVisibility(View.GONE);
-                dat_sg.setVisibility(View.VISIBLE);
-                dat_pl.setVisibility(View.VISIBLE);
-                akk_sg.setVisibility(View.VISIBLE);
-                akk_pl.setVisibility(View.VISIBLE);
-                abl_sg.setVisibility(View.GONE);
-                abl_pl.setVisibility(View.GONE);
-                break;
-
-            case 4:
-
-                nom_sg.setVisibility(View.VISIBLE);
-                nom_pl.setVisibility(View.VISIBLE);
-                gen_sg.setVisibility(View.GONE);
-                gen_pl.setVisibility(View.GONE);
-                dat_sg.setVisibility(View.VISIBLE);
-                dat_pl.setVisibility(View.VISIBLE);
-                akk_sg.setVisibility(View.VISIBLE);
-                akk_pl.setVisibility(View.VISIBLE);
-                abl_sg.setVisibility(View.VISIBLE);
-                abl_pl.setVisibility(View.VISIBLE);
-                break;
-
-            default:
-
-                nom_sg.setVisibility(View.VISIBLE);
-                nom_pl.setVisibility(View.VISIBLE);
-                gen_sg.setVisibility(View.VISIBLE);
-                gen_pl.setVisibility(View.VISIBLE);
-                dat_sg.setVisibility(View.VISIBLE);
-                dat_pl.setVisibility(View.VISIBLE);
-                akk_sg.setVisibility(View.VISIBLE);
-                akk_pl.setVisibility(View.VISIBLE);
-                abl_sg.setVisibility(View.VISIBLE);
-                abl_pl.setVisibility(View.VISIBLE);
-        }
     }
 
     @Override
