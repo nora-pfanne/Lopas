@@ -1,5 +1,6 @@
 package com.lateinapp.noraalex.lopade.Databases;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -82,15 +83,15 @@ public class DBHelper extends SQLiteOpenHelper {
             addRowSprechvokal_Präsens("","","", "", "", "", "", "");
 
 
-            addEntriesFromFile("deklinationsendung.csv", DeklinationsendungDB.FeedEntry.TABLE_NAME ,context);
-            addEntriesFromFile("lektion.csv", LektionDB.FeedEntry.TABLE_NAME, context);
-            addEntriesFromFile("personalendung_präsens.csv", Personalendung_PräsensDB.FeedEntry.TABLE_NAME, context);
-            addEntriesFromFile("sprechvokal_Präsens.csv", Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME, context);
-            addEntriesFromFile("substantiv.csv", SubstantivDB.FeedEntry.TABLE_NAME, context);
-            addEntriesFromFile("verb.csv", VerbDB.FeedEntry.TABLE_NAME, context);
-            addEntriesFromFile("adverbTable.csv", AdverbDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("db_initialisation/deklinationsendung.csv", DeklinationsendungDB.FeedEntry.TABLE_NAME ,context);
+            addEntriesFromFile("db_initialisation/lektion.csv", LektionDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("db_initialisation/personalendung_präsens.csv", Personalendung_PräsensDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("db_initialisation/sprechvokal_Präsens.csv", Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("db_initialisation/substantiv.csv", SubstantivDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("db_initialisation/verb.csv", VerbDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("db_initialisation/adverbTable.csv", AdverbDB.FeedEntry.TABLE_NAME, context);
             //addEntriesFromFile("", SprichwortDB.FeedEntry.TABLE_NAME, context);
-            //addEntriesFromFile("", PräpositionDB.FeedEntry.TABLE_NAME, context);
+            addEntriesFromFile("db_initialisation/präposition.csv", PräpositionDB.FeedEntry.TABLE_NAME, context);
         }
 
     }
@@ -269,9 +270,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(allColumnsPraeposition[1], deutsch);
-        values.put(allColumnsPraeposition[1], latein);
-        values.put(allColumnsPraeposition[1], gelernt ? 1 : 0);
-        values.put(allColumnsPraeposition[1], lektion_id);
+        values.put(allColumnsPraeposition[2], latein);
+        values.put(allColumnsPraeposition[3], gelernt ? 1 : 0);
+        values.put(allColumnsPraeposition[4], lektion_id);
 
         database.insert(PräpositionDB.FeedEntry.TABLE_NAME, null, values);
 
@@ -635,7 +636,6 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     private int countTableEntries(String[] tables, int lektionNr){
 
-        Cursor cursor;
         int count = 0;
         openDb();
 
@@ -646,15 +646,17 @@ public class DBHelper extends SQLiteOpenHelper {
                 String query = "SELECT COUNT(*) FROM " + table
                         + " WHERE Lektion_ID = ?";
 
-                cursor = database.rawQuery(query,
+                Cursor cursor = database.rawQuery(query,
                         new String[] {""+lektionNr});
                 cursor.moveToNext();
                 count += cursor.getInt(0);
+                cursor.close();
             }catch (Exception e){
                 e.printStackTrace();
                 return -1;
             }
         }
+
         return count;
     }
 
@@ -1070,14 +1072,13 @@ public class DBHelper extends SQLiteOpenHelper {
             vokabelInstance = new VerbDB(vokabelID, lateinVokabel, deutsch);
 
         }else if (randomNumber-entryAmountSubstantiv-entryAmountVerb < entryAmountPräposition){
-
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
 
             //constructs a instance of Präposition from the given randomNumber
-            count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPräposition;
-
+            count = randomNumber-entryAmountSubstantiv-entryAmountVerb;
             table = PräpositionDB.FeedEntry.TABLE_NAME;
+            Log.d("PräpChosen", ""+count);
             vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getColumnFromId(vokabelID, table, PräpositionDB.FeedEntry.COLUMN_LATEIN);
             deutsch = getColumnFromId(vokabelID, table, PräpositionDB.FeedEntry.COLUMN_DEUTSCH);
@@ -1291,6 +1292,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return
      */
     @SuppressWarnings("all")
+    @SuppressLint("all")
     public ArrayList<Cursor> getData (String Query){
         //get writable database
         SQLiteDatabase sqlDB = this.getWritableDatabase();
