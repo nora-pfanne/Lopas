@@ -1,0 +1,17 @@
+#DEVELOPER
+
+AndroidDatabaseManager.java:
+Source: https://github.com/sanathp/DatabaseManager_For_Android
+"When app development is done remove the activity and publish your app."
+-> Kann in dieser Form nicht veröffentlicht werden.
+
+-------------------------------------------------------------------------
+
+Wir haben mit dem Latein-Buch Roma gearbeitet.
+Die Texte und die Komposition der Vokabeln sind Urheberrechtlich geschützt.
+Deshalb dürfte die App ohne Zustimmung des Verlags nicht veröffentlicht werden.
+
+Die non-kommerzielle Verwendung im schulinternen Bereich sollte keine Probleme darstellen, da die Schule
+durch das Kaufen des Bandes die Rechte zur Verwendung des Inhaltes erworben hat.
+
+

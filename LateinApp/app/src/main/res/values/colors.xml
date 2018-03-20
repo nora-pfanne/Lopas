@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="spinnerColor">#2398ff</color>
+
+    <color name="PrussianBlue">#002E54</color>
+    <color name="PrussianBlueLight">#7F96A9</color>
+    <color name="Burgundy">#940a0a</color>
+    <color name="BurgundyLight">#BC7F93</color>
+    <color name="GhostWhite">#FAFAFF</color>
+    <color name="InputWrongRed">#FF4242</color>
+    <color name="InputWrongRedLight">#ff7979</color>
+    <color name="InputRightGreen">#AAFF86</color>
+    <color name="InputRightGreenLight">#ceffb9</color>
+    <color name="Gold">#f6b461</color>
+    <color name="ButtonGrey">#515151</color>
 </resources>
