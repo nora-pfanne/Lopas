@@ -3,16 +3,16 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/PrussianBlue</item>
-        <item name="colorPrimaryDark">@color/PrussianBlue</item>
-        <item name="colorAccent">@color/Burgundy</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-f
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
@@ -31,5 +31,71 @@ f
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">28sp</item>
     </style>
+
+    <!--
+    ***********************************************************************************************
+    The following styles are part of the visual overhaul of the app
+    ***********************************************************************************************
+    -->
+
+
+    <style name="HomeScreenSelectionButton">
+        <item name="android:background">@color/DarkImperialBlue</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!--TextView styles-->
+    <style name="titelGrammatik">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <!--Button styles-->
+    <style name="SubstantivGrammatikButton">
+        <item name="android:backgroundTint">@color/CrayolaRed</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="VerbGrammatikButton">
+        <item name="android:backgroundTint">@color/AirSuperiorityBlue</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="PraepositionGrammatikButton">
+        <item name="android:backgroundTint">@color/WageningenGreen</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="AdjektivGrammatikButton">
+        <item name="android:backgroundTint">@color/TangerineOrange</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="SatzgliedGrammatikButton">
+        <item name="android:backgroundTint">@color/SoftViolett</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="CheckpointGrammatikButton">
+        <item name="android:backgroundTint">@color/GoldenPoppy</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
 
 </resources>

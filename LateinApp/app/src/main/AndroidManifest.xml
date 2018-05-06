@@ -14,11 +14,13 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name="com.lateinapp.noraalex.lopade.Activities.LektionUebersicht"
@@ -51,6 +53,14 @@
         <activity
             android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputPersonalendung"
             android:screenOrientation="portrait" />
+
+        <!-- Activites for the visual rework of the app -->
+        <activity
+            android:name="com.lateinapp.noraalex.lopade.Activities.VisuellEinheitenÜbersicht"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <!-- End of Activities for the visual rework of the app -->
 
         <meta-data
             android:name="preloaded_fonts"
