@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.lateinapp.noraalex.lopade.Activities.newVersion.VisuellEinheitenÜbersicht;
+import com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten.Satzglieder;
 import com.lateinapp.noraalex.lopade.R;
 
 public class Home extends LateinAppActivity
@@ -24,6 +25,8 @@ public class Home extends LateinAppActivity
     private static boolean DEV_CHEAT_MODE = false;
     //#VISUAL -- Set this to true to access visual rework mode
     private static boolean START_VISUAL_REWORK = false;
+    //#TESTING
+    private static boolean TEST_SATZGLIEDER = true;
 
     private SharedPreferences sharedPref;
 
@@ -43,6 +46,12 @@ public class Home extends LateinAppActivity
         DEVELOPER = sharedPref.getBoolean("DEVELOPER", false);
         DEV_CHEAT_MODE = sharedPref.getBoolean("DEV_CHEAT_MODE", false);
 
+        //#TESTING
+        if (TEST_SATZGLIEDER){
+            Intent startSatzglieder = new Intent(this, Satzglieder.class);
+            startActivity(startSatzglieder);
+            finish();
+        }
 
         //#VISUAL
         if (START_VISUAL_REWORK){
