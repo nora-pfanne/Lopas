@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities;
+package com.lateinapp.noraalex.lopade.Activities.oldVersion;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

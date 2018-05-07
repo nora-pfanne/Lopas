@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities;
+package com.lateinapp.noraalex.lopade.Activities.oldVersion;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,11 +8,11 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickDeklinationsendung;
-import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputDeklinationsendung;
-import com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickPersonalendung;
-import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputPersonalendung;
-import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputVokabeltrainer;
+import com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten.ClickDeklinationsendung;
+import com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten.UserInputDeklinationsendung;
+import com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten.ClickPersonalendung;
+import com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten.UserInputPersonalendung;
+import com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten.UserInputVokabeltrainer;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.LektionDB;
 import com.lateinapp.noraalex.lopade.R;

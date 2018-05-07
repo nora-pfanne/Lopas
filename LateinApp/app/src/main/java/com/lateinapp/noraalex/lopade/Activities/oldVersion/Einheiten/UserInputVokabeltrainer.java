@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.Einheiten;
+package com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +13,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
-import com.lateinapp.noraalex.lopade.Activities.Home;
+import com.lateinapp.noraalex.lopade.Activities.oldVersion.LateinAppActivity;
+import com.lateinapp.noraalex.lopade.Activities.oldVersion.Home;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.PräpositionDB;

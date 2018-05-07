@@ -1,9 +1,8 @@
-package com.lateinapp.noraalex.lopade.Activities;
+package com.lateinapp.noraalex.lopade.Activities.oldVersion;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.print.pdf.PrintedPdfDocument;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.lateinapp.noraalex.lopade.Activities.newVersion.VisuellEinheitenÜbersicht;
 import com.lateinapp.noraalex.lopade.R;
 
 public class Home extends LateinAppActivity
@@ -23,7 +23,7 @@ public class Home extends LateinAppActivity
     private static boolean DEVELOPER = true;
     private static boolean DEV_CHEAT_MODE = false;
     //#VISUAL -- Set this to true to access visual rework mode
-    private static boolean START_VISUAL_REWORK = true;
+    private static boolean START_VISUAL_REWORK = false;
 
     private SharedPreferences sharedPref;
 

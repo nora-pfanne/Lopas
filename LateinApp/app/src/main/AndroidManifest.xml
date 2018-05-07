@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.Home"
+            android:name="com.lateinapp.noraalex.lopade.Activities.oldVersion.Home"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -23,40 +23,40 @@
 
         </activity>
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.LektionUebersicht"
+            android:name="com.lateinapp.noraalex.lopade.Activities.oldVersion.LektionUebersicht"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.AndroidDatabaseManager"
+            android:name="com.lateinapp.noraalex.lopade.Activities.oldVersion.AndroidDatabaseManager"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.Woerterbuch"
+            android:name="com.lateinapp.noraalex.lopade.Activities.oldVersion.Woerterbuch"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputVokabeltrainer"
+            android:name=".Activities.oldVersion.Einheiten.UserInputVokabeltrainer"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible" />
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickDeklinationsendung"
+            android:name=".Activities.oldVersion.Einheiten.ClickDeklinationsendung"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.SettingsActivity"
+            android:name="com.lateinapp.noraalex.lopade.Activities.oldVersion.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickPersonalendung"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputDeklinationsendung"
+            android:name=".Activities.oldVersion.Einheiten.ClickPersonalendung"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputPersonalendung"
+            android:name=".Activities.oldVersion.Einheiten.UserInputDeklinationsendung"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".Activities.oldVersion.Einheiten.UserInputPersonalendung"
             android:screenOrientation="portrait" />
 
         <!-- Activites for the visual rework of the app -->
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.VisuellEinheitenÜbersicht"
+            android:name="com.lateinapp.noraalex.lopade.Activities.newVersion.VisuellEinheitenÜbersicht"
             android:screenOrientation="portrait" >
         </activity>
 

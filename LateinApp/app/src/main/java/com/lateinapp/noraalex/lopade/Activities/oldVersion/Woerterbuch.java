@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities;
+package com.lateinapp.noraalex.lopade.Activities.oldVersion;
 
 import android.graphics.Color;
 import android.os.Bundle;

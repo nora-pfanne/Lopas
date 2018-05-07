@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.Einheiten;
+package com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
-import com.lateinapp.noraalex.lopade.Activities.Home;
+import com.lateinapp.noraalex.lopade.Activities.oldVersion.LateinAppActivity;
+import com.lateinapp.noraalex.lopade.Activities.oldVersion.Home;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
