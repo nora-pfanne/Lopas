@@ -1,4 +1,4 @@
-Subjekt,Prädikat,Akk-Obj,Dat-Obj,Gen-Obj
-medicus,spectare,equus,,servus
-amicus,desiderat,pecuniam,,amicus
-puella,negare,culpam,socio,
+Subjekt;Praedikat;Genitiv;Dativ;Akkusativ
+medicus;spectare;servus;;equus
+amicus;desiderare;amicus;;pecuniam
+puella;negare;culpa;socius;culpam

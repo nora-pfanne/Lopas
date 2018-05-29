@@ -9,7 +9,7 @@ public class BeispielsatzDB {
     public static class FeedEntry implements BaseColumns {
 
         //Table name
-        public static final String TABLE_NAME = "BeispielsatzDB";
+        public static final String TABLE_NAME = "Beispielsatz";
 
         //Table columns
         public static final String COLUMN_SUBJEKT = "Subjekt",

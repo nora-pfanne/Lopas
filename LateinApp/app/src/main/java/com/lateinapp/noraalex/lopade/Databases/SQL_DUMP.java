@@ -526,6 +526,7 @@ public final class SQL_DUMP {
      static final String[] allColumnsBeispielsatz = {
              BeispielsatzDB.FeedEntry._ID,
              BeispielsatzDB.FeedEntry.COLUMN_SUBJEKT,
+             BeispielsatzDB.FeedEntry.COLUMN_PRAEDIKAT,
              BeispielsatzDB.FeedEntry.COLUMN_GENITIV,
              BeispielsatzDB.FeedEntry.COLUMN_DATIV,
              BeispielsatzDB.FeedEntry.COLUMN_AKKUSATIV
