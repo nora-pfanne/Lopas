@@ -107,7 +107,7 @@ public class Satzglieder extends LateinAppActivity {
         setInstructionText(elementToSelect);
 
         //Getting a new sentence
-        sentenceID = ThreadLocalRandom.current().nextInt(0, sentenceCount);
+        sentenceID = ThreadLocalRandom.current().nextInt(1, sentenceCount+1);
 
         //TODO: We will want to place the buttons such that it acually looks like a sentence -> not 1 button per row
         //Adding buttons to the layout
