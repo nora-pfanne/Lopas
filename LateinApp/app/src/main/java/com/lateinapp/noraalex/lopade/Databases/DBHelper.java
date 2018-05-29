@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
+import com.lateinapp.noraalex.lopade.Databases.Tables.BeispielsatzDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.LektionDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Personalendung_PräsensDB;
@@ -92,6 +93,9 @@ public class DBHelper extends SQLiteOpenHelper {
             addEntriesFromFile("db_initialisation/adverbTable.csv", AdverbDB.FeedEntry.TABLE_NAME, context);
             //addEntriesFromFile("", SprichwortDB.FeedEntry.TABLE_NAME, context);
             addEntriesFromFile("db_initialisation/präposition.csv", PräpositionDB.FeedEntry.TABLE_NAME, context);
+
+            //TODO: Not final path/name
+            addEntriesFromFile("example_sentences/beispielsatz_test.csv", BeispielsatzDB.FeedEntry.TABLE_NAME, context);
         }
 
     }
@@ -114,6 +118,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_ENTRIES_SPRICHWORT);
         db.execSQL(SQL_CREATE_ENTRIES_SUBSTANTIV);
         db.execSQL(SQL_CREATE_ENTRIES_VERB);
+        db.execSQL(SQL_CREATE_ENTRIES_BEISPIELSATZ);
         
     }
 
@@ -140,7 +145,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_ENTRIES_SPRICHWORT);
         db.execSQL(SQL_DELETE_ENTRIES_SUBSTANTIV);
         db.execSQL(SQL_DELETE_ENTRIES_VERB);
-
+        db.execSQL(SQL_DELETE_ENTRIES_BEISPIELSATZ);
 
         onCreate(db);
     }
@@ -428,6 +433,22 @@ public class DBHelper extends SQLiteOpenHelper {
         closeDb();
     }
 
+    private void addRowBeispielsatz(String subjekt_id, String praedikat_id, String genitiv_id, String dativ_id, String akkusativ_id){
+
+        openDb();
+
+        ContentValues values = new ContentValues();
+        values.put(allColumnsBeispielsatz[1], subjekt_id);
+        values.put(allColumnsBeispielsatz[2], praedikat_id);
+        values.put(allColumnsBeispielsatz[3], genitiv_id);
+        values.put(allColumnsBeispielsatz[4], dativ_id);
+        values.put(allColumnsBeispielsatz[5], akkusativ_id);
+
+        database.insert(BeispielsatzDB.FeedEntry.TABLE_NAME, null, values);
+
+        closeDb();
+    }
+
     /**
      * Entries are added to a specified table from a file under a given path. (probably a .csv file)
      * 1 row represents a entry
@@ -586,6 +607,17 @@ public class DBHelper extends SQLiteOpenHelper {
                                            tokens[2], false,
                                            Integer.parseInt(tokens[3]),
                                            personalendungID, sprechvokalID);
+                                break;
+
+
+                            case BeispielsatzDB.FeedEntry.TABLE_NAME:
+
+
+
+                                //TODO: Initialize with entries from file here
+
+
+
                                 break;
 
                             default:

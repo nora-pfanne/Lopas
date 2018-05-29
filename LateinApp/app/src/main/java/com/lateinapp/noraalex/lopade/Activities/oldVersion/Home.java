@@ -22,11 +22,11 @@ public class Home extends LateinAppActivity
 
     //#DEVELOPER
     private static boolean DEVELOPER = true;
-    private static boolean DEV_CHEAT_MODE = false;
+    private static boolean DEV_CHEAT_MODE = true;
     //#VISUAL -- Set this to true to access visual rework mode
     private static boolean START_VISUAL_REWORK = false;
     //#TESTING
-    private static boolean TEST_SATZGLIEDER = true;
+    private static boolean TEST_SATZGLIEDER = false;
 
     private SharedPreferences sharedPref;
 

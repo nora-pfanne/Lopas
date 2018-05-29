@@ -11,11 +11,19 @@ import android.widget.TextView;
 import com.lateinapp.noraalex.lopade.Activities.oldVersion.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.R;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Satzglieder extends LateinAppActivity {
 
     LinearLayout linearLayout;
+
+    private final int SUBJEKT = 0,
+            PRAEDIKAT = 1,
+            AKKUSATIV = 2,
+            DATIV = 3,
+            GENITIV = 4,
+            ADVERB = 5;
 
     private final String
             G_SUBJEKT = "Subjekt",
@@ -26,7 +34,7 @@ public class Satzglieder extends LateinAppActivity {
             G_OBJ_DATIV = "Dativobjekt",
             G_OBJ_AKKUSATIV = "Akkusativobjekt";
 
-    private String[][] sentence = {
+    private String[][]cases= {
             //Alle Fälle
             {G_SUBJEKT_PRAEDIKAT},
             {G_SUBJEKT_PRAEDIKAT, G_PRAEDIKAT, G_OBJ_AKKUSATIV},
@@ -45,6 +53,8 @@ public class Satzglieder extends LateinAppActivity {
              */
     };
 
+    private ArrayList<String[]> sentences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +68,7 @@ public class Satzglieder extends LateinAppActivity {
     private void setup(){
 
         //random sentence structure
-        String[] currentSentence = sentence[new Random().nextInt(sentence.length)];
+        String[] currentSentence = cases[new Random().nextInt(cases.length)];
 
         //random sentence element the user has to select
         String elementToSelect = currentSentence[new Random().nextInt(currentSentence.length)];
