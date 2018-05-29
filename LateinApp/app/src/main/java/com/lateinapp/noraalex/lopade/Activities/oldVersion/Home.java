@@ -26,7 +26,7 @@ public class Home extends LateinAppActivity
     //#VISUAL -- Set this to true to access visual rework mode
     private static boolean START_VISUAL_REWORK = false;
     //#TESTING
-    private static boolean TEST_SATZGLIEDER = false;
+    private static boolean TEST_SATZGLIEDER = true;
 
     private SharedPreferences sharedPref;
 
@@ -43,8 +43,8 @@ public class Home extends LateinAppActivity
         //Sets the DEVELOPER state according to a variable saved in a previous instance of the app
         //#DEVELOPER
         sharedPref = getSharedPreferences("SharedPreferences", 0);
-        DEVELOPER = sharedPref.getBoolean("DEVELOPER", false);
-        DEV_CHEAT_MODE = sharedPref.getBoolean("DEV_CHEAT_MODE", false);
+        DEVELOPER = sharedPref.getBoolean("DEVELOPER", DEVELOPER);
+        DEV_CHEAT_MODE = sharedPref.getBoolean("DEV_CHEAT_MODE", DEV_CHEAT_MODE);
 
         //#TESTING
         if (TEST_SATZGLIEDER){

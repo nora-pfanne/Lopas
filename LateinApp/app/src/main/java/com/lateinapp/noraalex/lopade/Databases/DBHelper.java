@@ -446,13 +446,6 @@ public class DBHelper extends SQLiteOpenHelper {
         if (dativ_id == -1) dativ_id = 2;
         if (akkusativ_id == -1) akkusativ_id = 2;
 
-        Log.d("ValuesForNewRow", "Subj: " + subjekt_id
-         + "\n Präd: " + praedikat_id
-         + "\n Gen: " + genitiv_id
-         + "\n Dat: " + dativ_id
-         + "\n Akk: " + akkusativ_id);
-
-
         ContentValues values = new ContentValues();
         values.put(allColumnsBeispielsatz[1], subjekt_id);
         values.put(allColumnsBeispielsatz[2], praedikat_id);
@@ -634,8 +627,6 @@ public class DBHelper extends SQLiteOpenHelper {
                                 int dat_id = getIdOfVocabulary(tokens[3], DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG, SubstantivDB.FeedEntry.TABLE_NAME);
                                 int akk_id = getIdOfVocabulary(tokens[4], DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG, SubstantivDB.FeedEntry.TABLE_NAME);
 
-                                Log.d("_IDs", subjekt_id + ", " + praedikat_id + ", " + gen_id + ", " + dat_id + ", " + akk_id);
-
                                 addRowBeispielsatz(subjekt_id, praedikat_id, gen_id, dat_id, akk_id);
 
                                 break;
@@ -755,7 +746,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param tables Array of table-names that are to be counted
      * @return the amount of entries in the tables of the array
      */
-    private int countTableEntries(String[] tables){
+    public int countTableEntries(String[] tables){
 
         Cursor cursor = null;
         int count = 0;
