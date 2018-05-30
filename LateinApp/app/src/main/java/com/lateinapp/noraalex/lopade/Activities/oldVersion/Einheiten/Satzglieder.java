@@ -60,7 +60,6 @@ public class Satzglieder extends LateinAppActivity {
             G_OBJ_AKKUSATIV = "Akkusativobjekt";
 
     private String[][]cases= {
-            //Alle Fälle
             //{G_SUBJEKT_PRAEDIKAT},
             {G_SUBJEKT_PRAEDIKAT, G_OBJ_AKKUSATIV},
             {G_SUBJEKT_PRAEDIKAT, G_OBJ_AKKUSATIV, G_OBJ_GENITIV},
@@ -72,14 +71,10 @@ public class Satzglieder extends LateinAppActivity {
             {G_SUBJEKT, G_PRAEDIKAT, G_OBJ_AKKUSATIV, G_OBJ_GENITIV},
             {G_SUBJEKT, G_PRAEDIKAT, G_OBJ_DATIV},
             {G_SUBJEKT, G_PRAEDIKAT, G_OBJ_DATIV, G_OBJ_GENITIV}
-
-            /*  
-            => Ablativ in Präpositionstrainer
-             */
     };
 
     private ArrayList<Button> buttons = new ArrayList<>();
-    //Button - Width |-> -1 if not yet defined
+    //Button with its according width
     private HashMap<Button, Integer> buttonHashMap;
 
     @Override
@@ -90,6 +85,9 @@ public class Satzglieder extends LateinAppActivity {
         setup();
     }
 
+    /**
+     * Initializing variables and starting a new sentence
+     */
     private void setup(){
 
         Intent intent = getIntent();
@@ -112,6 +110,10 @@ public class Satzglieder extends LateinAppActivity {
 
     }
 
+    /**
+     * Creates a new sentence structure if the maxProgress is not yet reached.
+     * Ending the game otherwise
+     */
     private void newSentence(){
 
 
@@ -146,36 +148,46 @@ public class Satzglieder extends LateinAppActivity {
         }else {
 
             progressBar.setProgress(maxProgress);
-            
+            //TODO:
             endGame();
         }
 
     }
 
+    /**
+     * Sets the text of the TextView 'aufgabenstellung' according
+     * to the chosen element of the sentence.
+     * @param selectedElement the sentence element that is correct.
+     */
     private void setInstructionText(String selectedElement){
-
-        TextView instructionText = findViewById(R.id.satzglieder_aufgabenstellung);
 
         String elementDescription;
 
         switch (selectedElement){
 
             case G_SUBJEKT_PRAEDIKAT:
+                //Since the chosen element is "Subjekt" & "Prädikat" at the same time we chose
+                //one of the both at random to be the text
                 Random rand = new Random();
                 elementDescription = rand.nextBoolean() ? "Subjekt" : "Prädikat";
 
                 break;
 
             default:
-
+                //All other elements can be named according to their String value
                 elementDescription = selectedElement;
                 break;
         }
 
-
-        instructionText.setText("Bestimme das " + elementDescription + "!");
+        String instructionText = "Bestimme das " + elementDescription + "!";
+        aufgabenstellung.setText(instructionText);
     }
 
+    /**
+     * Shuffles an array with the Fisher–Yates-Method
+     * @param array The array that we want shuffled
+     * @return The shuffled array
+     */
     private String[] shuffleArray(String[] array) {
         int index;
         String temp;
@@ -191,28 +203,34 @@ public class Satzglieder extends LateinAppActivity {
         return array;
     }
 
+    /**
+     * Removes all elements from the main-linearLayout
+     * Re-Adds the elements that have to be there at all times
+     * -> Only buttons are removed
+     *
+     * Clears the ArrayList/HashMap holding information about the buttons since they aren't needed anymore
+     */
     private void removeButtons(){
 
-
         linearLayout.removeAllViews();
+
         linearLayout.addView(progressBar);
         linearLayout.addView(aufgabenstellung);
-        /*
-        for(int i = 0; i < linearLayout.getChildCount(); i++){
-            if (linearLayout.getChildAt(i) instanceof LinearLayout || linearLayout.getChildAt(i) instanceof Button){
-                linearLayout.removeView(linearLayout.getChildAt(i));
-            }
-        }
 
-
-
-        buttons.clear();
-        buttonHashMap.clear();
-    */
         buttons.clear();
         buttonHashMap.clear();
     }
 
+    /**
+     * Gets the text for each of the sentence elements.
+     * Sets the text as the text of a newly created button
+     * Adds the button to an array for access later.
+     *
+     * @param currentSentence The current structure of the sentence.
+     *                        Each array-element holds one element of the sentence.
+     * @param elementToSelect The sentence element which was chosen to be the correct one
+     *                        that is to be selected by the user.
+     */
     private void createButtons(String[] currentSentence, String elementToSelect){
 
 
@@ -224,8 +242,9 @@ public class Satzglieder extends LateinAppActivity {
         for (String s : currentSentence) {
             Button button = new Button(this);
 
-
-            //No try&catch with "NumberFormatException" if parseInt(String) fails because it shouldnt possibly be able to fail
+            //FIXME: No try&catch with "NumberFormatException" if parseInt(String) fails
+            // because it shouldnt possibly be able to fail
+            // since the only accepted data-type in the relevant database-table contains integers only
 
             String text;
             switch (s){
@@ -464,6 +483,11 @@ public class Satzglieder extends LateinAppActivity {
         }
     }
 
+    /**
+     * Adding entries to the HashMap "buttonHashMap" where every button from "buttons" is associated
+     * with its width as value so that we can use it later to manage the button-placement in drawButtons
+     * @param buttons A array containing the buttons where the width is needed.
+     */
     private void confirmButtonWidth(ArrayList<Button> buttons) {
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -471,18 +495,22 @@ public class Satzglieder extends LateinAppActivity {
 
         for (Button b : buttons) {
 
+            //Initializing each button with set parameters
             b.setLayoutParams(params);
             b.setGravity(Gravity.CENTER_HORIZONTAL);
             b.setTextSize(25);
             b.setVisibility(View.INVISIBLE);
             linearLayout.addView(b);
 
+            //Creating a 'final' copy of the button so that we can track when the button is fully rendered
+            //We need to wait till then because we cant get the width of the button otherwise
             final Button view = b;
             view.post(new Runnable() {
+                //Will only run when the button is fully rendered
                 @Override
                 public void run() {
 
-                    //getting the width of the button after it is drawn
+                    //Getting the width of the button after it is drawn
                     //and associates it with the button on the HashMap
                     buttonHashMap.put(view, view.getWidth());
                     //Removing the drawn button
@@ -496,42 +524,63 @@ public class Satzglieder extends LateinAppActivity {
         }
     }
 
+    /**
+     * Drawing buttons in a single row until they would reach out of the screen
+     * -> starting a new row for the remaining buttons
+     *
+     * => Makes the layout look more like a real sentence
+     */
     public void drawButtons(){
 
         //This method does nothing until all buttons from "button" have been assigned a width in "buttonHashMap"
-        if (buttons.size() == buttonHashMap.size()){
+        if (buttons.size() != buttonHashMap.size()) return;
 
-            int layoutWidth = linearLayout.getWidth();
-            int buttonsTogetherWidth = 0;
+        int layoutWidth = linearLayout.getWidth();
+        int buttonsTogetherWidth = 0;
 
-            LinearLayout row = new LinearLayout(getApplicationContext());
-            row.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            row.setOrientation(LinearLayout.HORIZONTAL);
+        //Creating a new horizontal LinearLayout that contains buttons till they are wider than the screen
+        //Then a new LinearLayout is created
+        // -> Makes the buttons look more like sentences instead of just buttons placed
+        // in a straight line downwards
+        LinearLayout row = new LinearLayout(getApplicationContext());
+        row.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        row.setOrientation(LinearLayout.HORIZONTAL);
 
-            for (Button b : buttons){
+        for (Button b : buttons){
 
-                if (buttonsTogetherWidth + buttonHashMap.get(b) >= layoutWidth){
-                    linearLayout.addView(row);
-                    buttonsTogetherWidth = 0;
+            if (buttonsTogetherWidth + buttonHashMap.get(b) >= layoutWidth){
+                //Button would reach out of the screen
 
-                    row = new LinearLayout(getApplicationContext());
-                    row.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    row.setOrientation(LinearLayout.HORIZONTAL);
-                }
+                //Current row gets added to the main-linearLayout
+                linearLayout.addView(row);
 
-                b.setVisibility(View.VISIBLE);
-                row.addView(b);
-                buttonsTogetherWidth += buttonHashMap.get(b);
+                buttonsTogetherWidth = 0;
+
+                //New row gets created for the word
+                row = new LinearLayout(getApplicationContext());
+                row.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                row.setOrientation(LinearLayout.HORIZONTAL);
             }
-            linearLayout.addView(row);
 
-
-
+            //Setting the button to be visible as they were invisible when they were first added
+            //This is because we don't want the buttons to flash for 1 frame in the original position
+            b.setVisibility(View.VISIBLE);
+            row.addView(b);
+            //Adding the width of the button to the counter so that it gets measured on the next looping
+            buttonsTogetherWidth += buttonHashMap.get(b);
         }
-
+        //Adding the last row to the main-LinearLayout
+        linearLayout.addView(row);
 
     }
 
+    /**
+     * Raises or lowers the progressBar based on if the answer was correct or not.
+     * Sets the color of the correct button as green (and false red).
+     * Sets the buttons to be unclickable.
+     * @param correct Was the selected answer correct
+     * @param button The selected button where the method-call originated from
+     */
     private void answerSelected(boolean correct, Button button){
 
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -567,13 +616,21 @@ public class Satzglieder extends LateinAppActivity {
 
     }
 
+    /**
+     * Called from the reset-button placed in the .xml-file
+     * Starting a new sentence.
+     *
+     * @param v the button that was clicked.
+     */
     public void satzgliederResetPressed(View v){
 
         removeButtons();
         newSentence();
     }
 
-
+    /**
+     * TODO
+     */
     private void endGame(){
         //TODO:
     }
