@@ -133,6 +133,9 @@ public class Satzglieder extends LateinAppActivity {
             //Adding buttons to the layout
             addButtons(currentSentence, elementToSelect);
         }else {
+
+            progressBar.setProgress(maxProgress);
+            
             endGame();
         }
 
