@@ -21,6 +21,7 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.Personalendung_PräsensDB;
 import com.lateinapp.noraalex.lopade.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -33,11 +34,14 @@ public class Satzglieder extends LateinAppActivity {
     LinearLayout linearLayout;
     Button resetButton;
     ProgressBar progressBar;
+    TextView aufgabenstellung;
 
     DBHelper dbHelper;
     SharedPreferences sharedPref;
     int maxProgress = 20;
     int lektion;
+
+    int correctButtonLocation;
 
     int sentenceCount,
         sentenceID;
@@ -69,12 +73,14 @@ public class Satzglieder extends LateinAppActivity {
             {G_SUBJEKT, G_PRAEDIKAT, G_OBJ_DATIV},
             {G_SUBJEKT, G_PRAEDIKAT, G_OBJ_DATIV, G_OBJ_GENITIV}
 
-            /*
+            /*  
             => Ablativ in Präpositionstrainer
              */
     };
 
     private ArrayList<Button> buttons = new ArrayList<>();
+    //Button - Width |-> -1 if not yet defined
+    private HashMap<Button, Integer> buttonHashMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +96,13 @@ public class Satzglieder extends LateinAppActivity {
         lektion = intent.getIntExtra("lektion",0);
 
         dbHelper = new DBHelper(this);
+        buttonHashMap = new HashMap<>();
         sharedPref = getSharedPreferences("SharedPreferences", 0);
 
         resetButton = findViewById(R.id.satzglieder_reset_button);
         linearLayout = findViewById(R.id.satzglieder_lin_layout);
         progressBar = findViewById(R.id.satzglieder_progress_bar);
+        aufgabenstellung = findViewById(R.id.satzglieder_aufgabenstellung);
 
         progressBar.setMax(maxProgress);
 
@@ -109,7 +117,6 @@ public class Satzglieder extends LateinAppActivity {
 
         int progress = sharedPref.getInt("Satzglieder"+lektion, 0);
 
-        Log.d("ProgressSatzglieder", progress+"");
         if (progress < maxProgress) {
 
             progressBar.setProgress(progress);
@@ -130,8 +137,12 @@ public class Satzglieder extends LateinAppActivity {
             sentenceID = ThreadLocalRandom.current().nextInt(1, sentenceCount + 1);
 
 
+            //Creating the buttons
+            createButtons(currentSentence, elementToSelect);
+
             //Adding buttons to the layout
-            addButtons(currentSentence, elementToSelect);
+            confirmButtonWidth(buttons);
+
         }else {
 
             progressBar.setProgress(maxProgress);
@@ -182,17 +193,28 @@ public class Satzglieder extends LateinAppActivity {
 
     private void removeButtons(){
 
-        for (Button b : buttons){
-            linearLayout.removeView(b);
-        }
-        buttons.clear();
 
+        linearLayout.removeAllViews();
+        linearLayout.addView(progressBar);
+        linearLayout.addView(aufgabenstellung);
+        /*
+        for(int i = 0; i < linearLayout.getChildCount(); i++){
+            if (linearLayout.getChildAt(i) instanceof LinearLayout || linearLayout.getChildAt(i) instanceof Button){
+                linearLayout.removeView(linearLayout.getChildAt(i));
+            }
+        }
+
+
+
+        buttons.clear();
+        buttonHashMap.clear();
+    */
+        buttons.clear();
+        buttonHashMap.clear();
     }
 
-    private void addButtons(String[] currentSentence, String elementToSelect){
+    private void createButtons(String[] currentSentence, String elementToSelect){
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
 
         //Selecting SG/PL for the subject and predicate as they have to be the same.
         String numerusSubjektPraedikat = new Random().nextBoolean() ? NUM_SG : NUM_PL;
@@ -418,10 +440,6 @@ public class Satzglieder extends LateinAppActivity {
 
             button.setText(text);
 
-            button.setLayoutParams(params);
-            button.setGravity(Gravity.CENTER_HORIZONTAL);
-            button.setTextSize(15);
-
             if (s.equals(elementToSelect)) {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -430,8 +448,8 @@ public class Satzglieder extends LateinAppActivity {
                         answerSelected(true, button);
                     }
                 });
-                //Adding the correct button at pos 0 so that it can be easily found in other methods
-                buttons.add(0, button);
+                buttons.add(button);
+                correctButtonLocation = buttons.size()-1;
             }else {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -443,9 +461,75 @@ public class Satzglieder extends LateinAppActivity {
                 buttons.add(button);
             }
 
-            buttons.add(button);
-            linearLayout.addView(button);
         }
+    }
+
+    private void confirmButtonWidth(ArrayList<Button> buttons) {
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        for (Button b : buttons) {
+
+            b.setLayoutParams(params);
+            b.setGravity(Gravity.CENTER_HORIZONTAL);
+            b.setTextSize(25);
+            b.setVisibility(View.INVISIBLE);
+            linearLayout.addView(b);
+
+            final Button view = b;
+            view.post(new Runnable() {
+                @Override
+                public void run() {
+
+                    //getting the width of the button after it is drawn
+                    //and associates it with the button on the HashMap
+                    buttonHashMap.put(view, view.getWidth());
+                    //Removing the drawn button
+                    linearLayout.removeView(linearLayout.getChildAt(linearLayout.indexOfChild(view)));
+
+                    //calling a seperate mathod to signal that the progress was executed
+                    drawButtons();
+                }
+            });
+
+        }
+    }
+
+    public void drawButtons(){
+
+        //This method does nothing until all buttons from "button" have been assigned a width in "buttonHashMap"
+        if (buttons.size() == buttonHashMap.size()){
+
+            int layoutWidth = linearLayout.getWidth();
+            int buttonsTogetherWidth = 0;
+
+            LinearLayout row = new LinearLayout(getApplicationContext());
+            row.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            row.setOrientation(LinearLayout.HORIZONTAL);
+
+            for (Button b : buttons){
+
+                if (buttonsTogetherWidth + buttonHashMap.get(b) >= layoutWidth){
+                    linearLayout.addView(row);
+                    buttonsTogetherWidth = 0;
+
+                    row = new LinearLayout(getApplicationContext());
+                    row.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    row.setOrientation(LinearLayout.HORIZONTAL);
+                }
+
+                b.setVisibility(View.VISIBLE);
+                row.addView(b);
+                buttonsTogetherWidth += buttonHashMap.get(b);
+            }
+            linearLayout.addView(row);
+
+
+
+        }
+
+
     }
 
     private void answerSelected(boolean correct, Button button){
@@ -465,7 +549,7 @@ public class Satzglieder extends LateinAppActivity {
         }else{
             button.setBackgroundColor(Color.RED);
             //Setting the color of the correct button to green
-            buttons.get(0).setBackgroundColor(Color.GREEN);
+            buttons.get(correctButtonLocation).setBackgroundColor(Color.GREEN);
 
             if (currentProgress > 0){
                 editor.putInt("Satzglieder" + lektion,
