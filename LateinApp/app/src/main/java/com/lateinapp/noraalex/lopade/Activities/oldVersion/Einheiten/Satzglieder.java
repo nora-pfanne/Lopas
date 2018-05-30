@@ -15,25 +15,21 @@ import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.BeispielsatzDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Personalendung_PräsensDB;
-import com.lateinapp.noraalex.lopade.Databases.Tables.SubstantivDB;
 import com.lateinapp.noraalex.lopade.R;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Satzglieder extends LateinAppActivity {
 
     LinearLayout linearLayout;
+    Button resetButton;
+
     DBHelper dbHelper;
     int sentenceCount,
         sentenceID;
 
-    private final int
-            SUBJEKT= 0,
-            PRAEDIKAT = 1,
-            GENITIV = 2,
-            DATIV = 3,
-            AKKUSATIV = 4;
 
     private final String
             NUM_SG = "Singular",
@@ -66,12 +62,12 @@ public class Satzglieder extends LateinAppActivity {
              */
     };
 
+    private ArrayList<Button> buttons = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_satzglieder);
-
-        linearLayout = findViewById(R.id.satzglieder_lin_layout);
 
         setup();
     }
@@ -80,6 +76,11 @@ public class Satzglieder extends LateinAppActivity {
 
         dbHelper = new DBHelper(this);
 
+        resetButton = findViewById(R.id.satzglieder_reset_button);
+        linearLayout = findViewById(R.id.satzglieder_lin_layout);
+
+
+
         sentenceCount = dbHelper.countTableEntries(new String[] {BeispielsatzDB.FeedEntry.TABLE_NAME});
 
         newSentence();
@@ -87,8 +88,6 @@ public class Satzglieder extends LateinAppActivity {
     }
 
     private void newSentence(){
-
-        //TODO: remove all buttons in the linear layout before adding new ones
 
         //TODO: Track progress somehow -> sharedValues
 
@@ -152,6 +151,15 @@ public class Satzglieder extends LateinAppActivity {
         }
 
         return array;
+    }
+
+    private void removeButtons(){
+
+        for (Button b : buttons){
+            linearLayout.removeView(b);
+        }
+        buttons.clear();
+
     }
 
     private void addButtons(String[] currentSentence, String elementToSelect){
@@ -408,7 +416,7 @@ public class Satzglieder extends LateinAppActivity {
 
             }
 
-
+            buttons.add(button);
             linearLayout.addView(button);
         }
     }
@@ -416,6 +424,13 @@ public class Satzglieder extends LateinAppActivity {
     private void answerSelected(boolean correct){
 
     }
+
+    public void satzgliederResetPressed(View v){
+
+        removeButtons();
+        newSentence();
+    }
+
 
 
 
