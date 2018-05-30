@@ -23,6 +23,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Satzglieder extends LateinAppActivity {
 
+    //TODO: Track progress somehow -> sharedValues
+    //TODO: We may want to weight the sentences
+    //TODO: We may want to weight the selected elements
+    //TODO: We will want to place the buttons such that it acually looks like a sentence -> not 1 button per row
+
     LinearLayout linearLayout;
     Button resetButton;
 
@@ -89,13 +94,9 @@ public class Satzglieder extends LateinAppActivity {
 
     private void newSentence(){
 
-        //TODO: Track progress somehow -> sharedValues
-
-        //TODO: We may want to weight the sentences
         //random sentence structure
         String[] currentSentence = cases[new Random().nextInt(cases.length)];
 
-        //TODO: We may want to weight the selected elements
         //random sentence element the user has to select
         String elementToSelect = currentSentence[new Random().nextInt(currentSentence.length)];
 
@@ -108,7 +109,7 @@ public class Satzglieder extends LateinAppActivity {
         //Getting a new sentence
         sentenceID = ThreadLocalRandom.current().nextInt(1, sentenceCount+1);
 
-        //TODO: We will want to place the buttons such that it acually looks like a sentence -> not 1 button per row
+
         //Adding buttons to the layout
         addButtons(currentSentence, elementToSelect);
 
@@ -400,20 +401,20 @@ public class Satzglieder extends LateinAppActivity {
                     @Override
                     public void onClick(View v) {
                         Button button = (Button)v;
-                        button.setBackgroundColor(Color.GREEN);
-                        answerSelected(true);
+                        answerSelected(true, button);
                     }
                 });
+                //Adding the correct button at pos 0 so that it can be easily found in other methods
+                buttons.add(0, button);
             }else {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Button button = (Button)v;
-                        button.setBackgroundColor(Color.RED);
-                        answerSelected(false);
+                        answerSelected(false, button);
                     }
                 });
-
+                buttons.add(button);
             }
 
             buttons.add(button);
@@ -421,7 +422,22 @@ public class Satzglieder extends LateinAppActivity {
         }
     }
 
-    private void answerSelected(boolean correct){
+    private void answerSelected(boolean correct, Button button){
+
+        //TODO: Set the 'correct' and 'incorrect' colors according to the app styles
+        if (correct){
+            button.setBackgroundColor(Color.GREEN);
+        }else{
+            button.setBackgroundColor(Color.RED);
+            //Setting the color of the correct button to green
+            buttons.get(0).setBackgroundColor(Color.GREEN);
+        }
+
+        //Making all buttons unclickable.
+        //Only new Buttons that are added on reset will be clickable again
+        for (Button b: buttons){
+            b.setClickable(false);
+        }
 
     }
 
