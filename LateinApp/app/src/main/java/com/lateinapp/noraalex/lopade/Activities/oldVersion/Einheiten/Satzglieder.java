@@ -1,5 +1,7 @@
 package com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +9,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.lateinapp.noraalex.lopade.Activities.oldVersion.Home;
@@ -23,15 +26,19 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Satzglieder extends LateinAppActivity {
 
-    //TODO: Track progress somehow -> sharedValues
     //TODO: We may want to weight the sentences
     //TODO: We may want to weight the selected elements
     //TODO: We will want to place the buttons such that it acually looks like a sentence -> not 1 button per row
 
     LinearLayout linearLayout;
     Button resetButton;
+    ProgressBar progressBar;
 
     DBHelper dbHelper;
+    SharedPreferences sharedPref;
+    int maxProgress = 20;
+    int lektion;
+
     int sentenceCount,
         sentenceID;
 
@@ -79,12 +86,17 @@ public class Satzglieder extends LateinAppActivity {
 
     private void setup(){
 
+        Intent intent = getIntent();
+        lektion = intent.getIntExtra("lektion",0);
+
         dbHelper = new DBHelper(this);
+        sharedPref = getSharedPreferences("SharedPreferences", 0);
 
         resetButton = findViewById(R.id.satzglieder_reset_button);
         linearLayout = findViewById(R.id.satzglieder_lin_layout);
+        progressBar = findViewById(R.id.satzglieder_progress_bar);
 
-
+        progressBar.setMax(maxProgress);
 
         sentenceCount = dbHelper.countTableEntries(new String[] {BeispielsatzDB.FeedEntry.TABLE_NAME});
 
@@ -94,24 +106,35 @@ public class Satzglieder extends LateinAppActivity {
 
     private void newSentence(){
 
-        //random sentence structure
-        String[] currentSentence = cases[new Random().nextInt(cases.length)];
 
-        //random sentence element the user has to select
-        String elementToSelect = currentSentence[new Random().nextInt(currentSentence.length)];
+        int progress = sharedPref.getInt("Satzglieder"+lektion, 0);
 
-        //Shuffle the selected array
-        currentSentence = shuffleArray(currentSentence);
+        Log.d("ProgressSatzglieder", progress+"");
+        if (progress < maxProgress) {
 
-        //Setting instruction text
-        setInstructionText(elementToSelect);
+            progressBar.setProgress(progress);
 
-        //Getting a new sentence
-        sentenceID = ThreadLocalRandom.current().nextInt(1, sentenceCount+1);
+            //random sentence structure
+            String[] currentSentence = cases[new Random().nextInt(cases.length)];
+
+            //random sentence element the user has to select
+            String elementToSelect = currentSentence[new Random().nextInt(currentSentence.length)];
+
+            //Shuffle the selected array
+            currentSentence = shuffleArray(currentSentence);
+
+            //Setting instruction text
+            setInstructionText(elementToSelect);
+
+            //Getting a new sentence
+            sentenceID = ThreadLocalRandom.current().nextInt(1, sentenceCount + 1);
 
 
-        //Adding buttons to the layout
-        addButtons(currentSentence, elementToSelect);
+            //Adding buttons to the layout
+            addButtons(currentSentence, elementToSelect);
+        }else {
+            endGame();
+        }
 
     }
 
@@ -424,14 +447,30 @@ public class Satzglieder extends LateinAppActivity {
 
     private void answerSelected(boolean correct, Button button){
 
+        SharedPreferences.Editor editor = sharedPref.edit();
+        int currentProgress = sharedPref.getInt("Satzglieder"+lektion, 0);
+
         //TODO: Set the 'correct' and 'incorrect' colors according to the app styles
         if (correct){
             button.setBackgroundColor(Color.GREEN);
+
+            if (currentProgress <= maxProgress) {
+                editor.putInt("Satzglieder" + lektion,
+                        currentProgress + 1);
+            }
+
         }else{
             button.setBackgroundColor(Color.RED);
             //Setting the color of the correct button to green
             buttons.get(0).setBackgroundColor(Color.GREEN);
+
+            if (currentProgress > 0){
+                editor.putInt("Satzglieder" + lektion,
+                        currentProgress - 1);
+            }
         }
+
+        editor.apply();
 
         //Making all buttons unclickable.
         //Only new Buttons that are added on reset will be clickable again
@@ -448,7 +487,9 @@ public class Satzglieder extends LateinAppActivity {
     }
 
 
-
+    private void endGame(){
+        //TODO:
+    }
 
 
 
