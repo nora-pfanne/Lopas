@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -29,12 +30,15 @@ public class Satzglieder extends LateinAppActivity {
 
     //TODO: We may want to weight the sentences
     //TODO: We may want to weight the selected elements
-    //TODO: We will want to place the buttons such that it acually looks like a sentence -> not 1 button per row
 
     LinearLayout linearLayout;
-    Button resetButton;
+    Button weiterButton;
     ProgressBar progressBar;
     TextView aufgabenstellung;
+
+    int backgroundColor;
+    int colorButtonCorrect;
+    int colorButtonIncorrect;
 
     DBHelper dbHelper;
     SharedPreferences sharedPref;
@@ -63,14 +67,14 @@ public class Satzglieder extends LateinAppActivity {
             //{G_SUBJEKT_PRAEDIKAT},
             {G_SUBJEKT_PRAEDIKAT, G_OBJ_AKKUSATIV},
             {G_SUBJEKT_PRAEDIKAT, G_OBJ_AKKUSATIV, G_OBJ_GENITIV},
-            {G_SUBJEKT_PRAEDIKAT, G_OBJ_DATIV},
-            {G_SUBJEKT_PRAEDIKAT, G_OBJ_DATIV, G_OBJ_GENITIV},
+            {G_SUBJEKT_PRAEDIKAT, G_OBJ_AKKUSATIV, G_OBJ_DATIV},
+            {G_SUBJEKT_PRAEDIKAT, G_OBJ_AKKUSATIV, G_OBJ_DATIV, G_OBJ_GENITIV},
 
             {G_SUBJEKT, G_PRAEDIKAT},
             {G_SUBJEKT, G_PRAEDIKAT, G_OBJ_AKKUSATIV},
             {G_SUBJEKT, G_PRAEDIKAT, G_OBJ_AKKUSATIV, G_OBJ_GENITIV},
-            {G_SUBJEKT, G_PRAEDIKAT, G_OBJ_DATIV},
-            {G_SUBJEKT, G_PRAEDIKAT, G_OBJ_DATIV, G_OBJ_GENITIV}
+            {G_SUBJEKT, G_PRAEDIKAT, G_OBJ_AKKUSATIV, G_OBJ_DATIV},
+            {G_SUBJEKT, G_PRAEDIKAT, G_OBJ_AKKUSATIV, G_OBJ_DATIV, G_OBJ_GENITIV}
     };
 
     private ArrayList<Button> buttons = new ArrayList<>();
@@ -90,6 +94,10 @@ public class Satzglieder extends LateinAppActivity {
      */
     private void setup(){
 
+        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+        colorButtonIncorrect = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+        colorButtonCorrect = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
+
         Intent intent = getIntent();
         lektion = intent.getIntExtra("lektion",0);
 
@@ -97,11 +105,12 @@ public class Satzglieder extends LateinAppActivity {
         buttonHashMap = new HashMap<>();
         sharedPref = getSharedPreferences("SharedPreferences", 0);
 
-        resetButton = findViewById(R.id.satzglieder_reset_button);
+        weiterButton = findViewById(R.id.satzglieder_reset_button);
         linearLayout = findViewById(R.id.satzglieder_lin_layout);
         progressBar = findViewById(R.id.satzglieder_progress_bar);
         aufgabenstellung = findViewById(R.id.satzglieder_aufgabenstellung);
 
+        weiterButton.setVisibility(View.GONE);
         progressBar.setMax(maxProgress);
 
         sentenceCount = dbHelper.countTableEntries(new String[] {BeispielsatzDB.FeedEntry.TABLE_NAME});
@@ -246,7 +255,8 @@ public class Satzglieder extends LateinAppActivity {
             // because it shouldnt possibly be able to fail
             // since the only accepted data-type in the relevant database-table contains integers only
 
-            String text;
+            //Adding spaces between the words so that they aren't directly next to eachother
+            String text = " ";
             switch (s){
 
                 case G_SUBJEKT:
@@ -261,13 +271,13 @@ public class Satzglieder extends LateinAppActivity {
 
                     if (numerusSubjektPraedikat.equals(NUM_SG)){
                         //Singular
-                        text = dbHelper.getDekliniertenSubstantiv(
+                        text += dbHelper.getDekliniertenSubstantiv(
                                 vocID,
                                 DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG
                         );
                     }else {
                         //Plural
-                        text = dbHelper.getDekliniertenSubstantiv(
+                        text += dbHelper.getDekliniertenSubstantiv(
                                 vocID,
                                 DeklinationsendungDB.FeedEntry.COLUMN_NOM_PL
                         );
@@ -309,7 +319,7 @@ public class Satzglieder extends LateinAppActivity {
                         else konjugation = Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL;
                     }
 
-                    text = dbHelper.getKonjugiertesVerb(
+                    text += dbHelper.getKonjugiertesVerb(
                             vocID,
                             konjugation);
 
@@ -333,14 +343,14 @@ public class Satzglieder extends LateinAppActivity {
                     if (numerusSubjektPraedikat.equals(NUM_SG)){
                         //Singular
 
-                        text = dbHelper.getKonjugiertesVerb(
+                        text += dbHelper.getKonjugiertesVerb(
                                 vocID,
                                 Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG
                         );
                     }else {
                         //Plural
 
-                        text = dbHelper.getKonjugiertesVerb(
+                        text += dbHelper.getKonjugiertesVerb(
                                 vocID,
                                 Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL
                         );
@@ -367,13 +377,13 @@ public class Satzglieder extends LateinAppActivity {
 
                     if (numerus.equals(NUM_SG)){
                         //Singular
-                        text = dbHelper.getDekliniertenSubstantiv(
+                        text += dbHelper.getDekliniertenSubstantiv(
                                 vocID,
                                 DeklinationsendungDB.FeedEntry.COLUMN_GEN_SG
                         );
                     }else {
                         //Plural
-                        text = dbHelper.getDekliniertenSubstantiv(
+                        text += dbHelper.getDekliniertenSubstantiv(
                                 vocID,
                                 DeklinationsendungDB.FeedEntry.COLUMN_GEN_PL
                         );
@@ -399,13 +409,13 @@ public class Satzglieder extends LateinAppActivity {
 
                     if (numerus.equals(NUM_SG)){
                         //Singular
-                        text = dbHelper.getDekliniertenSubstantiv(
+                        text += dbHelper.getDekliniertenSubstantiv(
                                 vocID,
                                 DeklinationsendungDB.FeedEntry.COLUMN_DAT_SG
                         );
                     }else {
                         //Plural
-                        text = dbHelper.getDekliniertenSubstantiv(
+                        text += dbHelper.getDekliniertenSubstantiv(
                                 vocID,
                                 DeklinationsendungDB.FeedEntry.COLUMN_DAT_PL
                         );
@@ -431,13 +441,13 @@ public class Satzglieder extends LateinAppActivity {
 
                     if (numerus.equals(NUM_SG)){
                         //Singular
-                        text = dbHelper.getDekliniertenSubstantiv(
+                        text += dbHelper.getDekliniertenSubstantiv(
                                 vocID,
                                 DeklinationsendungDB.FeedEntry.COLUMN_AKK_SG
                         );
                     }else {
                         //Plural
-                        text = dbHelper.getDekliniertenSubstantiv(
+                        text += dbHelper.getDekliniertenSubstantiv(
                                 vocID,
                                 DeklinationsendungDB.FeedEntry.COLUMN_AKK_PL
                         );
@@ -453,9 +463,12 @@ public class Satzglieder extends LateinAppActivity {
                 default:
                     Log.e("CaseNotFound", "The requested case '" + s + "' in \"addButtons\" was not found");
 
-                    text = "N/A";
+                    text += "N/A";
 
             }
+
+            //Adding spaces between the words so that they aren't directly next to eachother
+            text += " ";
 
             button.setText(text);
 
@@ -486,6 +499,8 @@ public class Satzglieder extends LateinAppActivity {
     /**
      * Adding entries to the HashMap "buttonHashMap" where every button from "buttons" is associated
      * with its width as value so that we can use it later to manage the button-placement in drawButtons
+     *
+     * The buttons are also configured here (->style etc.).
      * @param buttons A array containing the buttons where the width is needed.
      */
     private void confirmButtonWidth(ArrayList<Button> buttons) {
@@ -496,9 +511,13 @@ public class Satzglieder extends LateinAppActivity {
         for (Button b : buttons) {
 
             //Initializing each button with set parameters
+            //FIXME: set button layout here
             b.setLayoutParams(params);
             b.setGravity(Gravity.CENTER_HORIZONTAL);
             b.setTextSize(25);
+
+            b.setBackgroundColor(backgroundColor);
+
             b.setVisibility(View.INVISIBLE);
             linearLayout.addView(b);
 
@@ -586,9 +605,8 @@ public class Satzglieder extends LateinAppActivity {
         SharedPreferences.Editor editor = sharedPref.edit();
         int currentProgress = sharedPref.getInt("Satzglieder"+lektion, 0);
 
-        //TODO: Set the 'correct' and 'incorrect' colors according to the app styles
         if (correct){
-            button.setBackgroundColor(Color.GREEN);
+            button.setBackgroundColor(colorButtonCorrect);
 
             if (currentProgress <= maxProgress) {
                 editor.putInt("Satzglieder" + lektion,
@@ -596,9 +614,9 @@ public class Satzglieder extends LateinAppActivity {
             }
 
         }else{
-            button.setBackgroundColor(Color.RED);
+            button.setBackgroundColor(colorButtonIncorrect);
             //Setting the color of the correct button to green
-            buttons.get(correctButtonLocation).setBackgroundColor(Color.GREEN);
+            buttons.get(correctButtonLocation).setBackgroundColor(colorButtonCorrect);
 
             if (currentProgress > 0){
                 editor.putInt("Satzglieder" + lektion,
@@ -614,6 +632,7 @@ public class Satzglieder extends LateinAppActivity {
             b.setClickable(false);
         }
 
+        weiterButton.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -626,6 +645,7 @@ public class Satzglieder extends LateinAppActivity {
 
         removeButtons();
         newSentence();
+        weiterButton.setVisibility(View.GONE);
     }
 
     /**
@@ -634,67 +654,4 @@ public class Satzglieder extends LateinAppActivity {
     private void endGame(){
         //TODO:
     }
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-
-    Immer:
-        Prädikat
-
-    Wenn Prädikat erste/zweite Sg/Pl:
-        Kein Glied Subjekt
-        -> Prädikat == Subjekt
-
-    => Sonst:
-        Es gibt ein Subjekt-Glied
-        -> Nominativ
-        -> Gleicher Nummerus wie Prädikat
-
-
-    Anfügbar:
-        Nominativobjekt
-            -> Implementierung nicht nötig
-
-        Akkusativobjekt
-            -> Kann eingefügt werden (ohne Präposition)
-
-        Ablativobjekt
-            -> Braucht meist eine Präposition
-            -> Nicht implementiert
-
-        Genitivobjekt
-            -> Bezugswort nötig
-                =>
-     */
-
-
-
-
-
-    /*
-    //Src: https://www.uzh.ch/latinum/amann/Grammatikunterlagen/Satzteile.pdf
-    private abstract class Satzglied{
-        private String textLatein;
-        private String textDeutsch;
-
-        public Satzglied(){}
-    }
-
-    private class Praedikat extends Satzglied{}
-    private class Subjekt extends Satzglied{}
-    private class Objekt extends Satzglied{}
-    private class Attribut extends Satzglied{}
-    private class Abverbium extends Satzglied{}
-    */
-
 }
