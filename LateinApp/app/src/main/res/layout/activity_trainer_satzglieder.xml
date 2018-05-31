@@ -52,5 +52,10 @@
             android:gravity="center"
             android:text="Instruction: Placeholder" />
 
+        <Space
+            android:id="@+id/satzglieder_space"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

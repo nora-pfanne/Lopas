@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Space;
 import android.widget.TextView;
 
 import com.lateinapp.noraalex.lopade.Activities.oldVersion.Home;
@@ -35,6 +36,7 @@ public class Satzglieder extends LateinAppActivity {
     Button weiterButton;
     ProgressBar progressBar;
     TextView aufgabenstellung;
+    Space space;
 
     int backgroundColor;
     int colorButtonCorrect;
@@ -109,6 +111,7 @@ public class Satzglieder extends LateinAppActivity {
         linearLayout = findViewById(R.id.satzglieder_lin_layout);
         progressBar = findViewById(R.id.satzglieder_progress_bar);
         aufgabenstellung = findViewById(R.id.satzglieder_aufgabenstellung);
+        space = findViewById(R.id.satzglieder_space);
 
         weiterButton.setVisibility(View.GONE);
         progressBar.setMax(maxProgress);
@@ -225,6 +228,7 @@ public class Satzglieder extends LateinAppActivity {
 
         linearLayout.addView(progressBar);
         linearLayout.addView(aufgabenstellung);
+        linearLayout.addView(space);
 
         buttons.clear();
         buttonHashMap.clear();
