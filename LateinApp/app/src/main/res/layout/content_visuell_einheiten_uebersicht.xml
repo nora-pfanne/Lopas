@@ -56,7 +56,7 @@
 
             <Button
                 style="@style/VerbGrammatikButton"
-                android:id="@+id/infinitiv_button"
+                android:id="@+id/uebersicht_infinitiv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -70,19 +70,21 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/nominativ_button"
+                android:id="@+id/uebersicht_nominativ"
                 style="@style/SubstantivGrammatikButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="uebersichtButtonClicked"
                 android:text="Nominativ" />
 
             <Button
-                android:id="@+id/dritte_pers_pr_button"
+                android:id="@+id/uebersicht_dritte_pers_praesens"
                 style="@style/VerbGrammatikButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="uebersichtButtonClicked"
                 android:text="3.Person Präsens" />
         </LinearLayout>
 
@@ -93,19 +95,21 @@
 
             <Button
                 style="@style/SubstantivGrammatikButton"
-                android:id="@+id/akkusativ_button"
+                android:id="@+id/uebersicht_akkusativ"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="uebersichtButtonClicked"
                 android:text="Akkusativ" />
 
             <Button
-                android:id="@+id/erste_pers_pr_button"
+                android:id="@+id/uebersicht_erste_zweite_pers_praesens"
                 style="@style/VerbGrammatikButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:includeFontPadding="false"
+                android:onClick="uebersichtButtonClicked"
                 android:text="1. + 2. Person Präsens" />
 
         </LinearLayout>
@@ -117,18 +121,20 @@
 
             <Button
                 style="@style/SubstantivGrammatikButton"
-                android:id="@+id/dativ_button"
+                android:id="@+id/uebersicht_dativ"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="uebersichtButtonClicked"
                 android:text="Dativ" />
 
             <Button
                 style="@style/CheckpointGrammatikButton"
-                android:id="@+id/checkpoint_verb_eins"
+                android:id="@+id/uebersicht_checkpoint_praesens_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="uebersichtButtonClicked"
                 android:text="Checkpoint" />
 
         </LinearLayout>
@@ -140,18 +146,20 @@
 
             <Button
                 style="@style/SubstantivGrammatikButton"
-                android:id="@+id/ablativ_button"
+                android:id="@+id/uebersicht_ablativ"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="uebersichtButtonClicked"
                 android:text="Ablativ" />
 
             <Button
                 style="@style/VerbGrammatikButton"
-                android:id="@+id/esse_velle_nolle"
+                android:id="@+id/uebersicht_esse_velle_nolle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="uebersichtButtonClicked"
                 android:text="esse, velle, nolle" />
 
         </LinearLayout>
@@ -163,18 +171,20 @@
 
             <Button
                 style="@style/SubstantivGrammatikButton"
-                android:id="@+id/genitiv_button"
+                android:id="@+id/uebersicht_genitiv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="uebersichtButtonClicked"
                 android:text="Genitiv" />
 
             <Button
                 style="@style/VerbGrammatikButton"
-                android:id="@+id/kons_konjugation_button"
+                android:id="@+id/uebersicht_kons_konjugation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="uebersichtButtonClicked"
                 android:text="kons. Konjugation" />
 
         </LinearLayout>
@@ -186,22 +196,29 @@
 
             <Button
                 style="@style/CheckpointGrammatikButton"
-                android:id="@+id/substantiv_checkpoint_eins"
+                android:id="@+id/uebersicht_checkpoint_deklinationsendung_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="uebersichtButtonClicked"
                 android:text="Checkpoint" />
 
             <Button
                 style="@style/CheckpointGrammatikButton"
-                android:id="@+id/checkpoint_verb_zwei"
+                android:id="@+id/uebersicht_checkpoint_praesens_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="uebersichtButtonClicked"
                 android:text="Checkpoint" />
 
         </LinearLayout>
 
+
+    <!--
+    Everything below here does not yet have a proper ID and
+    cannot be implemented
+    -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
