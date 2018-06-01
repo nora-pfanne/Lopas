@@ -157,7 +157,7 @@ public class ClickPersonalendung extends LateinAppActivity {
      * Handles button-clicks
      * @param view the clicked element
      */
-    public void personalendungButtonClicked(View view){
+    public void kasusFragenButtonClicked(View view){
 
         switch (view.getId()){
             case (R.id.buttonGrammatikPersonalendung1PersSg):
