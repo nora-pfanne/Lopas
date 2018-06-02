@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickKasusFragen;
 import com.lateinapp.noraalex.lopade.R;
 
 public class Home extends LateinAppActivity
@@ -23,6 +24,8 @@ public class Home extends LateinAppActivity
     private static boolean DEV_CHEAT_MODE = false;
 
     private SharedPreferences sharedPref;
+
+    static final boolean TEXT_CLICK_KASUS = true;
 
     /**
      * Creating drawer
@@ -39,6 +42,12 @@ public class Home extends LateinAppActivity
         sharedPref = getSharedPreferences("SharedPreferences", 0);
         DEVELOPER = sharedPref.getBoolean("DEVELOPER", false);
         DEV_CHEAT_MODE = sharedPref.getBoolean("DEV_CHEAT_MODE", false);
+
+        if (TEXT_CLICK_KASUS){
+            Intent intent = new Intent(this, ClickKasusFragen.class);
+            startActivity(intent);
+        }
+
 
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);

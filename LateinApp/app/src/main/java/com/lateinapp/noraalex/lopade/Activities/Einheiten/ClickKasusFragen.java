@@ -53,6 +53,7 @@ public class ClickKasusFragen extends LateinAppActivity {
     }
 
     private void setup(){
+//TODO Add progressBar
 
         Intent intent = getIntent();
 
@@ -72,6 +73,7 @@ public class ClickKasusFragen extends LateinAppActivity {
         weiter = findViewById(R.id.buttonGrammatikKasusFragenWeiter);
         reset = findViewById(R.id.buttonGrammatikKasusFragenReset);
         zurück = findViewById(R.id.buttonGrammatikKasusFragenZurück);
+        progressBar = findViewById(R.id.progressBarKasusFragen);
 
         buttons = new Button[]{
                 kasusFrageNom,
@@ -82,6 +84,7 @@ public class ClickKasusFragen extends LateinAppActivity {
         };
 
         weiter.setVisibility(View.GONE);
+
 
         progressBar.setMax(maxProgress);
     }
@@ -135,6 +138,11 @@ public class ClickKasusFragen extends LateinAppActivity {
 
     private void newKasus(){
 
+        for (Button b : buttons){
+            b.setEnabled(true);
+            b.setBackgroundColor(colorButtonDefault);
+        }
+
         int progress = sharedPreferences.getInt("ClickKasusFragen", 0);
 
         kasusText.setBackgroundColor(backgroundColor);
@@ -144,7 +152,7 @@ public class ClickKasusFragen extends LateinAppActivity {
             kasus = kasusName[newKasusNummer()];
 
             kasusText.setText(kasus);
-
+            progressBar.setProgress(progress);
         }else {
 
             kasusText.setVisibility(View.GONE);
@@ -160,12 +168,10 @@ public class ClickKasusFragen extends LateinAppActivity {
 
     private int newKasusNummer(){
 
-        int kasusNummer = (int)(Math.random() * ((5) + 1));
+        int kasusNummer = (int)(Math.random() * ((4) + 1));
 
         return kasusNummer;
     }
-
-    //private void
 
     private void kasusChosen(boolean correct, Button button){
 
