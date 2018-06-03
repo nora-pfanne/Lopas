@@ -43,7 +43,6 @@ public class Home extends LateinAppActivity
         DEVELOPER = sharedPref.getBoolean("DEVELOPER", false);
         DEV_CHEAT_MODE = sharedPref.getBoolean("DEV_CHEAT_MODE", false);
 
-
         //#VISUAL
         if (START_VISUAL_REWORK){
             Intent startVisualRework = new Intent(this, VisuellEinheitenÜbersicht.class);

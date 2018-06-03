@@ -60,7 +60,8 @@
             android:screenOrientation="portrait" >
         </activity>
 
-        <!-- End of Activities for the visual rework of the app -->
+        <activity android:name=".Activities.oldVersion.Einheiten.ClickKasusFragen"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="preloaded_fonts"
