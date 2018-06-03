@@ -53,25 +53,36 @@ public class VisuellEinheitenÜbersicht extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void uebersichtButtonClicked(View v){
+    public void uebersichtButtonClicked(View v) {
 
-        Intent intent;
-
-        //Set lektion accordingly and pass it with
-        //intent.putExtra("lektion",lektion);
-        //over to the new activity
-        int lektion;
-
-        switch (v.getId()){
+        switch (v.getId()) {
 
             case R.id.uebersicht_infinitiv:
 
-                /*
-                Example:
-                lektion = 1;
-                intent = new Intent(v.getContext(), [...].class);
-                intent.putExtra("lektion",lektion);
-                 */
+                break;
+
+            case R.id.uebersicht_nominativ:
+
+                break;
+
+            case R.id.uebersicht_akkusativ:
+
+                break;
+
+            case R.id.uebersicht_dativ:
+
+                break;
+
+            case R.id.uebersicht_ablativ:
+
+                break;
+
+            case R.id.uebersicht_genitiv:
+
+                break;
+
+            case R.id.uebersicht_checkpoint_deklinationsendung_1:
+
                 break;
 
             case R.id.uebersicht_dritte_pers_praesens:
@@ -86,19 +97,23 @@ public class VisuellEinheitenÜbersicht extends AppCompatActivity {
 
                 break;
 
-            //TODO: Add all remaining cases here
+            case R.id.uebersicht_esse_velle_nolle:
 
+                break;
+
+            case R.id.uebersicht_kons_konjugation:
+
+                break;
+
+            case R.id.uebersicht_checkpoint_praesens_2:
+
+                break;
 
             default:
                 Log.e("ButtonNotFound",
                         "The button that called 'uebersichtButtonClicked' was not" +
-                            "identified");
+                                "identified");
                 break;
-        }
-
-        if (intent != null){
-            startActivity(intent);
-
         }
     }
 }

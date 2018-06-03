@@ -24,9 +24,7 @@ public class Home extends LateinAppActivity
     private static boolean DEVELOPER = true;
     private static boolean DEV_CHEAT_MODE = true;
     //#VISUAL -- Set this to true to access visual rework mode
-    private static boolean START_VISUAL_REWORK = false;
-    //#TESTING
-    private static boolean TEST_SATZGLIEDER = false;
+    private static boolean START_VISUAL_REWORK = true;
 
     private SharedPreferences sharedPref;
 
@@ -45,7 +43,7 @@ public class Home extends LateinAppActivity
         sharedPref = getSharedPreferences("SharedPreferences", 0);
         DEVELOPER = sharedPref.getBoolean("DEVELOPER", DEVELOPER);
         DEV_CHEAT_MODE = sharedPref.getBoolean("DEV_CHEAT_MODE", DEV_CHEAT_MODE);
-        
+
         //#VISUAL
         if (START_VISUAL_REWORK){
             Intent startVisualRework = new Intent(this, VisuellEinheitenÜbersicht.class);
