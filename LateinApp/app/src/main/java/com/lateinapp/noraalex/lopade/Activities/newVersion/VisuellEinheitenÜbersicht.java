@@ -14,6 +14,7 @@ import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickKasusF
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.Satzglieder;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputDeklinationsendung;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.oldVersion.LektionUebersicht;
 import com.lateinapp.noraalex.lopade.R;
 
@@ -128,7 +129,9 @@ public class VisuellEinheitenÜbersicht extends AppCompatActivity {
                 break;
 
             case R.id.uebersicht_checkpoint_praesens_1:
-
+                intent = new Intent(this, UserInputPersonalendung.class);
+                intent.putExtra("ExtraInputPersonalendung", "DEFAULT");
+                startActivity(intent);
                 break;
 
             case R.id.uebersicht_esse_velle_nolle:

@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten;
+package com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten;
 
 import android.content.Context;
 import android.content.Intent;
@@ -55,7 +55,7 @@ public class UserInputPersonalendung extends LateinAppActivity{
             Personalendung_PräsensDB.FeedEntry.COLUMN_2_PL,
             Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL};
 
-    private int lektion;
+    private String extraFromEinheitenUebersicht;
     private int backgroundColor;
     private int maxProgress = 20;
 
@@ -71,7 +71,7 @@ public class UserInputPersonalendung extends LateinAppActivity{
 
     private void setup(){
         Intent intent = getIntent();
-        lektion = intent.getIntExtra("lektion",0);
+        extraFromEinheitenUebersicht = intent.getStringExtra("ExtraInputPersonalendung");
 
         sharedPref = getSharedPreferences("SharedPreferences", 0);
         dbHelper = new DBHelper(getApplicationContext());
@@ -93,7 +93,7 @@ public class UserInputPersonalendung extends LateinAppActivity{
         solution.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
 
-        weightSubjects(lektion);
+        weightSubjects(extraFromEinheitenUebersicht);
 
         progressBar.setMax(maxProgress);
 
@@ -101,7 +101,7 @@ public class UserInputPersonalendung extends LateinAppActivity{
 
     private void newVocabulary(){
 
-        int progress = sharedPref.getInt("UserInputPersonalendung"+lektion, 0);
+        int progress = sharedPref.getInt("UserInputPersonalendung"+extraFromEinheitenUebersicht, 0);
 
         if (progress < maxProgress) {
 
@@ -118,7 +118,11 @@ public class UserInputPersonalendung extends LateinAppActivity{
             userInput.setFocusableInTouchMode(true);
 
             //Getting a new vocabulary.
-            currentVokabel = dbHelper.getRandomVocabulary(lektion);
+            //FIXME: Don't return a random number but one according to the progress (nom->1 /...)
+            //random number from 1 to 5 to choose, where the vocabulary comes from
+            //Blueprint for randNum: int randomNum = rand.nextInt((max - min) + 1) + min;
+            int rand = new Random().nextInt((5 - 1) + 1) + 1;
+            currentVokabel = dbHelper.getRandomVocabulary(rand);
             currentPersonalendung = getRandomPersonalendung();
 
             String lateinText = dbHelper.getKonjugiertesVerb(currentVokabel.getId(), "Inf");
@@ -177,16 +181,16 @@ public class UserInputPersonalendung extends LateinAppActivity{
             SharedPreferences.Editor editor = sharedPref.edit();
 
             //Increasing the counter by 1
-            editor.putInt("UserInputPersonalendung" + lektion,
-                    sharedPref.getInt("UserInputPersonalendung"+lektion, 0) + 1);
+            editor.putInt("UserInputPersonalendung" + extraFromEinheitenUebersicht,
+                    sharedPref.getInt("UserInputPersonalendung"+extraFromEinheitenUebersicht, 0) + 1);
             editor.apply();
         }else {
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
 
             SharedPreferences.Editor editor = sharedPref.edit();
             //Decreasing the counter by 1
-            editor.putInt("UserInputPersonalendung" + lektion,
-                    sharedPref.getInt("UserInputPersonalendung"+lektion, 0) - 1);
+            editor.putInt("UserInputPersonalendung" + extraFromEinheitenUebersicht,
+                    sharedPref.getInt("UserInputPersonalendung"+extraFromEinheitenUebersicht, 0) - 1);
             editor.apply();
         }
         userInput.setBackgroundColor(color);
@@ -202,7 +206,7 @@ public class UserInputPersonalendung extends LateinAppActivity{
     /**
      * Sets weights for all entries of 'faelle' depending on the current value of lektion
      */
-    private void weightSubjects(int lektion){
+    private void weightSubjects(String extra){
 
         int weightErsteSg,
                 weightZweiteSg,
@@ -211,27 +215,36 @@ public class UserInputPersonalendung extends LateinAppActivity{
                 weightZweitePl,
                 weightDrittePl;
 
-        if (lektion == 1){
-            weightErsteSg = 0;
-            weightZweiteSg = 0;
-            weightDritteSg = 1;
-            weightErstePl = 0;
-            weightZweitePl = 0;
-            weightDrittePl = 1;
-        }else if (lektion == 2){
-            weightErsteSg = 2;
-            weightZweiteSg = 2;
-            weightDritteSg = 1;
-            weightErstePl = 2;
-            weightZweitePl = 2;
-            weightDrittePl = 1;
-        }else {
-            weightErsteSg = 1;
-            weightZweiteSg = 1;
-            weightDritteSg = 1;
-            weightErstePl = 1;
-            weightZweitePl = 1;
-            weightDrittePl = 1;
+        switch (extra){
+
+            case "DRITTE_PERSON":
+                weightErsteSg = 0;
+                weightZweiteSg = 0;
+                weightDritteSg = 1;
+                weightErstePl = 0;
+                weightZweitePl = 0;
+                weightDrittePl = 1;
+                break;
+
+            case "ERSTE_ZWEITE_PERSON":
+                weightErsteSg = 2;
+                weightZweiteSg = 2;
+                weightDritteSg = 1;
+                weightErstePl = 2;
+                weightZweitePl = 2;
+                weightDrittePl = 1;
+                break;
+
+            default:
+
+                weightErsteSg = 1;
+                weightZweiteSg = 1;
+                weightDritteSg = 1;
+                weightErstePl = 1;
+                weightZweitePl = 1;
+                weightDrittePl = 1;
+                break;
+
         }
 
         weights = new int[] {weightErsteSg,
@@ -284,8 +297,7 @@ public class UserInputPersonalendung extends LateinAppActivity{
         if(randomVocabulary == -1){
             //Something went wrong. Log error-message
             Log.e("randomVocabulary", "Getting a randomKonjugation failed! Returned -1 for " +
-                    "\nrandomNumber: " + randomNumber +
-                    "\nlektion: " + lektion);
+                    "\nrandomNumber: " + randomNumber);
         }
 
 
@@ -362,7 +374,7 @@ public class UserInputPersonalendung extends LateinAppActivity{
             //Setting the 'learned' state of all vocabularies of the current lektion to false
             case (R.id.buttonUserInputFortschrittLöschen):
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("UserInputPersonalendung"+lektion, 0);
+                editor.putInt("UserInputPersonalendung"+extraFromEinheitenUebersicht, 0);
                 editor.apply();
                 finish();
                 break;

@@ -51,7 +51,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".Activities.oldVersion.Einheiten.UserInputPersonalendung"
+            android:name=".Activities.newVersion.Einheiten.UserInputPersonalendung"
             android:screenOrientation="portrait" />
 
         <activity
