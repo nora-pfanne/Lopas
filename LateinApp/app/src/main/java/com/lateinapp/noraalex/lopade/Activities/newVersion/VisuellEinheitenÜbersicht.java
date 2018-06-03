@@ -12,6 +12,7 @@ import android.widget.Button;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickDeklinationsendung;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickKasusFragen;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickPersonalendung;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.Satzglieder;
 import com.lateinapp.noraalex.lopade.Activities.oldVersion.LektionUebersicht;
 import com.lateinapp.noraalex.lopade.R;
 
@@ -136,6 +137,11 @@ public class VisuellEinheitenÜbersicht extends AppCompatActivity {
 
             case R.id.uebersicht_checkpoint_praesens_2:
 
+                break;
+
+            case R.id.uebersicht_satzglieder:
+                intent = new Intent(this, Satzglieder.class);
+                startActivity(intent);
                 break;
 
             default:

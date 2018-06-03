@@ -256,10 +256,11 @@
 
             <Button
                 style="@style/PraepositionGrammatikButton"
-                android:id="@+id/praepositionGrammatikButtonEins"
+                android:id="@+id/uebersicht_praeposition_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="uebersichtButtonClicked"
                 android:text="Präpositionen I" />
         </LinearLayout>
 
@@ -270,9 +271,10 @@
 
             <Button
                 style="@style/PraepositionGrammatikButton"
-                android:id="@+id/praepositionGrammatikButtonZwei"
+                android:id="@+id/uebersicht_praeposition_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="uebersichtButtonClicked"
                 android:layout_weight="1"
                 android:text="Präpositionen II" />
         </LinearLayout>
@@ -284,17 +286,19 @@
 
             <Button
                 style="@style/SubstantivGrammatikButton"
-                android:id="@+id/dritte_deklination_grammatik_button"
+                android:id="@+id/uebersicht_dritte_deklination"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="uebersichtButtonClicked"
                 android:layout_weight="1"
                 android:text="3. Deklination" />
 
             <Button
                 style="@style/VerbGrammatikButton"
-                android:id="@+id/i_erweiterung_grammatik_button"
+                android:id="@+id/uebersicht_i_erweiterung"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="uebersichtButtonClicked"
                 android:layout_weight="1"
                 android:text="i-Erweiterung" />
         </LinearLayout>
@@ -306,17 +310,19 @@
 
             <Button
                 style="@style/AdjektivGrammatikButton"
-                android:id="@+id/adjektive_eins_button"
+                android:id="@+id/uebersicht_adjektiv_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="uebersichtButtonClicked"
                 android:layout_weight="1"
                 android:text="Adjektive I" />
 
             <Button
                 style="@style/SatzgliedGrammatikButton"
-                android:id="@+id/satzglieder_button"
+                android:id="@+id/uebersicht_satzglieder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="uebersichtButtonClicked"
                 android:layout_weight="1"
                 android:text="Satzglieder" />
         </LinearLayout>
@@ -328,9 +334,10 @@
 
             <Button
                 style="@style/AdjektivGrammatikButton"
-                android:id="@+id/adjektive_zwei_button"
+                android:id="@+id/uebersicht_adjektiv_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="uebersichtButtonClicked"
                 android:layout_weight="1"
                 android:text="Adjektive II" />
         </LinearLayout>
@@ -342,17 +349,19 @@
 
             <Button
                 style="@style/VerbGrammatikButton"
-                android:id="@+id/posse_button"
+                android:id="@+id/uebersicht_posse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="uebersichtButtonClicked"
                 android:layout_weight="1"
                 android:text="Posse" />
 
             <Button
                 style="@style/SatzgliedGrammatikButton"
-                android:id="@+id/aci_eins_button"
+                android:id="@+id/uebersicht_aci_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="uebersichtButtonClicked"
                 android:layout_weight="1"
                 android:text="AcI I" />
         </LinearLayout>
@@ -364,9 +373,10 @@
 
             <Button
                 style="@style/SatzgliedGrammatikButton"
-                android:id="@+id/aci_zwei_button"
+                android:id="@+id/uebersicht_aci_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="uebersichtButtonClicked"
                 android:layout_weight="1"
                 android:text="AcI II" />
         </LinearLayout>

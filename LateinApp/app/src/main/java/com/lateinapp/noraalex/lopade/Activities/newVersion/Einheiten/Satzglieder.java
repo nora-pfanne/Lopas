@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten;
+package com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,7 +45,6 @@ public class Satzglieder extends LateinAppActivity {
     DBHelper dbHelper;
     SharedPreferences sharedPref;
     int maxProgress = 20;
-    int lektion;
 
     int correctButtonLocation;
 
@@ -100,14 +99,11 @@ public class Satzglieder extends LateinAppActivity {
         colorButtonIncorrect = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
         colorButtonCorrect = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
 
-        Intent intent = getIntent();
-        lektion = intent.getIntExtra("lektion",0);
-
         dbHelper = new DBHelper(this);
         buttonHashMap = new HashMap<>();
         sharedPref = getSharedPreferences("SharedPreferences", 0);
 
-        weiterButton = findViewById(R.id.satzglieder_reset_button);
+        weiterButton = findViewById(R.id.satzglieder_next_button);
         linearLayout = findViewById(R.id.satzglieder_lin_layout);
         progressBar = findViewById(R.id.satzglieder_progress_bar);
         aufgabenstellung = findViewById(R.id.satzglieder_aufgabenstellung);
@@ -129,7 +125,7 @@ public class Satzglieder extends LateinAppActivity {
     private void newSentence(){
 
 
-        int progress = sharedPref.getInt("Satzglieder"+lektion, 0);
+        int progress = sharedPref.getInt("Satzglieder", 0);
 
         if (progress < maxProgress) {
 
@@ -607,13 +603,13 @@ public class Satzglieder extends LateinAppActivity {
     private void answerSelected(boolean correct, Button button){
 
         SharedPreferences.Editor editor = sharedPref.edit();
-        int currentProgress = sharedPref.getInt("Satzglieder"+lektion, 0);
+        int currentProgress = sharedPref.getInt("Satzglieder", 0);
 
         if (correct){
             button.setBackgroundColor(colorButtonCorrect);
 
             if (currentProgress <= maxProgress) {
-                editor.putInt("Satzglieder" + lektion,
+                editor.putInt("Satzglieder",
                         currentProgress + 1);
             }
 
@@ -623,7 +619,7 @@ public class Satzglieder extends LateinAppActivity {
             buttons.get(correctButtonLocation).setBackgroundColor(colorButtonCorrect);
 
             if (currentProgress > 0){
-                editor.putInt("Satzglieder" + lektion,
+                editor.putInt("Satzglieder",
                         currentProgress - 1);
             }
         }
@@ -645,17 +641,39 @@ public class Satzglieder extends LateinAppActivity {
      *
      * @param v the button that was clicked.
      */
-    public void satzgliederResetPressed(View v){
+    public void satzgliederButtonPressed(View v) {
 
-        removeButtons();
-        newSentence();
-        weiterButton.setVisibility(View.GONE);
+        switch (v.getId()) {
+            case R.id.satzglieder_next_button:
+                removeButtons();
+                newSentence();
+                weiterButton.setVisibility(View.GONE);
+                break;
+
+            case R.id.satzglieder_back_button:
+                finish();
+                break;
+
+            case R.id.satzglieder_progress_reset_button:
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt("Satzglieder", 0);
+                editor.apply();
+                finish();
+                break;
+        }
     }
 
     /**
      * TODO
      */
     private void endGame(){
-        //TODO:
+
+        Button resetProgress = findViewById(R.id.satzglieder_progress_reset_button);
+        Button back = findViewById(R.id.satzglieder_back_button);
+
+        resetProgress.setVisibility(View.VISIBLE);
+        back.setVisibility(View.VISIBLE);
+
+        aufgabenstellung.setText("Herzlichen Glückwunsch!");
     }
 }

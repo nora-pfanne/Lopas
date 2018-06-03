@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.oldVersion.Einheiten.Satzglieder">
+    tools:context=".Activities.newVersion.Einheiten.Satzglieder">
 
     <Button
-        android:id="@+id/satzglieder_reset_button"
+        style="@style/BasicBlueButton"
+        android:id="@+id/satzglieder_next_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -15,13 +16,50 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="444dp"
         android:text="Weiter"
-        android:onClick="satzgliederResetPressed"
+        android:onClick="satzgliederButtonPressed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.971"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.272" />
+
+    <Button
+        android:id="@+id/satzglieder_progress_reset_button"
+        style="@style/BasicBlueButton"
+        android:visibility="invisible"
+        android:layout_width="153dp"
+        android:layout_height="85dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Fortschritt zurücksetzen"
+        android:onClick="satzgliederButtonPressed"
+        app:layout_constraintHorizontal_bias="0.855"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.927" />
+
+    <Button
+        style="@style/BasicBlueButton"
+        android:id="@+id/satzglieder_back_button"
+        android:layout_width="253dp"
+        android:layout_height="155dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Zurück"
+        android:onClick="satzgliederButtonPressed"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4" />
 
     <LinearLayout
         android:id="@+id/satzglieder_lin_layout"

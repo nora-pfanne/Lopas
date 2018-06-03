@@ -14,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.lateinapp.noraalex.lopade.Activities.newVersion.VisuellEinheitenÜbersicht;
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten.Satzglieder;
 import com.lateinapp.noraalex.lopade.R;
 
 public class Home extends LateinAppActivity

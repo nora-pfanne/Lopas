@@ -55,7 +55,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".Activities.oldVersion.Einheiten.Satzglieder"
+            android:name=".Activities.newVersion.Einheiten.Satzglieder"
             android:screenOrientation="portrait" />
 
         <!-- Activites for the visual rework of the app -->
