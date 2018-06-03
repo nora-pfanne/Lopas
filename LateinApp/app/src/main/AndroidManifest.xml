@@ -43,7 +43,7 @@
             android:name="com.lateinapp.noraalex.lopade.Activities.oldVersion.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.oldVersion.Einheiten.ClickPersonalendung"
+            android:name=".Activities.newVersion.Einheiten.ClickPersonalendung"
             android:screenOrientation="portrait" />
 
         <activity

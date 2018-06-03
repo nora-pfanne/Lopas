@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickDeklinationsendung;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickKasusFragen;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.oldVersion.LektionUebersicht;
 import com.lateinapp.noraalex.lopade.R;
 
@@ -67,10 +68,6 @@ public class VisuellEinheitenÜbersicht extends AppCompatActivity {
                 startActivity(intent);
                 break;
 
-            case R.id.uebersicht_infinitiv:
-
-                break;
-
             case R.id.uebersicht_nominativ:
 
                 intent = new Intent(this, ClickDeklinationsendung.class);
@@ -107,14 +104,21 @@ public class VisuellEinheitenÜbersicht extends AppCompatActivity {
                 break;
 
             case R.id.uebersicht_checkpoint_deklinationsendung_1:
+                //TODO:
 
                 break;
 
             case R.id.uebersicht_dritte_pers_praesens:
+                intent = new Intent(this, ClickPersonalendung.class);
+                intent.putExtra("ExtraClickPersonalendung", "DRITTE_PERSON");
+                startActivity(intent);
 
                 break;
 
             case R.id.uebersicht_erste_zweite_pers_praesens:
+                intent = new Intent(this, ClickPersonalendung.class);
+                intent.putExtra("ExtraClickPersonalendung", "ERSTE_ZWEITE_PERSON");
+                startActivity(intent);
 
                 break;
 

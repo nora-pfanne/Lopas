@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickDeklinationsendung;
 import com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten.UserInputDeklinationsendung;
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten.ClickPersonalendung;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten.UserInputPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten.UserInputVokabeltrainer;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;

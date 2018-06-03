@@ -63,14 +63,6 @@
                 android:onClick="uebersichtButtonClicked"
                 android:text="Kasus" />
 
-            <Button
-                style="@style/VerbGrammatikButton"
-                android:id="@+id/uebersicht_infinitiv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Infinitiv" />
-
         </LinearLayout>
 
         <LinearLayout
