@@ -1,6 +1,5 @@
 package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
@@ -9,9 +8,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.Home;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
-import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
 import com.lateinapp.noraalex.lopade.R;
 
 public class ClickKasusFragen extends LateinAppActivity {
@@ -53,9 +50,7 @@ public class ClickKasusFragen extends LateinAppActivity {
     }
 
     private void setup(){
-//TODO Add progressBar
-
-        Intent intent = getIntent();
+        //TODO: Randomize button order
 
         sharedPreferences = getSharedPreferences("SharedPreferences", 0);
 
@@ -64,7 +59,7 @@ public class ClickKasusFragen extends LateinAppActivity {
         colorButtonDefault = ResourcesCompat.getColor(getResources(), R.color.PrussianBlue, null);
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
-        kasusText =findViewById(R.id.textGrammatikKasusLatein);
+        kasusText = findViewById(R.id.textGrammatikKasusLatein);
         kasusFrageNom = findViewById(R.id.buttonGrammatikKasusFrageNom);
         kasusFrageGen = findViewById(R.id.buttonGrammatikKasusFrageGen);
         kasusFrageDat = findViewById(R.id.buttonGrammatikKasusFrageDat);
