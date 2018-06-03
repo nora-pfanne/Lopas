@@ -13,6 +13,7 @@ import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickDeklin
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickKasusFragen;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.Satzglieder;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputAdjektive;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputDeklinationsendung;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.oldVersion.LektionUebersicht;
@@ -150,6 +151,10 @@ public class VisuellEinheitenÜbersicht extends AppCompatActivity {
                 intent = new Intent(this, Satzglieder.class);
                 startActivity(intent);
                 break;
+
+            case R.id.uebersicht_adjektiv_1:
+                intent = new Intent(this, UserInputAdjektive.class);
+                startActivity(intent);
 
             default:
                 Log.e("ButtonNotFound",

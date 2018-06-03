@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.Einheiten;
+package com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,14 +14,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.Home;
-import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
-import com.lateinapp.noraalex.lopade.Databases.DBHelper;
-import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
-import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
+import com.lateinapp.noraalex.lopade.Activities.oldVersion.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.R;
-
-import java.util.Random;
 
 public class UserInputAdjektive extends LateinAppActivity {
 
@@ -38,7 +32,9 @@ public class UserInputAdjektive extends LateinAppActivity {
             reset,
             zurück;
 
-    private String deutscherText;
+    private String deutscherText,
+                lateinText;
+
 
     private int backgroundColor;
     private int maxProgress = 20;
@@ -54,8 +50,6 @@ public class UserInputAdjektive extends LateinAppActivity {
     }
 
     private void setup(){
-
-        Intent intent = getIntent();
 
         sharedPref = getSharedPreferences("SharedPreferences", 0);
 
@@ -75,7 +69,6 @@ public class UserInputAdjektive extends LateinAppActivity {
 
         solution.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
-
 
         progressBar.setMax(maxProgress);
     }
@@ -100,7 +93,11 @@ public class UserInputAdjektive extends LateinAppActivity {
             userInput.setBackgroundColor(backgroundColor);
             userInput.setFocusableInTouchMode(true);
 
-            deutscherText = getRandomAdjektiv()[0];
+            String[] answer = getRandomAdjektiv();
+
+            deutscherText = answer[0];
+            lateinText = answer[1];
+
             request.setText(deutscherText);
 
             bestaetigung.setVisibility(View.VISIBLE);
@@ -129,7 +126,7 @@ public class UserInputAdjektive extends LateinAppActivity {
 
     private String[] getRandomAdjektiv(){
 
-        int randomInt = (int)(Math.random() * ((5) + 1));
+        int randomInt = (int)(Math.random() * ((4) + 1));
 
         String deutsch = "deutscher Fülltext";
         String latein = "leer";
@@ -139,27 +136,31 @@ public class UserInputAdjektive extends LateinAppActivity {
             case 0:
                 deutsch = "großer Gott";
                 latein = "magnus deus";
+                break;
 
             case 1:
                 deutsch = "kleines Mädchen";
                 latein = "parva puella";
+                break;
 
             case 2:
                 deutsch = "arme Muse";
                 latein = "misera musa";
+                break;
 
             case 3:
                 deutsch = "erstaunliches Land";
                 latein = "mira terra";
+                break;
 
             case 4:
                 deutsch = "guter Weg";
                 latein = "bona via";
+                break;
         }
 
-        String[] randomText = {deutsch, latein};
 
-        return randomText;
+        return new String[]{deutsch, latein};
     }
 
     private void checkInput(){
@@ -178,7 +179,7 @@ public class UserInputAdjektive extends LateinAppActivity {
 
         //Checking the userInput against the translation
         int color;
-        if(compareString(userInput.getText().toString(), getRandomAdjektiv()[1])){
+        if(compareString(userInput.getText().toString(), lateinText)){
             color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
 
             SharedPreferences.Editor editor = sharedPref.edit();
@@ -199,7 +200,7 @@ public class UserInputAdjektive extends LateinAppActivity {
         userInput.setBackgroundColor(color);
 
         //Showing the correct translation
-        solution.setText(getRandomAdjektiv()[1]);
+        solution.setText(lateinText);
 
         bestaetigung.setVisibility(View.GONE);
         weiter.setVisibility(View.VISIBLE);

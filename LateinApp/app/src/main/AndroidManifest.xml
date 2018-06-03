@@ -67,6 +67,10 @@
         <activity android:name=".Activities.newVersion.Einheiten.ClickKasusFragen"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".Activities.newVersion.Einheiten.UserInputAdjektive"
+            android:screenOrientation="portrait"/>
+
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
