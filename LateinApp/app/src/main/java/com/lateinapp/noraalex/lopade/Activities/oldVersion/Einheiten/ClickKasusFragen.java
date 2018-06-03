@@ -207,5 +207,3 @@ public class ClickKasusFragen extends LateinAppActivity {
         }
     }
 }
-
-

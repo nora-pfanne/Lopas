@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
+import com.lateinapp.noraalex.lopade.Databases.Tables.BeispielsatzDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.LektionDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Personalendung_PräsensDB;
@@ -92,8 +93,11 @@ public class DBHelper extends SQLiteOpenHelper {
             addEntriesFromFile("db_initialisation/adverbTable.csv", AdverbDB.FeedEntry.TABLE_NAME, context);
             //addEntriesFromFile("", SprichwortDB.FeedEntry.TABLE_NAME, context);
             addEntriesFromFile("db_initialisation/präposition.csv", PräpositionDB.FeedEntry.TABLE_NAME, context);
-        }
 
+            //TODO: Not final path/name
+            addEntriesFromFile("example_sentences/beispielsatz_test.csv", BeispielsatzDB.FeedEntry.TABLE_NAME, context);
+
+        }
     }
 
     /**
@@ -114,6 +118,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_ENTRIES_SPRICHWORT);
         db.execSQL(SQL_CREATE_ENTRIES_SUBSTANTIV);
         db.execSQL(SQL_CREATE_ENTRIES_VERB);
+        db.execSQL(SQL_CREATE_ENTRIES_BEISPIELSATZ);
         
     }
 
@@ -140,7 +145,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_ENTRIES_SPRICHWORT);
         db.execSQL(SQL_DELETE_ENTRIES_SUBSTANTIV);
         db.execSQL(SQL_DELETE_ENTRIES_VERB);
-
+        db.execSQL(SQL_DELETE_ENTRIES_BEISPIELSATZ);
 
         onCreate(db);
     }
@@ -428,6 +433,31 @@ public class DBHelper extends SQLiteOpenHelper {
         closeDb();
     }
 
+    private void addRowBeispielsatz(int subjekt_id, int praedikat_id, int genitiv_id, int dativ_id, int akkusativ_id){
+
+        openDb();
+
+        //FIXME: We currently add a placeholder vocabulary for empty spaces (_ID == -1)
+        //We need to fill out all spaces in the initialisation document or find a better solution.
+        //The way this is handled right now is not acceptable and cannot be released this way
+        if (subjekt_id == -1) subjekt_id = 2;
+        if (praedikat_id == -1) praedikat_id = 2;
+        if (genitiv_id == -1) genitiv_id = 2;
+        if (dativ_id == -1) dativ_id = 2;
+        if (akkusativ_id == -1) akkusativ_id = 2;
+
+        ContentValues values = new ContentValues();
+        values.put(allColumnsBeispielsatz[1], subjekt_id);
+        values.put(allColumnsBeispielsatz[2], praedikat_id);
+        values.put(allColumnsBeispielsatz[3], genitiv_id);
+        values.put(allColumnsBeispielsatz[4], dativ_id);
+        values.put(allColumnsBeispielsatz[5], akkusativ_id);
+
+        database.insert(BeispielsatzDB.FeedEntry.TABLE_NAME, null, values);
+
+        closeDb();
+    }
+
     /**
      * Entries are added to a specified table from a file under a given path. (probably a .csv file)
      * 1 row represents a entry
@@ -588,6 +618,19 @@ public class DBHelper extends SQLiteOpenHelper {
                                            personalendungID, sprechvokalID);
                                 break;
 
+
+                            case BeispielsatzDB.FeedEntry.TABLE_NAME:
+
+                                int subjekt_id = getIdOfVocabulary(tokens[0], DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG, SubstantivDB.FeedEntry.TABLE_NAME);
+                                int praedikat_id = getIdOfVocabulary(tokens[1], "inf", VerbDB.FeedEntry.TABLE_NAME);
+                                int gen_id = getIdOfVocabulary(tokens[2], DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG, SubstantivDB.FeedEntry.TABLE_NAME);
+                                int dat_id = getIdOfVocabulary(tokens[3], DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG, SubstantivDB.FeedEntry.TABLE_NAME);
+                                int akk_id = getIdOfVocabulary(tokens[4], DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG, SubstantivDB.FeedEntry.TABLE_NAME);
+
+                                addRowBeispielsatz(subjekt_id, praedikat_id, gen_id, dat_id, akk_id);
+
+                                break;
+
                             default:
                                 Log.e(DBHelper.class.getName(),
                                         "A table was not found while trying to add a entry from a file:\n" +
@@ -703,7 +746,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param tables Array of table-names that are to be counted
      * @return the amount of entries in the tables of the array
      */
-    private int countTableEntries(String[] tables){
+    public int countTableEntries(String[] tables){
 
         Cursor cursor = null;
         int count = 0;
@@ -844,7 +887,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String query = "SELECT " + SubstantivDB.FeedEntry.COLUMN_WORTSTAMM +
                        " FROM "+ SubstantivDB.FeedEntry.TABLE_NAME +
                        " WHERE _ID = ?";
-        Cursor substantivCursor = database.rawQuery(query, new String[] {""+vokabelID});
+        Cursor substantivCursor = database.rawQuery(query, new String[] {vokabelID+""});
         substantivCursor.moveToNext();
         String wortstamm = substantivCursor.getString(0);
         substantivCursor.close();
@@ -979,7 +1022,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String vokabel = (verbStamm + sprechvokal + endung);
 
-        Log.d("Vokabel", vokabel);
         return vokabel;
     }
 
@@ -1233,6 +1275,46 @@ public class DBHelper extends SQLiteOpenHelper {
         s = s.replace("sz", "ß");
 
         return s;
+    }
+
+    /**
+     * Searches through a table to find the _ID value of a vocabulary
+     *
+     * TODO: Currently only VerbDB and SubstantivDB can be targeted
+     *
+     * @param vocabulary The vocabulary where the corresponding _ID is needed
+     * @param currentCase current declination/konjugation of the vocabulary (Nom/Akk/Inf)
+     * @param targetTable The table where the vocabulary is supposed to be in
+     * @return the _ID value of the vocabulary (-1 for no result)
+     */
+    private int getIdOfVocabulary(String vocabulary, String currentCase, String targetTable){
+
+        int entryAmount = countTableEntries(new String[] {targetTable});
+
+        //Why do _IDs start at 1 not 0????
+
+        if (targetTable.equals(SubstantivDB.FeedEntry.TABLE_NAME)){
+
+            for (int id = 1; id <= entryAmount; id++){
+                if (vocabulary.equals(getDekliniertenSubstantiv(id, currentCase))) return id;
+            }
+
+        }else if (targetTable.equals(VerbDB.FeedEntry.TABLE_NAME)){
+
+            for (int id = 1; id <= entryAmount; id++){
+                if (vocabulary.equals(getKonjugiertesVerb(id, currentCase))) return id;
+            }
+
+        }else {
+            Log.e("TableNotFound", "The targetted table in \"getIdOfVocabulary(..)\" was not found.\n"
+                    +"targetTable: " + targetTable +"\n"
+                    +"vocabulary: " + vocabulary + "\n"
+                    +"currentCase: " + currentCase);
+        }
+
+
+
+        return -1;
     }
 
     /**

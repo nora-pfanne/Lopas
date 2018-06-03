@@ -54,6 +54,10 @@
             android:name=".Activities.oldVersion.Einheiten.UserInputPersonalendung"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".Activities.oldVersion.Einheiten.Satzglieder"
+            android:screenOrientation="portrait" />
+
         <!-- Activites for the visual rework of the app -->
         <activity
             android:name="com.lateinapp.noraalex.lopade.Activities.newVersion.VisuellEinheitenÜbersicht"

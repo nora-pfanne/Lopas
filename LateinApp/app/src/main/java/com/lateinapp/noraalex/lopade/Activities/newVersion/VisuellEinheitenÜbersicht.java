@@ -1,10 +1,15 @@
 package com.lateinapp.noraalex.lopade.Activities.newVersion;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
+import com.lateinapp.noraalex.lopade.Activities.oldVersion.LektionUebersicht;
 import com.lateinapp.noraalex.lopade.R;
 
 /*
@@ -19,6 +24,12 @@ public class VisuellEinheitenÜbersicht extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visuell_einheiten_uebersicht);
+
+        setup();
+    }
+
+    private void setup(){
+
     }
 
     @Override
@@ -40,5 +51,54 @@ public class VisuellEinheitenÜbersicht extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void uebersichtButtonClicked(View v){
+
+        Intent intent;
+
+        //Set lektion accordingly and pass it with
+        //intent.putExtra("lektion",lektion);
+        //over to the new activity
+        int lektion;
+
+        switch (v.getId()){
+
+            case R.id.uebersicht_infinitiv:
+
+                /*
+                Example:
+                lektion = 1;
+                intent = new Intent(v.getContext(), [...].class);
+                intent.putExtra("lektion",lektion);
+                 */
+                break;
+
+            case R.id.uebersicht_dritte_pers_praesens:
+
+                break;
+
+            case R.id.uebersicht_erste_zweite_pers_praesens:
+
+                break;
+
+            case R.id.uebersicht_checkpoint_praesens_1:
+
+                break;
+
+            //TODO: Add all remaining cases here
+
+
+            default:
+                Log.e("ButtonNotFound",
+                        "The button that called 'uebersichtButtonClicked' was not" +
+                            "identified");
+                break;
+        }
+
+        if (intent != null){
+            startActivity(intent);
+
+        }
     }
 }
