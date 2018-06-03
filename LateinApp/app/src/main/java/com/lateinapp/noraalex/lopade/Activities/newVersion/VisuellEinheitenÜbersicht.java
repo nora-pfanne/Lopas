@@ -13,6 +13,7 @@ import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickDeklin
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickKasusFragen;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.Satzglieder;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputDeklinationsendung;
 import com.lateinapp.noraalex.lopade.Activities.oldVersion.LektionUebersicht;
 import com.lateinapp.noraalex.lopade.R;
 
@@ -105,7 +106,10 @@ public class VisuellEinheitenÜbersicht extends AppCompatActivity {
                 break;
 
             case R.id.uebersicht_checkpoint_deklinationsendung_1:
-                //TODO:
+
+                intent = new Intent(this, UserInputDeklinationsendung.class);
+                intent.putExtra("ExtraInputDeklinationsendung", "ALLE");
+                startActivity(intent);
 
                 break;
 

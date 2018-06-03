@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten;
+package com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten;
 
 import android.content.Context;
 import android.content.Intent;
@@ -61,7 +61,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
             DeklinationsendungDB.FeedEntry.COLUMN_ABL_PL
     };
 
-    private int lektion;
+    private String extraFromEinheitenUebersicht;
     private int backgroundColor;
     private int maxProgress = 20;
 
@@ -78,7 +78,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
     private void setup(){
 
         Intent intent = getIntent();
-        lektion = intent.getIntExtra("lektion",0);
+        extraFromEinheitenUebersicht = intent.getStringExtra("ExtraInputDeklinationsendung");
 
         sharedPref = getSharedPreferences("SharedPreferences", 0);
         dbHelper = new DBHelper(getApplicationContext());
@@ -100,14 +100,14 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
         solution.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
 
-        weightSubjects(lektion);
+        weightSubjects(extraFromEinheitenUebersicht);
 
         progressBar.setMax(maxProgress);
     }
 
     private void newVocabulary(){
 
-        int progress = sharedPref.getInt("UserInputDeklinationsendung"+lektion, 0);
+        int progress = sharedPref.getInt("UserInputDeklinationsendung"+extraFromEinheitenUebersicht, 0);
 
         if (progress < maxProgress) {
 
@@ -126,8 +126,13 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
             userInput.setFocusableInTouchMode(true);
 
             //Getting a new vocabulary.
-            currentVokabel = dbHelper.getRandomVocabulary(lektion);
+            //FIXME: Don't return a random number but one according to the progress (nom->1 /...)
+            //random number from 1 to 5 to choose, where the vocabulary comes from
+            //Blueprint for randNum: int randomNum = rand.nextInt((max - min) + 1) + min;
+            int rand = new Random().nextInt((5 - 1) + 1) + 1;
+            currentVokabel = dbHelper.getRandomSubstantiv(rand);
             currentDeclination = getRandomDeklination();
+
             //FIXME Remove nom_sg
             while (currentDeclination.equals(faelle[0])){
                 currentDeclination = getRandomDeklination();
@@ -177,7 +182,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
      * Sets weights for all entries of 'faelle' depending on the current value of lektion
      * Copied from GrammatikUserInputDeklinationsendung.class
      */
-    private void weightSubjects(int lektion){
+    private void weightSubjects(String extra){
 
         int weightNomSg;
         int weightNomPl;
@@ -190,9 +195,9 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
         int weightAblSg;
         int weightAblPl;
 
-        switch (lektion){
+        switch (extra){
 
-            case 1:
+            case "NOMINATIV":
                 weightNomSg = 1;
                 weightNomPl = 1;
                 weightGenSg = 0;
@@ -205,7 +210,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
                 weightAblPl = 0;
                 break;
 
-            case 2:
+            case "AKKUSATIV":
                 weightNomSg = 2;
                 weightNomPl = 2;
                 weightGenSg = 0;
@@ -218,7 +223,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
                 weightAblPl = 0;
                 break;
 
-            case 3:
+            case "DATIV":
 
                 weightNomSg = 1;
                 weightNomPl = 1;
@@ -232,7 +237,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
                 weightAblPl = 0;
                 break;
 
-            case 4:
+            case "ABLATIV":
                 weightNomSg = 1;
                 weightNomPl = 1;
                 weightGenSg = 0;
@@ -245,7 +250,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
                 weightAblPl = 3;
                 break;
 
-            case 5:
+            case "GENITIV":
 
                 weightNomSg = 1;
                 weightNomPl = 1;
@@ -259,7 +264,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
                 weightAblPl = 1;
                 break;
 
-            // lektion > 5
+            // Alle gleichmäßig
             default:
                 weightNomSg = 1;
                 weightNomPl = 1;
@@ -332,7 +337,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
             //Something went wrong. Log error-message
             Log.e("randomVocabulary", "Getting a randomDeclination failed! Returned -1 for " +
                     "\nrandomNumber: " + randomNumber +
-                    "\nlektion: " + lektion);
+                    "\nlektion: " + extraFromEinheitenUebersicht);
         }
 
         return faelle[randomVocabulary];
@@ -360,16 +365,16 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
             SharedPreferences.Editor editor = sharedPref.edit();
 
             //Increasing the counter by 1
-            editor.putInt("UserInputDeklinationsendung" + lektion,
-                    sharedPref.getInt("UserInputDeklinationsendung"+lektion, 0) + 1);
+            editor.putInt("UserInputDeklinationsendung" + extraFromEinheitenUebersicht,
+                    sharedPref.getInt("UserInputDeklinationsendung"+extraFromEinheitenUebersicht, 0) + 1);
             editor.apply();
         }else {
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
 
             SharedPreferences.Editor editor = sharedPref.edit();
             //Decreasing the counter by 1
-            editor.putInt("UserInputDeklinationsendung" + lektion,
-                    sharedPref.getInt("UserInputDeklinationsendung"+lektion, 0) - 1);
+            editor.putInt("UserInputDeklinationsendung" + extraFromEinheitenUebersicht,
+                    sharedPref.getInt("UserInputDeklinationsendung"+extraFromEinheitenUebersicht, 0) - 1);
             editor.apply();
         }
         userInput.setBackgroundColor(color);
@@ -452,7 +457,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
             //Setting the 'learned' state of all vocabularies of the current lektion to false
             case (R.id.buttonUserInputFortschrittLöschen):
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("UserInputDeklinationsendung"+lektion, 0);
+                editor.putInt("UserInputDeklinationsendung"+extraFromEinheitenUebersicht, 0);
                 editor.apply();
                 finish();
                 break;

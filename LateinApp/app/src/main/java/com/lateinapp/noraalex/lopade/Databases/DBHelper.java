@@ -887,6 +887,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String query = "SELECT " + SubstantivDB.FeedEntry.COLUMN_WORTSTAMM +
                        " FROM "+ SubstantivDB.FeedEntry.TABLE_NAME +
                        " WHERE _ID = ?";
+        Log.d("QUERY", query+vokabelID);
         Cursor substantivCursor = database.rawQuery(query, new String[] {vokabelID+""});
         substantivCursor.moveToNext();
         String wortstamm = substantivCursor.getString(0);

@@ -47,7 +47,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".Activities.oldVersion.Einheiten.UserInputDeklinationsendung"
+            android:name=".Activities.newVersion.Einheiten.UserInputDeklinationsendung"
             android:screenOrientation="portrait" />
 
         <activity
