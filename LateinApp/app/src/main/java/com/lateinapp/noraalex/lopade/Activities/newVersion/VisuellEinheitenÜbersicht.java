@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickDeklinationsendung;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickKasusFragen;
 import com.lateinapp.noraalex.lopade.Activities.oldVersion.LektionUebersicht;
 import com.lateinapp.noraalex.lopade.R;
 
@@ -62,6 +63,8 @@ public class VisuellEinheitenÜbersicht extends AppCompatActivity {
 
             case R.id.uebersicht_kasus_fragen:
 
+                intent = new Intent(this, ClickKasusFragen.class);
+                startActivity(intent);
                 break;
 
             case R.id.uebersicht_infinitiv:

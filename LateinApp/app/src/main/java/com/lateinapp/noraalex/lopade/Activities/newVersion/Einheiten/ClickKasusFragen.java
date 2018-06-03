@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten;
+package com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +12,8 @@ import com.lateinapp.noraalex.lopade.Activities.oldVersion.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.R;
 
 public class ClickKasusFragen extends LateinAppActivity {
+
+    //TODO: Randomize button order
 
     private SharedPreferences sharedPreferences;
 
@@ -50,7 +52,6 @@ public class ClickKasusFragen extends LateinAppActivity {
     }
 
     private void setup(){
-        //TODO: Randomize button order
 
         sharedPreferences = getSharedPreferences("SharedPreferences", 0);
 

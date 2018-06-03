@@ -64,7 +64,7 @@
             android:screenOrientation="portrait" >
         </activity>
 
-        <activity android:name=".Activities.oldVersion.Einheiten.ClickKasusFragen"
+        <activity android:name=".Activities.newVersion.Einheiten.ClickKasusFragen"
             android:screenOrientation="portrait"/>
 
         <meta-data
