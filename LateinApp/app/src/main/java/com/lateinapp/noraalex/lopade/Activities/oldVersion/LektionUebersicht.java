@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten.ClickDeklinationsendung;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickDeklinationsendung;
 import com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten.UserInputDeklinationsendung;
 import com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten.ClickPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten.UserInputPersonalendung;

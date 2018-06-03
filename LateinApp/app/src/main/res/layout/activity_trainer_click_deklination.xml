@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.oldVersion.Einheiten.ClickDeklinationsendung">
+    tools:context=".Activities.newVersion.Einheiten.ClickDeklinationsendung">
 
     <TextView
         android:id="@+id/textGrammatikDeklinationÜberschrift"

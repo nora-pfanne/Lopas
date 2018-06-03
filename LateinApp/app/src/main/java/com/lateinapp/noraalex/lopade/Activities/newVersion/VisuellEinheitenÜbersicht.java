@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickDeklinationsendung;
 import com.lateinapp.noraalex.lopade.Activities.oldVersion.LektionUebersicht;
 import com.lateinapp.noraalex.lopade.R;
 
@@ -55,6 +56,8 @@ public class VisuellEinheitenÜbersicht extends AppCompatActivity {
 
     public void uebersichtButtonClicked(View v) {
 
+        Intent intent;
+
         switch (v.getId()) {
 
             case R.id.uebersicht_infinitiv:
@@ -63,22 +66,37 @@ public class VisuellEinheitenÜbersicht extends AppCompatActivity {
 
             case R.id.uebersicht_nominativ:
 
+                intent = new Intent(this, ClickDeklinationsendung.class);
+                intent.putExtra("ExtraClickDeklinationsendung", "NOMINATIV");
+                startActivity(intent);
                 break;
 
             case R.id.uebersicht_akkusativ:
 
+                intent = new Intent(this, ClickDeklinationsendung.class);
+                intent.putExtra("ExtraClickDeklinationsendung", "AKKUSATIV");
+                startActivity(intent);
                 break;
 
             case R.id.uebersicht_dativ:
 
+                intent = new Intent(this, ClickDeklinationsendung.class);
+                intent.putExtra("ExtraClickDeklinationsendung", "DATIV");
+                startActivity(intent);
                 break;
 
             case R.id.uebersicht_ablativ:
 
+                intent = new Intent(this, ClickDeklinationsendung.class);
+                intent.putExtra("ExtraClickDeklinationsendung", "ABLATIV");
+                startActivity(intent);
                 break;
 
             case R.id.uebersicht_genitiv:
 
+                intent = new Intent(this, ClickDeklinationsendung.class);
+                intent.putExtra("ExtraClickDeklinationsendung", "GENITIV");
+                startActivity(intent);
                 break;
 
             case R.id.uebersicht_checkpoint_deklinationsendung_1:
