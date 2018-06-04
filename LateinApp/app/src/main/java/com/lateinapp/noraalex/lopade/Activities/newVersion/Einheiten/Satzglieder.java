@@ -249,7 +249,7 @@ public class Satzglieder extends LateinAppActivity {
         int vocID;
 
         for (String s : currentSentence) {
-            Button button = new Button(this, null, R.style.TransparentButton1);
+            Button button = new Button(this);
 
             //FIXME: No try&catch with "NumberFormatException" if parseInt(String) fails
             // because it shouldnt possibly be able to fail
@@ -470,8 +470,6 @@ public class Satzglieder extends LateinAppActivity {
             //Adding spaces between the words so that they aren't directly next to eachother
             text += " ";
 
-
-            text = text.toLowerCase();
             button.setText(text);
 
             if (s.equals(elementToSelect)) {
