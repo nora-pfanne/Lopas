@@ -40,7 +40,7 @@
 
 
     <style name="HomeScreenSelectionButton">
-        <item name="android:background">@color/PrussianBlue</item>
+        <item name="android:background">@color/DarkImperialBlue</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
     </style>
@@ -56,14 +56,14 @@
 
     <!--Button styles-->
     <style name="SubstantivGrammatikButton">
-        <item name="android:backgroundTint">@color/Burgundy</item>
+        <item name="android:backgroundTint">@color/CrayolaRed</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#ffffff</item>
     </style>
 
     <style name="VerbGrammatikButton">
-        <item name="android:backgroundTint">@color/PrussianBlue</item>
+        <item name="android:backgroundTint">@color/AirSuperiorityBlue</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#ffffff</item>
@@ -77,7 +77,7 @@
     </style>
 
     <style name="AdjektivGrammatikButton">
-        <item name="android:backgroundTint">@color/BurgundyLight</item>
+        <item name="android:backgroundTint">@color/TangerineOrange</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#ffffff</item>
@@ -91,14 +91,7 @@
     </style>
 
     <style name="CheckpointGrammatikButton">
-        <item name="android:backgroundTint">@color/Gold</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">#000000</item>
-    </style>
-
-    <style name="InactiveButton">
-        <item name="android:backgroundTint">@color/ButtonGrey</item>
+        <item name="android:backgroundTint">@color/GoldenPoppy</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#000000</item>

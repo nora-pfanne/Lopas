@@ -255,7 +255,7 @@
             android:orientation="horizontal">
 
             <Button
-                style="@style/InactiveButton"
+                style="@style/PraepositionGrammatikButton"
                 android:id="@+id/uebersicht_praeposition_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -270,7 +270,7 @@
             android:orientation="horizontal">
 
             <Button
-                style="@style/InactiveButton"
+                style="@style/PraepositionGrammatikButton"
                 android:id="@+id/uebersicht_praeposition_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -285,7 +285,7 @@
             android:orientation="horizontal">
 
             <Button
-                style="@style/InactiveButton"
+                style="@style/SubstantivGrammatikButton"
                 android:id="@+id/uebersicht_dritte_deklination"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -294,7 +294,7 @@
                 android:text="3. Deklination" />
 
             <Button
-                style="@style/InactiveButton"
+                style="@style/VerbGrammatikButton"
                 android:id="@+id/uebersicht_i_erweiterung"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -333,7 +333,7 @@
             android:orientation="horizontal">
 
             <Button
-                style="@style/InactiveButton"
+                style="@style/AdjektivGrammatikButton"
                 android:id="@+id/uebersicht_adjektiv_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -348,7 +348,7 @@
             android:orientation="horizontal">
 
             <Button
-                style="@style/InactiveButton"
+                style="@style/VerbGrammatikButton"
                 android:id="@+id/uebersicht_posse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -357,7 +357,7 @@
                 android:text="Posse" />
 
             <Button
-                style="@style/InactiveButton"
+                style="@style/SatzgliedGrammatikButton"
                 android:id="@+id/uebersicht_aci_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -372,7 +372,7 @@
             android:orientation="horizontal">
 
             <Button
-                style="@style/InactiveButton"
+                style="@style/SatzgliedGrammatikButton"
                 android:id="@+id/uebersicht_aci_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
