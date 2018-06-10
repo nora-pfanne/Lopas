@@ -29,7 +29,7 @@
             android:name="com.lateinapp.noraalex.lopade.Activities.oldVersion.AndroidDatabaseManager"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.oldVersion.Woerterbuch"
+            android:name="com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.Woerterbuch"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.newVersion.Einheiten.UserInputVokabeltrainer"

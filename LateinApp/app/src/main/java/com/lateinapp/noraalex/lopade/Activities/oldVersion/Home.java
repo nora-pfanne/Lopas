@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.Woerterbuch;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.VisuellEinheitenÜbersicht;
 import com.lateinapp.noraalex.lopade.R;
 

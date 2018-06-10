@@ -16,6 +16,7 @@ import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputAd
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputDeklinationsendung;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputVokabeltrainer;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.Woerterbuch;
 import com.lateinapp.noraalex.lopade.R;
 
 /*
@@ -64,6 +65,47 @@ public class VisuellEinheitenÜbersicht extends AppCompatActivity {
         Intent intent;
 
         switch (v.getId()) {
+
+            case R.id.uebersicht_woerterbuch:
+                intent = new Intent(this, Woerterbuch.class);
+                startActivity(intent);
+                break;
+
+            case R.id.uebersicht_vokabel_1:
+                intent = new Intent(this, UserInputVokabeltrainer.class);
+                intent.putExtra("lektion", 1);
+                startActivity(intent);
+                break;
+
+            case R.id.uebersicht_vokabel_2:
+                intent = new Intent(this, UserInputVokabeltrainer.class);
+                intent.putExtra("lektion", 2);
+                startActivity(intent);
+                break;
+
+            case R.id.uebersicht_vokabel_3:
+                intent = new Intent(this, UserInputVokabeltrainer.class);
+                intent.putExtra("lektion", 3);
+                startActivity(intent);
+                break;
+
+            case R.id.uebersicht_vokabel_4:
+                intent = new Intent(this, UserInputVokabeltrainer.class);
+                intent.putExtra("lektion", 4);
+                startActivity(intent);
+                break;
+
+            case R.id.uebersicht_vokabel_5:
+                intent = new Intent(this, UserInputVokabeltrainer.class);
+                intent.putExtra("lektion", 5);
+                startActivity(intent);
+                break;
+
+            case R.id.uebersicht_vokabel_6:
+                intent = new Intent(this, UserInputVokabeltrainer.class);
+                intent.putExtra("lektion", 6);
+                startActivity(intent);
+                break;
 
             case R.id.uebersicht_kasus_fragen:
 
@@ -134,18 +176,6 @@ public class VisuellEinheitenÜbersicht extends AppCompatActivity {
                 startActivity(intent);
                 break;
 
-            case R.id.uebersicht_esse_velle_nolle:
-
-                break;
-
-            case R.id.uebersicht_kons_konjugation:
-
-                break;
-
-            case R.id.uebersicht_checkpoint_praesens_2:
-
-                break;
-
             case R.id.uebersicht_satzglieder:
                 intent = new Intent(this, Satzglieder.class);
                 startActivity(intent);
@@ -155,41 +185,6 @@ public class VisuellEinheitenÜbersicht extends AppCompatActivity {
                 intent = new Intent(this, UserInputAdjektive.class);
                 startActivity(intent);
 
-            case R.id.uebersicht_vokabel_1:
-                intent = new Intent(this, UserInputVokabeltrainer.class);
-                intent.putExtra("lektion", 1);
-                startActivity(intent);
-                break;
-
-            case R.id.uebersicht_vokabel_2:
-                intent = new Intent(this, UserInputVokabeltrainer.class);
-                intent.putExtra("lektion", 2);
-                startActivity(intent);
-                break;
-
-            case R.id.uebersicht_vokabel_3:
-                intent = new Intent(this, UserInputVokabeltrainer.class);
-                intent.putExtra("lektion", 3);
-                startActivity(intent);
-                break;
-
-            case R.id.uebersicht_vokabel_4:
-                intent = new Intent(this, UserInputVokabeltrainer.class);
-                intent.putExtra("lektion", 4);
-                startActivity(intent);
-                break;
-
-            case R.id.uebersicht_vokabel_5:
-                intent = new Intent(this, UserInputVokabeltrainer.class);
-                intent.putExtra("lektion", 5);
-                startActivity(intent);
-                break;
-
-            case R.id.uebersicht_vokabel_6:
-                intent = new Intent(this, UserInputVokabeltrainer.class);
-                intent.putExtra("lektion", 6);
-                startActivity(intent);
-                break;
 
             default:
                 Log.e("ButtonNotFound",
