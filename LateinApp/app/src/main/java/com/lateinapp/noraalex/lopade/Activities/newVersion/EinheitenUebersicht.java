@@ -1,6 +1,7 @@
 package com.lateinapp.noraalex.lopade.Activities.newVersion;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -25,10 +26,18 @@ import com.lateinapp.noraalex.lopade.R;
 ***************************************************************************************************
 */
 
-public class VisuellEinheitenÜbersicht extends AppCompatActivity {
+public class EinheitenUebersicht extends AppCompatActivity {
+
+
+    //#DEVELOPER
+    private static boolean DEVELOPER = false;
+    private static boolean DEV_CHEAT_MODE = false;
+
+    SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visuell_einheiten_uebersicht);
 
@@ -37,6 +46,11 @@ public class VisuellEinheitenÜbersicht extends AppCompatActivity {
 
     private void setup(){
 
+        //Sets the DEVELOPER state according to a variable saved in a previous instance of the app
+        //#DEVELOPER
+        sharedPref = getSharedPreferences("SharedPreferences", 0);
+        DEVELOPER = sharedPref.getBoolean("DEVELOPER", DEVELOPER);
+        DEV_CHEAT_MODE = sharedPref.getBoolean("DEV_CHEAT_MODE", DEV_CHEAT_MODE);
     }
 
     @Override

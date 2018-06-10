@@ -14,9 +14,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.Woerterbuch;
-import com.lateinapp.noraalex.lopade.Activities.newVersion.VisuellEinheitenÜbersicht;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.EinheitenUebersicht;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.R;
-
+@Deprecated
 public class Home extends LateinAppActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -46,7 +47,7 @@ public class Home extends LateinAppActivity
 
         //#VISUAL
         if (START_VISUAL_REWORK){
-            Intent startVisualRework = new Intent(this, VisuellEinheitenÜbersicht.class);
+            Intent startVisualRework = new Intent(this, EinheitenUebersicht.class);
             startActivity(startVisualRework);
             finish();
         }

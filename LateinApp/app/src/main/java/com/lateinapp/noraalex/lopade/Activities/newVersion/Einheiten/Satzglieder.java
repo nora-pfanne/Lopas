@@ -1,8 +1,6 @@
 package com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
@@ -15,7 +13,7 @@ import android.widget.Space;
 import android.widget.TextView;
 
 import com.lateinapp.noraalex.lopade.Activities.oldVersion.Home;
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.LateinAppActivity;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.BeispielsatzDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;

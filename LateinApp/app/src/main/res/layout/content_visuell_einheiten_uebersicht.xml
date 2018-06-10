@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.lateinapp.noraalex.lopade.Activities.newVersion.VisuellEinheitenÜbersicht"
+    tools:context="com.lateinapp.noraalex.lopade.Activities.newVersion.EinheitenUebersicht"
     tools:showIn="@layout/activity_visuell_einheiten_uebersicht">
 
     <!--
@@ -22,7 +22,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="horizontal">
 
             <ImageView
@@ -51,13 +50,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/uebersicht_woerterbuch"
                 style="@style/PraepositionGrammatikButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="uebersichtButtonClicked"
@@ -68,7 +66,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="horizontal">
 
             <Button
@@ -94,7 +91,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="horizontal">
 
             <Button
@@ -120,7 +116,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="horizontal">
 
             <Button
@@ -146,7 +141,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="horizontal">
 
             <ImageView
@@ -175,13 +169,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/uebersicht_kasus_fragen"
                 style="@style/SubstantivGrammatikButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="uebersichtButtonClicked"
@@ -347,7 +340,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="horizontal">
 
             <ImageView
@@ -381,7 +373,7 @@
             <Button
                 style="@style/InactiveButton"
                 android:id="@+id/uebersicht_praeposition_1"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="uebersichtButtonClicked"
@@ -396,7 +388,7 @@
             <Button
                 style="@style/InactiveButton"
                 android:id="@+id/uebersicht_praeposition_2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:onClick="uebersichtButtonClicked"
                 android:layout_weight="1"
@@ -459,7 +451,7 @@
             <Button
                 style="@style/InactiveButton"
                 android:id="@+id/uebersicht_adjektiv_2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:onClick="uebersichtButtonClicked"
                 android:layout_weight="1"
@@ -498,7 +490,7 @@
             <Button
                 style="@style/InactiveButton"
                 android:id="@+id/uebersicht_aci_2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:onClick="uebersichtButtonClicked"
                 android:layout_weight="1"

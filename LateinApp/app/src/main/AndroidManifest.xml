@@ -9,24 +9,29 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.oldVersion.Home"
-            android:label="@string/app_name"
+            android:name="com.lateinapp.noraalex.lopade.Activities.newVersion.EinheitenUebersicht"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/app_name">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
 
+        <activity
+            android:name="com.lateinapp.noraalex.lopade.Activities.oldVersion.Home"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name="com.lateinapp.noraalex.lopade.Activities.oldVersion.LektionUebersicht"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.oldVersion.AndroidDatabaseManager"
+            android:name="com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.AndroidDatabaseManager"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.Woerterbuch"
@@ -40,7 +45,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.oldVersion.SettingsActivity"
+            android:name="com.lateinapp.noraalex.lopade.Activities.newVersion.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.newVersion.Einheiten.ClickPersonalendung"
@@ -57,12 +62,6 @@
         <activity
             android:name=".Activities.newVersion.Einheiten.Satzglieder"
             android:screenOrientation="portrait" />
-
-        <!-- Activites for the visual rework of the app -->
-        <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.newVersion.VisuellEinheitenÜbersicht"
-            android:screenOrientation="portrait" >
-        </activity>
 
         <activity android:name=".Activities.newVersion.Einheiten.ClickKasusFragen"
             android:screenOrientation="portrait"/>

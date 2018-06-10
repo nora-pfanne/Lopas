@@ -13,10 +13,11 @@ import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputDe
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputVokabeltrainer;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.LektionDB;
 import com.lateinapp.noraalex.lopade.R;
-
+@Deprecated
 public class LektionUebersicht extends LateinAppActivity {
 
     private int lektion;

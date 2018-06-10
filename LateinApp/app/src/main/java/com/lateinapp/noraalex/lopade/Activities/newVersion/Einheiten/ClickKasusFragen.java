@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.LateinAppActivity;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.R;
 
 public class ClickKasusFragen extends LateinAppActivity {

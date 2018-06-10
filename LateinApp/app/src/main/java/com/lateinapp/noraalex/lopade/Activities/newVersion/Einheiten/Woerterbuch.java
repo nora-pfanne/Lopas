@@ -12,7 +12,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TableRow.LayoutParams;
 
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.LateinAppActivity;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;

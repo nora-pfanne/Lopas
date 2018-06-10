@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.oldVersion;
+package com.lateinapp.noraalex.lopade.Activities.newVersion;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -6,11 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.AndroidDatabaseManager;
+import com.lateinapp.noraalex.lopade.Activities.oldVersion.Home;
 import com.lateinapp.noraalex.lopade.R;
 
 //TODO: Find a better name for this
 
-//TODO: Use Fragments
+//TODO: Use Fragments???
 public abstract class LateinAppActivity extends AppCompatActivity{
 
     private boolean onPause = false;

@@ -1,10 +1,12 @@
-package com.lateinapp.noraalex.lopade.Activities.oldVersion;
+package com.lateinapp.noraalex.lopade.Activities.newVersion;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Switch;
 
+import com.lateinapp.noraalex.lopade.Activities.oldVersion.Home;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.R;
 
 public class SettingsActivity extends LateinAppActivity {
