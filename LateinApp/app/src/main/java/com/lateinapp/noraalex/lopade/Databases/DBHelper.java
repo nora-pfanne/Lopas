@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.MatrixCursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -585,7 +586,6 @@ public class DBHelper extends SQLiteOpenHelper {
                                 addRowSubstantiv(tokens[0], tokens[1],
                                                  false, Integer.parseInt(tokens[2]),
                                                  1, deklinationId);
-
                                 closeDb();
                                 openDb();
                                 break;
@@ -616,6 +616,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                            tokens[2], false,
                                            Integer.parseInt(tokens[3]),
                                            personalendungID, sprechvokalID);
+
                                 break;
 
 
@@ -640,6 +641,36 @@ public class DBHelper extends SQLiteOpenHelper {
                         }
                     }catch (NumberFormatException nfe){
                         nfe.printStackTrace();
+
+                    }catch (CursorIndexOutOfBoundsException e){
+                        //This error might occur if the string in the initialisation file
+                        //has a token that is not spelled correctly
+                        //Example:
+                        //o-deklination instead of o-deklination_n
+                        String errorMessage =
+                                "The input string from the initialisation file " +
+                                "contains a unexpected token (probably).\n" +
+                                "Printing content of 'tokens' below:\n";
+                        for (String token : tokens){
+                            errorMessage += token + "\n";
+                        }
+                        Log.e("UnexpectedToken", errorMessage);
+
+                        e.printStackTrace();
+                    }catch (IndexOutOfBoundsException e){
+                        //This error might occur if the string in the initialisation file
+                        //has less tokens than expected
+
+                        String errorMessage =
+                                "The input string from the initialisation file " +
+                                "has too few tokens (probably).\n" +
+                                "Printing content of 'tokens' below:\n";
+                        for (String token : tokens){
+                            errorMessage += token + "\n";
+                        }
+
+                        Log.e("StringHasTooFewTokens", errorMessage);
+                        e.printStackTrace();
                     }
 
 
@@ -887,7 +918,6 @@ public class DBHelper extends SQLiteOpenHelper {
         String query = "SELECT " + SubstantivDB.FeedEntry.COLUMN_WORTSTAMM +
                        " FROM "+ SubstantivDB.FeedEntry.TABLE_NAME +
                        " WHERE _ID = ?";
-        Log.d("QUERY", query+vokabelID);
         Cursor substantivCursor = database.rawQuery(query, new String[] {vokabelID+""});
         substantivCursor.moveToNext();
         String wortstamm = substantivCursor.getString(0);
@@ -1121,7 +1151,6 @@ public class DBHelper extends SQLiteOpenHelper {
             //constructs a instance of Präposition from the given randomNumber
             count = randomNumber-entryAmountSubstantiv-entryAmountVerb;
             table = PräpositionDB.FeedEntry.TABLE_NAME;
-            Log.d("PräpChosen", ""+count);
             vokabelID = getIdFromCount(lektionNr, count, false, table);
             lateinVokabel = getColumnFromId(vokabelID, table, PräpositionDB.FeedEntry.COLUMN_LATEIN);
             deutsch = getColumnFromId(vokabelID, table, PräpositionDB.FeedEntry.COLUMN_DEUTSCH);

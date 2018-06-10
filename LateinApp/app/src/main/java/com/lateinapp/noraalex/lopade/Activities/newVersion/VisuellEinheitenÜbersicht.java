@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickDeklinationsendung;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickKasusFragen;
@@ -16,9 +15,7 @@ import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.Satzglieder
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputAdjektive;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputDeklinationsendung;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputPersonalendung;
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten.UserInputVokabeltrainer;
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.LateinAppActivity;
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.LektionUebersicht;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputVokabeltrainer;
 import com.lateinapp.noraalex.lopade.R;
 
 /*

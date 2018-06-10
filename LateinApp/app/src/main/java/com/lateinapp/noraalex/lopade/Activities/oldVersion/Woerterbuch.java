@@ -52,7 +52,8 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
                 "Lektion 2",
                 "Lektion 3",
                 "Lektion 4",
-                "Lektion 5"
+                "Lektion 5",
+                "Lektion 6"
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,

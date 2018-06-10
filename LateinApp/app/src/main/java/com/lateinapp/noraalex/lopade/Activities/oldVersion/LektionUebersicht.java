@@ -12,7 +12,7 @@ import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickDeklin
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputDeklinationsendung;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputPersonalendung;
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.Einheiten.UserInputVokabeltrainer;
+import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputVokabeltrainer;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.LektionDB;
 import com.lateinapp.noraalex.lopade.R;

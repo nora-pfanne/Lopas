@@ -32,7 +32,7 @@
             android:name="com.lateinapp.noraalex.lopade.Activities.oldVersion.Woerterbuch"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.oldVersion.Einheiten.UserInputVokabeltrainer"
+            android:name=".Activities.newVersion.Einheiten.UserInputVokabeltrainer"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible" />
         <activity
