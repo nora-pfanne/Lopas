@@ -20,8 +20,8 @@ public class Home extends LateinAppActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     //#DEVELOPER
-    private static boolean DEVELOPER = true;
-    private static boolean DEV_CHEAT_MODE = true;
+    private static boolean DEVELOPER = false;
+    private static boolean DEV_CHEAT_MODE = false;
     //#VISUAL -- Set this to true to access visual rework mode
     private static boolean START_VISUAL_REWORK = true;
 
