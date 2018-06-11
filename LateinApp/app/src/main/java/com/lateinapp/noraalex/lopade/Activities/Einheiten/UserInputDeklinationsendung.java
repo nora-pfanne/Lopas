@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten;
+package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +13,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.Home;
-import com.lateinapp.noraalex.lopade.Activities.newVersion.LateinAppActivity;
+import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
@@ -28,7 +27,7 @@ import java.util.Random;
 
 //TODO: Input bestätigen mit Enter
 //TODO: Make compatible with multiple tenses
-public class UserInputDeklinationsendung extends LateinAppActivity{
+public class UserInputDeklinationsendung extends LateinAppActivity {
 
     private SharedPreferences sharedPref;
     private DBHelper dbHelper;
@@ -150,7 +149,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
             lateinText += "\n" + personalendungUser;
 
             //#DEVELOPER
-            if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()){
+            if (EinheitenUebersicht.DEVELOPER && EinheitenUebersicht.DEV_CHEAT_MODE){
                 lateinText += "\n" + dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), currentDeclination);
             }
             request.setText(lateinText);

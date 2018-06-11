@@ -1,12 +1,11 @@
-package com.lateinapp.noraalex.lopade.Activities.newVersion;
+package com.lateinapp.noraalex.lopade.Activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Switch;
 
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.Home;
-import com.lateinapp.noraalex.lopade.Activities.newVersion.LateinAppActivity;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.EinheitenUebersicht;
 import com.lateinapp.noraalex.lopade.R;
 
 public class SettingsActivity extends LateinAppActivity {
@@ -25,7 +24,7 @@ public class SettingsActivity extends LateinAppActivity {
 
         //#DEVELOPER
         toggleDevModeSwitch = findViewById(R.id.switchToggleDevMode);
-        toggleDevModeSwitch.setChecked(Home.isDEVELOPER());
+        toggleDevModeSwitch.setChecked(EinheitenUebersicht.DEVELOPER);
         toggleDevModeSwitch.setVisibility(View.GONE);
 
         /* TODO
@@ -41,7 +40,7 @@ public class SettingsActivity extends LateinAppActivity {
             //toggling the developer mode
             //#DEVELOPER
             case (R.id.switchToggleDevMode):
-                Home.setDEVELOPER(toggleDevModeSwitch.isChecked());
+                EinheitenUebersicht.DEVELOPER = toggleDevModeSwitch.isChecked();
                 SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putBoolean("DEVELOPER", toggleDevModeSwitch.isChecked());

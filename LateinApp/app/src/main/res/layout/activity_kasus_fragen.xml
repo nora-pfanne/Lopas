@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickKasusFragen">
+    tools:context="com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickKasusFragen">
 
     <TextView
         android:id="@+id/textGrammatikKasusFragenÜberschrift"

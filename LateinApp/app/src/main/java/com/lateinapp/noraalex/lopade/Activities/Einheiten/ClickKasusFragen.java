@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten;
+package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.newVersion.LateinAppActivity;
+import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.R;
 
 public class ClickKasusFragen extends LateinAppActivity {

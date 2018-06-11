@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten;
+package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.newVersion.LateinAppActivity;
+import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.R;
 
 public class UserInputAdjektive extends LateinAppActivity {

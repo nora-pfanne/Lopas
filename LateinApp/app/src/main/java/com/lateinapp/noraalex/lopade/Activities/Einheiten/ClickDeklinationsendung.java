@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten;
+package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,8 +10,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.newVersion.LateinAppActivity;
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.Home;
+import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
@@ -304,7 +303,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                     allCorrectCases.get(0)));
 
             //#DEVELOPER
-            if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) {
+            if (EinheitenUebersicht.DEVELOPER && EinheitenUebersicht.DEV_CHEAT_MODE) {
                 //Lowering the text size if more than 2 correct cases exist so it fits the screen.
                 if (allCorrectCases.size() > 2) {
                     lateinVokabel.setTextSize(24);

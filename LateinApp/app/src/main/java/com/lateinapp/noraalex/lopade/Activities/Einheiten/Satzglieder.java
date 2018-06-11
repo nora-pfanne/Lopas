@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten;
+package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,8 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Space;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.Home;
-import com.lateinapp.noraalex.lopade.Activities.newVersion.LateinAppActivity;
+import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.BeispielsatzDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
@@ -282,7 +281,7 @@ public class Satzglieder extends LateinAppActivity {
                     }
 
                     //#DEVELOPER
-                    if (Home.isDEV_CHEAT_MODE()){
+                    if (EinheitenUebersicht.DEV_CHEAT_MODE){
                         text += "(S)";
                     }
 
@@ -322,7 +321,7 @@ public class Satzglieder extends LateinAppActivity {
                             konjugation);
 
                     //#DEVELOPER
-                    if (Home.isDEV_CHEAT_MODE()){
+                    if (EinheitenUebersicht.DEV_CHEAT_MODE){
                         text += "(SP)";
                     }
 
@@ -355,7 +354,7 @@ public class Satzglieder extends LateinAppActivity {
 
                     }
                     //#DEVELOPER
-                    if (Home.isDEV_CHEAT_MODE()){
+                    if (EinheitenUebersicht.DEV_CHEAT_MODE){
                         text += "(P)";
                     }
 
@@ -388,7 +387,7 @@ public class Satzglieder extends LateinAppActivity {
                     }
 
                     //#DEVELOPER
-                    if (Home.isDEV_CHEAT_MODE()){
+                    if (EinheitenUebersicht.DEV_CHEAT_MODE){
                         text += "(G)";
                     }
 
@@ -420,7 +419,7 @@ public class Satzglieder extends LateinAppActivity {
                     }
 
                     //#DEVELOPER
-                    if (Home.isDEV_CHEAT_MODE()){
+                    if (EinheitenUebersicht.DEV_CHEAT_MODE){
                         text += "(D)";
                     }
 
@@ -452,7 +451,7 @@ public class Satzglieder extends LateinAppActivity {
                     }
 
                     //#DEVELOPER
-                    if (Home.isDEV_CHEAT_MODE()){
+                    if (EinheitenUebersicht.DEV_CHEAT_MODE){
                         text += "(A)";
                     }
 

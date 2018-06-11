@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.newVersion.EinheitenUebersicht"
+            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.EinheitenUebersicht"
             android:screenOrientation="portrait"
             android:label="@string/app_name">
 
@@ -23,50 +23,38 @@
         </activity>
 
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.oldVersion.Home"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.oldVersion.LektionUebersicht"
+            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputVokabeltrainer"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.AndroidDatabaseManager"
+            android:name="com.lateinapp.noraalex.lopade.Activities.Woerterbuch"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.Woerterbuch"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".Activities.newVersion.Einheiten.UserInputVokabeltrainer"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible" />
-        <activity
-            android:name=".Activities.newVersion.Einheiten.ClickDeklinationsendung"
+            android:name=".Activities.Einheiten.ClickDeklinationsendung"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.newVersion.SettingsActivity"
+            android:name="com.lateinapp.noraalex.lopade.Activities.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.newVersion.Einheiten.ClickPersonalendung"
+            android:name=".Activities.Einheiten.ClickPersonalendung"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".Activities.newVersion.Einheiten.UserInputDeklinationsendung"
+            android:name=".Activities.Einheiten.UserInputDeklinationsendung"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".Activities.newVersion.Einheiten.UserInputPersonalendung"
+            android:name=".Activities.Einheiten.UserInputPersonalendung"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".Activities.newVersion.Einheiten.Satzglieder"
+            android:name=".Activities.Einheiten.Satzglieder"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".Activities.newVersion.Einheiten.ClickKasusFragen"
+        <activity android:name=".Activities.Einheiten.ClickKasusFragen"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".Activities.newVersion.Einheiten.UserInputAdjektive"
+        <activity android:name=".Activities.Einheiten.UserInputAdjektive"
             android:screenOrientation="portrait"/>
 
 

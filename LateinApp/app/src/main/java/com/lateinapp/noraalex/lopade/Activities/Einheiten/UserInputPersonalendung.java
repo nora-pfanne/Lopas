@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten;
+package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +13,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.Home;
-import com.lateinapp.noraalex.lopade.Activities.newVersion.LateinAppActivity;
+import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Personalendung_PräsensDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
@@ -27,7 +26,7 @@ import java.util.Random;
  */
 
 //TODO: Input bestätigen mit Enter
-public class UserInputPersonalendung extends LateinAppActivity{
+public class UserInputPersonalendung extends LateinAppActivity {
 
     private SharedPreferences sharedPref;
     private DBHelper dbHelper;
@@ -134,7 +133,7 @@ public class UserInputPersonalendung extends LateinAppActivity{
             personalendungUser = personalendungUser.replace("Pl", "Pers. Pl.");
             lateinText += "\n" + personalendungUser + " Präsens";
             //#DEVELOPER
-            if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()){
+            if (EinheitenUebersicht.DEVELOPER && EinheitenUebersicht.DEV_CHEAT_MODE){
                 lateinText += "\n" + dbHelper.getKonjugiertesVerb(currentVokabel.getId(), currentPersonalendung);
             }
             request.setText(lateinText);

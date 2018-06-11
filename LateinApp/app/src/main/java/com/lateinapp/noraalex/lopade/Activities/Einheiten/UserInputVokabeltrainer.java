@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten;
+package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +13,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.newVersion.LateinAppActivity;
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.Home;
+import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.PräpositionDB;
@@ -112,7 +111,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
             currentVokabel = dbHelper.getRandomVocabulary(lektion);
             String lateinText = currentVokabel.getLatein();
             //#DEVELOPER
-            if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) lateinText += "\n" + currentVokabel.getDeutsch();
+            if (EinheitenUebersicht.DEVELOPER && EinheitenUebersicht.DEV_CHEAT_MODE) lateinText += "\n" + currentVokabel.getDeutsch();
             request.setText(lateinText);
 
             //Adjusting the visibility of the buttons.

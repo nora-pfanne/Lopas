@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.newVersion;
+package com.lateinapp.noraalex.lopade.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -6,8 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.AndroidDatabaseManager;
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.Home;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.EinheitenUebersicht;
 import com.lateinapp.noraalex.lopade.R;
 
 //TODO: Find a better name for this
@@ -73,8 +72,8 @@ public abstract class LateinAppActivity extends AppCompatActivity{
             //toggles the DevCheatMode
             case (R.id.action_dev_Vokabeltrainer_Cheat):
                 SharedPreferences.Editor editor = sharedPref.edit();
-                Home.setDEV_CHEAT_MODE(!Home.isDEV_CHEAT_MODE());
-                editor.putBoolean("DEV_CHEAT_MODE", Home.isDEV_CHEAT_MODE());
+                EinheitenUebersicht.DEV_CHEAT_MODE = !EinheitenUebersicht.DEV_CHEAT_MODE;
+                editor.putBoolean("DEV_CHEAT_MODE", EinheitenUebersicht.DEV_CHEAT_MODE);
                 editor.apply();
                 adjustSettings();
                 break;
@@ -112,13 +111,13 @@ public abstract class LateinAppActivity extends AppCompatActivity{
     private void adjustSettings(){
 
         //#DEVELOPER
-        if (Home.isDEVELOPER()) {
+        if (EinheitenUebersicht.DEVELOPER) {
             devDBHelper.setVisible(true);
             devVokCheat.setVisible(true);
 
             //Setting the text of the
             String temp;
-            if (Home.isDEV_CHEAT_MODE()){
+            if (EinheitenUebersicht.DEV_CHEAT_MODE){
                 temp = "ON";
             }else{
                 temp = "OFF";
@@ -131,5 +130,6 @@ public abstract class LateinAppActivity extends AppCompatActivity{
         }
 
     }
+
 
 }

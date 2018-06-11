@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten;
+package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,8 +10,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.newVersion.LateinAppActivity;
-import com.lateinapp.noraalex.lopade.Activities.oldVersion.Home;
+import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Personalendung_PräsensDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
@@ -252,7 +251,7 @@ public class ClickPersonalendung extends LateinAppActivity {
             String lateinText = dbHelper.getKonjugiertesVerb(currentVokabel.getId(), konjugation);
 
             //#DEVELOPER
-            if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) lateinText += "\n" + konjugation;
+            if (EinheitenUebersicht.DEVELOPER && EinheitenUebersicht.DEV_CHEAT_MODE) lateinText += "\n" + konjugation;
           
             latein.setText(lateinText);
 

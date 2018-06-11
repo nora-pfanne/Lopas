@@ -1,5 +1,5 @@
 //add your package name here example: package com.example.dbm;
-package com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten;
+package com.lateinapp.noraalex.lopade.Activities;
 //all required import files
 import java.util.ArrayList;
 import java.util.LinkedList;

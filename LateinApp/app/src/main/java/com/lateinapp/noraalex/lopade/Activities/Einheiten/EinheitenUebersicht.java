@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.newVersion;
+package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,29 +9,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickDeklinationsendung;
-import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickKasusFragen;
-import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.ClickPersonalendung;
-import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.Satzglieder;
-import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputAdjektive;
-import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputDeklinationsendung;
-import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputPersonalendung;
-import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.UserInputVokabeltrainer;
-import com.lateinapp.noraalex.lopade.Activities.newVersion.Einheiten.Woerterbuch;
+import com.lateinapp.noraalex.lopade.Activities.Woerterbuch;
 import com.lateinapp.noraalex.lopade.R;
-
-/*
-***************************************************************************************************
-* The following class is part of the visual overhaul of the app
-***************************************************************************************************
-*/
 
 public class EinheitenUebersicht extends AppCompatActivity {
 
 
     //#DEVELOPER
-    private static boolean DEVELOPER = false;
-    private static boolean DEV_CHEAT_MODE = false;
+    public static boolean DEVELOPER = false;
+    public static boolean DEV_CHEAT_MODE = false;
 
     SharedPreferences sharedPref;
 
@@ -87,7 +73,7 @@ public class EinheitenUebersicht extends AppCompatActivity {
 
             case R.id.uebersicht_vokabel_1:
                 intent = new Intent(this, UserInputVokabeltrainer.class);
-                intent.putExtra("lektion", 1);
+                intent.putExtra("lektion",1);
                 startActivity(intent);
                 break;
 
