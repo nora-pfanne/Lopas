@@ -293,7 +293,68 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                             dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination).equals(
                                     dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), fall))
                             ){
-                        allCorrectCases.add(fall);
+
+                        switch (extraFromEinheitenUebersicht){
+
+                            case "NOMINATIV":
+                                if (fall.equals(faelle[0]) ||
+                                        fall.equals(faelle[1])){
+                                    allCorrectCases.add(fall);
+                                }
+                                break;
+
+                            case "GENITIV":
+                                if (fall.equals(faelle[0]) ||
+                                    fall.equals(faelle[1]) ||
+                                    fall.equals(faelle[2]) ||
+                                    fall.equals(faelle[3]) ||
+                                    fall.equals(faelle[4]) ||
+                                    fall.equals(faelle[5]) ||
+                                    fall.equals(faelle[6]) ||
+                                    fall.equals(faelle[7]) ||
+                                    fall.equals(faelle[8]) ||
+                                    fall.equals(faelle[9])){
+                                    allCorrectCases.add(fall);
+                                }
+                                break;
+
+                            case "DATIV":
+                                if (fall.equals(faelle[0]) ||
+                                    fall.equals(faelle[1]) ||
+                                    fall.equals(faelle[4]) ||
+                                    fall.equals(faelle[5]) ||
+                                    fall.equals(faelle[6]) ||
+                                    fall.equals(faelle[7])){
+                                    allCorrectCases.add(fall);
+                                }
+                                break;
+
+                            case "AKKUSATIV":
+                                if (fall.equals(faelle[0]) ||
+                                        fall.equals(faelle[1]) ||
+                                        fall.equals(faelle[6]) ||
+                                        fall.equals(faelle[7])){
+                                    allCorrectCases.add(fall);
+                                }
+                                break;
+
+                            case "ABLATIV":
+
+                                if (fall.equals(faelle[0]) ||
+                                    fall.equals(faelle[1]) ||
+                                    fall.equals(faelle[6]) ||
+                                    fall.equals(faelle[7]) ||
+                                    fall.equals(faelle[8]) ||
+                                    fall.equals(faelle[9])){
+                                    allCorrectCases.add(fall);
+                                }
+                                break;
+
+                            default:
+
+                                break;
+
+                        }
                     }
 
                 }
@@ -334,6 +395,8 @@ public class ClickDeklinationsendung extends LateinAppActivity {
             akk_pl.setVisibility(View.GONE);
             abl_sg.setVisibility(View.GONE);
             abl_pl.setVisibility(View.GONE);
+            weiter.setVisibility(View.GONE);
+            checkInput.setVisibility(View.GONE);
             lateinVokabel.setVisibility(View.GONE);
             checkInput.setVisibility(View.GONE);
             reset.setVisibility(View.VISIBLE);

@@ -324,6 +324,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
                 break;
         }
     }
+
 }
 
 
