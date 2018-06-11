@@ -3,6 +3,7 @@ package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -11,23 +12,33 @@ import android.widget.TextView;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.R;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 public class ClickKasusFragen extends LateinAppActivity {
 
     //TODO: Randomize button order
 
     private SharedPreferences sharedPreferences;
 
-    private Button  kasusFrageNom,
-                    kasusFrageGen,
-                    kasusFrageDat,
-                    kasusFrageAkk,
-                    kasusFrageAbl,
+    private Button  kasusFrage1,
+                    kasusFrage2,
+                    kasusFrage3,
+                    kasusFrage4,
+                    kasusFrage5,
                     weiter,
                     reset,
                     zurück;
 
     private String[] kasusName =
             {"Nominativ", "Genitiv", "Dativ", "Akkusativ", "Ablativ"};
+    String currentKasus;
+
+    private HashMap<String, String> kasusToFrage;
+    private HashMap<Button, String> buttonToKasus;
+
 
     private Button[] buttons;
 
@@ -35,7 +46,6 @@ public class ClickKasusFragen extends LateinAppActivity {
     private int maxProgress = 10;
 
     private TextView kasusText;
-    private String kasus;
 
     private int     colorButtonCorrect,
                     colorButtonIncorrect,
@@ -61,22 +71,31 @@ public class ClickKasusFragen extends LateinAppActivity {
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
         kasusText = findViewById(R.id.textGrammatikKasusLatein);
-        kasusFrageNom = findViewById(R.id.buttonGrammatikKasusFrageNom);
-        kasusFrageGen = findViewById(R.id.buttonGrammatikKasusFrageGen);
-        kasusFrageDat = findViewById(R.id.buttonGrammatikKasusFrageDat);
-        kasusFrageAkk = findViewById(R.id.buttonGrammatikKasusFrageAkk);
-        kasusFrageAbl = findViewById(R.id.buttonGrammatikKasusFrageAbl);
+        kasusFrage1 = findViewById(R.id.buttonGrammatikKasusFrage1);
+        kasusFrage2 = findViewById(R.id.buttonGrammatikKasusFrage2);
+        kasusFrage3 = findViewById(R.id.buttonGrammatikKasusFrage3);
+        kasusFrage4 = findViewById(R.id.buttonGrammatikKasusFrage4);
+        kasusFrage5 = findViewById(R.id.buttonGrammatikKasusFrage5);
         weiter = findViewById(R.id.buttonGrammatikKasusFragenWeiter);
         reset = findViewById(R.id.buttonGrammatikKasusFragenReset);
         zurück = findViewById(R.id.buttonGrammatikKasusFragenZurück);
         progressBar = findViewById(R.id.progressBarKasusFragen);
 
+        kasusToFrage = new HashMap<>();
+        kasusToFrage.put("Nominativ",   "Wer oder was?");
+        kasusToFrage.put("Genitiv",     "Wessen?");
+        kasusToFrage.put("Dativ",       "Wem oder für wen?");
+        kasusToFrage.put("Akkusativ",   "Wen oder was?");
+        kasusToFrage.put("Ablativ",     "Womit oder wodurch?");
+
+        buttonToKasus = new HashMap<>();
+
         buttons = new Button[]{
-                kasusFrageNom,
-                kasusFrageGen,
-                kasusFrageDat,
-                kasusFrageAkk,
-                kasusFrageAbl
+                kasusFrage1,
+                kasusFrage2,
+                kasusFrage3,
+                kasusFrage4,
+                kasusFrage5
         };
 
         weiter.setVisibility(View.GONE);
@@ -89,31 +108,50 @@ public class ClickKasusFragen extends LateinAppActivity {
 
         switch(view.getId()){
 
-            case (R.id.buttonGrammatikKasusFrageNom):
-                if(kasusName[0].equals(kasus)) kasusChosen(true, buttons[0]);
-                else kasusChosen(false, buttons[0]);
+            case (R.id.buttonGrammatikKasusFrage1):
+                if(currentKasus.equals(
+                        buttonToKasus.get(view)
+                )){
+                    kasusChosen(true, (Button)view);
+                }
+                else kasusChosen(false, (Button)view);
                 break;
 
-            case (R.id.buttonGrammatikKasusFrageGen):
-                if(kasusName[1].equals(kasus)) kasusChosen(true, buttons[1]);
-                else kasusChosen(false, buttons[1]);
+            case (R.id.buttonGrammatikKasusFrage2):
+                if(currentKasus.equals(
+                        buttonToKasus.get(view)
+                )){
+                    kasusChosen(true, (Button)view);
+                }
+                else kasusChosen(false, (Button)view);
                 break;
 
-            case (R.id.buttonGrammatikKasusFrageDat):
-                if(kasusName[2].equals(kasus)) kasusChosen(true, buttons[2]);
-                else kasusChosen(false, buttons[2]);
+            case (R.id.buttonGrammatikKasusFrage3):
+                if(currentKasus.equals(
+                        buttonToKasus.get(view)
+                )){
+                    kasusChosen(true, (Button)view);
+                }
+                else kasusChosen(false, (Button)view);
                 break;
 
-            case (R.id.buttonGrammatikKasusFrageAkk):
-                if(kasusName[3].equals(kasus)) kasusChosen(true, buttons[3]);
-                else kasusChosen(false, buttons[3]);
+            case (R.id.buttonGrammatikKasusFrage4):
+                if(currentKasus.equals(
+                        buttonToKasus.get(view)
+                )){
+                    kasusChosen(true, (Button)view);
+                }
+                else kasusChosen(false, (Button)view);
                 break;
 
-            case (R.id.buttonGrammatikKasusFrageAbl):
-                if(kasusName[4].equals(kasus)) kasusChosen(true, buttons[4]);
-                else kasusChosen(false, buttons[4]);
+            case (R.id.buttonGrammatikKasusFrage5):
+                if(currentKasus.equals(
+                        buttonToKasus.get(view)
+                )){
+                    kasusChosen(true, (Button)view);
+                }
+                else kasusChosen(false, (Button)view);
                 break;
-
 
             case (R.id.buttonGrammatikKasusFragenWeiter):
                 weiter.setVisibility(View.GONE);
@@ -145,28 +183,49 @@ public class ClickKasusFragen extends LateinAppActivity {
 
         if (progress < maxProgress) {
 
-            kasus = kasusName[newKasusNummer()];
 
-            kasusText.setText(kasus);
+            shuffleArray(kasusName);
+            assignButtons();
+
+            currentKasus = kasusName[new Random().nextInt(5)];
+            kasusText.setText(currentKasus);
+
             progressBar.setProgress(progress);
         }else {
 
             kasusText.setVisibility(View.GONE);
-            kasusFrageNom.setVisibility(View.GONE);
-            kasusFrageGen.setVisibility(View.GONE);
-            kasusFrageDat.setVisibility(View.GONE);
-            kasusFrageAkk.setVisibility(View.GONE);
-            kasusFrageAbl.setVisibility(View.GONE);
+            kasusFrage1.setVisibility(View.GONE);
+            kasusFrage2.setVisibility(View.GONE);
+            kasusFrage3.setVisibility(View.GONE);
+            kasusFrage4.setVisibility(View.GONE);
+            kasusFrage5.setVisibility(View.GONE);
             reset.setVisibility(View.VISIBLE);
             zurück.setVisibility(View.VISIBLE);
         }
     }
 
-    private int newKasusNummer(){
+    private void assignButtons(){
 
-        int kasusNummer = (int)(Math.random() * ((4) + 1));
+        buttonToKasus.clear();
 
-        return kasusNummer;
+        for(int i = 0; i < 5; i++){
+            buttonToKasus.put(buttons[i], kasusName[i]);
+            buttons[i].setText(kasusToFrage.get(kasusName[i]));
+        }
+    }
+
+    // Implementing Fisher–Yates shuffle
+    private static void shuffleArray(String[] ar) {
+        // If running on Java 6 or older, use `new Random()` on RHS here
+        Random rnd = ThreadLocalRandom.current();
+        for (int i = ar.length - 1; i > 0; i--)
+        {
+            int index = rnd.nextInt(i + 1);
+            // Simple swap
+            String a = ar[index];
+            ar[index] = ar[i];
+            ar[i] = a;
+        }
     }
 
     private void kasusChosen(boolean correct, Button button){
@@ -184,18 +243,20 @@ public class ClickKasusFragen extends LateinAppActivity {
         }else{
 
             color = colorButtonIncorrect;
+            if (sharedPreferences.getInt("ClickKasusFragen", 0) > 0) {
+                editor.putInt("ClickKasusFragen",
+                        sharedPreferences.getInt("ClickKasusFragen", 0) - 1);
+            }
+            for (Button b : buttons){
 
-            editor.putInt("ClickKasusFragen",
-                    sharedPreferences.getInt("ClickKasusFragen", 0) -1);
-
-            for(int i = 0; i<kasusName.length; i++){
-                if(kasusName[i].equals(kasus)){
-                    buttons[i].setBackgroundColor(colorButtonCorrect);
+                if (buttonToKasus.get(b).equals(currentKasus)){
+                    b.setBackgroundColor(colorButtonCorrect);
+                    break;
                 }
             }
         }
         editor.apply();
-
+        Log.d("CurrentProgress", ""+sharedPreferences.getInt("ClickKasusFragen", 0));
         progressBar.setProgress(sharedPreferences.getInt("ClickKasusFragen", 0));
 
         button.setBackgroundColor(color);

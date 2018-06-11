@@ -63,7 +63,7 @@
         app:layout_constraintVertical_bias="0.149" />
 
     <Button
-        android:id="@+id/buttonGrammatikKasusFrageNom"
+        android:id="@+id/buttonGrammatikKasusFrage1"
         style="@style/BasicBlueButton"
         android:layout_width="333dp"
         android:layout_height="45dp"
@@ -72,7 +72,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:onClick="kasusFragenButtonClicked"
-        android:text="Wer oder was?"
+        android:text="Frage 1"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +83,7 @@
 
     <Button
         style="@style/BasicBlueButton"
-        android:id="@+id/buttonGrammatikKasusFrageGen"
+        android:id="@+id/buttonGrammatikKasusFrage2"
         android:layout_width="333dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -91,7 +91,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Wessen?"
+        android:text="Frage 2"
         android:onClick="kasusFragenButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -101,7 +101,7 @@
         app:layout_constraintVertical_bias="0.24" />
 
     <Button
-        android:id="@+id/buttonGrammatikKasusFrageDat"
+        android:id="@+id/buttonGrammatikKasusFrage3"
         style="@style/BasicBlueButton"
         android:layout_width="333dp"
         android:layout_height="45dp"
@@ -110,7 +110,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:onClick="kasusFragenButtonClicked"
-        android:text="Wem oder für wen?"
+        android:text="Frage 3"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -120,7 +120,7 @@
         app:layout_constraintVertical_bias="0.48" />
 
     <Button
-        android:id="@+id/buttonGrammatikKasusFrageAkk"
+        android:id="@+id/buttonGrammatikKasusFrage4"
         style="@style/BasicBlueButton"
         android:layout_width="333dp"
         android:layout_height="45dp"
@@ -129,7 +129,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:onClick="kasusFragenButtonClicked"
-        android:text="Wen oder was?"
+        android:text="Frage 4"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -139,7 +139,7 @@
         app:layout_constraintVertical_bias="0.72" />
 
     <Button
-        android:id="@+id/buttonGrammatikKasusFrageAbl"
+        android:id="@+id/buttonGrammatikKasusFrage5"
         style="@style/BasicBlueButton"
         android:layout_width="333dp"
         android:layout_height="45dp"
@@ -148,7 +148,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:onClick="kasusFragenButtonClicked"
-        android:text="Womit oder wodurch?"
+        android:text="Frage 5"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
