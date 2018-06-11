@@ -1,5 +1,6 @@
 package com.lateinapp.noraalex.lopade.Databases;
 
+import com.lateinapp.noraalex.lopade.Databases.Tables.AdjektivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.BeispielsatzDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
@@ -21,7 +22,7 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
 public final class SQL_DUMP {
 
     //Strings used for the creation of all database tables
-     static final String SQL_CREATE_ENTRIES_ADVERB =
+    static final String SQL_CREATE_ENTRIES_ADVERB =
             "CREATE TABLE "
                     + AdverbDB.FeedEntry.TABLE_NAME
                     + "( "
@@ -35,6 +36,32 @@ public final class SQL_DUMP {
                     + " INTEGER, "
                     + AdverbDB.FeedEntry.COLUMN_LEKTION_ID
                     + " INTEGER, "
+
+                    + " FOREIGN KEY ("
+                    + AdverbDB.FeedEntry.COLUMN_LEKTION_ID
+                    + ") REFERENCES "
+                    + LektionDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + LektionDB.FeedEntry._ID
+                    + ")"
+                    + ")";
+
+    static final String SQL_CREATE_ENTRIES_ADJEKTIV =
+            "CREATE TABLE "
+                    + AdjektivDB.FeedEntry.TABLE_NAME
+                    + "( "
+                    + AdjektivDB.FeedEntry._ID
+                    + " INTEGER PRIMARY KEY, "
+                    + AdjektivDB.FeedEntry.COLUMN_DEUTSCH
+                    + " TEXT, "
+                    + AdjektivDB.FeedEntry.COLUMN_WORTSTAMM
+                    + " TEXT, "
+                    + AdjektivDB.FeedEntry.COLUMN_GELERNT
+                    + " INTEGER, "
+                    + AdjektivDB.FeedEntry.COLUMN_LEKTION_ID
+                    + " INTEGER, "
+                    + AdjektivDB.FeedEntry.COLUMN_TYPE
+                    + " TEXT, "
 
                     + " FOREIGN KEY ("
                     + AdverbDB.FeedEntry.COLUMN_LEKTION_ID
@@ -356,9 +383,13 @@ public final class SQL_DUMP {
                      + ")";
 
     //creating a String for quick access to a deletion command for all tables
-     static final String SQL_DELETE_ENTRIES_ADVERB =
+    static final String SQL_DELETE_ENTRIES_ADVERB =
             "DROP TABLES IF EXISTS "
                     + AdverbDB.FeedEntry.TABLE_NAME;
+
+    static final String SQL_DELETE_ENTRIES_ADJEKTIV =
+            "DROP TABLES IF EXISTS "
+                    + AdjektivDB.FeedEntry.TABLE_NAME;
 
      static final String SQL_DELETE_ENTRIES_DEKLINATIONSENDUNG =
             "DROP TABLES IF EXISTS "
@@ -402,6 +433,7 @@ public final class SQL_DUMP {
 
      static final String[] allTables = {
             AdverbDB.FeedEntry.TABLE_NAME,
+            AdjektivDB.FeedEntry.TABLE_NAME,
             DeklinationsendungDB.FeedEntry.TABLE_NAME,
             LektionDB.FeedEntry.TABLE_NAME,
             Personalendung_PräsensDB.FeedEntry.TABLE_NAME,
@@ -413,6 +445,16 @@ public final class SQL_DUMP {
             VerbDB.FeedEntry.TABLE_NAME,
             BeispielsatzDB.FeedEntry.TABLE_NAME
     };
+
+     static final String[] allColumnsAdjektiv = {
+
+             AdjektivDB.FeedEntry._ID,
+             AdjektivDB.FeedEntry.COLUMN_DEUTSCH,
+             AdjektivDB.FeedEntry.COLUMN_WORTSTAMM,
+             AdjektivDB.FeedEntry.COLUMN_GELERNT,
+             AdjektivDB.FeedEntry.COLUMN_LEKTION_ID,
+             AdjektivDB.FeedEntry.COLUMN_TYPE
+     };
 
      static final String[] allColumnsAdverb = {
 
