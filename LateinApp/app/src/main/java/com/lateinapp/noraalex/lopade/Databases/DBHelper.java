@@ -1411,6 +1411,31 @@ public class DBHelper extends SQLiteOpenHelper {
         s = s.replace("OeOe", "Ö");
         s = s.replace("sz", "ß");
 
+        /*
+       TODO: Find a good String to replace everything with and acually replace it
+        s = s.replace("-A", "Ā");
+        s = s.replace("-a", "ā");
+        s = s.replace("-E", "Ē");
+        s = s.replace("-e", "ē");
+        s = s.replace("-I", "Ī");
+        s = s.replace("-i", "ī");
+        s = s.replace("-O", "Ō");
+        s = s.replace("-o", "ō");
+        s = s.replace("-U", "Ū");
+        s = s.replace("-u", "ū");
+
+        s = s.replace("#A", "Ă");
+        s = s.replace("#a", "ă");
+        s = s.replace("#E", "Ĕ");
+        s = s.replace("#e", "ĕ");
+        s = s.replace("#I", "Ĭ");
+        s = s.replace("#i", "ĭ");
+        s = s.replace("#O", "Ŏ");
+        s = s.replace("#o", "ŏ");
+        s = s.replace("#U", "Ŭ");
+        s = s.replace("#u", "ŭ");
+        */
+
         return s;
     }
 
