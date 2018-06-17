@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Switch;
 
-import com.lateinapp.noraalex.lopade.Activities.Einheiten.EinheitenUebersicht;
 import com.lateinapp.noraalex.lopade.R;
 
 public class SettingsActivity extends LateinAppActivity {

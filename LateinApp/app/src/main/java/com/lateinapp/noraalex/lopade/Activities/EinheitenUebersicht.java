@@ -1,4 +1,4 @@
-package com.lateinapp.noraalex.lopade.Activities.Einheiten;
+package com.lateinapp.noraalex.lopade.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +9,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickDeklinationsendung;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickKasusFragen;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickPersonalendung;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.Satzglieder;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputAdjektive;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputDeklinationsendung;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputPersonalendung;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputVokabeltrainer;
 import com.lateinapp.noraalex.lopade.Activities.Woerterbuch;
 import com.lateinapp.noraalex.lopade.R;
 

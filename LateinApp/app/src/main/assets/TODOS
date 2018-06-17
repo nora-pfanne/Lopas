@@ -52,9 +52,6 @@ Bis 19.03
           Was für Belohnungen?
           Zusatzeinheit?
 
-    TODO: Einheit: Satzglieder bestimmen
-                   mit AcI (Hardcoded)
-                   (Nora)
     TODO: Einheit: Präposition erkennen -> "in + Abl" & "in + Akk" haben berschiedene Bedeutungen
                     Overlay (Nora)
                     SQL / Java (Alex)

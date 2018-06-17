@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.lateinapp.noraalex.lopade.Activities.Einheiten.EinheitenUebersicht;
 import com.lateinapp.noraalex.lopade.R;
 
 //TODO: Find a better name for this
