@@ -154,7 +154,6 @@ public class Satzglieder extends LateinAppActivity {
         }else {
 
             progressBar.setProgress(maxProgress);
-            //TODO:
             endGame();
         }
 

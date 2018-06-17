@@ -20,7 +20,7 @@ import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputVokabeltraine
 import com.lateinapp.noraalex.lopade.Activities.Woerterbuch;
 import com.lateinapp.noraalex.lopade.R;
 
-public class EinheitenUebersicht extends AppCompatActivity {
+public class EinheitenUebersicht extends LateinAppActivity {
 
 
     //#DEVELOPER
@@ -45,27 +45,6 @@ public class EinheitenUebersicht extends AppCompatActivity {
         sharedPref = getSharedPreferences("SharedPreferences", 0);
         DEVELOPER = sharedPref.getBoolean("DEVELOPER", DEVELOPER);
         DEV_CHEAT_MODE = sharedPref.getBoolean("DEV_CHEAT_MODE", DEV_CHEAT_MODE);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_visuell_einheiten_uebersicht, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     public void uebersichtButtonClicked(View v) {

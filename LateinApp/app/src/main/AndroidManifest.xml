@@ -57,6 +57,9 @@
         <activity android:name=".Activities.Einheiten.UserInputAdjektive"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".Activities.AndroidDatabaseManager"
+            android:screenOrientation="portrait"/>
+
 
         <meta-data
             android:name="preloaded_fonts"

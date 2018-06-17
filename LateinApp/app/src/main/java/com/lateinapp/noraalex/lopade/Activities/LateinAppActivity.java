@@ -3,6 +3,7 @@ package com.lateinapp.noraalex.lopade.Activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -52,6 +53,8 @@ public abstract class LateinAppActivity extends AppCompatActivity{
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        Log.d("Item Found", "ID: " + item.getItemId());
 
         switch (item.getItemId()){
             //Opening the settings-activity
@@ -114,14 +117,7 @@ public abstract class LateinAppActivity extends AppCompatActivity{
             devDBHelper.setVisible(true);
             devVokCheat.setVisible(true);
 
-            //Setting the text of the
-            String temp;
-            if (EinheitenUebersicht.DEV_CHEAT_MODE){
-                temp = "ON";
-            }else{
-                temp = "OFF";
-            }
-            devVokCheat.setTitle("DEV: Cheat-Mode: " + temp);
+            devVokCheat.setTitle("DEV: Cheat-Mode: " + (EinheitenUebersicht.DEV_CHEAT_MODE ? "ON" : "OFF"));
 
         }else {
             devDBHelper.setVisible(false);
