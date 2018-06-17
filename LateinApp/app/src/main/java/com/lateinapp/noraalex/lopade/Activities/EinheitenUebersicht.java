@@ -24,8 +24,8 @@ public class EinheitenUebersicht extends AppCompatActivity {
 
 
     //#DEVELOPER
-    public static boolean DEVELOPER = false;
-    public static boolean DEV_CHEAT_MODE = false;
+    public static boolean DEVELOPER = true;
+    public static boolean DEV_CHEAT_MODE = true;
 
     SharedPreferences sharedPref;
 
