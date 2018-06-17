@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -62,6 +63,19 @@ public class UserInputAdjektive extends LateinAppActivity {
         titel = findViewById(R.id.textUserInputÜberschrift);
 
         userInput.setHint("Dekliniertes Adjektiv");
+        //Makes it possible to move to the next vocabulary by pressing "enter"
+        userInput.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
+                //If the keyevent is a key-down event on the "enter" button
+                if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+
+
+                    userInputButtonClicked(findViewById(R.id.buttonUserInputEingabeBestätigt));
+                    return true;
+                }
+                return false;
+            }
+        });
         titel.setText("Adjektive");
 
         solution.setVisibility(View.GONE);
