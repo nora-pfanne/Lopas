@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.lateinapp.noraalex.lopade.Activities.EinheitenUebersicht;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
+import com.lateinapp.noraalex.lopade.Databases.Tables.AdjektivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.PräpositionDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.SprichwortDB;
@@ -264,6 +265,10 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
         }else if(vokabel instanceof AdverbDB){
 
             return AdverbDB.FeedEntry.TABLE_NAME;
+
+        }else if(vokabel instanceof AdjektivDB){
+
+            return AdjektivDB.FeedEntry.TABLE_NAME;
 
         }else{
 
