@@ -399,4 +399,18 @@ public class UserInputPersonalendung extends LateinAppActivity {
                 break;
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        try{
+            //Hiding the keyboard.
+            InputMethodManager imm = (InputMethodManager)getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+        }catch (Exception e){
+            //do nothing
+        }
+    }
 }
