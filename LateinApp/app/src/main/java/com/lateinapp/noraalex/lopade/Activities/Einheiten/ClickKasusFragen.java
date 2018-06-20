@@ -9,17 +9,15 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.lateinapp.noraalex.lopade.Activities.EinheitenUebersicht;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ClickKasusFragen extends LateinAppActivity {
-
-    //TODO: Randomize button order
 
     private SharedPreferences sharedPreferences;
 
@@ -32,9 +30,9 @@ public class ClickKasusFragen extends LateinAppActivity {
                     reset,
                     zurück;
 
-    private String[] kasusName =
+    private final String[] kasusName =
             {"Nominativ", "Genitiv", "Dativ", "Akkusativ", "Ablativ"};
-    String currentKasus;
+    private String currentKasus;
 
     private HashMap<String, String> kasusToFrage;
     private HashMap<Button, String> buttonToKasus;
@@ -43,7 +41,7 @@ public class ClickKasusFragen extends LateinAppActivity {
     private Button[] buttons;
 
     private ProgressBar progressBar;
-    private int maxProgress = 10;
+    private final int maxProgress = 10;
 
     private TextView kasusText;
 
@@ -189,6 +187,9 @@ public class ClickKasusFragen extends LateinAppActivity {
 
             currentKasus = kasusName[new Random().nextInt(5)];
             kasusText.setText(currentKasus);
+            if (EinheitenUebersicht.DEVELOPER && EinheitenUebersicht.DEV_CHEAT_MODE){
+                kasusText.setText(currentKasus + "\n" + kasusToFrage.get(currentKasus));
+            }
 
             progressBar.setProgress(progress);
         }else {

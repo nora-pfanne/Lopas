@@ -124,10 +124,10 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
 
     /**
      * Handling the calls to 'addTableRow(..)' depending on the newly selected item of the spinner
-     * @param parent
-     * @param view
+     * @param parent parent of the selected item
+     * @param view the selected item
      * @param pos position of the newly selected item
-     * @param id
+     * @param id id of the selected item
      */
     public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
 
@@ -185,7 +185,7 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
                         DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG,
                         "o-Deklination_m");
 
-                //@HACK: FIXME: currently adding the "a, um" to the string because it is the onyl existing case
+                //@HACK: FIXME: currently adding the "a, um" to the string because it is the only existing case
                 //This wont be the case for long. We need to properly detect the case and
                 //create something like a 'switch'-case for each one or
                 //solve this problem by creating a seperete declination method

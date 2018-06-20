@@ -30,24 +30,24 @@ public class Satzglieder extends LateinAppActivity {
     //TODO: We may want to weight the sentences
     //TODO: We may want to weight the selected elements
 
-    LinearLayout linearLayout;
-    Button weiterButton;
-    ProgressBar progressBar;
-    TextView aufgabenstellung;
-    Space space;
+    private LinearLayout linearLayout;
+    private Button weiterButton;
+    private ProgressBar progressBar;
+    private TextView aufgabenstellung;
+    private Space space;
 
-    int backgroundColor;
-    int colorButtonCorrect;
-    int colorButtonIncorrect;
+    private int backgroundColor;
+    private int colorButtonCorrect;
+    private int colorButtonIncorrect;
 
-    DBHelper dbHelper;
-    SharedPreferences sharedPref;
-    int maxProgress = 20;
+    private DBHelper dbHelper;
+    private SharedPreferences sharedPref;
+    private final int maxProgress = 20;
 
-    int correctButtonLocation;
+    private int correctButtonLocation;
 
-    int sentenceCount,
-        sentenceID;
+    private int sentenceCount;
+    private int sentenceID;
 
 
     private final String
@@ -62,7 +62,7 @@ public class Satzglieder extends LateinAppActivity {
             G_OBJ_DATIV = "Dativobjekt",
             G_OBJ_AKKUSATIV = "Akkusativobjekt";
 
-    private String[][]cases= {
+    private final String[][]cases= {
             //{G_SUBJEKT_PRAEDIKAT},
             {G_SUBJEKT_PRAEDIKAT, G_OBJ_AKKUSATIV},
             {G_SUBJEKT_PRAEDIKAT, G_OBJ_AKKUSATIV, G_OBJ_GENITIV},
@@ -76,7 +76,7 @@ public class Satzglieder extends LateinAppActivity {
             {G_SUBJEKT, G_PRAEDIKAT, G_OBJ_AKKUSATIV, G_OBJ_DATIV, G_OBJ_GENITIV}
     };
 
-    private ArrayList<Button> buttons = new ArrayList<>();
+    private final ArrayList<Button> buttons = new ArrayList<>();
     //Button with its according width
     private HashMap<Button, Integer> buttonHashMap;
 
@@ -247,10 +247,6 @@ public class Satzglieder extends LateinAppActivity {
 
         for (String s : currentSentence) {
             Button button = new Button(this, null, R.style.TransparentButton1);
-
-            //FIXME: No try&catch with "NumberFormatException" if parseInt(String) fails
-            // because it shouldnt possibly be able to fail
-            // since the only accepted data-type in the relevant database-table contains integers only
 
             //Adding spaces between the words so that they aren't directly next to eachother
             String text = " ";
@@ -510,7 +506,6 @@ public class Satzglieder extends LateinAppActivity {
         for (Button b : buttons) {
 
             //Initializing each button with set parameters
-            //FIXME: set button layout here
             b.setLayoutParams(params);
             b.setGravity(Gravity.CENTER_HORIZONTAL);
             b.setTextSize(25);
@@ -548,7 +543,7 @@ public class Satzglieder extends LateinAppActivity {
      *
      * => Makes the layout look more like a real sentence
      */
-    public void drawButtons(){
+    private void drawButtons(){
 
         //This method does nothing until all buttons from "button" have been assigned a width in "buttonHashMap"
         if (buttons.size() != buttonHashMap.size()) return;
@@ -662,9 +657,6 @@ public class Satzglieder extends LateinAppActivity {
         }
     }
 
-    /**
-     * TODO
-     */
     private void endGame(){
 
         Button resetProgress = findViewById(R.id.satzglieder_progress_reset_button);
@@ -673,6 +665,6 @@ public class Satzglieder extends LateinAppActivity {
         resetProgress.setVisibility(View.VISIBLE);
         back.setVisibility(View.VISIBLE);
 
-        aufgabenstellung.setText("Herzlichen Glückwunsch!");
+        aufgabenstellung.setText("");
     }
 }

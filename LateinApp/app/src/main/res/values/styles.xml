@@ -9,13 +9,9 @@
     </style>
 
     <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+        false
+        true
+        @android:color/transparent</style>
 
     <style name="BasicBlueButton" parent="@android:style/Widget.Button">
         <item name="android:textColor">@color/Gold</item>
@@ -31,13 +27,6 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">28sp</item>
     </style>
-
-    <!--
-    ***********************************************************************************************
-    The following styles are part of the visual overhaul of the app
-    ***********************************************************************************************
-    -->
-
 
     <style name="HomeScreenSelectionButton">
         <item name="android:background">@color/PrussianBlue</item>

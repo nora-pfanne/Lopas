@@ -38,7 +38,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
     private ProgressBar progressBar;
 
     private int[] weights;
-    private String[] faelle = {
+    private final String[] faelle = {
             DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG,
             DeklinationsendungDB.FeedEntry.COLUMN_NOM_PL,
             DeklinationsendungDB.FeedEntry.COLUMN_GEN_SG,
@@ -62,11 +62,11 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                 colorButtonActive,
                 colorButtonGrey;
     private int backgroundColor;
-    private int maxProgress = 20;
+    private final int maxProgress = 20;
 
     private ArrayList<String> allCorrectCases;
 
-    Vokabel currentVokabel;
+    private Vokabel currentVokabel;
 
     //Passed over in EinheitenÜbersicht
     private String extraFromEinheitenUebersicht;

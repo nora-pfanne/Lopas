@@ -35,7 +35,7 @@ public class UserInputAdjektive extends LateinAppActivity {
 
 
     private int backgroundColor;
-    private int maxProgress = 20;
+    private final int maxProgress = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +94,7 @@ public class UserInputAdjektive extends LateinAppActivity {
 
             try {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
             }catch (NullPointerException npe){
                 npe.printStackTrace();
             }
@@ -123,7 +123,7 @@ public class UserInputAdjektive extends LateinAppActivity {
             try {
                 InputMethodManager imm = (InputMethodManager)getSystemService(
                         Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+                if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
             }catch (NullPointerException npe){
                 npe.printStackTrace();
             }
@@ -178,11 +178,10 @@ public class UserInputAdjektive extends LateinAppActivity {
         userInput.setFocusable(false);
 
         //Hiding the keyboard
-        //TODO: Why do we need to use the RootView instead of sth like: this.getCurrentFocus();
         try {
             View v = getWindow().getDecorView().getRootView();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            if (imm != null) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }catch (NullPointerException npe){
             npe.printStackTrace();
         }
@@ -308,7 +307,7 @@ public class UserInputAdjektive extends LateinAppActivity {
             //Hiding the keyboard.
             InputMethodManager imm = (InputMethodManager)getSystemService(
                     Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+            if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
         }catch (Exception e){
             //do nothing
         }

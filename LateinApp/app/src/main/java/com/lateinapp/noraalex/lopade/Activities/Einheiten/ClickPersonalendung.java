@@ -36,7 +36,7 @@ public class ClickPersonalendung extends LateinAppActivity {
     private ProgressBar progressBar;
     private TextView latein;
 
-    private String[] faelle = {
+    private final String[] faelle = {
             Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG,
             Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG,
             Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG,
@@ -48,7 +48,7 @@ public class ClickPersonalendung extends LateinAppActivity {
 
     private String konjugation;
     private int backgroundColor;
-    private int maxProgress = 20;
+    private final int maxProgress = 20;
 
     private int colorButtonCorrect,
                 colorButtonIncorrect,
@@ -277,7 +277,7 @@ public class ClickPersonalendung extends LateinAppActivity {
      * @return a int corresponding to to position of a case in faelle[] with respect to the
      *          previously set weights[]-arr
      */
-    public String getRandomPersonalendung(){
+    private String getRandomPersonalendung(){
 
         //Getting a upper bound for the random number being retrieved afterwards
         int max =  (weights[0] +

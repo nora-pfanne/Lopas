@@ -26,7 +26,6 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
 import com.lateinapp.noraalex.lopade.R;
 
-//TODO: Input bestätigen mit Enter
 public class UserInputVokabeltrainer extends LateinAppActivity {
 
     private SharedPreferences sharedPref;
@@ -109,7 +108,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
             //Hiding the keyboard.
             InputMethodManager imm = (InputMethodManager)getSystemService(
                     Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+            if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
 
             allLearned();
 
@@ -121,7 +120,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
 
             //Showing the keyboard
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+            if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
             //Getting a new vocabulary.
             currentVokabel = dbHelper.getRandomVocabulary(lektion);
@@ -141,12 +140,11 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
         userInput.setFocusable(false);
 
         //Hiding the keyboard
-        //TODO: Why do we need to use the RootView instead of sth like: this.getCurrentFocus();
         try {
             //Hiding the Keyboard.
             View v = getWindow().getDecorView().getRootView();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            if (imm != null) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }catch (NullPointerException npe){
             npe.printStackTrace();
         }
@@ -314,7 +312,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
      * Handling the button-presses
      * @param view the view of the pressed button
      */
-    public void userInputButtonClicked(View view){
+    private void userInputButtonClicked(View view){
 
         switch (view.getId()){
 
@@ -353,7 +351,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
             //Hiding the keyboard.
             InputMethodManager imm = (InputMethodManager)getSystemService(
                     Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+            if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
         }catch (Exception e){
             //do nothing
         }

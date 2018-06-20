@@ -34,17 +34,6 @@ import java.util.Random;
 
 import static com.lateinapp.noraalex.lopade.Databases.SQL_DUMP.*;
 
-/*TODO: Reorganize the database:
-    add every translation as a new row
-    -> 3 Line Database:     _ID, Substantiv_ID, Translation
-    -> 3 Line Database:     _ID, Verb_ID, Translation
-    -> 3 Line Database:     _ID, Präposition_ID, Translation
-    -> ...
-
-    Momentan keine Priorität, da die Übersetzungen nicht modifiziert wird.
-    */
-
-
 //TODO: Simplify SQL-Stuff with "JOIN"
 
 /**
@@ -103,6 +92,10 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    private void addInitialEntries(){
+
+    }
+
     /**
      * Creating all tables
      *
@@ -123,7 +116,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_ENTRIES_SUBSTANTIV);
         db.execSQL(SQL_CREATE_ENTRIES_VERB);
         db.execSQL(SQL_CREATE_ENTRIES_BEISPIELSATZ);
-        
+
     }
 
     /**
@@ -136,7 +129,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        //TODO: This should also add the initial entries.
+        //TODO: This should also add the initial entries. -> we need to get contect here for that
 
         //Deletes all entries
         db.execSQL(SQL_DELETE_ENTRIES_ADVERB);
@@ -732,7 +725,7 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * open the connection to the database if it isn't open already.
      */
-    public void openDb() {
+    private void openDb() {
         if (database != null && database.isOpen()) close();
         database = getWritableDatabase();
     }
@@ -1011,7 +1004,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //gets the last part of the word (endung)
 
-        //FIXME: Not final!
+        //FIXME: Adjectives not final!
         //We need to check for special cases where the adjective
         //cannot be m/f/n anymore -> special cases.
         //We might also need to expand our database for this
@@ -1139,9 +1132,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         closeDb();
 
-        String vokabel = (verbStamm + sprechvokal + endung);
-
-        return vokabel;
+        return (verbStamm + sprechvokal + endung);
     }
 
     /**
@@ -1412,7 +1403,7 @@ public class DBHelper extends SQLiteOpenHelper {
         s = s.replace("sz", "ß");
 
         /*
-       TODO: Find a good String to replace everything with and acually replace it
+       TODO: Implement this
         s = s.replace("-A", "Ā");
         s = s.replace("-a", "ā");
         s = s.replace("-E", "Ē");

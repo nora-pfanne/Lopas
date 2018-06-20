@@ -27,7 +27,6 @@ import java.util.Random;
  * Created by Alexander on 07.03.2018.
  */
 
-//TODO: Input bestätigen mit Enter
 public class UserInputPersonalendung extends LateinAppActivity {
 
     private SharedPreferences sharedPref;
@@ -48,7 +47,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
     private String currentPersonalendung;
 
     private int[] weights;
-    private String[] faelle = {
+    private final String[] faelle = {
             Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG,
             Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG,
             Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG,
@@ -58,7 +57,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
 
     private String extraFromEinheitenUebersicht;
     private int backgroundColor;
-    private int maxProgress = 20;
+    private final int maxProgress = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +122,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
 
             //Showing the Keyboard.
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+            if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
 
             //Resetting the userInput.
@@ -165,7 +164,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
             //Hiding the keyboard.
             InputMethodManager imm = (InputMethodManager)getSystemService(
                     Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+            if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
 
             allLearned();
         }
@@ -177,11 +176,10 @@ public class UserInputPersonalendung extends LateinAppActivity {
         userInput.setFocusable(false);
 
         //Hiding the keyboard
-        //TODO: Why do we need to use the RootView instead of sth like: this.getCurrentFocus();
         try {
             View v = getWindow().getDecorView().getRootView();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            if (imm != null) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }catch (NullPointerException npe){
             npe.printStackTrace();
         }
@@ -273,7 +271,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
      * @return a int corresponding to to position of a case in faelle[] with respect to the
      *          previously set weights[]-arr
      */
-    public String getRandomPersonalendung(){
+    private String getRandomPersonalendung(){
 
         //Getting a upper bound for the random number being retrieved afterwards
         int max =  (weights[0] +
@@ -369,7 +367,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
      * Handling the button-presses
      * @param view the view of the pressed button
      */
-    public void userInputButtonClicked(View view){
+    private void userInputButtonClicked(View view){
 
         switch (view.getId()){
 
@@ -408,7 +406,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
             //Hiding the keyboard.
             InputMethodManager imm = (InputMethodManager)getSystemService(
                     Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+            if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
         }catch (Exception e){
             //do nothing
         }

@@ -27,7 +27,6 @@ import java.util.Random;
  * Created by Alexander on 07.03.2018.
  */
 
-//TODO: Input bestätigen mit Enter
 //TODO: Make compatible with multiple tenses
 public class UserInputDeklinationsendung extends LateinAppActivity {
 
@@ -49,7 +48,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
     private String currentDeclination;
 
     private int[] weights;
-    private String[] faelle = {
+    private final String[] faelle = {
             DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG,
             DeklinationsendungDB.FeedEntry.COLUMN_NOM_PL,
             DeklinationsendungDB.FeedEntry.COLUMN_GEN_SG,
@@ -64,7 +63,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
 
     private String extraFromEinheitenUebersicht;
     private int backgroundColor;
-    private int maxProgress = 20;
+    private final int maxProgress = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +127,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
 
             try {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
             }catch (NullPointerException npe){
                 npe.printStackTrace();
             }
@@ -139,7 +138,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
             userInput.setFocusableInTouchMode(true);
 
             //Getting a new vocabulary.
-            //FIXME: Don't return a random number but one according to the progress (nom->1 /...)
+            //FIXME: Don't return a random number but one according to the progress (nom->1 /...) [also fix the TODO below with this]
             //random number from 1 to 5 to choose, where the vocabulary comes from
             //Blueprint for randNum: int randomNum = rand.nextInt((max - min) + 1) + min;
             int rand = new Random().nextInt((5 - 1) + 1) + 1;
@@ -180,7 +179,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
             try {
                 InputMethodManager imm = (InputMethodManager)getSystemService(
                         Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+                if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
             }catch (NullPointerException npe){
                 npe.printStackTrace();
             }
@@ -306,7 +305,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
 
     /**
      * Copied from GrammatikUserInputDeklinationsendung.class
-     * @return
+     * @return the String of the chosen declination as defined in the array "faelle[]"
      */
     private String getRandomDeklination(){
 
@@ -360,11 +359,10 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
         userInput.setFocusable(false);
 
         //Hiding the keyboard
-        //TODO: Why do we need to use the RootView instead of sth like: this.getCurrentFocus();
         try {
             View v = getWindow().getDecorView().getRootView();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            if (imm != null) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }catch (NullPointerException npe){
             npe.printStackTrace();
         }
@@ -451,7 +449,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
      * Handling the button-presses
      * @param view the view of the pressed button
      */
-    public void userInputButtonClicked(View view){
+    private void userInputButtonClicked(View view){
 
         switch (view.getId()){
 
@@ -490,7 +488,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
             //Hiding the keyboard.
             InputMethodManager imm = (InputMethodManager)getSystemService(
                     Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+            if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
         }catch (Exception e){
             //do nothing
         }

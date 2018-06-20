@@ -9,9 +9,6 @@ import android.view.MenuItem;
 
 import com.lateinapp.noraalex.lopade.R;
 
-//TODO: Find a better name for this
-
-//TODO: Use Fragments???
 public abstract class LateinAppActivity extends AppCompatActivity{
 
     private boolean onPause = false;
@@ -21,7 +18,7 @@ public abstract class LateinAppActivity extends AppCompatActivity{
                     devVokCheat;
 
     //Make this accessible to all subclasses.
-    public SharedPreferences sharedPref;
+    protected SharedPreferences sharedPref;
     //Add a for all subclasses accessible DBHelper
     //This DBHelper should automatically initalize in onCreate() and close()/closeDB() in onDestroy()
 
