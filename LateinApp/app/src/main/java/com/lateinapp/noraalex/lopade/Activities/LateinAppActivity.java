@@ -3,13 +3,17 @@ package com.lateinapp.noraalex.lopade.Activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 
 import com.lateinapp.noraalex.lopade.R;
 
@@ -73,34 +77,74 @@ public abstract class LateinAppActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        Log.d("Item Found", "ID: " + item.getItemId());
-
         switch (item.getItemId()){
-            //Opening the settings-activity
-            case (R.id.action_settings):
-                Intent settingsActivity = new Intent(this, SettingsActivity.class);
-                startActivity(settingsActivity);
+
+
+            //Opening a popup window
+            case (R.id.action_info):
+
+                openInfoPopup();
                 break;
 
-            //#DEVELOPER
-            //Opening the dbManager-activity
-            case (R.id.action_dev_DB_Helper):
-                Intent dbManager = new Intent(this, AndroidDatabaseManager.class);
-                startActivity(dbManager);
-                break;
+                //Opening the settings-activity
+                case (R.id.action_settings):
+                    Intent settingsActivity = new Intent(this, SettingsActivity.class);
+                    startActivity(settingsActivity);
+                    break;
 
-            //#DEVELOPER
-            //toggles the DevCheatMode
-            case (R.id.action_dev_Vokabeltrainer_Cheat):
-                SharedPreferences.Editor editor = sharedPref.edit();
-                EinheitenUebersicht.DEV_CHEAT_MODE = !EinheitenUebersicht.DEV_CHEAT_MODE;
-                editor.putBoolean("DEV_CHEAT_MODE", EinheitenUebersicht.DEV_CHEAT_MODE);
-                editor.apply();
-                adjustSettings();
-                break;
+                //#DEVELOPER
+                //Opening the dbManager-activity
+                case (R.id.action_dev_DB_Helper):
+                    Intent dbManager = new Intent(this, AndroidDatabaseManager.class);
+                    startActivity(dbManager);
+                    break;
+
+                //#DEVELOPER
+                //toggles the DevCheatMode
+                case (R.id.action_dev_Vokabeltrainer_Cheat):
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    EinheitenUebersicht.DEV_CHEAT_MODE = !EinheitenUebersicht.DEV_CHEAT_MODE;
+                    editor.putBoolean("DEV_CHEAT_MODE", EinheitenUebersicht.DEV_CHEAT_MODE);
+                    editor.apply();
+                    adjustSettings();
+                    break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Opens a PopUp window with a description of what the user should do in this class
+     * Will only be called in classes in the package "Einheiten"
+     *
+     * This method should never be called but only the corresponding overriden method in the
+     * subclasses.
+     * This only opens a placeholder PopUp
+     */
+    public void openInfoPopup(){
+
+        LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        View popupView;
+
+        popupView = layoutInflater.inflate(R.layout.popup_info_default, null);
+
+        final PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        Button btnDismiss = popupView.findViewById(R.id.popup_info_default_dismiss);
+        btnDismiss.setOnClickListener(new Button.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                popupWindow.dismiss();
+            }
+        });
+
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0,0);
     }
 
     /**
@@ -131,16 +175,22 @@ public abstract class LateinAppActivity extends AppCompatActivity{
 
     private void adjustSettings(){
 
-        //#DEVELOPER
-        if (EinheitenUebersicht.DEVELOPER) {
-            devDBHelper.setVisible(true);
-            devVokCheat.setVisible(true);
+        //FIXME: Why does this sometimes crash with "couldnt invoke method on null object"?
+        try {
+            //#DEVELOPER
+            if (EinheitenUebersicht.DEVELOPER) {
+                devDBHelper.setVisible(true);
+                devVokCheat.setVisible(true);
 
-            devVokCheat.setTitle("DEV: Cheat-Mode: " + (EinheitenUebersicht.DEV_CHEAT_MODE ? "ON" : "OFF"));
+                devVokCheat.setTitle("DEV: Cheat-Mode: " + (EinheitenUebersicht.DEV_CHEAT_MODE ? "ON" : "OFF"));
 
-        }else {
-            devDBHelper.setVisible(false);
-            devVokCheat.setVisible(false);
+            } else {
+                devDBHelper.setVisible(false);
+                devVokCheat.setVisible(false);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
     }

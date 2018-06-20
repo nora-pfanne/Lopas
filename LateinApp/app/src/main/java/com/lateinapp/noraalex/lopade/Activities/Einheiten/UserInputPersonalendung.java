@@ -23,10 +23,6 @@ import com.lateinapp.noraalex.lopade.R;
 
 import java.util.Random;
 
-/**
- * Created by Alexander on 07.03.2018.
- */
-
 public class UserInputPersonalendung extends LateinAppActivity {
 
     private SharedPreferences sharedPref;

@@ -6,12 +6,16 @@ import android.content.SharedPreferences;
 import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lateinapp.noraalex.lopade.Activities.EinheitenUebersicht;
@@ -355,6 +359,33 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
         }catch (Exception e){
             //do nothing
         }
+    }
+
+    @Override
+    public void openInfoPopup() {
+
+        LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        View popupView;
+
+        popupView = layoutInflater.inflate(R.layout.popup_info_vokabeltrainer, null);
+
+        final PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        Button btnDismiss = popupView.findViewById(R.id.popup_info_vokabeltrainer_dismiss);
+        btnDismiss.setOnClickListener(new Button.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                popupWindow.dismiss();
+            }
+        });
+
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
     }
 }
 
