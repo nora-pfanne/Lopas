@@ -38,7 +38,7 @@ public class UserInputAdjektive extends LateinAppActivity {
     private final int maxProgress = 20;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_user_input);
 
@@ -300,7 +300,7 @@ public class UserInputAdjektive extends LateinAppActivity {
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
 
         try{

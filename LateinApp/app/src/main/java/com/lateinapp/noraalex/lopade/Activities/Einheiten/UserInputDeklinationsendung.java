@@ -66,7 +66,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
     private final int maxProgress = 20;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_user_input);
 
@@ -449,7 +449,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
      * Handling the button-presses
      * @param view the view of the pressed button
      */
-    private void userInputButtonClicked(View view){
+    public void userInputButtonClicked(View view){
 
         switch (view.getId()){
 
@@ -481,7 +481,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
 
         try{

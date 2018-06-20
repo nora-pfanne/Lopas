@@ -58,7 +58,7 @@ public class ClickPersonalendung extends LateinAppActivity {
     private String extraFromEinheitenUebersicht;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_click_personalendung);
 

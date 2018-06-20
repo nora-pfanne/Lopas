@@ -2,6 +2,10 @@ package com.lateinapp.noraalex.lopade.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +26,12 @@ public abstract class LateinAppActivity extends AppCompatActivity{
     //Add a for all subclasses accessible DBHelper
     //This DBHelper should automatically initalize in onCreate() and close()/closeDB() in onDestroy()
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     /**
      * inflate your menu resource (defined in XML) into the Menu
      * @param menu the menu object
@@ -31,6 +41,18 @@ public abstract class LateinAppActivity extends AppCompatActivity{
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.action_button, menu);
+
+        //If we aren't in the home activity we want to enable a back/up navigation button
+        if (!this.getClass().getName().equals(EinheitenUebersicht.class.getName())){
+            ActionBar ab = getSupportActionBar();
+            // Enable the Up button
+            if (ab != null) ab.setDisplayHomeAsUpEnabled(true);
+        }
+
+        //If the Activity is in the package "Einheiten" we want to display the info-slide box
+        if (getClass().getPackage().getName().contains("Einheiten")){
+            getMenuInflater().inflate(R.menu.info_button, menu);
+        }
 
         this.menu = menu;
         devDBHelper = this.menu.findItem(R.id.action_dev_DB_Helper);
@@ -86,7 +108,7 @@ public abstract class LateinAppActivity extends AppCompatActivity{
      * but has not (yet) been killed.
      */
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
 
         onPause = true;
@@ -97,7 +119,7 @@ public abstract class LateinAppActivity extends AppCompatActivity{
      * after it had been paused [->onPause()]
      */
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         if (onPause){

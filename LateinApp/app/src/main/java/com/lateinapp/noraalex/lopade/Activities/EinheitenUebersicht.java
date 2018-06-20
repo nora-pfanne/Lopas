@@ -26,7 +26,7 @@ public class EinheitenUebersicht extends LateinAppActivity {
     private SharedPreferences sharedPref;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visuell_einheiten_uebersicht);

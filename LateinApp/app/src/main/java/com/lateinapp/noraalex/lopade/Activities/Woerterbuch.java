@@ -2,6 +2,7 @@ package com.lateinapp.noraalex.lopade.Activities;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -37,9 +38,12 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
      * @param savedInstanceState Used for passing data between activities
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_woerterbuch);
+
+
+
 
         tl = findViewById(R.id.table_layout);
 
@@ -218,7 +222,7 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
 
         dbHelper.closeDb();
