@@ -410,6 +410,10 @@ public class ClickPersonalendung extends LateinAppActivity {
         }else {
             color = colorButtonIncorrect;
 
+            if (sharedPref.getInt("ClickPersonalendung"+extraFromEinheitenUebersicht, 0) > 0) {
+                editor.putInt("ClickPersonalendung" + extraFromEinheitenUebersicht,
+                        sharedPref.getInt("ClickPersonalendung" + extraFromEinheitenUebersicht, 0) - 1);
+            }
 
             for (int i = 0; i < faelle.length; i++){
                 if (faelle[i].equals(konjugation)){

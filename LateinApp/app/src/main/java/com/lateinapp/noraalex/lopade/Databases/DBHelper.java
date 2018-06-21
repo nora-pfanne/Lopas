@@ -42,7 +42,7 @@ import static com.lateinapp.noraalex.lopade.Databases.SQL_DUMP.*;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
-    private SQLiteDatabase database;
+    public SQLiteDatabase database;
 
     //Version of the database. Currently of no use.
     private static final int DATABASE_VERSION = 1;
@@ -90,10 +90,6 @@ public class DBHelper extends SQLiteOpenHelper {
             addEntriesFromFile("example_sentences/beispielsatz_test.csv", BeispielsatzDB.FeedEntry.TABLE_NAME, context);
 
         }
-    }
-
-    private void addInitialEntries(){
-
     }
 
     /**
@@ -725,7 +721,7 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * open the connection to the database if it isn't open already.
      */
-    private void openDb() {
+    public void openDb() {
         if (database != null && database.isOpen()) close();
         database = getWritableDatabase();
     }

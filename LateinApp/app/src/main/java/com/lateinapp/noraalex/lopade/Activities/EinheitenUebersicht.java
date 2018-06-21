@@ -12,6 +12,7 @@ import com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.Satzglieder;
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputAdjektive;
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputDeklinationsendung;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputEsseVelleNolle;
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputVokabeltrainer;
 import com.lateinapp.noraalex.lopade.R;
@@ -156,6 +157,11 @@ public class EinheitenUebersicht extends LateinAppActivity {
             case R.id.uebersicht_checkpoint_praesens_1:
                 intent = new Intent(this, UserInputPersonalendung.class);
                 intent.putExtra("ExtraInputPersonalendung", "DEFAULT");
+                startActivity(intent);
+                break;
+
+            case R.id.uebersicht_esse_velle_nolle:
+                intent = new Intent(this, UserInputEsseVelleNolle.class);
                 startActivity(intent);
                 break;
 

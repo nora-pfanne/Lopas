@@ -266,8 +266,8 @@
                 android:text="Ablativ" />
 
             <Button
-                style="@style/InactiveButton"
                 android:id="@+id/uebersicht_esse_velle_nolle"
+                style="@style/VerbGrammatikButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

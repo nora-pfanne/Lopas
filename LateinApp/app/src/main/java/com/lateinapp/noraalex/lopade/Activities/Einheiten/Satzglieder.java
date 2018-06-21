@@ -508,7 +508,7 @@ public class Satzglieder extends LateinAppActivity {
             //Initializing each button with set parameters
             b.setLayoutParams(params);
             b.setGravity(Gravity.CENTER_HORIZONTAL);
-            b.setTextSize(25);
+            b.setTextSize(30);
 
             b.setBackgroundColor(backgroundColor);
 

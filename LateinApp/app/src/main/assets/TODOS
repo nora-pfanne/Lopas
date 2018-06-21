@@ -22,15 +22,12 @@ liberi, liberorum -> die Kinder
 vir, viri -> der Mann
 
 
-
+    TODO: Einheit: Unregeläßige Verben in konjugationen bilden: esse, velle, nolle
 
 
 
 
     TODO: Erklärungsfolie vor allen Einheiten
-    TODO: Button zum Aufrufen des Erklärungsfolie
-
-    TODO: Input bestätigen mit Enter
 
     TODO: Einfügen einer Spalte bei Substantiv/Verb in DB: Kategorie (Mensch/...)
 
@@ -40,14 +37,8 @@ vir, viri -> der Mann
           Zusatzeinheit?
 
     TODO: Einheit: Präposition erkennen -> "in + Abl" & "in + Akk" haben berschiedene Bedeutungen
-                    Overlay (Nora)
-                    SQL / Java (Alex)
-    TODO: Einheit: Unregeläßige Verben in konjugationen bilden: esse, velle, nolle
-                   Unregelmäßige Verben  + Posse
-                   (Nora)
 
     TODO: Einheit: Präpositionstrainer (schreiben) -> für Präposition die richtige Deklination bestimmen/bilden
-    TODO: Einheit: Nach Deklination fragen -> Akk: Wen oder Was?
     TODO: Einheit: Konsonantische Konjugation -> capere/...
     TODO: Einheit: Konjugation bestimmen -> a/e/... - Konjugation
     TODO: Einheit: Adjektiv KNG bilden -> Adjektiv in der richtigen Form bilden

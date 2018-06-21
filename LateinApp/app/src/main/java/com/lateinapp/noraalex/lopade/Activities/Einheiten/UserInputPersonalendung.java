@@ -195,11 +195,13 @@ public class UserInputPersonalendung extends LateinAppActivity {
         }else {
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
 
-            SharedPreferences.Editor editor = sharedPref.edit();
-            //Decreasing the counter by 1
-            editor.putInt("UserInputPersonalendung" + extraFromEinheitenUebersicht,
-                    sharedPref.getInt("UserInputPersonalendung"+extraFromEinheitenUebersicht, 0) - 1);
-            editor.apply();
+            if (sharedPref.getInt("UserInputPersonalendung"+extraFromEinheitenUebersicht, 0) > 0) {
+                SharedPreferences.Editor editor = sharedPref.edit();
+                //Decreasing the counter by 1
+                editor.putInt("UserInputPersonalendung" + extraFromEinheitenUebersicht,
+                        sharedPref.getInt("UserInputPersonalendung" + extraFromEinheitenUebersicht, 0) - 1);
+                editor.apply();
+            }
         }
         userInput.setBackgroundColor(color);
 

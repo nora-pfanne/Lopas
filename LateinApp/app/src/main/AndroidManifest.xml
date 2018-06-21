@@ -73,6 +73,10 @@
             android:screenOrientation="portrait"
             android:parentActivityName=".Activities.EinheitenUebersicht"/>
 
+        <activity android:name=".Activities.Einheiten.UserInputEsseVelleNolle"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".Activities.EinheitenUebersicht"/>
+
 
         <meta-data
             android:name="preloaded_fonts"

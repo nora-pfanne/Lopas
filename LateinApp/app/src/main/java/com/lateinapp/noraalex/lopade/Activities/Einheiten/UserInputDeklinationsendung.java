@@ -382,11 +382,13 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
         }else {
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
 
-            SharedPreferences.Editor editor = sharedPref.edit();
-            //Decreasing the counter by 1
-            editor.putInt("UserInputDeklinationsendung" + extraFromEinheitenUebersicht,
-                    sharedPref.getInt("UserInputDeklinationsendung"+extraFromEinheitenUebersicht, 0) - 1);
-            editor.apply();
+            if (sharedPref.getInt("UserInputDeklinationsendung"+extraFromEinheitenUebersicht, 0) > 0) {
+                SharedPreferences.Editor editor = sharedPref.edit();
+                //Decreasing the counter by 1
+                editor.putInt("UserInputDeklinationsendung" + extraFromEinheitenUebersicht,
+                        sharedPref.getInt("UserInputDeklinationsendung" + extraFromEinheitenUebersicht, 0) - 1);
+                editor.apply();
+            }
         }
         userInput.setBackgroundColor(color);
 

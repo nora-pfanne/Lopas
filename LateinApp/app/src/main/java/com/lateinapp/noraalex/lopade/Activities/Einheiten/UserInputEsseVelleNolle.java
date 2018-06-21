@@ -2,8 +2,9 @@ package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v4.content.res.ResourcesCompat;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -12,12 +13,25 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.lateinapp.noraalex.lopade.Activities.EinheitenUebersicht;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
+import com.lateinapp.noraalex.lopade.Databases.DBHelper;
+import com.lateinapp.noraalex.lopade.Databases.Tables.Personalendung_PräsensDB;
+import com.lateinapp.noraalex.lopade.Databases.Tables.Sprechvokal_PräsensDB;
+import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
+import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
 import com.lateinapp.noraalex.lopade.R;
 
-public class UserInputAdjektive extends LateinAppActivity {
+import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
+
+public class UserInputEsseVelleNolle extends LateinAppActivity {
+
+
+    private ArrayList<Vokabel> viableVocabularies;
 
     private SharedPreferences sharedPref;
+    private DBHelper dbHelper;
 
     private TextView request,
             solution,
@@ -30,9 +44,16 @@ public class UserInputAdjektive extends LateinAppActivity {
             reset,
             zurück;
 
-    private String deutscherText,
-                lateinText;
+    private Vokabel currentVokabel;
+    private String currentPersonalendung;
 
+    private final String[] faelle = {
+            Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG,
+            Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG,
+            Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG,
+            Personalendung_PräsensDB.FeedEntry.COLUMN_1_PL,
+            Personalendung_PräsensDB.FeedEntry.COLUMN_2_PL,
+            Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL};
 
     private int backgroundColor;
     private final int maxProgress = 20;
@@ -50,6 +71,7 @@ public class UserInputAdjektive extends LateinAppActivity {
     private void setup(){
 
         sharedPref = getSharedPreferences("SharedPreferences", 0);
+        dbHelper = new DBHelper(getApplicationContext());
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
         request = findViewById(R.id.textUserInputLatein);
@@ -62,7 +84,7 @@ public class UserInputAdjektive extends LateinAppActivity {
         zurück = findViewById(R.id.buttonUserInputZurück);
         titel = findViewById(R.id.textUserInputÜberschrift);
 
-        userInput.setHint("Dekliniertes Adjektiv");
+        userInput.setHint("Konjugiertes Verb");
         //Makes it possible to move to the next vocabulary by pressing "enter"
         userInput.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
@@ -76,41 +98,54 @@ public class UserInputAdjektive extends LateinAppActivity {
                 return false;
             }
         });
-        titel.setText("Adjektive");
+        titel.setText("Esse & Velle & Nolle");
 
         solution.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
 
         progressBar.setMax(maxProgress);
+
+        viableVocabularies = getViableVocabularies();
+
     }
 
     private void newVocabulary(){
 
-        int progress = sharedPref.getInt("UserInputAdjektive", 0);
-
+        int progress = sharedPref.getInt("UserInputEsseVelleNolle", 0);
         if (progress < maxProgress) {
 
             progressBar.setProgress(progress);
 
-            try {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-            }catch (NullPointerException npe){
-                npe.printStackTrace();
-            }
+            //Showing the Keyboard.
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
 
             //Resetting the userInput.
             userInput.setText("");
             userInput.setBackgroundColor(backgroundColor);
             userInput.setFocusableInTouchMode(true);
 
-            String[] answer = getRandomAdjektiv();
+            currentVokabel = viableVocabularies.get(
+                    ThreadLocalRandom.current().nextInt(0, viableVocabularies.size()));
+            currentPersonalendung = faelle[
+                    ThreadLocalRandom.current().nextInt(0, faelle.length)];
 
-            deutscherText = answer[0];
-            lateinText = answer[1];
+            String lateinText = dbHelper.getKonjugiertesVerb(currentVokabel.getId(), "Inf");
+            String personalendungUser = currentPersonalendung.replace("_", " ");
+            personalendungUser = personalendungUser.replace("Erste", "1.");
+            personalendungUser = personalendungUser.replace("Zweite", "2.");
+            personalendungUser = personalendungUser.replace("Dritte", "3.");
+            personalendungUser = personalendungUser.replace("Sg", "Pers. Sg.");
+            personalendungUser = personalendungUser.replace("Pl", "Pers. Pl.");
+            lateinText += "\n" + personalendungUser + " Präsens";
+            //#DEVELOPER
+            if (EinheitenUebersicht.DEVELOPER && EinheitenUebersicht.DEV_CHEAT_MODE){
+                lateinText += "\n" + dbHelper.getKonjugiertesVerb(currentVokabel.getId(), currentPersonalendung);
+            }
+            request.setText(lateinText);
 
-            request.setText(deutscherText);
-
+            //Adjusting the button visibility.
             bestaetigung.setVisibility(View.VISIBLE);
             weiter.setVisibility(View.GONE);
             solution.setVisibility(View.GONE);
@@ -120,58 +155,14 @@ public class UserInputAdjektive extends LateinAppActivity {
             progressBar.setProgress(maxProgress);
 
             //Hiding the keyboard.
-            try {
-                InputMethodManager imm = (InputMethodManager)getSystemService(
-                        Context.INPUT_METHOD_SERVICE);
-                if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
-            }catch (NullPointerException npe){
-                npe.printStackTrace();
-            }
+            InputMethodManager imm = (InputMethodManager)getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
 
             allLearned();
         }
 
 
-    }
-
-
-    private String[] getRandomAdjektiv(){
-
-        int randomInt = (int)(Math.random() * ((4) + 1));
-
-        String deutsch = "deutscher Fülltext";
-        String latein = "leer";
-
-        switch(randomInt) {
-
-            case 0:
-                deutsch = "großer Gott";
-                latein = "magnus deus";
-                break;
-
-            case 1:
-                deutsch = "kleines Mädchen";
-                latein = "parva puella";
-                break;
-
-            case 2:
-                deutsch = "arme Muse";
-                latein = "misera musa";
-                break;
-
-            case 3:
-                deutsch = "erstaunliches Land";
-                latein = "mira terra";
-                break;
-
-            case 4:
-                deutsch = "guter Weg";
-                latein = "bona via";
-                break;
-        }
-
-
-        return new String[]{deutsch, latein};
     }
 
     private void checkInput(){
@@ -189,30 +180,31 @@ public class UserInputAdjektive extends LateinAppActivity {
 
         //Checking the userInput against the translation
         int color;
-        if(compareString(userInput.getText().toString(), lateinText)){
+        if(compareString(userInput.getText().toString(), dbHelper.getKonjugiertesVerb(currentVokabel.getId(), currentPersonalendung))){
             color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
 
             SharedPreferences.Editor editor = sharedPref.edit();
 
             //Increasing the counter by 1
-            editor.putInt("UserInputAdjektive",
-                    sharedPref.getInt("UserInputAdjektive", 0) + 1);
+            editor.putInt("UserInputEsseVelleNolle",
+                    sharedPref.getInt("UserInputEsseVelleNolle", 0) + 1);
             editor.apply();
         }else {
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
 
-            if (sharedPref.getInt("UserInputAdjektive", 0) > 0) {
+
+            //Decreasing the counter by 1
+            if (sharedPref.getInt("UserInputEsseVelleNolle", 0) > 0) {
                 SharedPreferences.Editor editor = sharedPref.edit();
-                //Decreasing the counter by 1
-                editor.putInt("UserInputAdjektive",
-                        sharedPref.getInt("UserInputAdjektive", 0) - 1);
+                editor.putInt("UserInputEsseVelleNolle",
+                        sharedPref.getInt("UserInputEsseVelleNolle", 0) - 1);
                 editor.apply();
             }
         }
         userInput.setBackgroundColor(color);
 
         //Showing the correct translation
-        solution.setText(lateinText);
+        solution.setText(dbHelper.getKonjugiertesVerb(currentVokabel.getId(), currentPersonalendung));
 
         bestaetigung.setVisibility(View.GONE);
         weiter.setVisibility(View.VISIBLE);
@@ -289,7 +281,7 @@ public class UserInputAdjektive extends LateinAppActivity {
             //Setting the 'learned' state of all vocabularies of the current lektion to false
             case (R.id.buttonUserInputFortschrittLöschen):
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("UserInputAdjektive", 0);
+                editor.putInt("UserInputEsseVelleNolle", 0);
                 editor.apply();
                 finish();
                 break;
@@ -314,4 +306,36 @@ public class UserInputAdjektive extends LateinAppActivity {
             //do nothing
         }
     }
+
+    /**
+     * @return an array with the ids of the vocabularies "esse", "velle" and "nolle"
+     */
+    private ArrayList<Vokabel> getViableVocabularies(){
+
+        DBHelper dbHelper = new DBHelper(this);
+
+        String query = "SELECT " + VerbDB.FeedEntry.TABLE_NAME + "." + VerbDB.FeedEntry._ID + ", " + VerbDB.FeedEntry.TABLE_NAME + "." + VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH +
+                " FROM " + VerbDB.FeedEntry.TABLE_NAME + ", " + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME +
+                " WHERE " + VerbDB.FeedEntry.TABLE_NAME + "." + VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID + " = " +  Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + "." + Sprechvokal_PräsensDB.FeedEntry._ID +
+                " AND ("
+                +  Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + "." + Sprechvokal_PräsensDB.FeedEntry.COLUMN_TITLE + " = 'esse' OR "
+                +  Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + "." + Sprechvokal_PräsensDB.FeedEntry.COLUMN_TITLE + " = 'velle' OR "
+                +  Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + "." + Sprechvokal_PräsensDB.FeedEntry.COLUMN_TITLE + " = 'nolle')";
+        Cursor cursor = dbHelper.database.rawQuery(query, null);
+
+        ArrayList<Vokabel> vocabularies = new ArrayList<>();
+        while (cursor.moveToNext()){
+
+            int id = cursor.getInt(0);
+            String latein = dbHelper.getKonjugiertesVerb(id, "inf");
+            String deutsch = cursor.getString( 1);
+
+            vocabularies.add(new VerbDB(id, latein, deutsch));
+        }
+
+        cursor.close();
+
+        return vocabularies;
+    }
+
 }
