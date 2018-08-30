@@ -106,6 +106,9 @@ public class ClickPersonalendung extends LateinAppActivity {
         weiter.setVisibility(View.GONE);
 
         progressBar.setMax(maxProgress);
+        int progress = sharedPref.getInt("ClickPersonalendung"+extraFromEinheitenUebersicht, 0);
+        if (progress > maxProgress) progress = maxProgress;
+        progressBar.setProgress(progress);
 
         weightSubjects(extraFromEinheitenUebersicht);
         setButtonsState(extraFromEinheitenUebersicht);

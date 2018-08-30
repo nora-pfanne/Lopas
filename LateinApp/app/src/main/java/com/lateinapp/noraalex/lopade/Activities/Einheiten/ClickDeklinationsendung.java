@@ -62,6 +62,8 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                 colorButtonActive,
                 colorButtonGrey;
     private int backgroundColor;
+
+    private boolean finished;
     private final int maxProgress = 20;
 
     private ArrayList<String> allCorrectCases;
@@ -147,6 +149,15 @@ public class ClickDeklinationsendung extends LateinAppActivity {
         weiter.setVisibility(View.GONE);
 
         progressBar.setMax(maxProgress);
+        int progress = sharedPref.getInt("ClickDeklinationsendung"+extraFromEinheitenUebersicht, 0);
+        if (progress > maxProgress){
+            progress = maxProgress;
+            finished = true;
+        }else{
+            finished = false;
+        }
+
+        progressBar.setProgress(progress);
 
         weightSubjects(extraFromEinheitenUebersicht);
     }
@@ -270,10 +281,14 @@ public class ClickDeklinationsendung extends LateinAppActivity {
     private void newVocabulary(){
 
         int progress = sharedPref.getInt("ClickDeklinationsendung"+extraFromEinheitenUebersicht, 0);
+
+
         lateinVokabel.setBackgroundColor(backgroundColor);
 
         //Checks if the user has had enough correct inputs to complete the 'grammatikDeklination'
         if (progress < maxProgress) {
+            finished = false;
+            progressBar.setProgress(progress);
 
             String declination = getRandomDeklination();
             //FIXME: Don't return a random number but one according to the progress (nom->1 /...)
@@ -385,6 +400,12 @@ public class ClickDeklinationsendung extends LateinAppActivity {
 
             updateButtons(extraFromEinheitenUebersicht);
         }else {
+            finished = true;
+            progressBar.setProgress(maxProgress);
+
+
+            backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+
 
             nom_sg.setVisibility(View.GONE);
             nom_pl.setVisibility(View.GONE);
@@ -397,6 +418,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
             abl_sg.setVisibility(View.GONE);
             abl_pl.setVisibility(View.GONE);
             weiter.setVisibility(View.GONE);
+            checkInput.setVisibility(View.GONE);
             checkInput.setVisibility(View.GONE);
             lateinVokabel.setVisibility(View.GONE);
             checkInput.setVisibility(View.GONE);
@@ -571,7 +593,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
      */
     private void updateButtons(String extra){
 
-        checkInput.setVisibility(View.VISIBLE);
+        if (!finished) checkInput.setVisibility(View.VISIBLE);
 
         switch (extra){
             case "NOMINATIV":
@@ -844,7 +866,6 @@ public class ClickDeklinationsendung extends LateinAppActivity {
         }
         editor.apply();
 
-        progressBar.setProgress(sharedPref.getInt("ClickDeklinationsendung" +extraFromEinheitenUebersicht, 0));
         lateinVokabel.setBackgroundColor(color);
 
         for (Button b : buttons){

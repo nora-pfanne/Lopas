@@ -100,6 +100,10 @@ public class ClickKasusFragen extends LateinAppActivity {
 
 
         progressBar.setMax(maxProgress);
+
+        int progress = sharedPreferences.getInt("ClickKasusFragen", 0);
+        if (progress > maxProgress) progress = maxProgress;
+        progressBar.setProgress(progress);
     }
 
     public void kasusFragenButtonClicked(View view){

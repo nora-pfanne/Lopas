@@ -291,8 +291,8 @@
     <Button
         style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikDeklinationZurück"
-        android:layout_width="106dp"
-        android:layout_height="54dp"
+        android:layout_width="253dp"
+        android:layout_height="155dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
