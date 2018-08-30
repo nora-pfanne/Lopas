@@ -38,7 +38,7 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
             titel;
     private EditText userInput;
     private ProgressBar progressBar;
-    //TODO: Remove button elevation to make it align with 'userInput'-EditText
+    //FIXME: Remove button elevation to make it align with 'userInput'-EditText
     private Button bestaetigung,
             weiter,
             reset,

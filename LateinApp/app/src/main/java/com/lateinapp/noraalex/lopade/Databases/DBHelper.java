@@ -60,7 +60,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
-        /* TODO: Maybe add check for the amount of entries against the amount of entries in the file:
+        /* TODO: Maybe add check for the amount of entries against the amount of entries in the file for properly updating the databases when new entries were added:
             if (table_1.countEntries() < file.entryAmount){
               addInitialEntry();
 
@@ -125,7 +125,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        //TODO: This should also add the initial entries. -> we need to get contect here for that
+        //TODO: This should also add the initial entries. -> we need to get context here for that
 
         //Deletes all entries
         db.execSQL(SQL_DELETE_ENTRIES_ADVERB);
@@ -607,7 +607,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                 deklinationId = cursor.getInt(0);
                                 cursor.close();
 
-                                //TODO: Sprechvokale einfügen (nicht '1')
+                                //TODO: Sprechvokale einfügen (nicht '1') -> momentan nur als placeholder here
                                 addRowSubstantiv(tokens[0], tokens[1],
                                                  false, Integer.parseInt(tokens[2]),
                                                  1, deklinationId);
@@ -1000,7 +1000,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //gets the last part of the word (endung)
 
-        //FIXME: Adjectives not final!
+        //FIXME: Adjectives not final! (multiline TODO)
         //We need to check for special cases where the adjective
         //cannot be m/f/n anymore -> special cases.
         //We might also need to expand our database for this
@@ -1384,7 +1384,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Replaces a set of characterCombinations with a corresponding umlaut each
-     * TODO: This would be redundant if we could just import a .csv file with a better charset
+     * TODO: This would be redundant if we could just import a .csv file with a better charset -> Maybe google sheets??
      * @param s the String to be updated
      * @return the updated String
      */

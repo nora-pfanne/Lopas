@@ -40,7 +40,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
          titel;
     private EditText userInput;
     private ProgressBar progressBar;
-    //TODO: Remove button elevation to make it align with 'userInput'-EditText
+    //FIXME: Remove button elevation to make it align with 'userInput'-EditText
     private Button bestaetigung,
         weiter,
         reset,
@@ -380,7 +380,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
+
                 popupWindow.dismiss();
             }
         });
