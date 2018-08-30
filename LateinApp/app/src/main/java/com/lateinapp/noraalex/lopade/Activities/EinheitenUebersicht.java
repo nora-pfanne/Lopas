@@ -23,6 +23,7 @@ public class EinheitenUebersicht extends LateinAppActivity {
     //#DEVELOPER
     public static boolean DEVELOPER = true;
     public static boolean DEV_CHEAT_MODE = true;
+    public static boolean GENERATE_FRESH_DATABASE = true;
 
     private SharedPreferences sharedPref;
 
