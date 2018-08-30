@@ -3,6 +3,7 @@ package com.lateinapp.noraalex.lopade.Databases;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.MatrixCursor;
@@ -10,8 +11,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.content.SharedPreferences;
 
-import com.lateinapp.noraalex.lopade.Activities.EinheitenUebersicht;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdjektivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.BeispielsatzDB;
@@ -28,7 +29,6 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,38 +70,35 @@ public class DBHelper extends SQLiteOpenHelper {
 
         this.context = context;
 
-        /* TODO: Maybe add check for the amount of entries against the amount of entries in the file for properly updating the databases when new entries were added:
-            if (table_1.countEntries() < file.entryAmount){
-              addInitialEntry();
-
-            }
-        */
-
-        //Adds initial entries to the database if all tables are empty
-        //#DEVELOPER
-        if(!EinheitenUebersicht.GENERATE_FRESH_DATABASE) {
-            //Create a completly new Database if no database exists yet
-            if (countTableEntries(allTables) == 0) {
-                addInitialEntries();
-            }
-        }else{
-
+        if (DATABASE_PATH.equals("")){
             if(android.os.Build.VERSION.SDK_INT >= 17) {
                 DATABASE_PATH = context.getApplicationInfo().dataDir + "/databases/";
             }
             else {
                 DATABASE_PATH = "/data/data/" + context.getPackageName() + "/databases/";
             }
+        }
 
-            try{
-                createDataBase();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+        //Copying the database from the assets folder on first startup of the app
+        SharedPreferences sharedPreferences = context.getSharedPreferences("SharedPreferences", 0);
+        boolean firstStartup = sharedPreferences.getBoolean("FirstStartup", true);
 
+        if(firstStartup) {
+            reloadDatabaseFromAssets();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("FirstStartup", false);
+            editor.apply();
         }
     }
 
+
+    public void reloadDatabaseFromAssets(){
+        try{
+            createDataBase();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     private void createDataBase() throws IOException {
 
@@ -132,12 +129,37 @@ public class DBHelper extends SQLiteOpenHelper {
         input.close();
     }
 
-    private void addInitialEntries(){
+    public void fillDatabaseFromCsv(){
+        Log.d("DBCreationIterative", "We Are iterative Db Creation");
+        database = getWritableDatabase();
+
+        for (String table : allTables){
+            database.delete(table, null, null);
+        }
+
+        database.close();
+
         //This row is a placeholder for when the Sprechvokal_Substantiv table is added eventually.
         //Right now, every 'Substantiv' entry is assigned this row
-        addRowSprechvokal_Substantiv("", "", "", "", "", "", "", "", "", "");
-        addRowSprechvokal_Präsens("", "", "", "", "", "", "", "");
+        openDb();
 
+        Cursor c = database.rawQuery("SELECT * FROM " + Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME, null);
+        Log.d("__", c.getCount() + "");
+        c.close();
+
+        closeDb();
+
+        addRowSprechvokal_Substantiv("", "", "", "", "", "", "", "", "", "");
+
+        openDb();
+
+        c = database.rawQuery("SELECT * FROM " + Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME, null);
+        Log.d("__", c.getCount() + "");
+        c.close();
+
+        closeDb();
+
+        addRowSprechvokal_Präsens("", "", "", "", "", "", "", "");
 
         addEntriesFromFile("db_initialisation/deklinationsendung.csv", DeklinationsendungDB.FeedEntry.TABLE_NAME, context);
         addEntriesFromFile("db_initialisation/lektion.csv", LektionDB.FeedEntry.TABLE_NAME, context);
@@ -162,21 +184,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public void onCreate(SQLiteDatabase db) {
 
-        if(!EinheitenUebersicht.GENERATE_FRESH_DATABASE) {
-            //Creating the tables in the database
-            db.execSQL(SQL_CREATE_ENTRIES_ADVERB);
-            db.execSQL(SQL_CREATE_ENTRIES_ADJEKTIV);
-            db.execSQL(SQL_CREATE_ENTRIES_DEKLINATIONSENDUNG);
-            db.execSQL(SQL_CREATE_ENTRIES_LEKTION);
-            db.execSQL(SQL_CREATE_ENTRIES_PERSONALENDUNG_PRÄSENS);
-            db.execSQL(SQL_CREATE_ENTRIES_PRAEPOSITION);
-            db.execSQL(SQL_CREATE_ENTRIES_SPRECHVOKAL_PRÄSENS);
-            db.execSQL(SQL_CREATE_ENTRIES_SPRECHVOKAL_SUBSTANTIV);
-            db.execSQL(SQL_CREATE_ENTRIES_SPRICHWORT);
-            db.execSQL(SQL_CREATE_ENTRIES_SUBSTANTIV);
-            db.execSQL(SQL_CREATE_ENTRIES_VERB);
-            db.execSQL(SQL_CREATE_ENTRIES_BEISPIELSATZ);
-        }
+        createTables(db);
     }
 
     /**
@@ -190,6 +198,28 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         //TODO: This should also add the initial entries. -> we need to get context here for that
+        deleteEntries(db);
+
+        onCreate(db);
+    }
+
+    private void createTables(SQLiteDatabase db){
+        //Creating the tables in the database
+        db.execSQL(SQL_CREATE_ENTRIES_ADVERB);
+        db.execSQL(SQL_CREATE_ENTRIES_ADJEKTIV);
+        db.execSQL(SQL_CREATE_ENTRIES_DEKLINATIONSENDUNG);
+        db.execSQL(SQL_CREATE_ENTRIES_LEKTION);
+        db.execSQL(SQL_CREATE_ENTRIES_PERSONALENDUNG_PRÄSENS);
+        db.execSQL(SQL_CREATE_ENTRIES_PRAEPOSITION);
+        db.execSQL(SQL_CREATE_ENTRIES_SPRECHVOKAL_PRÄSENS);
+        db.execSQL(SQL_CREATE_ENTRIES_SPRECHVOKAL_SUBSTANTIV);
+        db.execSQL(SQL_CREATE_ENTRIES_SPRICHWORT);
+        db.execSQL(SQL_CREATE_ENTRIES_SUBSTANTIV);
+        db.execSQL(SQL_CREATE_ENTRIES_VERB);
+        db.execSQL(SQL_CREATE_ENTRIES_BEISPIELSATZ);
+    }
+
+    private void deleteEntries(SQLiteDatabase db){
 
         //Deletes all entries
         db.execSQL(SQL_DELETE_ENTRIES_ADVERB);
@@ -204,8 +234,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_ENTRIES_SUBSTANTIV);
         db.execSQL(SQL_DELETE_ENTRIES_VERB);
         db.execSQL(SQL_DELETE_ENTRIES_BEISPIELSATZ);
-
-        onCreate(db);
     }
 
     /**
@@ -786,18 +814,11 @@ public class DBHelper extends SQLiteOpenHelper {
      * open the connection to the database if it isn't open already.
      */
     public void openDb() throws SQLException {
-        if(EinheitenUebersicht.GENERATE_FRESH_DATABASE){
 
-            String mPath = DATABASE_PATH + DATABASE_NAME;
-            //Log.v("mPath", mPath);
-            database = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.CREATE_IF_NECESSARY);
+        String mPath = DATABASE_PATH + DATABASE_NAME;
+        //Log.v("mPath", mPath);
+        database = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.CREATE_IF_NECESSARY);
 
-        }else{
-
-            if (database != null && database.isOpen()) close();
-            database = getWritableDatabase();
-
-        }
     }
 
     /**

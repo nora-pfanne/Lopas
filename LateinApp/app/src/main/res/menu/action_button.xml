@@ -17,4 +17,16 @@
         android:orderInCategory="100"
         android:title="DEV: Vokabeltrainer-Cheat"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_dev_reload_database_from_assets"
+        android:orderInCategory="100"
+        android:title="DEV: Reload Database from assets?"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_dev_reload_database_iterative"
+        android:orderInCategory="100"
+        android:title="DEV: Reload Database iterativly?"
+        app:showAsAction="never"/>
 </menu>

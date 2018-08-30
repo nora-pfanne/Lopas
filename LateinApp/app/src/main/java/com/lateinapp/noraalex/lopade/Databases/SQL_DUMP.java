@@ -23,7 +23,7 @@ final class SQL_DUMP {
 
     //Strings used for the creation of all database tables
     static final String SQL_CREATE_ENTRIES_ADVERB =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + AdverbDB.FeedEntry.TABLE_NAME
                     + "( "
                     + AdverbDB.FeedEntry._ID
@@ -47,7 +47,7 @@ final class SQL_DUMP {
                     + ")";
 
     static final String SQL_CREATE_ENTRIES_ADJEKTIV =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + AdjektivDB.FeedEntry.TABLE_NAME
                     + "( "
                     + AdjektivDB.FeedEntry._ID
@@ -73,7 +73,7 @@ final class SQL_DUMP {
                     + ")";
 
      static final String SQL_CREATE_ENTRIES_DEKLINATIONSENDUNG =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + DeklinationsendungDB.FeedEntry.TABLE_NAME
                     + " ("
                     + DeklinationsendungDB.FeedEntry._ID
@@ -102,7 +102,7 @@ final class SQL_DUMP {
                     + " TEXT)";
 
      static final String SQL_CREATE_ENTRIES_LEKTION =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + LektionDB.FeedEntry.TABLE_NAME
                     + "( "
                     + LektionDB.FeedEntry._ID
@@ -115,7 +115,7 @@ final class SQL_DUMP {
                     + " TEXT)";
 
      static final String SQL_CREATE_ENTRIES_PERSONALENDUNG_PRÄSENS =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + Personalendung_PräsensDB.FeedEntry.TABLE_NAME
                     + "( "
                     + Personalendung_PräsensDB.FeedEntry._ID
@@ -134,7 +134,7 @@ final class SQL_DUMP {
                     + " TEXT)";
 
      static final String SQL_CREATE_ENTRIES_PRAEPOSITION =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + PräpositionDB.FeedEntry.TABLE_NAME
                     + "( "
                     + PräpositionDB.FeedEntry._ID
@@ -158,7 +158,7 @@ final class SQL_DUMP {
                     + ")";
 
      static final String SQL_CREATE_ENTRIES_SPRECHVOKAL_PRÄSENS =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME
                     + "( "
                     + Sprechvokal_PräsensDB.FeedEntry._ID
@@ -181,7 +181,7 @@ final class SQL_DUMP {
                     + " TEXT)";
 
      static final String SQL_CREATE_ENTRIES_SPRECHVOKAL_SUBSTANTIV =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME
                     + " ("
                     + Sprechvokal_SubstantivDB.FeedEntry._ID
@@ -209,7 +209,7 @@ final class SQL_DUMP {
                     + " TEXT)";
 
      static final String SQL_CREATE_ENTRIES_SUBSTANTIV =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + SubstantivDB.FeedEntry.TABLE_NAME
                     + "( "
                     + SubstantivDB.FeedEntry._ID
@@ -252,7 +252,7 @@ final class SQL_DUMP {
                     + ")";
 
      static final String SQL_CREATE_ENTRIES_VERB =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + VerbDB.FeedEntry.TABLE_NAME
                     + "( "
                     + VerbDB.FeedEntry._ID
@@ -297,7 +297,7 @@ final class SQL_DUMP {
                     + ")";
 
      static final String SQL_CREATE_ENTRIES_SPRICHWORT =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + SprichwortDB.FeedEntry.TABLE_NAME
                     + "( "
                     + SprichwortDB.FeedEntry._ID
@@ -321,7 +321,7 @@ final class SQL_DUMP {
                     + ")";
 
      static final String SQL_CREATE_ENTRIES_BEISPIELSATZ =
-             "CREATE TABLE "
+             "CREATE TABLE IF NOT EXISTS "
                      + BeispielsatzDB.FeedEntry.TABLE_NAME
                      + "( "
                      + SprichwortDB.FeedEntry._ID

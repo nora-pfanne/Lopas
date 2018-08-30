@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.R;
 
 public abstract class LateinAppActivity extends AppCompatActivity{
@@ -23,7 +25,9 @@ public abstract class LateinAppActivity extends AppCompatActivity{
 
     private Menu menu;
     private MenuItem devDBHelper,
-                    devVokCheat;
+                    devVokCheat,
+                    devReloadDatabaseAssets,
+                    devReloadDatabaseIterative;
 
     //Make this accessible to all subclasses.
     protected SharedPreferences sharedPref;
@@ -61,6 +65,9 @@ public abstract class LateinAppActivity extends AppCompatActivity{
         this.menu = menu;
         devDBHelper = this.menu.findItem(R.id.action_dev_DB_Helper);
         devVokCheat = this.menu.findItem(R.id.action_dev_Vokabeltrainer_Cheat);
+        devReloadDatabaseAssets = this.menu.findItem(R.id.action_dev_reload_database_from_assets);
+        devReloadDatabaseIterative = this.menu.findItem(R.id.action_dev_reload_database_iterative);
+
 
         sharedPref = getSharedPreferences("SharedPreferences", 0);
 
@@ -86,28 +93,46 @@ public abstract class LateinAppActivity extends AppCompatActivity{
                 openInfoPopup();
                 break;
 
-                //Opening the settings-activity
-                case (R.id.action_settings):
-                    Intent settingsActivity = new Intent(this, SettingsActivity.class);
-                    startActivity(settingsActivity);
-                    break;
+            //Opening the settings-activity
+            case (R.id.action_settings):
+                Intent settingsActivity = new Intent(this, SettingsActivity.class);
+                startActivity(settingsActivity);
+                break;
 
-                //#DEVELOPER
-                //Opening the dbManager-activity
-                case (R.id.action_dev_DB_Helper):
-                    Intent dbManager = new Intent(this, AndroidDatabaseManager.class);
-                    startActivity(dbManager);
-                    break;
+            //#DEVELOPER
+            //Opening the dbManager-activity
+            case (R.id.action_dev_DB_Helper):
+                Intent dbManager = new Intent(this, AndroidDatabaseManager.class);
+                startActivity(dbManager);
+                break;
 
-                //#DEVELOPER
-                //toggles the DevCheatMode
-                case (R.id.action_dev_Vokabeltrainer_Cheat):
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    EinheitenUebersicht.DEV_CHEAT_MODE = !EinheitenUebersicht.DEV_CHEAT_MODE;
-                    editor.putBoolean("DEV_CHEAT_MODE", EinheitenUebersicht.DEV_CHEAT_MODE);
-                    editor.apply();
-                    adjustSettings();
-                    break;
+            //#DEVELOPER
+            //toggles the DevCheatMode
+            case (R.id.action_dev_Vokabeltrainer_Cheat):
+                SharedPreferences.Editor editor = sharedPref.edit();
+                EinheitenUebersicht.DEV_CHEAT_MODE = !EinheitenUebersicht.DEV_CHEAT_MODE;
+                editor.putBoolean("DEV_CHEAT_MODE", EinheitenUebersicht.DEV_CHEAT_MODE);
+                editor.apply();
+                adjustSettings();
+                break;
+
+            //#DEVELOPER
+            //Reloading the database -> copy from assets
+            case (R.id.action_dev_reload_database_from_assets):
+                DBHelper dbHelper = new DBHelper(getApplicationContext());
+
+                dbHelper.reloadDatabaseFromAssets();
+
+                dbHelper.close();
+                break;
+
+            case (R.id.action_dev_reload_database_iterative):
+                Log.d("__ReloadIterative", "Reloading the database iterativly");
+                DBHelper dbHelper1 = new DBHelper(getApplicationContext());
+                dbHelper1.fillDatabaseFromCsv();
+                dbHelper1.close();
+
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -181,12 +206,16 @@ public abstract class LateinAppActivity extends AppCompatActivity{
             if (EinheitenUebersicht.DEVELOPER) {
                 devDBHelper.setVisible(true);
                 devVokCheat.setVisible(true);
+                devReloadDatabaseAssets.setVisible(true);
+                devReloadDatabaseIterative.setVisible(true);
 
                 devVokCheat.setTitle("DEV: Cheat-Mode: " + (EinheitenUebersicht.DEV_CHEAT_MODE ? "ON" : "OFF"));
 
             } else {
                 devDBHelper.setVisible(false);
                 devVokCheat.setVisible(false);
+                devReloadDatabaseAssets.setVisible(false);
+                devReloadDatabaseIterative.setVisible(false);
             }
 
         }catch (Exception e){
