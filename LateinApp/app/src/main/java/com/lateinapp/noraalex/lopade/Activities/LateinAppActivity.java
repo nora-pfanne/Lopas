@@ -17,6 +17,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
+import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
 
 public abstract class LateinAppActivity extends AppCompatActivity{
@@ -114,6 +115,8 @@ public abstract class LateinAppActivity extends AppCompatActivity{
                 editor.putBoolean("DEV_CHEAT_MODE", EinheitenUebersicht.DEV_CHEAT_MODE);
                 editor.apply();
                 adjustSettings();
+
+                General.showMessage("Cheat Mode " + (EinheitenUebersicht.DEV_CHEAT_MODE ? "Activated" : "Deactivated"), getApplicationContext());
                 break;
 
             //#DEVELOPER

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Switch;
 
 import com.lateinapp.noraalex.lopade.R;
+import com.lateinapp.noraalex.lopade.General;
 
 public class SettingsActivity extends LateinAppActivity {
 
@@ -44,6 +45,8 @@ public class SettingsActivity extends LateinAppActivity {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putBoolean("DEVELOPER", toggleDevModeSwitch.isChecked());
                 editor.apply();
+
+                General.showMessage("Developer Mode Activated!", getApplicationContext());
                 break;
 
             //#DEVELOPER
