@@ -878,33 +878,55 @@ public class DBHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    /**
-     * Returns the amount of entries in all tables passed in the String-array
-     * @param tables Array of table-names that are to be counted
-     * @return the amount of entries in the tables of the array
-     */
-    public int countTableEntries(String[] tables){
 
-        Cursor cursor = null;
-        int count = 0;
+    /**
+     * Counts the entries of all tables in the tables Array with a specific 'Lektion_id' and a 'gelernt' value
+     * Only works if every table of the array has a foreign key 'Lektion_id'/'Gelernt'.
+     * @param table table that is to be counted
+     * @param lektionNr the id of the 'lektion', where the entries are to be counted
+     * @param gelernt should the requested vokabel be 'gelernt==true'
+     * @return the amount of entries in the tables of the array; returns -1 if the any table doesn't have 'Lektion_id' as foreign key
+     */
+    private int countTableEntries(String table, int lektionNr, boolean gelernt){
+
         openDb();
 
-        //Counts the entry of every table in the tables-Array
-        for(String table : tables){
-            //Getting the total number of entries which were completed and adding it to 'complete'
-            String query = "SELECT COUNT(*) FROM " + table;
-            cursor = database.rawQuery(query,
-                    new String[] {});
-            cursor.moveToNext();
-            count += cursor.getInt(0);
-        }
+        //getting the total number of entries which were completed and adding it to 'complete'
+        String query = "SELECT COUNT(*) FROM " + table
+                + " WHERE Lektion_ID = ?" +
+                " AND Gelernt = ?";
 
-        if (cursor != null) {
-            cursor.close();
-        }
+        Cursor cursor = database.rawQuery(query,
+                new String[] {""+lektionNr, ""+(gelernt ? 1 : 0)});
+        cursor.moveToNext();
+        int count = cursor.getInt(0);
+
+        cursor.close();
         closeDb();
 
         return count;
+    }
+
+    /**
+     * Returns the amount of entries in all tables passed in the String-array
+     * @param table table that is to be counted
+     * @return the amount of entries in the tables of the array
+     */
+    public int countTableEntries(String table){
+
+        openDb();
+
+        //Getting the total number of entries which were completed and adding it to 'complete'
+        String query = "SELECT COUNT(*) FROM " + table;
+        Cursor cursor = database.rawQuery(query,
+                new String[] {});
+        cursor.moveToNext();
+        int result = cursor.getInt(0);
+        cursor.close();
+
+        closeDb();
+
+        return result;
     }
 
     /**
@@ -1249,18 +1271,12 @@ public class DBHelper extends SQLiteOpenHelper {
     public Vokabel getRandomVocabulary(int lektionNr){
       
         //Get the amount of entries with a matching lektionNr
-        int entryAmountVerb = countTableEntries(new String[]{VerbDB.FeedEntry.TABLE_NAME},
-                                                lektionNr,false);
-        int entryAmountAdjektiv = countTableEntries(new String[]{AdjektivDB.FeedEntry.TABLE_NAME},
-                lektionNr, false);
-        int entryAmountSubstantiv = countTableEntries(new String[]{SubstantivDB.FeedEntry.TABLE_NAME},
-                                                      lektionNr, false);
-        int entryAmountPräposition = countTableEntries(new String[]{PräpositionDB.FeedEntry.TABLE_NAME},
-                                                       lektionNr, false);
-        int entryAmountSprichwort = countTableEntries(new String[]{SprichwortDB.FeedEntry.TABLE_NAME},
-                                                      lektionNr, false);
-        int entryAmountAdverb = countTableEntries(new String[]{AdverbDB.FeedEntry.TABLE_NAME},
-                                                  lektionNr, false);
+        int entryAmountVerb = countTableEntries(VerbDB.FeedEntry.TABLE_NAME, lektionNr,false);
+        int entryAmountAdjektiv = countTableEntries(AdjektivDB.FeedEntry.TABLE_NAME, lektionNr, false);
+        int entryAmountSubstantiv = countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME, lektionNr, false);
+        int entryAmountPräposition = countTableEntries(PräpositionDB.FeedEntry.TABLE_NAME, lektionNr, false);
+        int entryAmountSprichwort = countTableEntries(SprichwortDB.FeedEntry.TABLE_NAME, lektionNr, false);
+        int entryAmountAdverb = countTableEntries(AdverbDB.FeedEntry.TABLE_NAME, lektionNr, false);
         int entryAmountTotal = entryAmountSubstantiv + entryAmountAdjektiv + entryAmountVerb + entryAmountPräposition + entryAmountSprichwort + entryAmountAdverb;
 
         Random rand = new Random();
@@ -1378,8 +1394,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public SubstantivDB getRandomSubstantiv(int lektionNr){
 
-        int entryAmountSubstantiv = countTableEntries(new String[]{SubstantivDB.FeedEntry.TABLE_NAME},
-                                                    lektionNr, false);
+        int entryAmountSubstantiv = countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME, lektionNr, false);
 
         Random rand = new Random();
         int randomNumber = rand.nextInt(entryAmountSubstantiv);
@@ -1413,8 +1428,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public VerbDB getRandomVerb(int lektionNr){
 
-        int entryAmountVerb = countTableEntries(new String[] {VerbDB.FeedEntry.TABLE_NAME},
-                                                lektionNr, false);
+        int entryAmountVerb = countTableEntries(VerbDB.FeedEntry.TABLE_NAME, lektionNr, false);
 
         Random rand = new Random();
         int randomNumber = rand.nextInt(entryAmountVerb);
@@ -1519,7 +1533,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     private int getIdOfVocabulary(String vocabulary, String currentCase, String targetTable){
 
-        int entryAmount = countTableEntries(new String[] {targetTable});
+        int entryAmount = countTableEntries(targetTable);
 
         //Why do _IDs start at 1 not 0????
 

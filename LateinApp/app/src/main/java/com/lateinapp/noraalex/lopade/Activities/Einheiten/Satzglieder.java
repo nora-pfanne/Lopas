@@ -112,7 +112,7 @@ public class Satzglieder extends LateinAppActivity {
         weiterButton.setVisibility(View.GONE);
         progressBar.setMax(maxProgress);
 
-        sentenceCount = dbHelper.countTableEntries(new String[] {BeispielsatzDB.FeedEntry.TABLE_NAME});
+        sentenceCount = dbHelper.countTableEntries(BeispielsatzDB.FeedEntry.TABLE_NAME);
 
         newSentence();
 
