@@ -13,7 +13,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TableRow.LayoutParams;
 
-import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdjektivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
@@ -25,6 +24,8 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
 import com.lateinapp.noraalex.lopade.R;
 
 public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItemSelectedListener{
+
+    private static final String TAG = "Woerterbuch";
 
     private TableLayout tl;
     private Spinner spinner;

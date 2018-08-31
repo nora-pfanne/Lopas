@@ -32,6 +32,8 @@ import com.lateinapp.noraalex.lopade.R;
 
 public class UserInputVokabeltrainer extends LateinAppActivity {
 
+    private static final String TAG = "UserInputVokabeltrainer";
+
     private SharedPreferences sharedPref;
     private DBHelper dbHelper;
 
@@ -288,7 +290,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
 
         }else{
 
-            Log.e("getVokabelTyp()","No VokabelTyp found");
+            Log.e(TAG,"No VokabelTyp found");
 
             return "";
         }

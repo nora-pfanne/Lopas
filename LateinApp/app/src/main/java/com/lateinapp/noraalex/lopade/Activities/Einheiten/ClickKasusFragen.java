@@ -3,7 +3,6 @@ package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -18,6 +17,8 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ClickKasusFragen extends LateinAppActivity {
+
+    private static final String TAG = "ClickKasusFragen";
 
     private SharedPreferences sharedPreferences;
 
@@ -261,7 +262,6 @@ public class ClickKasusFragen extends LateinAppActivity {
             }
         }
         editor.apply();
-        Log.d("CurrentProgress", ""+sharedPreferences.getInt("ClickKasusFragen", 0));
         progressBar.setProgress(sharedPreferences.getInt("ClickKasusFragen", 0));
 
         button.setBackgroundColor(color);

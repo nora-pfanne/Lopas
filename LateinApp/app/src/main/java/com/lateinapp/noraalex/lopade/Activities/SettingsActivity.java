@@ -10,6 +10,8 @@ import com.lateinapp.noraalex.lopade.General;
 
 public class SettingsActivity extends LateinAppActivity {
 
+    private static final String TAG = "SettingsActivity";
+
     private Switch toggleDevModeSwitch;
 
     //TODO: Make this into a enum

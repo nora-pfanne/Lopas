@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,6 +20,8 @@ import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
 
 public abstract class LateinAppActivity extends AppCompatActivity{
+
+    private static final String TAG = "LateinAppActivity";
 
     private boolean onPause = false;
 
@@ -130,7 +131,6 @@ public abstract class LateinAppActivity extends AppCompatActivity{
                 break;
 
             case (R.id.action_dev_reload_database_iterative):
-                Log.d("__ReloadIterative", "Reloading the database iterativly");
                 DBHelper dbHelper1 = new DBHelper(getApplicationContext());
                 dbHelper1.fillDatabaseFromCsv();
                 dbHelper1.close();

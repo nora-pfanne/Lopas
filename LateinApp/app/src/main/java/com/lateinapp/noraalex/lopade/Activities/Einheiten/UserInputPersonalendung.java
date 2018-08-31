@@ -25,6 +25,8 @@ import java.util.Random;
 
 public class UserInputPersonalendung extends LateinAppActivity {
 
+    private static final String TAG = "UserInputPersonalendung";
+
     private SharedPreferences sharedPref;
     private DBHelper dbHelper;
 
@@ -306,7 +308,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
 
         if(randomVocabulary == -1){
             //Something went wrong. Log error-message
-            Log.e("randomVocabulary", "Getting a randomKonjugation failed! Returned -1 for " +
+            Log.e(TAG, "Getting a randomKonjugation failed! Returned -1 for " +
                     "\nrandomNumber: " + randomNumber);
         }
 

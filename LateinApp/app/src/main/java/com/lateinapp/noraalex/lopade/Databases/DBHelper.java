@@ -47,6 +47,8 @@ import static com.lateinapp.noraalex.lopade.Databases.SQL_DUMP.*;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
+    private static final String TAG = "DBHelper";
+
     public SQLiteDatabase database;
 
     //Version of the database. Currently of no use.
@@ -130,7 +132,8 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public void fillDatabaseFromCsv(){
-        Log.d("DBCreationIterative", "We Are iterative Db Creation");
+
+        //Clearing the database if it is still full
         database = getWritableDatabase();
 
         for (String table : allTables){
@@ -139,25 +142,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         database.close();
 
-        //This row is a placeholder for when the Sprechvokal_Substantiv table is added eventually.
-        //Right now, every 'Substantiv' entry is assigned this row
-        openDb();
-
-        Cursor c = database.rawQuery("SELECT * FROM " + Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME, null);
-        Log.d("__", c.getCount() + "");
-        c.close();
-
-        closeDb();
 
         addRowSprechvokal_Substantiv("", "", "", "", "", "", "", "", "", "");
-
-        openDb();
-
-        c = database.rawQuery("SELECT * FROM " + Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME, null);
-        Log.d("__", c.getCount() + "");
-        c.close();
-
-        closeDb();
 
         addRowSprechvokal_Präsens("", "", "", "", "", "", "", "");
 
