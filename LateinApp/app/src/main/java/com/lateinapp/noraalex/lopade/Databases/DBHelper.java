@@ -93,7 +93,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-
     public void reloadDatabaseFromAssets(){
         try{
             createDataBase();
@@ -807,6 +806,30 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    public int countTableEntries(String[] tables){
+
+        String query = "SELECT COUNT(*) FROM (";
+
+        for(int i = 0; i < tables.length; i++){
+            query += "SELECT _ID FROM " + tables[i];
+            if(i != tables.length-1){
+                query += " UNION ALL ";
+            }
+        }
+
+        query += ")";
+
+        Cursor cursor = database.rawQuery(query, null);
+
+        cursor.moveToNext();
+
+        int count = cursor.getInt(0);
+
+        cursor.close();
+
+        return count;
+    }
+
     /**
      * Counts the entries of all tables in the tables Array with a specific 'Lektion_id'.
      * Only works if every table of the array has a foreign key 'Lektion_id'.
@@ -816,26 +839,26 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     private int countTableEntries(String[] tables, int lektionNr){
 
-        int count = 0;
-        openDb();
+        //TODO: NOT YET TESTED, JUST CPY&PASTED FROM ABOVE ->INPORTANT
 
-        for(String table : tables){
+        String query = "SELECT COUNT(*) FROM (";
 
-            try {
-                //getting the total number of entries which were completed and adding it to 'complete'
-                String query = "SELECT COUNT(*) FROM " + table
-                        + " WHERE Lektion_ID = ?";
-
-                Cursor cursor = database.rawQuery(query,
-                        new String[] {""+lektionNr});
-                cursor.moveToNext();
-                count += cursor.getInt(0);
-                cursor.close();
-            }catch (Exception e){
-                e.printStackTrace();
-                return -1;
+        for(int i = 0; i < tables.length; i++){
+            query += "SELECT _ID FROM " + tables[i] + " WHERE Lektion_ID = " + lektionNr;
+            if(i != tables.length-1){
+                query += " UNION ALL ";
             }
         }
+
+        query += ")";
+
+        Cursor cursor = database.rawQuery(query, null);
+
+        cursor.moveToNext();
+
+        int count = cursor.getInt(0);
+
+        cursor.close();
 
         return count;
     }
@@ -849,31 +872,26 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return the amount of entries in the tables of the array; returns -1 if the any table doesn't have 'Lektion_id' as foreign key
      */
     private int countTableEntries(String[] tables, int lektionNr, boolean gelernt){
+        String query = "SELECT COUNT(*) FROM (";
 
-        Cursor cursor = null;
-        int count = 0;
-        openDb();
+        //TODO: NOT YET TESTED, JUST CPY&PASTED FROM ABOVE ->INPORTANT
 
-        for(String table : tables){
-
-            try {
-                //getting the total number of entries which were completed and adding it to 'complete'
-                String query = "SELECT COUNT(*) FROM " + table
-                        + " WHERE Lektion_ID = ?" +
-                        " AND Gelernt = ?";
-
-                cursor = database.rawQuery(query,
-                        new String[] {""+lektionNr, ""+(gelernt ? 1 : 0)});
-                cursor.moveToNext();
-                count += cursor.getInt(0);
-            }catch (Exception e){
-                e.printStackTrace();
-                return -1;
+        for(int i = 0; i < tables.length; i++){
+            query += "SELECT _ID FROM " + tables[i] + " WHERE Lektion_ID = " + lektionNr + " AND Gelernt = " + (gelernt ? 1 : 0);
+            if(i != tables.length-1){
+                query += " UNION ALL ";
             }
-
         }
-        if (cursor != null) cursor.close();
-        closeDb();
+
+        query += ")";
+
+        Cursor cursor = database.rawQuery(query, null);
+
+        cursor.moveToNext();
+
+        int count = cursor.getInt(0);
+
+        cursor.close();
 
         return count;
     }
