@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -13,7 +14,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.Home;
+import com.lateinapp.noraalex.lopade.Activities.EinheitenUebersicht;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
@@ -26,9 +27,8 @@ import java.util.Random;
  * Created by Alexander on 07.03.2018.
  */
 
-//TODO: Input bestätigen mit Enter
 //TODO: Make compatible with multiple tenses
-public class UserInputDeklinationsendung extends LateinAppActivity{
+public class UserInputDeklinationsendung extends LateinAppActivity {
 
     private SharedPreferences sharedPref;
     private DBHelper dbHelper;
@@ -38,7 +38,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
             titel;
     private EditText userInput;
     private ProgressBar progressBar;
-    //TODO: Remove button elevation to make it align with 'userInput'-EditText
+    //FIXME: Remove button elevation to make it align with 'userInput'-EditText
     private Button bestaetigung,
             weiter,
             reset,
@@ -48,7 +48,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
     private String currentDeclination;
 
     private int[] weights;
-    private String[] faelle = {
+    private final String[] faelle = {
             DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG,
             DeklinationsendungDB.FeedEntry.COLUMN_NOM_PL,
             DeklinationsendungDB.FeedEntry.COLUMN_GEN_SG,
@@ -61,12 +61,12 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
             DeklinationsendungDB.FeedEntry.COLUMN_ABL_PL
     };
 
-    private int lektion;
+    private String extraFromEinheitenUebersicht;
     private int backgroundColor;
-    private int maxProgress = 20;
+    private final int maxProgress = 20;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_user_input);
 
@@ -78,7 +78,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
     private void setup(){
 
         Intent intent = getIntent();
-        lektion = intent.getIntExtra("lektion",0);
+        extraFromEinheitenUebersicht = intent.getStringExtra("ExtraInputDeklinationsendung");
 
         sharedPref = getSharedPreferences("SharedPreferences", 0);
         dbHelper = new DBHelper(getApplicationContext());
@@ -94,20 +94,32 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
         zurück = findViewById(R.id.buttonUserInputZurück);
         titel = findViewById(R.id.textUserInputÜberschrift);
 
-        userInput.setHint("Deklinierter Substantiv");
+        userInput.setHint("Deklinierter Substantiv");        //Makes it possible to move to the next vocabulary by pressing "enter"
+        userInput.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
+                //If the keyevent is a key-down event on the "enter" button
+                if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+
+
+                    userInputButtonClicked(findViewById(R.id.buttonUserInputEingabeBestätigt));
+                    return true;
+                }
+                return false;
+            }
+        });
         titel.setText("Deklinationstrainer");
 
         solution.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
 
-        weightSubjects(lektion);
+        weightSubjects(extraFromEinheitenUebersicht);
 
         progressBar.setMax(maxProgress);
     }
 
     private void newVocabulary(){
 
-        int progress = sharedPref.getInt("UserInputDeklinationsendung"+lektion, 0);
+        int progress = sharedPref.getInt("UserInputDeklinationsendung"+extraFromEinheitenUebersicht, 0);
 
         if (progress < maxProgress) {
 
@@ -115,7 +127,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
 
             try {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
             }catch (NullPointerException npe){
                 npe.printStackTrace();
             }
@@ -126,8 +138,13 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
             userInput.setFocusableInTouchMode(true);
 
             //Getting a new vocabulary.
-            currentVokabel = dbHelper.getRandomVocabulary(lektion);
+            //FIXME: Don't return a random number but one according to the progress (nom->1 /...) [also fix the TODO below with this]
+            //random number from 1 to 5 to choose, where the vocabulary comes from
+            //Blueprint for randNum: int randomNum = rand.nextInt((max - min) + 1) + min;
+            int rand = new Random().nextInt((5 - 1) + 1) + 1;
+            currentVokabel = dbHelper.getRandomSubstantiv(rand);
             currentDeclination = getRandomDeklination();
+
             //FIXME Remove nom_sg
             while (currentDeclination.equals(faelle[0])){
                 currentDeclination = getRandomDeklination();
@@ -145,7 +162,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
             lateinText += "\n" + personalendungUser;
 
             //#DEVELOPER
-            if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()){
+            if (EinheitenUebersicht.DEVELOPER && EinheitenUebersicht.DEV_CHEAT_MODE){
                 lateinText += "\n" + dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), currentDeclination);
             }
             request.setText(lateinText);
@@ -162,7 +179,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
             try {
                 InputMethodManager imm = (InputMethodManager)getSystemService(
                         Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+                if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
             }catch (NullPointerException npe){
                 npe.printStackTrace();
             }
@@ -177,7 +194,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
      * Sets weights for all entries of 'faelle' depending on the current value of lektion
      * Copied from GrammatikUserInputDeklinationsendung.class
      */
-    private void weightSubjects(int lektion){
+    private void weightSubjects(String extra){
 
         int weightNomSg;
         int weightNomPl;
@@ -190,9 +207,9 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
         int weightAblSg;
         int weightAblPl;
 
-        switch (lektion){
+        switch (extra){
 
-            case 1:
+            case "NOMINATIV":
                 weightNomSg = 1;
                 weightNomPl = 1;
                 weightGenSg = 0;
@@ -205,7 +222,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
                 weightAblPl = 0;
                 break;
 
-            case 2:
+            case "AKKUSATIV":
                 weightNomSg = 2;
                 weightNomPl = 2;
                 weightGenSg = 0;
@@ -218,7 +235,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
                 weightAblPl = 0;
                 break;
 
-            case 3:
+            case "DATIV":
 
                 weightNomSg = 1;
                 weightNomPl = 1;
@@ -232,7 +249,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
                 weightAblPl = 0;
                 break;
 
-            case 4:
+            case "ABLATIV":
                 weightNomSg = 1;
                 weightNomPl = 1;
                 weightGenSg = 0;
@@ -245,7 +262,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
                 weightAblPl = 3;
                 break;
 
-            case 5:
+            case "GENITIV":
 
                 weightNomSg = 1;
                 weightNomPl = 1;
@@ -259,7 +276,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
                 weightAblPl = 1;
                 break;
 
-            // lektion > 5
+            // Alle gleichmäßig
             default:
                 weightNomSg = 1;
                 weightNomPl = 1;
@@ -288,7 +305,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
 
     /**
      * Copied from GrammatikUserInputDeklinationsendung.class
-     * @return
+     * @return the String of the chosen declination as defined in the array "faelle[]"
      */
     private String getRandomDeklination(){
 
@@ -332,7 +349,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
             //Something went wrong. Log error-message
             Log.e("randomVocabulary", "Getting a randomDeclination failed! Returned -1 for " +
                     "\nrandomNumber: " + randomNumber +
-                    "\nlektion: " + lektion);
+                    "\nlektion: " + extraFromEinheitenUebersicht);
         }
 
         return faelle[randomVocabulary];
@@ -342,11 +359,10 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
         userInput.setFocusable(false);
 
         //Hiding the keyboard
-        //TODO: Why do we need to use the RootView instead of sth like: this.getCurrentFocus();
         try {
             View v = getWindow().getDecorView().getRootView();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            if (imm != null) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }catch (NullPointerException npe){
             npe.printStackTrace();
         }
@@ -360,17 +376,19 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
             SharedPreferences.Editor editor = sharedPref.edit();
 
             //Increasing the counter by 1
-            editor.putInt("UserInputDeklinationsendung" + lektion,
-                    sharedPref.getInt("UserInputDeklinationsendung"+lektion, 0) + 1);
+            editor.putInt("UserInputDeklinationsendung" + extraFromEinheitenUebersicht,
+                    sharedPref.getInt("UserInputDeklinationsendung"+extraFromEinheitenUebersicht, 0) + 1);
             editor.apply();
         }else {
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
 
-            SharedPreferences.Editor editor = sharedPref.edit();
-            //Decreasing the counter by 1
-            editor.putInt("UserInputDeklinationsendung" + lektion,
-                    sharedPref.getInt("UserInputDeklinationsendung"+lektion, 0) - 1);
-            editor.apply();
+            if (sharedPref.getInt("UserInputDeklinationsendung"+extraFromEinheitenUebersicht, 0) > 0) {
+                SharedPreferences.Editor editor = sharedPref.edit();
+                //Decreasing the counter by 1
+                editor.putInt("UserInputDeklinationsendung" + extraFromEinheitenUebersicht,
+                        sharedPref.getInt("UserInputDeklinationsendung" + extraFromEinheitenUebersicht, 0) - 1);
+                editor.apply();
+            }
         }
         userInput.setBackgroundColor(color);
 
@@ -452,7 +470,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
             //Setting the 'learned' state of all vocabularies of the current lektion to false
             case (R.id.buttonUserInputFortschrittLöschen):
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("UserInputDeklinationsendung"+lektion, 0);
+                editor.putInt("UserInputDeklinationsendung"+extraFromEinheitenUebersicht, 0);
                 editor.apply();
                 finish();
                 break;
@@ -461,6 +479,20 @@ public class UserInputDeklinationsendung extends LateinAppActivity{
             case (R.id.buttonUserInputZurück):
                 finish();
                 break;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        try{
+            //Hiding the keyboard.
+            InputMethodManager imm = (InputMethodManager)getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+        }catch (Exception e){
+            //do nothing
         }
     }
 }

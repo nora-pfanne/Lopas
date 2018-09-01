@@ -36,7 +36,7 @@ import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 /**
  * This class is for debugging purposes only
  * Source: https://github.com/sanathp/DatabaseManager_For_Android
- * TODO: privacy: Remove this in the released app
+ * #DEVELOPER: Remove this in the released app
  *
  *
  * This Activity is used to view and edit all used databases on the mobile device

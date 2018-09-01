@@ -6,16 +6,22 @@ import android.content.SharedPreferences;
 import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lateinapp.noraalex.lopade.Activities.EinheitenUebersicht;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
-import com.lateinapp.noraalex.lopade.Activities.Home;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
+import com.lateinapp.noraalex.lopade.Databases.Tables.AdjektivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.PräpositionDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.SprichwortDB;
@@ -24,7 +30,6 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
 import com.lateinapp.noraalex.lopade.R;
 
-//TODO: Input bestätigen mit Enter
 public class UserInputVokabeltrainer extends LateinAppActivity {
 
     private SharedPreferences sharedPref;
@@ -35,7 +40,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
          titel;
     private EditText userInput;
     private ProgressBar progressBar;
-    //TODO: Remove button elevation to make it align with 'userInput'-EditText
+    //FIXME: Remove button elevation to make it align with 'userInput'-EditText
     private Button bestaetigung,
         weiter,
         reset,
@@ -47,7 +52,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
     private int backgroundColor;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_user_input);
 
@@ -76,6 +81,19 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
         titel = findViewById(R.id.textUserInputÜberschrift);
 
         userInput.setHint("Übersetzung");
+        //Makes it possible to move to the next vocabulary by pressing "enter"
+        userInput.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
+                //If the keyevent is a key-down event on the "enter" button
+                if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+
+
+                    userInputButtonClicked(findViewById(R.id.buttonUserInputEingabeBestätigt));
+                    return true;
+                }
+                return false;
+            }
+        });
         titel.setText("Vokabeltrainer");
 
         solution.setVisibility(View.GONE);
@@ -94,7 +112,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
             //Hiding the keyboard.
             InputMethodManager imm = (InputMethodManager)getSystemService(
                     Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+            if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
 
             allLearned();
 
@@ -106,13 +124,13 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
 
             //Showing the keyboard
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+            if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
             //Getting a new vocabulary.
             currentVokabel = dbHelper.getRandomVocabulary(lektion);
             String lateinText = currentVokabel.getLatein();
             //#DEVELOPER
-            if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) lateinText += "\n" + currentVokabel.getDeutsch();
+            if (EinheitenUebersicht.DEVELOPER && EinheitenUebersicht.DEV_CHEAT_MODE) lateinText += "\n" + currentVokabel.getDeutsch();
             request.setText(lateinText);
 
             //Adjusting the visibility of the buttons.
@@ -126,12 +144,11 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
         userInput.setFocusable(false);
 
         //Hiding the keyboard
-        //TODO: Why do we need to use the RootView instead of sth like: this.getCurrentFocus();
         try {
             //Hiding the Keyboard.
             View v = getWindow().getDecorView().getRootView();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            if (imm != null) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }catch (NullPointerException npe){
             npe.printStackTrace();
         }
@@ -265,6 +282,10 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
 
             return AdverbDB.FeedEntry.TABLE_NAME;
 
+        }else if(vokabel instanceof AdjektivDB){
+
+            return AdjektivDB.FeedEntry.TABLE_NAME;
+
         }else{
 
             Log.e("getVokabelTyp()","No VokabelTyp found");
@@ -324,6 +345,47 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        try{
+            //Hiding the keyboard.
+            InputMethodManager imm = (InputMethodManager)getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+        }catch (Exception e){
+            //do nothing
+        }
+    }
+
+    @Override
+    public void openInfoPopup() {
+
+        LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        View popupView;
+
+        popupView = layoutInflater.inflate(R.layout.popup_info_vokabeltrainer, null);
+
+        final PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        Button btnDismiss = popupView.findViewById(R.id.popup_info_vokabeltrainer_dismiss);
+        btnDismiss.setOnClickListener(new Button.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                popupWindow.dismiss();
+            }
+        });
+
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
     }
 }
 

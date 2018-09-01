@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.lateinapp.noraalex.lopade.Activities.EinheitenUebersicht;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
-import com.lateinapp.noraalex.lopade.Activities.Home;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
@@ -20,9 +20,6 @@ import com.lateinapp.noraalex.lopade.R;
 import java.util.ArrayList;
 import java.util.Random;
 
-//TODO: Make the user choose all correct cases -> not just one
-
-//TODO: We got a weighting problem: if a case is the same 3 times it is 3 times more likely to show up
 public class ClickDeklinationsendung extends LateinAppActivity {
 
     private DBHelper dbHelper;
@@ -41,7 +38,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
     private ProgressBar progressBar;
 
     private int[] weights;
-    private String[] faelle = {
+    private final String[] faelle = {
             DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG,
             DeklinationsendungDB.FeedEntry.COLUMN_NOM_PL,
             DeklinationsendungDB.FeedEntry.COLUMN_GEN_SG,
@@ -64,16 +61,20 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                 colorButtonInactive,
                 colorButtonActive,
                 colorButtonGrey;
-    private int lektion;
     private int backgroundColor;
-    private int maxProgress = 20;
+
+    private boolean finished;
+    private final int maxProgress = 20;
 
     private ArrayList<String> allCorrectCases;
 
-    Vokabel currentVokabel;
+    private Vokabel currentVokabel;
+
+    //Passed over in EinheitenÜbersicht
+    private String extraFromEinheitenUebersicht;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_click_deklination);
 
@@ -84,7 +85,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
 
     private void setup(){
         Intent intent = getIntent();
-        lektion = intent.getIntExtra("lektion", 0);
+        extraFromEinheitenUebersicht = intent.getStringExtra("ExtraClickDeklinationsendung");
 
         dbHelper = new DBHelper(getApplicationContext());
 
@@ -148,14 +149,23 @@ public class ClickDeklinationsendung extends LateinAppActivity {
         weiter.setVisibility(View.GONE);
 
         progressBar.setMax(maxProgress);
+        int progress = sharedPref.getInt("ClickDeklinationsendung"+extraFromEinheitenUebersicht, 0);
+        if (progress > maxProgress){
+            progress = maxProgress;
+            finished = true;
+        }else{
+            finished = false;
+        }
 
-        weightSubjects(lektion);
+        progressBar.setProgress(progress);
+
+        weightSubjects(extraFromEinheitenUebersicht);
     }
 
     /**
      * Sets weights for all entries of 'faelle' depending on the current value of lektion
      */
-    private void weightSubjects(int lektion){
+    private void weightSubjects(String extra){
 
         int weightNomSg;
         int weightNomPl;
@@ -168,9 +178,9 @@ public class ClickDeklinationsendung extends LateinAppActivity {
         int weightAblSg;
         int weightAblPl;
 
-        switch (lektion){
+        switch (extra){
 
-            case 1:
+            case "NOMINATIV":
                 weightNomSg = 1;
                 weightNomPl = 1;
                 weightGenSg = 0;
@@ -183,7 +193,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                 weightAblPl = 0;
                 break;
 
-            case 2:
+            case "AKKUSATIV":
                 weightNomSg = 2;
                 weightNomPl = 2;
                 weightGenSg = 0;
@@ -196,7 +206,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                 weightAblPl = 0;
                 break;
 
-            case 3:
+            case "DATIV":
 
                 weightNomSg = 1;
                 weightNomPl = 1;
@@ -210,7 +220,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                 weightAblPl = 0;
                 break;
 
-            case 4:
+            case "ABLATIV":
                 weightNomSg = 1;
                 weightNomPl = 1;
                 weightGenSg = 0;
@@ -223,7 +233,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                 weightAblPl = 3;
                 break;
 
-            case 5:
+            case "GENITIV":
 
                 weightNomSg = 1;
                 weightNomPl = 1;
@@ -270,14 +280,22 @@ public class ClickDeklinationsendung extends LateinAppActivity {
      */
     private void newVocabulary(){
 
-        int progress = sharedPref.getInt("ClickDeklinationsendung"+lektion, 0);
+        int progress = sharedPref.getInt("ClickDeklinationsendung"+extraFromEinheitenUebersicht, 0);
+
+
         lateinVokabel.setBackgroundColor(backgroundColor);
 
         //Checks if the user has had enough correct inputs to complete the 'grammatikDeklination'
         if (progress < maxProgress) {
+            finished = false;
+            progressBar.setProgress(progress);
 
             String declination = getRandomDeklination();
-            currentVokabel = dbHelper.getRandomSubstantiv(lektion);
+            //FIXME: Don't return a random number but one according to the progress (nom->1 /...)
+            //random number from 1 to 5 to choose, where the vocabulary comes from
+            //Blueprint for randNum: int randomNum = rand.nextInt((max - min) + 1) + min;
+            int rand = new Random().nextInt((5 - 1) + 1) + 1;
+            currentVokabel = dbHelper.getRandomSubstantiv(rand);
             allCorrectCases.clear();
             allCorrectCases.add(declination);
             //Adding all declinations that have the same form of the substantive:
@@ -291,7 +309,68 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                             dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), declination).equals(
                                     dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), fall))
                             ){
-                        allCorrectCases.add(fall);
+
+                        switch (extraFromEinheitenUebersicht){
+
+                            case "NOMINATIV":
+                                if (fall.equals(faelle[0]) ||
+                                        fall.equals(faelle[1])){
+                                    allCorrectCases.add(fall);
+                                }
+                                break;
+
+                            case "GENITIV":
+                                if (fall.equals(faelle[0]) ||
+                                    fall.equals(faelle[1]) ||
+                                    fall.equals(faelle[2]) ||
+                                    fall.equals(faelle[3]) ||
+                                    fall.equals(faelle[4]) ||
+                                    fall.equals(faelle[5]) ||
+                                    fall.equals(faelle[6]) ||
+                                    fall.equals(faelle[7]) ||
+                                    fall.equals(faelle[8]) ||
+                                    fall.equals(faelle[9])){
+                                    allCorrectCases.add(fall);
+                                }
+                                break;
+
+                            case "DATIV":
+                                if (fall.equals(faelle[0]) ||
+                                    fall.equals(faelle[1]) ||
+                                    fall.equals(faelle[4]) ||
+                                    fall.equals(faelle[5]) ||
+                                    fall.equals(faelle[6]) ||
+                                    fall.equals(faelle[7])){
+                                    allCorrectCases.add(fall);
+                                }
+                                break;
+
+                            case "AKKUSATIV":
+                                if (fall.equals(faelle[0]) ||
+                                        fall.equals(faelle[1]) ||
+                                        fall.equals(faelle[6]) ||
+                                        fall.equals(faelle[7])){
+                                    allCorrectCases.add(fall);
+                                }
+                                break;
+
+                            case "ABLATIV":
+
+                                if (fall.equals(faelle[0]) ||
+                                    fall.equals(faelle[1]) ||
+                                    fall.equals(faelle[6]) ||
+                                    fall.equals(faelle[7]) ||
+                                    fall.equals(faelle[8]) ||
+                                    fall.equals(faelle[9])){
+                                    allCorrectCases.add(fall);
+                                }
+                                break;
+
+                            default:
+
+                                break;
+
+                        }
                     }
 
                 }
@@ -301,7 +380,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                     allCorrectCases.get(0)));
 
             //#DEVELOPER
-            if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) {
+            if (EinheitenUebersicht.DEVELOPER && EinheitenUebersicht.DEV_CHEAT_MODE) {
                 //Lowering the text size if more than 2 correct cases exist so it fits the screen.
                 if (allCorrectCases.size() > 2) {
                     lateinVokabel.setTextSize(24);
@@ -319,8 +398,14 @@ public class ClickDeklinationsendung extends LateinAppActivity {
 
             lateinVokabel.setText(lateinText);
 
-            updateButtons(lektion);
+            updateButtons(extraFromEinheitenUebersicht);
         }else {
+            finished = true;
+            progressBar.setProgress(maxProgress);
+
+
+            backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+
 
             nom_sg.setVisibility(View.GONE);
             nom_pl.setVisibility(View.GONE);
@@ -332,6 +417,9 @@ public class ClickDeklinationsendung extends LateinAppActivity {
             akk_pl.setVisibility(View.GONE);
             abl_sg.setVisibility(View.GONE);
             abl_pl.setVisibility(View.GONE);
+            weiter.setVisibility(View.GONE);
+            checkInput.setVisibility(View.GONE);
+            checkInput.setVisibility(View.GONE);
             lateinVokabel.setVisibility(View.GONE);
             checkInput.setVisibility(View.GONE);
             reset.setVisibility(View.VISIBLE);
@@ -386,7 +474,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
             //Something went wrong. Log error-message
             Log.e("randomVocabulary", "Getting a randomDeclination failed! Returned -1 for " +
                     "\nrandomNumber: " + randomNumber +
-                    "\nlektion: " + lektion);
+                    "\nlektion: " + extraFromEinheitenUebersicht);
         }
 
         return faelle[randomVocabulary];
@@ -402,61 +490,61 @@ public class ClickDeklinationsendung extends LateinAppActivity {
             case (R.id.buttonGrammatikDeklinationNomSg):
 
                 buttonClicked[0] = !buttonClicked[0];
-                updateButtons(lektion);
+                updateButtons(extraFromEinheitenUebersicht);
                 break;
 
             case (R.id.buttonGrammatikDeklinationNomPl):
 
                 buttonClicked[1] = !buttonClicked[1];
-                updateButtons(lektion);
+                updateButtons(extraFromEinheitenUebersicht);
                 break;
 
             case (R.id.buttonGrammatikDeklinationGenSg):
 
                 buttonClicked[2] = !buttonClicked[2];
-                updateButtons(lektion);
+                updateButtons(extraFromEinheitenUebersicht);
                 break;
 
             case (R.id.buttonGrammatikDeklinationGenPl):
 
                 buttonClicked[3] = !buttonClicked[3];
-                updateButtons(lektion);
+                updateButtons(extraFromEinheitenUebersicht);
                 break;
 
             case (R.id.buttonGrammatikDeklinationDatSg):
 
                 buttonClicked[4] = !buttonClicked[4];
-                updateButtons(lektion);
+                updateButtons(extraFromEinheitenUebersicht);
                 break;
 
             case (R.id.buttonGrammatikDeklinationDatPl):
 
                 buttonClicked[5] = !buttonClicked[5];
-                updateButtons(lektion);
+                updateButtons(extraFromEinheitenUebersicht);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAkkSg):
 
                 buttonClicked[6] = !buttonClicked[6];
-                updateButtons(lektion);
+                updateButtons(extraFromEinheitenUebersicht);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAkkPl):
 
                 buttonClicked[7] = !buttonClicked[7];
-                updateButtons(lektion);
+                updateButtons(extraFromEinheitenUebersicht);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAblSg):
 
                 buttonClicked[8] = !buttonClicked[8];
-                updateButtons(lektion);
+                updateButtons(extraFromEinheitenUebersicht);
                 break;
 
             case (R.id.buttonGrammatikDeklinationAblPl):
 
                 buttonClicked[9] = !buttonClicked[9];
-                updateButtons(lektion);
+                updateButtons(extraFromEinheitenUebersicht);
                 break;
 
             //Checks the user input
@@ -481,14 +569,14 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                 };
                 weiter.setVisibility(View.GONE);
                 newVocabulary();
-                updateButtons(lektion);
+                updateButtons(extraFromEinheitenUebersicht);
                 break;
 
             //Resets all progress up to this point
             case (R.id.buttonGrammatikDeklinationReset):
 
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("ClickDeklinationsendung"+lektion, 0);
+                editor.putInt("ClickDeklinationsendung"+extraFromEinheitenUebersicht, 0);
                 editor.apply();
                 finish();
 
@@ -503,12 +591,12 @@ public class ClickDeklinationsendung extends LateinAppActivity {
     /**
      * Updating the color of the buttons depending on if the button has been selected or deselected
      */
-    private void updateButtons(int lektion){
+    private void updateButtons(String extra){
 
-        checkInput.setVisibility(View.VISIBLE);
+        if (!finished) checkInput.setVisibility(View.VISIBLE);
 
-        switch (lektion){
-            case 1:
+        switch (extra){
+            case "NOMINATIV":
                 nom_sg.setEnabled(true);
                 nom_sg.setBackgroundColor(colorButtonInactive);
                 nom_pl.setEnabled(true);
@@ -535,7 +623,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                 abl_pl.setBackgroundColor(colorButtonGrey);
                 break;
 
-            case 2:
+            case "AKKUSATIV":
                 nom_sg.setEnabled(true);
                 nom_sg.setBackgroundColor(colorButtonInactive);
                 nom_pl.setEnabled(true);
@@ -562,7 +650,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                 abl_pl.setBackgroundColor(colorButtonGrey);
                 break;
 
-            case 3:
+            case "DATIV":
                 nom_sg.setEnabled(true);
                 nom_sg.setBackgroundColor(colorButtonInactive);
                 nom_pl.setEnabled(true);
@@ -589,7 +677,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                 abl_pl.setBackgroundColor(colorButtonGrey);
                 break;
 
-            case 4:
+            case "ABLATIV":
 
                 nom_sg.setEnabled(true);
                 nom_sg.setBackgroundColor(colorButtonInactive);
@@ -661,9 +749,8 @@ public class ClickDeklinationsendung extends LateinAppActivity {
         for (int i = 0; i < buttonClicked.length; i++){
 
             //Checking lektion dependent as lektion 1 only has Nom Sg./Pl. and so on
-            switch (lektion){
-
-                case 1:
+            switch (extraFromEinheitenUebersicht){
+                case "NOMINATIV":
                     if (i == 0 || i == 1){
                         if(buttonClicked[i]){
                             if (!allCorrectCases.contains(faelle[i])) {
@@ -681,7 +768,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                     }
                     break;
 
-                case 2:
+                case "AKKUSATIV":
                     if (i == 0 || i == 1 ||
                         i == 6 || i == 7){
                         if(buttonClicked[i]){
@@ -700,7 +787,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                     }
                     break;
 
-                case 3:
+                case "GENITIV":
                     if (i == 0 || i == 1 ||
                         i == 4 || i == 5 ||
                         i == 6 || i == 7){
@@ -720,7 +807,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                     }
                     break;
 
-                case 4:
+                case "ABLATIV":
                     if (i == 0 || i == 1 ||
                         i == 4 || i == 5 ||
                         i == 6 || i == 7 ||
@@ -766,20 +853,19 @@ public class ClickDeklinationsendung extends LateinAppActivity {
             color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
 
             //Increasing the counter by 1
-            editor.putInt("ClickDeklinationsendung" + lektion,
-                          sharedPref.getInt("ClickDeklinationsendung"+lektion, 0) + 1);
+            editor.putInt("ClickDeklinationsendung" + extraFromEinheitenUebersicht,
+                          sharedPref.getInt("ClickDeklinationsendung"+extraFromEinheitenUebersicht, 0) + 1);
         }else {
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
 
             //Decreasing the counter by 1
-            if (sharedPref.getInt("ClickDeklinationsendung" + lektion, 0) > 0) {
-                editor.putInt("ClickDeklinationsendung" + lektion,
-                              sharedPref.getInt("ClickDeklinationsendung" + lektion, 0) - 1);
+            if (sharedPref.getInt("ClickDeklinationsendung" + extraFromEinheitenUebersicht, 0) > 0) {
+                editor.putInt("ClickDeklinationsendung" + extraFromEinheitenUebersicht,
+                              sharedPref.getInt("ClickDeklinationsendung" + extraFromEinheitenUebersicht, 0) - 1);
             }
         }
         editor.apply();
 
-        progressBar.setProgress(sharedPref.getInt("ClickDeklinationsendung" +lektion, 0));
         lateinVokabel.setBackgroundColor(color);
 
         for (Button b : buttons){

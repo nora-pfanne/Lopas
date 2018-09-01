@@ -1,11 +1,10 @@
 package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -18,12 +17,18 @@ import com.lateinapp.noraalex.lopade.Activities.EinheitenUebersicht;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Personalendung_PräsensDB;
+import com.lateinapp.noraalex.lopade.Databases.Tables.Sprechvokal_PräsensDB;
+import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
 import com.lateinapp.noraalex.lopade.R;
 
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class UserInputPersonalendung extends LateinAppActivity {
+public class UserInputEsseVelleNolle extends LateinAppActivity {
+
+
+    private ArrayList<Vokabel> viableVocabularies;
 
     private SharedPreferences sharedPref;
     private DBHelper dbHelper;
@@ -42,7 +47,6 @@ public class UserInputPersonalendung extends LateinAppActivity {
     private Vokabel currentVokabel;
     private String currentPersonalendung;
 
-    private int[] weights;
     private final String[] faelle = {
             Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG,
             Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG,
@@ -51,7 +55,6 @@ public class UserInputPersonalendung extends LateinAppActivity {
             Personalendung_PräsensDB.FeedEntry.COLUMN_2_PL,
             Personalendung_PräsensDB.FeedEntry.COLUMN_3_PL};
 
-    private String extraFromEinheitenUebersicht;
     private int backgroundColor;
     private final int maxProgress = 20;
 
@@ -66,8 +69,6 @@ public class UserInputPersonalendung extends LateinAppActivity {
     }
 
     private void setup(){
-        Intent intent = getIntent();
-        extraFromEinheitenUebersicht = intent.getStringExtra("ExtraInputPersonalendung");
 
         sharedPref = getSharedPreferences("SharedPreferences", 0);
         dbHelper = new DBHelper(getApplicationContext());
@@ -97,21 +98,20 @@ public class UserInputPersonalendung extends LateinAppActivity {
                 return false;
             }
         });
-        titel.setText("Konjugationstrainer");
+        titel.setText("Esse & Velle & Nolle");
 
         solution.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
 
-        weightSubjects(extraFromEinheitenUebersicht);
-
         progressBar.setMax(maxProgress);
+
+        viableVocabularies = getViableVocabularies();
 
     }
 
     private void newVocabulary(){
 
-        int progress = sharedPref.getInt("UserInputPersonalendung"+extraFromEinheitenUebersicht, 0);
-
+        int progress = sharedPref.getInt("UserInputEsseVelleNolle", 0);
         if (progress < maxProgress) {
 
             progressBar.setProgress(progress);
@@ -126,13 +126,10 @@ public class UserInputPersonalendung extends LateinAppActivity {
             userInput.setBackgroundColor(backgroundColor);
             userInput.setFocusableInTouchMode(true);
 
-            //Getting a new vocabulary.
-            //FIXME: Don't return a random number but one according to the progress (nom->1 /...)
-            //random number from 1 to 5 to choose, where the vocabulary comes from
-            //Blueprint for randNum: int randomNum = rand.nextInt((max - min) + 1) + min;
-            int rand = new Random().nextInt((5 - 1) + 1) + 1;
-            currentVokabel = dbHelper.getRandomVocabulary(rand);
-            currentPersonalendung = getRandomPersonalendung();
+            currentVokabel = viableVocabularies.get(
+                    ThreadLocalRandom.current().nextInt(0, viableVocabularies.size()));
+            currentPersonalendung = faelle[
+                    ThreadLocalRandom.current().nextInt(0, faelle.length)];
 
             String lateinText = dbHelper.getKonjugiertesVerb(currentVokabel.getId(), "Inf");
             String personalendungUser = currentPersonalendung.replace("_", " ");
@@ -189,17 +186,18 @@ public class UserInputPersonalendung extends LateinAppActivity {
             SharedPreferences.Editor editor = sharedPref.edit();
 
             //Increasing the counter by 1
-            editor.putInt("UserInputPersonalendung" + extraFromEinheitenUebersicht,
-                    sharedPref.getInt("UserInputPersonalendung"+extraFromEinheitenUebersicht, 0) + 1);
+            editor.putInt("UserInputEsseVelleNolle",
+                    sharedPref.getInt("UserInputEsseVelleNolle", 0) + 1);
             editor.apply();
         }else {
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
 
-            if (sharedPref.getInt("UserInputPersonalendung"+extraFromEinheitenUebersicht, 0) > 0) {
+
+            //Decreasing the counter by 1
+            if (sharedPref.getInt("UserInputEsseVelleNolle", 0) > 0) {
                 SharedPreferences.Editor editor = sharedPref.edit();
-                //Decreasing the counter by 1
-                editor.putInt("UserInputPersonalendung" + extraFromEinheitenUebersicht,
-                        sharedPref.getInt("UserInputPersonalendung" + extraFromEinheitenUebersicht, 0) - 1);
+                editor.putInt("UserInputEsseVelleNolle",
+                        sharedPref.getInt("UserInputEsseVelleNolle", 0) - 1);
                 editor.apply();
             }
         }
@@ -211,107 +209,6 @@ public class UserInputPersonalendung extends LateinAppActivity {
         bestaetigung.setVisibility(View.GONE);
         weiter.setVisibility(View.VISIBLE);
         solution.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * Sets weights for all entries of 'faelle' depending on the current value of lektion
-     */
-    private void weightSubjects(String extra){
-
-        int weightErsteSg,
-                weightZweiteSg,
-                weightDritteSg,
-                weightErstePl,
-                weightZweitePl,
-                weightDrittePl;
-
-        switch (extra){
-
-            case "DRITTE_PERSON":
-                weightErsteSg = 0;
-                weightZweiteSg = 0;
-                weightDritteSg = 1;
-                weightErstePl = 0;
-                weightZweitePl = 0;
-                weightDrittePl = 1;
-                break;
-
-            case "ERSTE_ZWEITE_PERSON":
-                weightErsteSg = 2;
-                weightZweiteSg = 2;
-                weightDritteSg = 1;
-                weightErstePl = 2;
-                weightZweitePl = 2;
-                weightDrittePl = 1;
-                break;
-
-            default:
-
-                weightErsteSg = 1;
-                weightZweiteSg = 1;
-                weightDritteSg = 1;
-                weightErstePl = 1;
-                weightZweitePl = 1;
-                weightDrittePl = 1;
-                break;
-
-        }
-
-        weights = new int[] {weightErsteSg,
-                weightZweiteSg,
-                weightDritteSg,
-                weightErstePl,
-                weightZweitePl,
-                weightDrittePl};
-    }
-
-    /**
-     * @return a int corresponding to to position of a case in faelle[] with respect to the
-     *          previously set weights[]-arr
-     */
-    private String getRandomPersonalendung(){
-
-        //Getting a upper bound for the random number being retrieved afterwards
-        int max =  (weights[0] +
-                weights[1] +
-                weights[2] +
-                weights[3] +
-                weights[4] +
-                weights[5]);
-
-        Random randomNumber = new Random();
-        int intRandom = randomNumber.nextInt(max) + 1;
-        int sum = 1;
-        int sumNew;
-
-        /*
-        Each case gets a width corresponding to the 'weights'-arr.
-        Goes through every case and checks if the 'randomInt' is in the area of the current case
-         */
-        int randomVocabulary = -1;
-        for(int i = 0; i < weights.length; i++){
-
-            sumNew = sum + weights[i];
-
-            //checks if 'intRandom' is between the 'sum' and 'sumNew' and thus in the area of the current case
-            if (intRandom >= sum && intRandom < sumNew){
-
-                randomVocabulary = i;
-                break;
-            }
-            else {
-                sum = sumNew;
-            }
-        }
-
-        if(randomVocabulary == -1){
-            //Something went wrong. Log error-message
-            Log.e("randomVocabulary", "Getting a randomKonjugation failed! Returned -1 for " +
-                    "\nrandomNumber: " + randomNumber);
-        }
-
-
-        return faelle[randomVocabulary];
     }
 
     /**
@@ -384,7 +281,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
             //Setting the 'learned' state of all vocabularies of the current lektion to false
             case (R.id.buttonUserInputFortschrittLöschen):
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("UserInputPersonalendung"+extraFromEinheitenUebersicht, 0);
+                editor.putInt("UserInputEsseVelleNolle", 0);
                 editor.apply();
                 finish();
                 break;
@@ -409,4 +306,36 @@ public class UserInputPersonalendung extends LateinAppActivity {
             //do nothing
         }
     }
+
+    /**
+     * @return an array with the ids of the vocabularies "esse", "velle" and "nolle"
+     */
+    private ArrayList<Vokabel> getViableVocabularies(){
+
+        DBHelper dbHelper = new DBHelper(this);
+
+        String query = "SELECT " + VerbDB.FeedEntry.TABLE_NAME + "." + VerbDB.FeedEntry._ID + ", " + VerbDB.FeedEntry.TABLE_NAME + "." + VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH +
+                " FROM " + VerbDB.FeedEntry.TABLE_NAME + ", " + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME +
+                " WHERE " + VerbDB.FeedEntry.TABLE_NAME + "." + VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID + " = " +  Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + "." + Sprechvokal_PräsensDB.FeedEntry._ID +
+                " AND ("
+                +  Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + "." + Sprechvokal_PräsensDB.FeedEntry.COLUMN_TITLE + " = 'esse' OR "
+                +  Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + "." + Sprechvokal_PräsensDB.FeedEntry.COLUMN_TITLE + " = 'velle' OR "
+                +  Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + "." + Sprechvokal_PräsensDB.FeedEntry.COLUMN_TITLE + " = 'nolle')";
+        Cursor cursor = dbHelper.database.rawQuery(query, null);
+
+        ArrayList<Vokabel> vocabularies = new ArrayList<>();
+        while (cursor.moveToNext()){
+
+            int id = cursor.getInt(0);
+            String latein = dbHelper.getKonjugiertesVerb(id, "inf");
+            String deutsch = cursor.getString( 1);
+
+            vocabularies.add(new VerbDB(id, latein, deutsch));
+        }
+
+        cursor.close();
+
+        return vocabularies;
+    }
+
 }

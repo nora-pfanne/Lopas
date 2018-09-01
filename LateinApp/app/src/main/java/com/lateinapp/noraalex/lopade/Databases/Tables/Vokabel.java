@@ -6,7 +6,7 @@ abstract public class Vokabel {
     private final String latein,
             deutsch;
 
-    public Vokabel(int id, String lateinInf, String deutsch){
+    Vokabel(int id, String lateinInf, String deutsch){
         this.id = id;
         this.latein = lateinInf;
         this.deutsch = deutsch;

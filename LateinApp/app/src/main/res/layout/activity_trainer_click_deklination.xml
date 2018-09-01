@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickDeklinationsendung">
+    tools:context=".Activities.Einheiten.ClickDeklinationsendung">
 
     <TextView
         android:id="@+id/textGrammatikDeklinationÜberschrift"
@@ -291,8 +291,8 @@
     <Button
         style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikDeklinationZurück"
-        android:layout_width="106dp"
-        android:layout_height="54dp"
+        android:layout_width="253dp"
+        android:layout_height="155dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"

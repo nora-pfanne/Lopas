@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.lateinapp.noraalex.lopade.Activities.EinheitenUebersicht;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
-import com.lateinapp.noraalex.lopade.Activities.Home;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Personalendung_PräsensDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
@@ -36,7 +36,7 @@ public class ClickPersonalendung extends LateinAppActivity {
     private ProgressBar progressBar;
     private TextView latein;
 
-    private String[] faelle = {
+    private final String[] faelle = {
             Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG,
             Personalendung_PräsensDB.FeedEntry.COLUMN_2_SG,
             Personalendung_PräsensDB.FeedEntry.COLUMN_3_SG,
@@ -48,16 +48,17 @@ public class ClickPersonalendung extends LateinAppActivity {
 
     private String konjugation;
     private int backgroundColor;
-    private int lektion;
-    private int maxProgress = 20;
+    private final int maxProgress = 20;
 
     private int colorButtonCorrect,
                 colorButtonIncorrect,
                 colorButtonDefault,
                 colorButtonGrey;
 
+    private String extraFromEinheitenUebersicht;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trainer_click_personalendung);
 
@@ -69,7 +70,7 @@ public class ClickPersonalendung extends LateinAppActivity {
 
     private void setup(){
         Intent intent = getIntent();
-        lektion = intent.getIntExtra("lektion", 0);
+        extraFromEinheitenUebersicht = intent.getStringExtra("ExtraClickPersonalendung");
 
         dbHelper = new DBHelper(getApplicationContext());
 
@@ -105,15 +106,18 @@ public class ClickPersonalendung extends LateinAppActivity {
         weiter.setVisibility(View.GONE);
 
         progressBar.setMax(maxProgress);
+        int progress = sharedPref.getInt("ClickPersonalendung"+extraFromEinheitenUebersicht, 0);
+        if (progress > maxProgress) progress = maxProgress;
+        progressBar.setProgress(progress);
 
-        weightSubjects(lektion);
-        setButtonsState(lektion);
+        weightSubjects(extraFromEinheitenUebersicht);
+        setButtonsState(extraFromEinheitenUebersicht);
     }
 
     /**
      * Sets weights for all entries of 'faelle' depending on the current value of lektion
      */
-    private void weightSubjects(int lektion){
+    private void weightSubjects(String extra){
 
         int weightErsteSg,
             weightZweiteSg,
@@ -121,28 +125,39 @@ public class ClickPersonalendung extends LateinAppActivity {
             weightErstePl,
             weightZweitePl,
             weightDrittePl;
-        
-        if (lektion == 1){
-            weightErsteSg = 0;
-            weightZweiteSg = 0;
-            weightDritteSg = 1;
-            weightErstePl = 0;
-            weightZweitePl = 0;
-            weightDrittePl = 1;
-        }else if (lektion == 2){
-            weightErsteSg = 2;
-            weightZweiteSg = 2;
-            weightDritteSg = 1;
-            weightErstePl = 2;
-            weightZweitePl = 2;
-            weightDrittePl = 1;
-        }else {
-            weightErsteSg = 1;
-            weightZweiteSg = 1;
-            weightDritteSg = 1;
-            weightErstePl = 1;
-            weightZweitePl = 1;
-            weightDrittePl = 1;
+
+        switch (extra){
+
+            case "DRITTE_PERSON":
+
+                weightErsteSg = 0;
+                weightZweiteSg = 0;
+                weightDritteSg = 1;
+                weightErstePl = 0;
+                weightZweitePl = 0;
+                weightDrittePl = 1;
+                break;
+
+            case "ERSTE_ZWEITE_PERSON":
+
+                weightErsteSg = 2;
+                weightZweiteSg = 2;
+                weightDritteSg = 1;
+                weightErstePl = 2;
+                weightZweitePl = 2;
+                weightDrittePl = 1;
+                break;
+
+            default:
+
+                weightErsteSg = 1;
+                weightZweiteSg = 1;
+                weightDritteSg = 1;
+                weightErstePl = 1;
+                weightZweitePl = 1;
+                weightDrittePl = 1;
+                break;
+
         }
 
         weights = new int[] {weightErsteSg,
@@ -207,7 +222,7 @@ public class ClickPersonalendung extends LateinAppActivity {
             case (R.id.buttonGrammatikPersonalendungReset):
 
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("ClickPersonalendung"+lektion, 0);
+                editor.putInt("ClickPersonalendung"+extraFromEinheitenUebersicht, 0);
                 editor.apply();
                 finish();
 
@@ -225,22 +240,26 @@ public class ClickPersonalendung extends LateinAppActivity {
      */
     private void newVocabulary(){
         
-        int progress = sharedPref.getInt("ClickPersonalendung"+lektion, 0);
+        int progress = sharedPref.getInt("ClickPersonalendung"+extraFromEinheitenUebersicht, 0);
         latein.setBackgroundColor(backgroundColor);
 
         //Checks if the user has had enough correct inputs to complete the 'grammatikKonjugation'
         if (progress < maxProgress) {
             
             konjugation = getRandomPersonalendung();
-            Vokabel currentVokabel = dbHelper.getRandomVerb(lektion);
+            //FIXME: Don't return a random number but one according to the progress (nom->1 /...)
+            //random number from 1 to 5 to choose, where the vocabulary comes from
+            //Blueprint for randNum: int randomNum = rand.nextInt((max - min) + 1) + min;
+            int rand = new Random().nextInt((5 - 1) + 1) + 1;
+            Vokabel currentVokabel = dbHelper.getRandomVerb(rand);
             String lateinText = dbHelper.getKonjugiertesVerb(currentVokabel.getId(), konjugation);
 
             //#DEVELOPER
-            if (Home.isDEVELOPER() && Home.isDEV_CHEAT_MODE()) lateinText += "\n" + konjugation;
+            if (EinheitenUebersicht.DEVELOPER && EinheitenUebersicht.DEV_CHEAT_MODE) lateinText += "\n" + konjugation;
           
             latein.setText(lateinText);
 
-            setButtonsState(lektion);
+            setButtonsState(extraFromEinheitenUebersicht);
             
         }else {
             latein.setText("");
@@ -261,7 +280,7 @@ public class ClickPersonalendung extends LateinAppActivity {
      * @return a int corresponding to to position of a case in faelle[] with respect to the
      *          previously set weights[]-arr
      */
-    public String getRandomPersonalendung(){
+    private String getRandomPersonalendung(){
 
         //Getting a upper bound for the random number being retrieved afterwards
         int max =  (weights[0] +
@@ -300,7 +319,7 @@ public class ClickPersonalendung extends LateinAppActivity {
             //Something went wrong. Log error-message
             Log.e("randomVocabulary", "Getting a randomKonjugation failed! Returned -1 for " +
                     "\nrandomNumber: " + randomNumber +
-                    "\nlektion: " + lektion);
+                    "\nlektion: " + extraFromEinheitenUebersicht);
         }
 
 
@@ -309,48 +328,71 @@ public class ClickPersonalendung extends LateinAppActivity {
 
     /**
      * Sets the button-visibility corresponding to the current lektion
-     * @param lektion the current lektion
+     * @param extra holds information about what the button state should be
      */
-    private void setButtonsState(int lektion){
+    private void setButtonsState(String extra){
 
-        if (lektion == 1){
-            ersteSg.setBackgroundColor(colorButtonGrey);
-            ersteSg.setEnabled(false);
+        switch (extra){
 
-            zweiteSg.setBackgroundColor(colorButtonGrey);
-            zweiteSg.setEnabled(false);
+            case "DRITTE_PERSON":
+                ersteSg.setBackgroundColor(colorButtonGrey);
+                ersteSg.setEnabled(false);
 
-            dritteSg.setBackgroundColor(colorButtonDefault);
-            dritteSg.setEnabled(true);
+                zweiteSg.setBackgroundColor(colorButtonGrey);
+                zweiteSg.setEnabled(false);
 
-            erstePl.setBackgroundColor(colorButtonGrey);
-            erstePl.setEnabled(false);
+                dritteSg.setBackgroundColor(colorButtonDefault);
+                dritteSg.setEnabled(true);
 
-            zweitePl.setBackgroundColor(colorButtonGrey);
-            zweitePl.setEnabled(false);
+                erstePl.setBackgroundColor(colorButtonGrey);
+                erstePl.setEnabled(false);
 
-            drittePl.setBackgroundColor(colorButtonDefault);
-            drittePl.setEnabled(true);
+                zweitePl.setBackgroundColor(colorButtonGrey);
+                zweitePl.setEnabled(false);
 
-        }else{
+                drittePl.setBackgroundColor(colorButtonDefault);
+                drittePl.setEnabled(true);
+                break;
 
-            ersteSg.setBackgroundColor(colorButtonDefault);
-            ersteSg.setEnabled(true);
+            case "ERSTE_ZWEITE_PERSON":
+                ersteSg.setBackgroundColor(colorButtonDefault);
+                ersteSg.setEnabled(true);
 
-            zweiteSg.setBackgroundColor(colorButtonDefault);
-            zweiteSg.setEnabled(true);
+                zweiteSg.setBackgroundColor(colorButtonDefault);
+                zweiteSg.setEnabled(true);
 
-            dritteSg.setBackgroundColor(colorButtonDefault);
-            dritteSg.setEnabled(true);
+                dritteSg.setBackgroundColor(colorButtonDefault);
+                dritteSg.setEnabled(true);
 
-            erstePl.setBackgroundColor(colorButtonDefault);
-            erstePl.setEnabled(true);
+                erstePl.setBackgroundColor(colorButtonDefault);
+                erstePl.setEnabled(true);
 
-            zweitePl.setBackgroundColor(colorButtonDefault);
-            zweitePl.setEnabled(true);
+                zweitePl.setBackgroundColor(colorButtonDefault);
+                zweitePl.setEnabled(true);
 
-            drittePl.setBackgroundColor(colorButtonDefault);
-            drittePl.setEnabled(true);
+                drittePl.setBackgroundColor(colorButtonDefault);
+                drittePl.setEnabled(true);
+                break;
+
+            default:
+                ersteSg.setBackgroundColor(colorButtonDefault);
+                ersteSg.setEnabled(true);
+
+                zweiteSg.setBackgroundColor(colorButtonDefault);
+                zweiteSg.setEnabled(true);
+
+                dritteSg.setBackgroundColor(colorButtonDefault);
+                dritteSg.setEnabled(true);
+
+                erstePl.setBackgroundColor(colorButtonDefault);
+                erstePl.setEnabled(true);
+
+                zweitePl.setBackgroundColor(colorButtonDefault);
+                zweitePl.setEnabled(true);
+
+                drittePl.setBackgroundColor(colorButtonDefault);
+                drittePl.setEnabled(true);
+                break;
         }
     }
 
@@ -366,11 +408,15 @@ public class ClickPersonalendung extends LateinAppActivity {
             color = colorButtonCorrect;
 
             //Increasing the counter by 1
-            editor.putInt("ClickPersonalendung" + lektion,
-                          sharedPref.getInt("ClickPersonalendung"+lektion, 0) + 1);
+            editor.putInt("ClickPersonalendung" + extraFromEinheitenUebersicht,
+                          sharedPref.getInt("ClickPersonalendung"+extraFromEinheitenUebersicht, 0) + 1);
         }else {
             color = colorButtonIncorrect;
 
+            if (sharedPref.getInt("ClickPersonalendung"+extraFromEinheitenUebersicht, 0) > 0) {
+                editor.putInt("ClickPersonalendung" + extraFromEinheitenUebersicht,
+                        sharedPref.getInt("ClickPersonalendung" + extraFromEinheitenUebersicht, 0) - 1);
+            }
 
             for (int i = 0; i < faelle.length; i++){
                 if (faelle[i].equals(konjugation)){
@@ -380,7 +426,7 @@ public class ClickPersonalendung extends LateinAppActivity {
         }
         editor.apply();
 
-        progressBar.setProgress(sharedPref.getInt("ClickPersonalendung" +lektion, 0));
+        progressBar.setProgress(sharedPref.getInt("ClickPersonalendung" +extraFromEinheitenUebersicht, 0));
 
         button.setBackgroundColor(color);
         latein.setBackgroundColor(color);

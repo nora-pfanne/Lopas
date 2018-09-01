@@ -2,6 +2,7 @@ package com.lateinapp.noraalex.lopade.Activities;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -12,7 +13,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TableRow.LayoutParams;
 
+import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
+import com.lateinapp.noraalex.lopade.Databases.Tables.AdjektivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.PräpositionDB;
@@ -35,9 +38,12 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
      * @param savedInstanceState Used for passing data between activities
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_woerterbuch);
+
+
+
 
         tl = findViewById(R.id.table_layout);
 
@@ -52,7 +58,8 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
                 "Lektion 2",
                 "Lektion 3",
                 "Lektion 4",
-                "Lektion 5"
+                "Lektion 5",
+                "Lektion 6"
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
@@ -121,10 +128,10 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
 
     /**
      * Handling the calls to 'addTableRow(..)' depending on the newly selected item of the spinner
-     * @param parent
-     * @param view
+     * @param parent parent of the selected item
+     * @param view the selected item
      * @param pos position of the newly selected item
-     * @param id
+     * @param id id of the selected item
      */
     public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
 
@@ -160,13 +167,35 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
                     SubstantivDB.FeedEntry._ID
             };
             String[][] valuesSubstantiv = dbHelper.getColumns(SubstantivDB.FeedEntry.TABLE_NAME, columns, pos + 1);
-            //replacing the _ID column with the right declination of the corresponding subjective
+            //replacing the _ID column with the right declination of the corresponding adjective
             for (int i = 0; i < valuesSubstantiv.length; i++){
                 valuesSubstantiv[i][1] = dbHelper.getDekliniertenSubstantiv(
                         Integer.parseInt(valuesSubstantiv[i][1]),
                         DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG);
             }
+
             addTableRows(tl, valuesSubstantiv);
+
+            //Adding values for "Adjektiv"
+            columns = new String[]{
+                    AdjektivDB.FeedEntry.COLUMN_DEUTSCH,
+                    AdjektivDB.FeedEntry._ID
+            };
+            String[][] valuesAdjektiv = dbHelper.getColumns(AdjektivDB.FeedEntry.TABLE_NAME, columns, pos + 1);
+            //replacing the _ID column with the right declination of the corresponding subjective
+            for (int i = 0; i < valuesAdjektiv.length; i++){
+                valuesAdjektiv[i][1] = dbHelper.getDekliniertesAdjektiv(
+                        Integer.parseInt(valuesAdjektiv[i][1]),
+                        DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG,
+                        "o-Deklination_m");
+
+                //@HACK: FIXME: currently adding the "a, um" to the string because it is the only existing case
+                //This wont be the case for long. We need to properly detect the case and
+                //create something like a 'switch'-case for each one or
+                //solve this problem by creating a seperete declination method
+                valuesAdjektiv[i][1] += ", a, um";
+            }
+            addTableRows(tl, valuesAdjektiv);
 
             //Adding values for everything but "Substantiv" and "Verb"
             columns = new String[]{
@@ -177,12 +206,11 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
             String[][] valuesAdverb = dbHelper.getColumns(AdverbDB.FeedEntry.TABLE_NAME, columns, pos + 1);
             addTableRows(tl, valuesAdverb);
 
-            String[][] valuesPräposition = dbHelper.getColumns(PräpositionDB.FeedEntry.TABLE_NAME, columns, pos + 1);
-            addTableRows(tl, valuesPräposition);
+            String[][] valuesPraeposition = dbHelper.getColumns(PräpositionDB.FeedEntry.TABLE_NAME, columns, pos + 1);
+            addTableRows(tl, valuesPraeposition);
 
             String[][] valuesSprichwort = dbHelper.getColumns(SprichwortDB.FeedEntry.TABLE_NAME, columns, pos + 1);
             addTableRows(tl, valuesSprichwort);
-
 
             dbHelper.closeDb();
         }
@@ -194,7 +222,7 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
 
         dbHelper.closeDb();

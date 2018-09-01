@@ -2,27 +2,43 @@ package com.lateinapp.noraalex.lopade.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 
+import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.R;
 
-//TODO: Find a better name for this
-
-//TODO: Use Fragments
 public abstract class LateinAppActivity extends AppCompatActivity{
 
     private boolean onPause = false;
 
     private Menu menu;
     private MenuItem devDBHelper,
-                    devVokCheat;
+                    devVokCheat,
+                    devReloadDatabaseAssets,
+                    devReloadDatabaseIterative;
 
     //Make this accessible to all subclasses.
-    public SharedPreferences sharedPref;
+    protected SharedPreferences sharedPref;
     //Add a for all subclasses accessible DBHelper
     //This DBHelper should automatically initalize in onCreate() and close()/closeDB() in onDestroy()
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     /**
      * inflate your menu resource (defined in XML) into the Menu
@@ -34,9 +50,24 @@ public abstract class LateinAppActivity extends AppCompatActivity{
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.action_button, menu);
 
+        //If we aren't in the home activity we want to enable a back/up navigation button
+        if (!this.getClass().getName().equals(EinheitenUebersicht.class.getName())){
+            ActionBar ab = getSupportActionBar();
+            // Enable the Up button
+            if (ab != null) ab.setDisplayHomeAsUpEnabled(true);
+        }
+
+        //If the Activity is in the package "Einheiten" we want to display the info-slide box
+        if (getClass().getPackage().getName().contains("Einheiten")){
+            getMenuInflater().inflate(R.menu.info_button, menu);
+        }
+
         this.menu = menu;
         devDBHelper = this.menu.findItem(R.id.action_dev_DB_Helper);
         devVokCheat = this.menu.findItem(R.id.action_dev_Vokabeltrainer_Cheat);
+        devReloadDatabaseAssets = this.menu.findItem(R.id.action_dev_reload_database_from_assets);
+        devReloadDatabaseIterative = this.menu.findItem(R.id.action_dev_reload_database_iterative);
+
 
         sharedPref = getSharedPreferences("SharedPreferences", 0);
 
@@ -54,6 +85,14 @@ public abstract class LateinAppActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()){
+
+
+            //Opening a popup window
+            case (R.id.action_info):
+
+                openInfoPopup();
+                break;
+
             //Opening the settings-activity
             case (R.id.action_settings):
                 Intent settingsActivity = new Intent(this, SettingsActivity.class);
@@ -71,10 +110,28 @@ public abstract class LateinAppActivity extends AppCompatActivity{
             //toggles the DevCheatMode
             case (R.id.action_dev_Vokabeltrainer_Cheat):
                 SharedPreferences.Editor editor = sharedPref.edit();
-                Home.setDEV_CHEAT_MODE(!Home.isDEV_CHEAT_MODE());
-                editor.putBoolean("DEV_CHEAT_MODE", Home.isDEV_CHEAT_MODE());
+                EinheitenUebersicht.DEV_CHEAT_MODE = !EinheitenUebersicht.DEV_CHEAT_MODE;
+                editor.putBoolean("DEV_CHEAT_MODE", EinheitenUebersicht.DEV_CHEAT_MODE);
                 editor.apply();
                 adjustSettings();
+                break;
+
+            //#DEVELOPER
+            //Reloading the database -> copy from assets
+            case (R.id.action_dev_reload_database_from_assets):
+                DBHelper dbHelper = new DBHelper(getApplicationContext());
+
+                dbHelper.reloadDatabaseFromAssets();
+
+                dbHelper.close();
+                break;
+
+            case (R.id.action_dev_reload_database_iterative):
+                Log.d("__ReloadIterative", "Reloading the database iterativly");
+                DBHelper dbHelper1 = new DBHelper(getApplicationContext());
+                dbHelper1.fillDatabaseFromCsv();
+                dbHelper1.close();
+
                 break;
         }
 
@@ -82,11 +139,45 @@ public abstract class LateinAppActivity extends AppCompatActivity{
     }
 
     /**
+     * Opens a PopUp window with a description of what the user should do in this class
+     * Will only be called in classes in the package "Einheiten"
+     *
+     * This method should never be called but only the corresponding overriden method in the
+     * subclasses.
+     * This only opens a placeholder PopUp
+     */
+    public void openInfoPopup(){
+
+        LayoutInflater layoutInflater = (LayoutInflater)getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        View popupView;
+
+        popupView = layoutInflater.inflate(R.layout.popup_info_default, null);
+
+        final PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        Button btnDismiss = popupView.findViewById(R.id.popup_info_default_dismiss);
+        btnDismiss.setOnClickListener(new Button.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                popupWindow.dismiss();
+            }
+        });
+
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0,0);
+    }
+
+    /**
      * Called as part of the activity lifecycle when an activity is going into the background,
      * but has not (yet) been killed.
      */
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
 
         onPause = true;
@@ -97,7 +188,7 @@ public abstract class LateinAppActivity extends AppCompatActivity{
      * after it had been paused [->onPause()]
      */
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         if (onPause){
@@ -109,25 +200,29 @@ public abstract class LateinAppActivity extends AppCompatActivity{
 
     private void adjustSettings(){
 
-        //#DEVELOPER
-        if (Home.isDEVELOPER()) {
-            devDBHelper.setVisible(true);
-            devVokCheat.setVisible(true);
+        //FIXME: Why does this sometimes crash with "couldnt invoke method on null object"?
+        try {
+            //#DEVELOPER
+            if (EinheitenUebersicht.DEVELOPER) {
+                devDBHelper.setVisible(true);
+                devVokCheat.setVisible(true);
+                devReloadDatabaseAssets.setVisible(true);
+                devReloadDatabaseIterative.setVisible(true);
 
-            //Setting the text of the
-            String temp;
-            if (Home.isDEV_CHEAT_MODE()){
-                temp = "ON";
-            }else{
-                temp = "OFF";
+                devVokCheat.setTitle("DEV: Cheat-Mode: " + (EinheitenUebersicht.DEV_CHEAT_MODE ? "ON" : "OFF"));
+
+            } else {
+                devDBHelper.setVisible(false);
+                devVokCheat.setVisible(false);
+                devReloadDatabaseAssets.setVisible(false);
+                devReloadDatabaseIterative.setVisible(false);
             }
-            devVokCheat.setTitle("DEV: Cheat-Mode: " + temp);
 
-        }else {
-            devDBHelper.setVisible(false);
-            devVokCheat.setVisible(false);
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
     }
+
 
 }

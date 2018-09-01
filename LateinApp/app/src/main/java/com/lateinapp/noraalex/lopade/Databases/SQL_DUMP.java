@@ -1,6 +1,8 @@
 package com.lateinapp.noraalex.lopade.Databases;
 
+import com.lateinapp.noraalex.lopade.Databases.Tables.AdjektivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
+import com.lateinapp.noraalex.lopade.Databases.Tables.BeispielsatzDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.LektionDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Personalendung_PräsensDB;
@@ -17,11 +19,11 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
  * A dump for all the SQL-Statements and Arrays used in DBHelper.class
  */
 //@SuppressWarnings("WeakerAccess")
-public final class SQL_DUMP {
+final class SQL_DUMP {
 
     //Strings used for the creation of all database tables
-     static final String SQL_CREATE_ENTRIES_ADVERB =
-            "CREATE TABLE "
+    static final String SQL_CREATE_ENTRIES_ADVERB =
+            "CREATE TABLE IF NOT EXISTS "
                     + AdverbDB.FeedEntry.TABLE_NAME
                     + "( "
                     + AdverbDB.FeedEntry._ID
@@ -44,8 +46,34 @@ public final class SQL_DUMP {
                     + ")"
                     + ")";
 
+    static final String SQL_CREATE_ENTRIES_ADJEKTIV =
+            "CREATE TABLE IF NOT EXISTS "
+                    + AdjektivDB.FeedEntry.TABLE_NAME
+                    + "( "
+                    + AdjektivDB.FeedEntry._ID
+                    + " INTEGER PRIMARY KEY, "
+                    + AdjektivDB.FeedEntry.COLUMN_DEUTSCH
+                    + " TEXT, "
+                    + AdjektivDB.FeedEntry.COLUMN_WORTSTAMM
+                    + " TEXT, "
+                    + AdjektivDB.FeedEntry.COLUMN_GELERNT
+                    + " INTEGER, "
+                    + AdjektivDB.FeedEntry.COLUMN_LEKTION_ID
+                    + " INTEGER, "
+                    + AdjektivDB.FeedEntry.COLUMN_TYPE
+                    + " TEXT, "
+
+                    + " FOREIGN KEY ("
+                    + AdverbDB.FeedEntry.COLUMN_LEKTION_ID
+                    + ") REFERENCES "
+                    + LektionDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + LektionDB.FeedEntry._ID
+                    + ")"
+                    + ")";
+
      static final String SQL_CREATE_ENTRIES_DEKLINATIONSENDUNG =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + DeklinationsendungDB.FeedEntry.TABLE_NAME
                     + " ("
                     + DeklinationsendungDB.FeedEntry._ID
@@ -74,7 +102,7 @@ public final class SQL_DUMP {
                     + " TEXT)";
 
      static final String SQL_CREATE_ENTRIES_LEKTION =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + LektionDB.FeedEntry.TABLE_NAME
                     + "( "
                     + LektionDB.FeedEntry._ID
@@ -87,7 +115,7 @@ public final class SQL_DUMP {
                     + " TEXT)";
 
      static final String SQL_CREATE_ENTRIES_PERSONALENDUNG_PRÄSENS =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + Personalendung_PräsensDB.FeedEntry.TABLE_NAME
                     + "( "
                     + Personalendung_PräsensDB.FeedEntry._ID
@@ -106,7 +134,7 @@ public final class SQL_DUMP {
                     + " TEXT)";
 
      static final String SQL_CREATE_ENTRIES_PRAEPOSITION =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + PräpositionDB.FeedEntry.TABLE_NAME
                     + "( "
                     + PräpositionDB.FeedEntry._ID
@@ -130,7 +158,7 @@ public final class SQL_DUMP {
                     + ")";
 
      static final String SQL_CREATE_ENTRIES_SPRECHVOKAL_PRÄSENS =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME
                     + "( "
                     + Sprechvokal_PräsensDB.FeedEntry._ID
@@ -153,7 +181,7 @@ public final class SQL_DUMP {
                     + " TEXT)";
 
      static final String SQL_CREATE_ENTRIES_SPRECHVOKAL_SUBSTANTIV =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME
                     + " ("
                     + Sprechvokal_SubstantivDB.FeedEntry._ID
@@ -181,7 +209,7 @@ public final class SQL_DUMP {
                     + " TEXT)";
 
      static final String SQL_CREATE_ENTRIES_SUBSTANTIV =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + SubstantivDB.FeedEntry.TABLE_NAME
                     + "( "
                     + SubstantivDB.FeedEntry._ID
@@ -224,7 +252,7 @@ public final class SQL_DUMP {
                     + ")";
 
      static final String SQL_CREATE_ENTRIES_VERB =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + VerbDB.FeedEntry.TABLE_NAME
                     + "( "
                     + VerbDB.FeedEntry._ID
@@ -269,7 +297,7 @@ public final class SQL_DUMP {
                     + ")";
 
      static final String SQL_CREATE_ENTRIES_SPRICHWORT =
-            "CREATE TABLE "
+            "CREATE TABLE IF NOT EXISTS "
                     + SprichwortDB.FeedEntry.TABLE_NAME
                     + "( "
                     + SprichwortDB.FeedEntry._ID
@@ -292,10 +320,76 @@ public final class SQL_DUMP {
                     + ")"
                     + ")";
 
+     static final String SQL_CREATE_ENTRIES_BEISPIELSATZ =
+             "CREATE TABLE IF NOT EXISTS "
+                     + BeispielsatzDB.FeedEntry.TABLE_NAME
+                     + "( "
+                     + SprichwortDB.FeedEntry._ID
+                     + " INTEGER PRIMARY KEY, "
+
+                     + BeispielsatzDB.FeedEntry.COLUMN_SUBJEKT
+                     + " INTEGER, "
+                     + BeispielsatzDB.FeedEntry.COLUMN_PRAEDIKAT
+                     + " INTEGER, "
+                     + BeispielsatzDB.FeedEntry.COLUMN_GENITIV
+                     + " INTEGER, "
+                     + BeispielsatzDB.FeedEntry.COLUMN_DATIV
+                     + " INTEGER, "
+                     + BeispielsatzDB.FeedEntry.COLUMN_AKKUSATIV
+                     + " INTEGER, "
+
+
+                     + " FOREIGN KEY ("
+                     + BeispielsatzDB.FeedEntry.COLUMN_SUBJEKT
+                     + ") REFERENCES "
+                     + SubstantivDB.FeedEntry.TABLE_NAME
+                     + "("
+                     + SubstantivDB.FeedEntry._ID
+                     + "),"
+
+                     + " FOREIGN KEY ("
+                     + BeispielsatzDB.FeedEntry.COLUMN_PRAEDIKAT
+                     + ") REFERENCES "
+                     + VerbDB.FeedEntry.TABLE_NAME
+                     + "("
+                     + VerbDB.FeedEntry._ID
+                     + "),"
+
+                     + " FOREIGN KEY ("
+                     + BeispielsatzDB.FeedEntry.COLUMN_GENITIV
+                     + ") REFERENCES "
+                     + SubstantivDB.FeedEntry.TABLE_NAME
+                     + "("
+                     + SubstantivDB.FeedEntry._ID
+                     + "),"
+
+                     + " FOREIGN KEY ("
+                     + BeispielsatzDB.FeedEntry.COLUMN_DATIV
+                     + ") REFERENCES "
+                     + SubstantivDB.FeedEntry.TABLE_NAME
+                     + "("
+                     + SubstantivDB.FeedEntry._ID
+                     + "),"
+
+                     + " FOREIGN KEY ("
+                     + BeispielsatzDB.FeedEntry.COLUMN_AKKUSATIV
+                     + ") REFERENCES "
+                     + SubstantivDB.FeedEntry.TABLE_NAME
+                     + "("
+                     + SubstantivDB.FeedEntry._ID
+                     + ")"
+
+
+                     + ")";
+
     //creating a String for quick access to a deletion command for all tables
-     static final String SQL_DELETE_ENTRIES_ADVERB =
+    static final String SQL_DELETE_ENTRIES_ADVERB =
             "DROP TABLES IF EXISTS "
                     + AdverbDB.FeedEntry.TABLE_NAME;
+
+    static final String SQL_DELETE_ENTRIES_ADJEKTIV =
+            "DROP TABLES IF EXISTS "
+                    + AdjektivDB.FeedEntry.TABLE_NAME;
 
      static final String SQL_DELETE_ENTRIES_DEKLINATIONSENDUNG =
             "DROP TABLES IF EXISTS "
@@ -333,8 +427,13 @@ public final class SQL_DUMP {
             "DROP TABLES IF EXISTS "
                     + VerbDB.FeedEntry.TABLE_NAME;
 
+     static final String SQL_DELETE_ENTRIES_BEISPIELSATZ =
+             "DROP TABLES IF EXISTS "
+                    + BeispielsatzDB.FeedEntry.TABLE_NAME;
+
      static final String[] allTables = {
             AdverbDB.FeedEntry.TABLE_NAME,
+            AdjektivDB.FeedEntry.TABLE_NAME,
             DeklinationsendungDB.FeedEntry.TABLE_NAME,
             LektionDB.FeedEntry.TABLE_NAME,
             Personalendung_PräsensDB.FeedEntry.TABLE_NAME,
@@ -343,8 +442,19 @@ public final class SQL_DUMP {
             Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME,
             SprichwortDB.FeedEntry.TABLE_NAME,
             SubstantivDB.FeedEntry.TABLE_NAME,
-            VerbDB.FeedEntry.TABLE_NAME
+            VerbDB.FeedEntry.TABLE_NAME,
+            BeispielsatzDB.FeedEntry.TABLE_NAME
     };
+
+     static final String[] allColumnsAdjektiv = {
+
+             AdjektivDB.FeedEntry._ID,
+             AdjektivDB.FeedEntry.COLUMN_DEUTSCH,
+             AdjektivDB.FeedEntry.COLUMN_WORTSTAMM,
+             AdjektivDB.FeedEntry.COLUMN_GELERNT,
+             AdjektivDB.FeedEntry.COLUMN_LEKTION_ID,
+             AdjektivDB.FeedEntry.COLUMN_TYPE
+     };
 
      static final String[] allColumnsAdverb = {
 
@@ -454,4 +564,13 @@ public final class SQL_DUMP {
             VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID,
             VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
     };
+
+     static final String[] allColumnsBeispielsatz = {
+             BeispielsatzDB.FeedEntry._ID,
+             BeispielsatzDB.FeedEntry.COLUMN_SUBJEKT,
+             BeispielsatzDB.FeedEntry.COLUMN_PRAEDIKAT,
+             BeispielsatzDB.FeedEntry.COLUMN_GENITIV,
+             BeispielsatzDB.FeedEntry.COLUMN_DATIV,
+             BeispielsatzDB.FeedEntry.COLUMN_AKKUSATIV
+     };
 }
