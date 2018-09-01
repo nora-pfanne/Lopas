@@ -1,4 +1,4 @@
-   <?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <color name="GhostWhite">#fafaff</color>
@@ -11,4 +11,26 @@
     <color name="InputWrongRedLight">#ff7979</color>
     <color name="InputRightGreen">#AAFF86</color>
     <color name="InputRightGreenLight">#ceffb9</color>
+    <color name="Gold">#f6b461</color>
+    <color name="ButtonGrey">#515151</color>
+
+    <!--
+    ***********************************************************************************************
+    The following colors are part of the visual overhaul of the app
+    ***********************************************************************************************
+    -->
+
+    <color name="colorPrimary">#174061</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!-- Main theme colors -->
+    <color name="DarkImperialBlue">#174061</color>
+    <color name="GoldenPoppy">#ffd752</color>
+    <color name="WageningenGreen">#31B522</color>
+    <color name="CrayolaRed">#ED254E</color>
+    <color name="AirSuperiorityBlue">#6EA4BF</color>
+    <color name="TangerineOrange">#ff6a33</color>
+    <color name="SoftViolett">#df6dff</color>
+
 </resources>
