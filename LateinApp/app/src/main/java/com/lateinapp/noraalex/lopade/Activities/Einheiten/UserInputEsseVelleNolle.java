@@ -339,4 +339,9 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
         return vocabularies;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbHelper.close();
+    }
 }

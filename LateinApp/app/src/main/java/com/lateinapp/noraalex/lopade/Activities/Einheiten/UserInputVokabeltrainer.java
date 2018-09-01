@@ -389,6 +389,12 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
 
         popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbHelper.close();
+    }
 }
 
 

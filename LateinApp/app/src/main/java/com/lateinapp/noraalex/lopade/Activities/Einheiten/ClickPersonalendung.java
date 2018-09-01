@@ -443,7 +443,6 @@ public class ClickPersonalendung extends LateinAppActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dbHelper.closeDb();
         dbHelper.close();
     }
 

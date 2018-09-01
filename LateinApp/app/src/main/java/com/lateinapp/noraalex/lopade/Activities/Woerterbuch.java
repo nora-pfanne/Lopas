@@ -212,8 +212,6 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
 
             String[][] valuesSprichwort = dbHelper.getColumns(SprichwortDB.FeedEntry.TABLE_NAME, columns, pos + 1);
             addTableRows(tl, valuesSprichwort);
-
-            dbHelper.closeDb();
         }
     }
 
@@ -226,7 +224,7 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
     public void onDestroy() {
         super.onDestroy();
 
-        dbHelper.closeDb();
+        dbHelper.close();
     }
 }
 

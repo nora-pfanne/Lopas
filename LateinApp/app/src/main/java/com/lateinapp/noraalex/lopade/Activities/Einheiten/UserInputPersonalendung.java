@@ -411,4 +411,10 @@ public class UserInputPersonalendung extends LateinAppActivity {
             //do nothing
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbHelper.close();
+    }
 }

@@ -881,7 +881,6 @@ public class ClickDeklinationsendung extends LateinAppActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dbHelper.closeDb();
         dbHelper.close();
     }
 }

@@ -669,4 +669,10 @@ public class Satzglieder extends LateinAppActivity {
 
         aufgabenstellung.setText("");
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbHelper.close();
+    }
 }

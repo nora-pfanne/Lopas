@@ -91,6 +91,8 @@ public class DBHelper extends SQLiteOpenHelper {
             editor.putBoolean("FirstStartup", false);
             editor.apply();
         }
+
+        openDb();
     }
 
     public void reloadDatabaseFromAssets(){
@@ -230,8 +232,6 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     private void addRowAdverb(String deutsch, String latein, boolean gelernt, int lektion_id){
 
-        openDb();
-
         ContentValues values = new ContentValues();
         values.put(allColumnsAdverb[1], deutsch);
         values.put(allColumnsAdverb[2], latein);
@@ -239,8 +239,6 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsAdverb[4], lektion_id);
 
         database.insert(AdverbDB.FeedEntry.TABLE_NAME, null, values);
-
-        closeDb();
     }
 
     /**
@@ -253,8 +251,6 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     private void addRowAdjektiv(String deutsch, String latein, boolean gelernt, int lektion_id, String type){
 
-        openDb();
-
         ContentValues values = new ContentValues();
         values.put(allColumnsAdjektiv[1], deutsch);
         values.put(allColumnsAdjektiv[2], latein);
@@ -264,7 +260,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         database.insert(AdjektivDB.FeedEntry.TABLE_NAME, null, values);
 
-        closeDb();
     }
 
     /**
@@ -288,8 +283,6 @@ public class DBHelper extends SQLiteOpenHelper {
                                          String akk_sg, String akk_pl,
                                          String abl_sg, String abl_pl) {
 
-        openDb();
-
         ContentValues values = new ContentValues();
         values.put(allColumnsDeklinationsendung[1], name);
         values.put(allColumnsDeklinationsendung[2], nom_sg);
@@ -304,8 +297,6 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsDeklinationsendung[11], abl_pl);
 
         database.insert(DeklinationsendungDB.FeedEntry.TABLE_NAME, null, values);
-
-        closeDb();
     }
 
     /**
@@ -315,16 +306,12 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     private void addRowLektion(int lektionNr, String titel, String thema) {
 
-        openDb();
-
         ContentValues values = new ContentValues();
         values.put(allColumnsLektion[1], lektionNr);
         values.put(allColumnsLektion[2], titel);
         values.put(allColumnsLektion[3], thema);
 
         database.insert(LektionDB.FeedEntry.TABLE_NAME, null, values);
-
-        closeDb();
     }
 
     /**
@@ -340,8 +327,6 @@ public class DBHelper extends SQLiteOpenHelper {
                                              String dritte_sg, String erste_pl,
                                              String zweite_pl, String dritte_pl) {
 
-        openDb();
-
         ContentValues values = new ContentValues();
         values.put(allColumnsPersonalendung_Präsens[1], erste_sg);
         values.put(allColumnsPersonalendung_Präsens[2], erste_pl);
@@ -351,9 +336,6 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsPersonalendung_Präsens[6], dritte_pl);
 
         database.insert(Personalendung_PräsensDB.FeedEntry.TABLE_NAME, null, values);
-
-        closeDb();
-
     }
 
     /**
@@ -366,8 +348,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private void addRowPräposition(String deutsch, String latein, boolean gelernt,
                                    int lektion_id){
 
-        openDb();
-
         ContentValues values = new ContentValues();
         values.put(allColumnsPraeposition[1], deutsch);
         values.put(allColumnsPraeposition[2], latein);
@@ -375,8 +355,6 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsPraeposition[4], lektion_id);
 
         database.insert(PräpositionDB.FeedEntry.TABLE_NAME, null, values);
-
-        closeDb();
     }
 
     /**
@@ -393,8 +371,6 @@ public class DBHelper extends SQLiteOpenHelper {
                                           String dritte_sg, String erste_pl,
                                           String zweite_pl, String dritte_pl) {
 
-        openDb();
-
         ContentValues values = new ContentValues();
         values.put(allColumnsSprechvokal_Präsens[1], titel);
         values.put(allColumnsSprechvokal_Präsens[2], infinitiv);
@@ -406,8 +382,6 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsSprechvokal_Präsens[8], dritte_pl);
 
         database.insert(Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME, null, values);
-
-        closeDb();
 
     }
 
@@ -431,8 +405,6 @@ public class DBHelper extends SQLiteOpenHelper {
             String akk_sg, String akk_pl,
             String abl_sg, String abl_pl) {
 
-        openDb();
-
         ContentValues values = new ContentValues();
         values.put(allColumnsSprechvokal_Substantiv[1], nom_sg);
         values.put(allColumnsSprechvokal_Substantiv[2], nom_pl);
@@ -446,8 +418,6 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsSprechvokal_Substantiv[10], abl_pl);
 
         database.insert(Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME, null, values);
-
-        closeDb();
     }
 
     /**
@@ -460,8 +430,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private void addRowSprichwort(String deutsch, String latein, boolean gelernt,
                                  int lektion_id){
 
-        openDb();
-
         ContentValues values = new ContentValues();
         values.put(allColumnsSprichwort[1], deutsch);
         values.put(allColumnsSprichwort[2], latein);
@@ -469,8 +437,6 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsSprichwort[4], lektion_id);
 
         database.insert(SprichwortDB.FeedEntry.TABLE_NAME, null, values);
-
-        closeDb();
     }
 
     /**
@@ -485,8 +451,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private void addRowSubstantiv(String nom_sg_deutsch, String wortstamm, boolean gelernt,
                                  int lektion_id, int sprechvokal_id, int deklinationsendung_id) {
 
-        openDb();
-
         ContentValues values = new ContentValues();
         values.put(allColumnsSubstantiv[1], nom_sg_deutsch);
         values.put(allColumnsSubstantiv[2], wortstamm);
@@ -496,8 +460,6 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsSubstantiv[6], deklinationsendung_id);
 
         database.insert(SubstantivDB.FeedEntry.TABLE_NAME, null, values);
-
-        closeDb();
     }
     /**
      * Adds a entry to the 'Verb' table in the database with given parameters.
@@ -512,8 +474,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private void addRowVerb(String infinitiv_deutsch, String wortstamm, String konjugation, boolean gelernt,
                            int lektion_id, int personalendung_id, int sprechvokal_id) {
 
-        openDb();
-
         ContentValues values = new ContentValues();
         values.put(allColumnsVerb[1], infinitiv_deutsch);
         values.put(allColumnsVerb[2], wortstamm);
@@ -524,13 +484,9 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsVerb[7], sprechvokal_id);
 
         database.insert(VerbDB.FeedEntry.TABLE_NAME, null, values);
-
-        closeDb();
     }
 
     private void addRowBeispielsatz(int subjekt_id, int praedikat_id, int genitiv_id, int dativ_id, int akkusativ_id){
-
-        openDb();
 
         //FIXME: We currently add a placeholder vocabulary for empty spaces (_ID == -1)
         //We need to fill out all spaces in the initialisation document or find a better solution.
@@ -549,8 +505,6 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsBeispielsatz[5], akkusativ_id);
 
         database.insert(BeispielsatzDB.FeedEntry.TABLE_NAME, null, values);
-
-        closeDb();
     }
 
     /**
@@ -585,8 +539,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
             //Skip the first line with column headings.
             bufferedReader.readLine();
-
-            openDb();
 
             //Goes through every line and adds its content to the table.
             String line;
@@ -688,8 +640,6 @@ public class DBHelper extends SQLiteOpenHelper {
                                 addRowSubstantiv(tokens[0], tokens[1],
                                                  false, Integer.parseInt(tokens[2]),
                                                  1, deklinationId);
-                                closeDb();
-                                openDb();
                                 break;
 
                             //Verb
@@ -781,7 +731,6 @@ public class DBHelper extends SQLiteOpenHelper {
             inputStream.close();
             bufferedInputStream.close();
             bufferedReader.close();
-            closeDb();
 
         }catch(Exception e){
             e.printStackTrace();
@@ -791,19 +740,25 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Closes the connection to the database if it is open.
      */
-    public void closeDb() {
+    private void closeDb() {
         if (!database.isOpen()) database.close();
     }
 
     /**
      * open the connection to the database if it isn't open already.
      */
-    public void openDb() throws SQLException {
+    private void openDb() throws SQLException {
 
         String mPath = DATABASE_PATH + DATABASE_NAME;
         //Log.v("mPath", mPath);
         database = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.CREATE_IF_NECESSARY);
 
+    }
+
+    @Override
+    public synchronized void close() {
+        super.close();
+        closeDb();
     }
 
     public int countTableEntries(String[] tables){
@@ -907,8 +862,6 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     private int countTableEntries(String table, int lektionNr, boolean gelernt){
 
-        openDb();
-
         //getting the total number of entries which were completed and adding it to 'complete'
         String query = "SELECT COUNT(*) FROM " + table
                 + " WHERE Lektion_ID = ?" +
@@ -920,7 +873,6 @@ public class DBHelper extends SQLiteOpenHelper {
         int count = cursor.getInt(0);
 
         cursor.close();
-        closeDb();
 
         return count;
     }
@@ -932,8 +884,6 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public int countTableEntries(String table){
 
-        openDb();
-
         //Getting the total number of entries which were completed and adding it to 'complete'
         String query = "SELECT COUNT(*) FROM " + table;
         Cursor cursor = database.rawQuery(query,
@@ -941,8 +891,6 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.moveToNext();
         int result = cursor.getInt(0);
         cursor.close();
-
-        closeDb();
 
         return result;
     }
@@ -956,8 +904,6 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public String getColumnFromId(int id, String table, String column){
 
-        openDb();
-
         String query = "SELECT "+ column +
                 " FROM " + table +
                 " WHERE _ID = ?";
@@ -969,7 +915,6 @@ public class DBHelper extends SQLiteOpenHelper {
         String columnContent = cursor.getString(0);
 
         cursor.close();
-        closeDb();
 
         return columnContent;
     }
@@ -1014,8 +959,6 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public String[][] getColumns(String table, String[] columns, int lektion){
 
-        openDb();
-
         //Creating the 'query'-String
         StringBuilder stringBuilder = new StringBuilder(63);
         stringBuilder.append("SELECT ");
@@ -1045,7 +988,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        closeDb();
 
         return values;
     }
@@ -1057,8 +999,6 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return the final word in the right declination
      */
     public String getDekliniertenSubstantiv(int vokabelID, String deklinationsendungsName){
-
-        openDb();
 
         //Gets the first part of the word (wortstamm)
         String query = "SELECT " + SubstantivDB.FeedEntry.COLUMN_WORTSTAMM +
@@ -1091,8 +1031,6 @@ public class DBHelper extends SQLiteOpenHelper {
         String endung = endungCursor.getString(0);
         endungCursor.close();
 
-        closeDb();
-
         return (wortstamm + endung);
 
     }
@@ -1106,8 +1044,6 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return the final word in the right declination
      */
     public String getDekliniertesAdjektiv(int vokabelID, String deklinationsendungName, String endungstype){
-
-        openDb();
 
         //Gets the first part of the word (wortstamm)
         String query = "SELECT " + AdjektivDB.FeedEntry.COLUMN_WORTSTAMM +
@@ -1144,8 +1080,6 @@ public class DBHelper extends SQLiteOpenHelper {
         String endung = endungCursor.getString(0);
         endungCursor.close();
 
-        closeDb();
-
         return (wortstamm+endung);
     }
 
@@ -1157,7 +1091,6 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public String getKonjugiertesVerb(int vokabelID, String personalendung){
         //TODO: add parameter for tenses
-        openDb();
 
         //Gets the first part of the word (Wortstamm)
         String query = "SELECT * FROM " + VerbDB.FeedEntry.TABLE_NAME + " WHERE _ID = ?";
@@ -1247,8 +1180,6 @@ public class DBHelper extends SQLiteOpenHelper {
             personalendungCursor.close();
         }
 
-        closeDb();
-
         return (verbStamm + sprechvokal + endung);
     }
 
@@ -1262,8 +1193,6 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     private int getIdFromCount(int lektion, int count, boolean gelernt, String table){
 
-        openDb();
-
         String query = "SELECT _ID FROM "+ table
                        + " WHERE Gelernt = "+(gelernt ? 1 : 0)
                        + " AND Lektion_ID = " + lektion;
@@ -1276,7 +1205,6 @@ public class DBHelper extends SQLiteOpenHelper {
         int id = cursor.getInt(0);
 
         cursor.close();
-        closeDb();
 
         return id;
     }
@@ -1481,8 +1409,6 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public void setGelernt(String tableName, int vokabelID, boolean gelerntWert){
 
-        openDb();
-
         String query = "UPDATE " + tableName +
                 " SET Gelernt = ?" +
                 " WHERE _ID = ?";
@@ -1492,7 +1418,6 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
 
         cursor.close();
-        closeDb();
     }
 
     /**
@@ -1584,7 +1509,6 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param lektionNr the 'lektion' that is to be reset
      */
     public void resetLektion(int lektionNr){
-        openDb();
 
         String query = "UPDATE "
                 + AdverbDB.FeedEntry.TABLE_NAME
@@ -1626,7 +1550,6 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor4.moveToFirst();
         cursor4.close();
 
-        closeDb();
     }
 
     /**
