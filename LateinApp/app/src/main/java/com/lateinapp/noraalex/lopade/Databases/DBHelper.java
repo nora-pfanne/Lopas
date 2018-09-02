@@ -1198,9 +1198,7 @@ public class DBHelper extends SQLiteOpenHelper {
                        + " AND Lektion_ID = " + lektion;
         Cursor cursor = database.rawQuery(query, new String[]{});
 
-        for (int i = 0; i < count; i++){
-            cursor.moveToNext();
-        }
+        cursor.moveToPosition(count-1);
 
         int id = cursor.getInt(0);
 
