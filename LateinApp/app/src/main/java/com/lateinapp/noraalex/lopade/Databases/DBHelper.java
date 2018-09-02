@@ -79,7 +79,7 @@ public class DBHelper extends SQLiteOpenHelper {
         boolean firstStartup = sharedPreferences.getBoolean("FirstStartup", true);
 
         if(firstStartup) {
-            reloadDatabaseFromAssets();
+            copyDataBaseFromAssets();
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean("FirstStartup", false);
             editor.apply();
@@ -88,41 +88,79 @@ public class DBHelper extends SQLiteOpenHelper {
         openDb();
     }
 
-    public void reloadDatabaseFromAssets(){
-        try{
-            createDataBase();
+    /**
+     * Creating all tables
+     *
+     * @param db target database
+     */
+    public void onCreate(SQLiteDatabase db) {
+
+        createTables(db);
+    }
+
+    /**
+     * This is currently unused and not implemented properly.
+     * Currently just deletes all tables and recreates them.
+     *
+     * @param db         Database that should be upgraded
+     * @param oldVersion old versionNr of the database
+     * @param newVersion new versionNr of the database
+     */
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        //TODO: This should also add the initial entries. -> we need to get context here for that
+        deleteEntries(db);
+
+        onCreate(db);
+    }
+    
+    @Override
+    public synchronized void close() {
+        super.close();
+        closeDb();
+    }
+
+    /**
+     * Closes the connection to the database if it is open.
+     */
+    private void closeDb() {
+        if (!database.isOpen()) database.close();
+    }
+
+    /**
+     * open the connection to the database if it isn't open already.
+     */
+    private void openDb() throws SQLException {
+
+        String mPath = DATABASE_PATH + DATABASE_NAME;
+        //Log.v("mPath", mPath);
+        database = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.CREATE_IF_NECESSARY);
+
+    }
+
+
+    //
+    // Methods for initializing the database
+    //
+
+    private void copyDataBaseFromAssets() {
+
+        try {
+            InputStream input = context.getAssets().open(DATABASE_NAME);
+            String outFileName = DATABASE_PATH + DATABASE_NAME;
+            OutputStream output = new FileOutputStream(outFileName);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = input.read(buffer)) > 0) {
+                output.write(buffer, 0, length);
+            }
+            output.flush();
+            output.close();
+            input.close();
+
         }catch (Exception e){
             e.printStackTrace();
         }
-    }
-
-    private void createDataBase() {
-
-        this.getReadableDatabase();
-        this.close();
-
-        try {
-            //Copy the database from assets
-            copyDataBase();
-        } catch (IOException ioException) {
-            throw new Error("ErrorCopyingDataBase");
-        }
-    }
-
-    //Copy the database from assets
-    private void copyDataBase() throws IOException {
-        InputStream input = context.getAssets().open(DATABASE_NAME);
-        String outFileName = DATABASE_PATH + DATABASE_NAME;
-        OutputStream output = new FileOutputStream(outFileName);
-        byte[] buffer = new byte[1024];
-        int length;
-        while ((length = input.read(buffer))>0)
-        {
-            output.write(buffer, 0, length);
-        }
-        output.flush();
-        output.close();
-        input.close();
     }
 
     public void fillDatabaseFromCsv(){
@@ -152,349 +190,6 @@ public class DBHelper extends SQLiteOpenHelper {
         //TODO: Not final path/name
         addEntriesFromFile("example_sentences/beispielsatz_test.csv", BeispielsatzDB.FeedEntry.TABLE_NAME, context);
 
-    }
-
-    /**
-     * Creating all tables
-     *
-     * @param db target database
-     */
-    public void onCreate(SQLiteDatabase db) {
-
-        createTables(db);
-    }
-
-    /**
-     * This is currently unused and not implemented properly.
-     * Currently just deletes all tables and recreates them.
-     *
-     * @param db         Database that should be upgraded
-     * @param oldVersion old versionNr of the database
-     * @param newVersion new versionNr of the database
-     */
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
-        //TODO: This should also add the initial entries. -> we need to get context here for that
-        deleteEntries(db);
-
-        onCreate(db);
-    }
-
-    private void createTables(SQLiteDatabase db){
-        //Creating the tables in the database
-        db.execSQL(SQL_CREATE_ENTRIES_ADVERB);
-        db.execSQL(SQL_CREATE_ENTRIES_ADJEKTIV);
-        db.execSQL(SQL_CREATE_ENTRIES_DEKLINATIONSENDUNG);
-        db.execSQL(SQL_CREATE_ENTRIES_LEKTION);
-        db.execSQL(SQL_CREATE_ENTRIES_PERSONALENDUNG_PRÄSENS);
-        db.execSQL(SQL_CREATE_ENTRIES_PRAEPOSITION);
-        db.execSQL(SQL_CREATE_ENTRIES_SPRECHVOKAL_PRÄSENS);
-        db.execSQL(SQL_CREATE_ENTRIES_SPRECHVOKAL_SUBSTANTIV);
-        db.execSQL(SQL_CREATE_ENTRIES_SPRICHWORT);
-        db.execSQL(SQL_CREATE_ENTRIES_SUBSTANTIV);
-        db.execSQL(SQL_CREATE_ENTRIES_VERB);
-        db.execSQL(SQL_CREATE_ENTRIES_BEISPIELSATZ);
-    }
-
-    private void deleteEntries(SQLiteDatabase db){
-
-        //Deletes all entries
-        db.execSQL(SQL_DELETE_ENTRIES_ADVERB);
-        db.execSQL(SQL_DELETE_ENTRIES_ADJEKTIV);
-        db.execSQL(SQL_DELETE_ENTRIES_DEKLINATIONSENDUNG);
-        db.execSQL(SQL_DELETE_ENTRIES_LEKTION);
-        db.execSQL(SQL_DELETE_ENTRIES_PERSONALENDUNG_PRÄSENS);
-        db.execSQL(SQL_DELETE_ENTRIES_PRAEPOSITION);
-        db.execSQL(SQL_DELETE_ENTRIES_SPRECHVOKAL_PRÄSENS);
-        db.execSQL(SQL_DELETE_ENTRIES_SPRECHVOKAL_SUBSTANTIV);
-        db.execSQL(SQL_DELETE_ENTRIES_SPRICHWORT);
-        db.execSQL(SQL_DELETE_ENTRIES_SUBSTANTIV);
-        db.execSQL(SQL_DELETE_ENTRIES_VERB);
-        db.execSQL(SQL_DELETE_ENTRIES_BEISPIELSATZ);
-    }
-
-    /**
-     * Adds a entry to the 'Adverb' table in the database with given parameters.
-     * @param deutsch    content of the column 'deutsch' in the database entry
-     * @param latein     content of the column 'latein' in the database entry
-     * @param gelernt    content of the column 'gelernt' in the database entry
-     * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
-     */
-    private void addRowAdverb(String deutsch, String latein, boolean gelernt, int lektion_id){
-
-        ContentValues values = new ContentValues();
-        values.put(allColumnsAdverb[1], deutsch);
-        values.put(allColumnsAdverb[2], latein);
-        values.put(allColumnsAdverb[3], gelernt ? 1 : 0);
-        values.put(allColumnsAdverb[4], lektion_id);
-
-        database.insert(AdverbDB.FeedEntry.TABLE_NAME, null, values);
-    }
-
-    /**
-     * Adds a entry to the 'Adverb' table in the database with given parameters.
-     * @param deutsch    content of the column 'deutsch' in the database entry
-     * @param latein     content of the column 'latein' in the database entry
-     * @param gelernt    content of the column 'gelernt' in the database entry
-     * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
-     * @param type       content of the column 'type' in the database entry
-     */
-    private void addRowAdjektiv(String deutsch, String latein, boolean gelernt, int lektion_id, String type){
-
-        ContentValues values = new ContentValues();
-        values.put(allColumnsAdjektiv[1], deutsch);
-        values.put(allColumnsAdjektiv[2], latein);
-        values.put(allColumnsAdjektiv[3], gelernt ? 1 : 0);
-        values.put(allColumnsAdjektiv[4], lektion_id);
-        values.put(allColumnsAdjektiv[5], type);
-
-        database.insert(AdjektivDB.FeedEntry.TABLE_NAME, null, values);
-
-    }
-
-    /**
-     * Adds a entry to the 'Deklinationsendung' table in the database with given parameters.
-     * @param name   content of the column 'name' in the database entry
-     * @param nom_sg content of the column 'nom_sg' in the database entry
-     * @param nom_pl content of the column 'nom_pl' in the database entry
-     * @param gen_sg content of the column 'gen_sg' in the database entry
-     * @param gen_pl content of the column 'gen_pl' in the database entry
-     * @param dat_sg content of the column 'dat_sg' in the database entry
-     * @param dat_pl content of the column 'dat_pl' in the database entry
-     * @param akk_sg content of the column 'akk_sg' in the database entry
-     * @param akk_pl content of the column 'akk_pl' in the database entry
-     * @param abl_sg content of the column 'abl_sg' in the database entry
-     * @param abl_pl content of the column 'abl_pl' in the database entry
-     */
-    private void addRowDeklinationsendung(String name,
-                                         String nom_sg, String nom_pl,
-                                         String gen_sg, String gen_pl,
-                                         String dat_sg, String dat_pl,
-                                         String akk_sg, String akk_pl,
-                                         String abl_sg, String abl_pl) {
-
-        ContentValues values = new ContentValues();
-        values.put(allColumnsDeklinationsendung[1], name);
-        values.put(allColumnsDeklinationsendung[2], nom_sg);
-        values.put(allColumnsDeklinationsendung[3], nom_pl);
-        values.put(allColumnsDeklinationsendung[4], gen_sg);
-        values.put(allColumnsDeklinationsendung[5], gen_pl);
-        values.put(allColumnsDeklinationsendung[6], dat_sg);
-        values.put(allColumnsDeklinationsendung[7], dat_pl);
-        values.put(allColumnsDeklinationsendung[8], akk_sg);
-        values.put(allColumnsDeklinationsendung[9], akk_pl);
-        values.put(allColumnsDeklinationsendung[10], abl_sg);
-        values.put(allColumnsDeklinationsendung[11], abl_pl);
-
-        database.insert(DeklinationsendungDB.FeedEntry.TABLE_NAME, null, values);
-    }
-
-    /**
-     * Adds a entry to the 'Lektion' table in the database with given parameters.
-     * @param titel content of the column 'titel' in the database entry
-     * @param thema content of the column 'thema' in the database entry
-     */
-    private void addRowLektion(int lektionNr, String titel, String thema) {
-
-        ContentValues values = new ContentValues();
-        values.put(allColumnsLektion[1], lektionNr);
-        values.put(allColumnsLektion[2], titel);
-        values.put(allColumnsLektion[3], thema);
-
-        database.insert(LektionDB.FeedEntry.TABLE_NAME, null, values);
-    }
-
-    /**
-     * Adds a entry to the 'Personalendung_Präsens' table in the database with given parameters.
-     * @param erste_sg  content of the column 'erste_sg' in the database entry
-     * @param zweite_sg content of the column 'zweite_sg' in the database entry
-     * @param dritte_sg content of the column 'dritte_sg' in the database entry
-     * @param erste_pl  content of the column 'erste_pl' in the database entry
-     * @param zweite_pl content of the column 'zweite_pl' in the database entry
-     * @param dritte_pl content of the column 'dritte_pl' in the database entry
-     */
-    private void addRowPersonalendung_Praesens(String erste_sg, String zweite_sg,
-                                             String dritte_sg, String erste_pl,
-                                             String zweite_pl, String dritte_pl) {
-
-        ContentValues values = new ContentValues();
-        values.put(allColumnsPersonalendung_Präsens[1], erste_sg);
-        values.put(allColumnsPersonalendung_Präsens[2], erste_pl);
-        values.put(allColumnsPersonalendung_Präsens[3], zweite_sg);
-        values.put(allColumnsPersonalendung_Präsens[4], zweite_pl);
-        values.put(allColumnsPersonalendung_Präsens[5], dritte_sg);
-        values.put(allColumnsPersonalendung_Präsens[6], dritte_pl);
-
-        database.insert(Personalendung_PräsensDB.FeedEntry.TABLE_NAME, null, values);
-    }
-
-    /**
-     * Adds a entry to the 'Präposition' table in the database with given parameters.
-     * @param deutsch    content of the column 'deutsch' in the database entry
-     * @param latein     content of the column 'latein' in the database entry
-     * @param gelernt    content of the column 'gelernt' in the database entry
-     * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
-     */
-    private void addRowPraeposition(String deutsch, String latein, boolean gelernt,
-                                   int lektion_id){
-
-        ContentValues values = new ContentValues();
-        values.put(allColumnsPraeposition[1], deutsch);
-        values.put(allColumnsPraeposition[2], latein);
-        values.put(allColumnsPraeposition[3], gelernt ? 1 : 0);
-        values.put(allColumnsPraeposition[4], lektion_id);
-
-        database.insert(PräpositionDB.FeedEntry.TABLE_NAME, null, values);
-    }
-
-    /**
-     * Adds a entry to the 'Sprechvokal_Präsens' table in the database with given parameters.
-     * @param erste_sg  content of the column 'erste_sg' in the database entry
-     * @param zweite_sg content of the column 'zweite_sg' in the database entry
-     * @param dritte_sg content of the column 'dritte_sg' in the database entry
-     * @param erste_pl  content of the column 'erste_pl' in the database entry
-     * @param zweite_pl content of the column 'zweite_pl' in the database entry
-     * @param dritte_pl content of the column 'dritte_pl' in the database entry
-     */
-    private void addRowSprechvokal_Praesens(String titel, String infinitiv,
-                                           String erste_sg, String zweite_sg,
-                                          String dritte_sg, String erste_pl,
-                                          String zweite_pl, String dritte_pl) {
-
-        ContentValues values = new ContentValues();
-        values.put(allColumnsSprechvokal_Präsens[1], titel);
-        values.put(allColumnsSprechvokal_Präsens[2], infinitiv);
-        values.put(allColumnsSprechvokal_Präsens[3], erste_sg);
-        values.put(allColumnsSprechvokal_Präsens[4], zweite_sg);
-        values.put(allColumnsSprechvokal_Präsens[5], dritte_sg);
-        values.put(allColumnsSprechvokal_Präsens[6], erste_pl);
-        values.put(allColumnsSprechvokal_Präsens[7], zweite_pl);
-        values.put(allColumnsSprechvokal_Präsens[8], dritte_pl);
-
-        database.insert(Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME, null, values);
-
-    }
-
-    /**
-     * Adds a entry to the 'Sprechvokal_Substantiv' table in the database with given parameters.
-     * @param nom_sg content of the column 'nom_sg' in the database entry
-     * @param nom_pl content of the column 'nom_pl' in the database entry
-     * @param gen_sg content of the column 'gen_sg' in the database entry
-     * @param gen_pl content of the column 'gen_pl' in the database entry
-     * @param dat_sg content of the column 'dat_sg' in the database entry
-     * @param dat_pl content of the column 'dat_sg' in the database entry
-     * @param akk_sg content of the column 'akk_sg' in the database entry
-     * @param akk_pl content of the column 'akk_pl' in the database entry
-     * @param abl_sg content of the column 'abl_sg' in the database entry
-     * @param abl_pl content of the column 'abl_pl' in the database entry
-     */
-    private void addRowSprechvokal_Substantiv(
-            String nom_sg, String nom_pl,
-            String gen_sg, String gen_pl,
-            String dat_sg, String dat_pl,
-            String akk_sg, String akk_pl,
-            String abl_sg, String abl_pl) {
-
-        ContentValues values = new ContentValues();
-        values.put(allColumnsSprechvokal_Substantiv[1], nom_sg);
-        values.put(allColumnsSprechvokal_Substantiv[2], nom_pl);
-        values.put(allColumnsSprechvokal_Substantiv[3], gen_sg);
-        values.put(allColumnsSprechvokal_Substantiv[4], gen_pl);
-        values.put(allColumnsSprechvokal_Substantiv[5], dat_sg);
-        values.put(allColumnsSprechvokal_Substantiv[6], dat_pl);
-        values.put(allColumnsSprechvokal_Substantiv[7], akk_sg);
-        values.put(allColumnsSprechvokal_Substantiv[8], akk_pl);
-        values.put(allColumnsSprechvokal_Substantiv[9], abl_sg);
-        values.put(allColumnsSprechvokal_Substantiv[10], abl_pl);
-
-        database.insert(Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME, null, values);
-    }
-
-    /**
-     * Adds a entry to the 'Sprichwort' table in the database with given parameters.
-     * @param deutsch    content of the column 'deutsch' in the database entry
-     * @param latein     content of the column 'latein' in the database entry
-     * @param gelernt    content of the column 'gelernt' in the database entry
-     * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
-     */
-    private void addRowSprichwort(String deutsch, String latein, boolean gelernt,
-                                 int lektion_id){
-
-        ContentValues values = new ContentValues();
-        values.put(allColumnsSprichwort[1], deutsch);
-        values.put(allColumnsSprichwort[2], latein);
-        values.put(allColumnsSprichwort[3], gelernt ? 1 : 0);
-        values.put(allColumnsSprichwort[4], lektion_id);
-
-        database.insert(SprichwortDB.FeedEntry.TABLE_NAME, null, values);
-    }
-
-    /**
-     * Adds a entry to the 'Substantiv' table in the database with given parameters.
-     * @param nom_sg_deutsch        content of the column 'nom_sg_deutsch' in the database entry
-     * @param wortstamm             content of the column 'wortstamm' in the database entry
-     * @param gelernt               content of the column 'gelernt' in the database entry
-     * @param lektion_id            foreign key: the corresponding entry from the 'Lektion' table
-     * @param sprechvokal_id        foreign key: the corresponding entry from the 'Sprechvokal_Substantiv' table
-     * @param deklinationsendung_id foreign key: the corresponding entry from the 'Deklinationsendung' table
-     */
-    private void addRowSubstantiv(String nom_sg_deutsch, String wortstamm, boolean gelernt,
-                                 int lektion_id, int sprechvokal_id, int deklinationsendung_id) {
-
-        ContentValues values = new ContentValues();
-        values.put(allColumnsSubstantiv[1], nom_sg_deutsch);
-        values.put(allColumnsSubstantiv[2], wortstamm);
-        values.put(allColumnsSubstantiv[3], gelernt ? 1 : 0);
-        values.put(allColumnsSubstantiv[4], lektion_id);
-        values.put(allColumnsSubstantiv[5], sprechvokal_id);
-        values.put(allColumnsSubstantiv[6], deklinationsendung_id);
-
-        database.insert(SubstantivDB.FeedEntry.TABLE_NAME, null, values);
-    }
-    /**
-     * Adds a entry to the 'Verb' table in the database with given parameters.
-     * @param infinitiv_deutsch content of the column 'infinitiv_deutsch' in the database entry
-     * @param wortstamm         content of the column 'wortstamm' in the database entry
-     * @param konjugation       content of the column 'konjugation' in the database entry
-     * @param gelernt           content of the column 'gelernt' in the database entry
-     * @param lektion_id        foreign key: the corresponding entry from the 'Lektion' table
-     * @param personalendung_id foreign key: the corresponding entry from the 'Personalendung_Präsens' table
-     * @param sprechvokal_id    foreign key: the corresponding entry from the 'Sprechvokal_Substantiv' table
-     */
-    private void addRowVerb(String infinitiv_deutsch, String wortstamm, String konjugation, boolean gelernt,
-                           int lektion_id, int personalendung_id, int sprechvokal_id) {
-
-        ContentValues values = new ContentValues();
-        values.put(allColumnsVerb[1], infinitiv_deutsch);
-        values.put(allColumnsVerb[2], wortstamm);
-        values.put(allColumnsVerb[3], konjugation);
-        values.put(allColumnsVerb[4], gelernt ? 1 : 0);
-        values.put(allColumnsVerb[5], lektion_id);
-        values.put(allColumnsVerb[6], personalendung_id);
-        values.put(allColumnsVerb[7], sprechvokal_id);
-
-        database.insert(VerbDB.FeedEntry.TABLE_NAME, null, values);
-    }
-
-    private void addRowBeispielsatz(int subjekt_id, int praedikat_id, int genitiv_id, int dativ_id, int akkusativ_id){
-
-        //FIXME: We currently add a placeholder vocabulary for empty spaces (_ID == -1)
-        //We need to fill out all spaces in the initialisation document or find a better solution.
-        //The way this is handled right now is not acceptable and cannot be released this way
-        if (subjekt_id == -1) subjekt_id = 2;
-        if (praedikat_id == -1) praedikat_id = 2;
-        if (genitiv_id == -1) genitiv_id = 2;
-        if (dativ_id == -1) dativ_id = 2;
-        if (akkusativ_id == -1) akkusativ_id = 2;
-
-        ContentValues values = new ContentValues();
-        values.put(allColumnsBeispielsatz[1], subjekt_id);
-        values.put(allColumnsBeispielsatz[2], praedikat_id);
-        values.put(allColumnsBeispielsatz[3], genitiv_id);
-        values.put(allColumnsBeispielsatz[4], dativ_id);
-        values.put(allColumnsBeispielsatz[5], akkusativ_id);
-
-        database.insert(BeispielsatzDB.FeedEntry.TABLE_NAME, null, values);
     }
 
     /**
@@ -547,26 +242,26 @@ public class DBHelper extends SQLiteOpenHelper {
                             case AdverbDB.FeedEntry.TABLE_NAME:
 
                                 addRowAdverb(tokens[0], tokens[1],
-                                            false, Integer.parseInt(tokens[2]));
+                                        false, Integer.parseInt(tokens[2]));
 
                                 break;
 
                             case AdjektivDB.FeedEntry.TABLE_NAME:
 
                                 addRowAdjektiv(tokens[0], tokens[1],
-                                                false, Integer.parseInt(tokens[2]),
-                                                tokens[3]);
+                                        false, Integer.parseInt(tokens[2]),
+                                        tokens[3]);
 
                                 break;
 
                             //Deklinationsendung
                             case DeklinationsendungDB.FeedEntry.TABLE_NAME:
                                 addRowDeklinationsendung(tokens[0], tokens[1],
-                                                         tokens[2], tokens[3],
-                                                         tokens[4], tokens[5],
-                                                         tokens[6], tokens[7],
-                                                         tokens[8], tokens[9],
-                                                         tokens[10]);
+                                        tokens[2], tokens[3],
+                                        tokens[4], tokens[5],
+                                        tokens[6], tokens[7],
+                                        tokens[8], tokens[9],
+                                        tokens[10]);
                                 break;
 
                             //Lektion
@@ -577,24 +272,24 @@ public class DBHelper extends SQLiteOpenHelper {
                             //Personalendung_Präsens
                             case Personalendung_PräsensDB.FeedEntry.TABLE_NAME:
                                 addRowPersonalendung_Praesens(tokens[0], tokens[1],
-                                                             tokens[2], tokens[3],
-                                                             tokens[4], tokens[5]);
+                                        tokens[2], tokens[3],
+                                        tokens[4], tokens[5]);
                                 break;
 
                             //Präposition
                             case PräpositionDB.FeedEntry.TABLE_NAME:
 
                                 addRowPraeposition(tokens[0], tokens[1],
-                                                  false, Integer.parseInt(tokens[2]));
+                                        false, Integer.parseInt(tokens[2]));
 
                                 break;
 
                             //Sprechvokal_Präsens
                             case Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME:
                                 addRowSprechvokal_Praesens(tokens[0], tokens[1],
-                                                          tokens[2], tokens[3],
-                                                          tokens[4], tokens[5],
-                                                          tokens[6], tokens[7]);
+                                        tokens[2], tokens[3],
+                                        tokens[4], tokens[5],
+                                        tokens[6], tokens[7]);
 
                                 break;
 
@@ -607,7 +302,7 @@ public class DBHelper extends SQLiteOpenHelper {
                             case SprichwortDB.FeedEntry.TABLE_NAME:
 
                                 addRowSprichwort(tokens[0], tokens[1],
-                                                 false, Integer.parseInt(tokens[2]));
+                                        false, Integer.parseInt(tokens[2]));
 
                                 break;
 
@@ -628,8 +323,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
                                 //TODO: Sprechvokale einfügen (nicht '1') -> momentan nur als placeholder here
                                 addRowSubstantiv(tokens[0], tokens[1],
-                                                 false, Integer.parseInt(tokens[2]),
-                                                 1, deklinationId);
+                                        false, Integer.parseInt(tokens[2]),
+                                        1, deklinationId);
                                 break;
 
                             //Verb
@@ -655,9 +350,9 @@ public class DBHelper extends SQLiteOpenHelper {
                                 sprechvokalCursor.close();
 
                                 addRowVerb(tokens[0], tokens[1],
-                                           tokens[2], false,
-                                           Integer.parseInt(tokens[3]),
-                                           personalendungID, sprechvokalID);
+                                        tokens[2], false,
+                                        Integer.parseInt(tokens[3]),
+                                        personalendungID, sprechvokalID);
 
                                 break;
 
@@ -691,8 +386,8 @@ public class DBHelper extends SQLiteOpenHelper {
                         //o-deklination instead of o-deklination_n
                         String errorMessage =
                                 "The input string from the initialisation file " +
-                                "contains a unexpected token (probably).\n" +
-                                "Printing content of 'tokens' below:\n";
+                                        "contains a unexpected token (probably).\n" +
+                                        "Printing content of 'tokens' below:\n";
                         for (String token : tokens){
                             errorMessage += token + "\n";
                         }
@@ -705,8 +400,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
                         String errorMessage =
                                 "The input string from the initialisation file " +
-                                "has too few tokens (probably).\n" +
-                                "Printing content of 'tokens' below:\n";
+                                        "has too few tokens (probably).\n" +
+                                        "Printing content of 'tokens' below:\n";
                         for (String token : tokens){
                             errorMessage += token + "\n";
                         }
@@ -727,29 +422,473 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    /**
-     * Closes the connection to the database if it is open.
-     */
-    private void closeDb() {
-        if (!database.isOpen()) database.close();
+
+    //
+    //Methods for modifying database content
+    //
+
+
+    private void createTables(SQLiteDatabase db){
+        //Creating the tables in the database
+        db.execSQL(SQL_CREATE_ENTRIES_ADVERB);
+        db.execSQL(SQL_CREATE_ENTRIES_ADJEKTIV);
+        db.execSQL(SQL_CREATE_ENTRIES_DEKLINATIONSENDUNG);
+        db.execSQL(SQL_CREATE_ENTRIES_LEKTION);
+        db.execSQL(SQL_CREATE_ENTRIES_PERSONALENDUNG_PRÄSENS);
+        db.execSQL(SQL_CREATE_ENTRIES_PRAEPOSITION);
+        db.execSQL(SQL_CREATE_ENTRIES_SPRECHVOKAL_PRÄSENS);
+        db.execSQL(SQL_CREATE_ENTRIES_SPRECHVOKAL_SUBSTANTIV);
+        db.execSQL(SQL_CREATE_ENTRIES_SPRICHWORT);
+        db.execSQL(SQL_CREATE_ENTRIES_SUBSTANTIV);
+        db.execSQL(SQL_CREATE_ENTRIES_VERB);
+        db.execSQL(SQL_CREATE_ENTRIES_BEISPIELSATZ);
+    }
+
+    private void deleteEntries(SQLiteDatabase db){
+
+        //Deletes all entries
+        db.execSQL(SQL_DELETE_ENTRIES_ADVERB);
+        db.execSQL(SQL_DELETE_ENTRIES_ADJEKTIV);
+        db.execSQL(SQL_DELETE_ENTRIES_DEKLINATIONSENDUNG);
+        db.execSQL(SQL_DELETE_ENTRIES_LEKTION);
+        db.execSQL(SQL_DELETE_ENTRIES_PERSONALENDUNG_PRÄSENS);
+        db.execSQL(SQL_DELETE_ENTRIES_PRAEPOSITION);
+        db.execSQL(SQL_DELETE_ENTRIES_SPRECHVOKAL_PRÄSENS);
+        db.execSQL(SQL_DELETE_ENTRIES_SPRECHVOKAL_SUBSTANTIV);
+        db.execSQL(SQL_DELETE_ENTRIES_SPRICHWORT);
+        db.execSQL(SQL_DELETE_ENTRIES_SUBSTANTIV);
+        db.execSQL(SQL_DELETE_ENTRIES_VERB);
+        db.execSQL(SQL_DELETE_ENTRIES_BEISPIELSATZ);
     }
 
     /**
-     * open the connection to the database if it isn't open already.
+     * Sets the 'gelernt' value of a single entry
+     * @param tableName Name of the table where the vocabulary is in
+     * @param vokabelID _ID of the vocabulary
+     * @param gelerntWert value of 'gelernt' that the vocabulary is to be set to
      */
-    private void openDb() throws SQLException {
+    public void setGelernt(String tableName, int vokabelID, boolean gelerntWert){
 
-        String mPath = DATABASE_PATH + DATABASE_NAME;
-        //Log.v("mPath", mPath);
-        database = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.CREATE_IF_NECESSARY);
+        String query = "UPDATE " + tableName +
+                " SET Gelernt = ?" +
+                " WHERE _ID = ?";
+
+        Cursor cursor = database.rawQuery(query, new String [] {"" + (gelerntWert ? 1 : 0), "" + vokabelID});
+        //We need to call 'moveToFirst()' or 'moveToNext()' here for the database to properly update
+        cursor.moveToFirst();
+
+        cursor.close();
+    }
+
+    /**
+     * Resets the 'gelernt' status of all vocabularies in a 'lektion' back to false
+     * @param lektionNr the 'lektion' that is to be reset
+     */
+    public void resetLektion(int lektionNr){
+
+        String query = "UPDATE "
+                + AdverbDB.FeedEntry.TABLE_NAME
+                + " SET Gelernt = 0"
+                + " WHERE Lektion_ID = " + lektionNr;
+        Cursor cursor = database.rawQuery(query, new String[]{});
+        cursor.moveToFirst();
+        cursor.close();
+
+        query = "UPDATE "
+                + PräpositionDB.FeedEntry.TABLE_NAME
+                + " SET Gelernt = 0"
+                + " WHERE Lektion_ID = " + lektionNr;
+        Cursor cursor1 = database.rawQuery(query, new String[]{});
+        cursor1.moveToFirst();
+        cursor1.close();
+
+        query = "UPDATE "
+                + SprichwortDB.FeedEntry.TABLE_NAME
+                + " SET Gelernt = 0"
+                + " WHERE Lektion_ID = " + lektionNr;
+        Cursor cursor2 = database.rawQuery(query, new String[]{});
+        cursor2.moveToFirst();
+        cursor2.close();
+
+        query = "UPDATE "
+                + SubstantivDB.FeedEntry.TABLE_NAME
+                + " SET Gelernt = 0"
+                + " WHERE Lektion_ID = " + lektionNr;
+        Cursor cursor3 = database.rawQuery(query, new String[]{});
+        cursor3.moveToFirst();
+        cursor3.close();
+
+        query = "UPDATE "
+                + VerbDB.FeedEntry.TABLE_NAME
+                + " SET Gelernt = 0"
+                + " WHERE Lektion_ID = " + lektionNr;
+        Cursor cursor4 = database.rawQuery(query, new String[]{});
+        cursor4.moveToFirst();
+        cursor4.close();
 
     }
 
-    @Override
-    public synchronized void close() {
-        super.close();
-        closeDb();
+    //
+    // Methods for getting data from the database
+    //
+
+    /**
+     * Gets a specific column from a table-entry
+     * @param id _ID of the entry
+     * @param table table of the entry
+     * @param column wanted column
+     * @return a String of the content of the entry in the wanted column
+     */
+    public String getColumnFromId(int id, String table, String column){
+
+        String query = "SELECT "+ column +
+                " FROM " + table +
+                " WHERE _ID = ?";
+
+        Cursor cursor = database.rawQuery(query, new String[]{""+id});
+
+        cursor.moveToNext();
+
+        String columnContent = cursor.getString(0);
+
+        cursor.close();
+
+        return columnContent;
     }
+
+    /**
+     * Gets a percentage of how many vocabularies in a specific 'Lektion' have been completed
+     * @param lektion the lektion where a percentage is wanted
+     * @return a percentage of how many vocabularies have been learned. Range: 0 to 1
+     */
+    public float getGelerntProzent(int lektion){
+
+        int entryAmout = countTableEntries(new String[] {
+                        AdverbDB.FeedEntry.TABLE_NAME,
+                        PräpositionDB.FeedEntry.TABLE_NAME,
+                        SprichwortDB.FeedEntry.TABLE_NAME,
+                        SubstantivDB.FeedEntry.TABLE_NAME,
+                        VerbDB.FeedEntry.TABLE_NAME}, lektion);
+
+        //Returning -1 if the database doesn't have any entries to avoid division by 0
+        if (entryAmout == 0){
+            Log.e("getGelerntProzent", "Division by 0: no entries in lektion " + lektion);
+            return -1;
+        }
+
+        int entryAmountGelernt = countTableEntries(new String[] {
+                AdverbDB.FeedEntry.TABLE_NAME,
+                PräpositionDB.FeedEntry.TABLE_NAME,
+                SprichwortDB.FeedEntry.TABLE_NAME,
+                SubstantivDB.FeedEntry.TABLE_NAME,
+                VerbDB.FeedEntry.TABLE_NAME}, lektion, true);
+
+
+        return ((float)entryAmountGelernt/entryAmout);
+    }
+
+    /**
+     * Returning all wanted columns of a table with a passed value for 'Lektion'
+     * @param table the table from which the entries are wanted
+     * @param columns array of wanted columns
+     * @param lektion the wanted lektion
+     * @return a 2D-array containing the all entries (1st D) & the wanted columns (2nd D)
+     */
+    public String[][] getColumns(String table, String[] columns, int lektion){
+
+        //Creating the 'query'-String
+        StringBuilder stringBuilder = new StringBuilder(63);
+        stringBuilder.append("SELECT ");
+        for (int i = 0; i < columns.length; i++){
+            stringBuilder.append(columns[i]);
+            if (i < columns.length-1){
+                stringBuilder.append(",");
+            }
+            stringBuilder.append(" ");
+        }
+        String query = stringBuilder.toString();
+        query += "FROM " + table + " WHERE Lektion_ID = " + lektion;
+
+        //Getting the result-cursor
+        Cursor cursor = database.rawQuery(query, new String[]{});
+
+        //Putting the results in a 2-dimensional array
+        //where the first dimension is the entryNr
+        //and the second dimension a list of the wanted columns
+        String[][] values = new String[cursor.getCount()][columns.length];
+        int count = 0;
+        while (cursor.moveToNext()){
+            for (int i = 0; i < columns.length; i++){
+                values[count][i] = cursor.getString(i);
+            }
+            count++;
+        }
+
+        cursor.close();
+
+        return values;
+    }
+
+    /**
+     * Gets a vocabulary at the 'count'-position in a table with a specific 'gelernt'-value
+     * @param lektion the 'lektion' where the vocabularies are from
+     * @param count the amount of vocabularies previous to this one - 1
+     * @param gelernt 'gelernt'-value
+     * @param table table of the wanted vocabulary
+     * @return the _ID of the selected vocabulary
+     */
+    private int getIdFromCount(int lektion, int count, boolean gelernt, String table){
+
+        String query = "SELECT _ID FROM "+ table
+                      + " WHERE Gelernt = "+(gelernt ? 1 : 0)
+                       + " AND Lektion_ID = " + lektion;
+        Cursor cursor = database.rawQuery(query, new String[]{});
+
+        cursor.moveToPosition(count-1);
+
+        int id = cursor.getInt(0);
+
+        cursor.close();
+
+        return id;
+    }
+
+    /**
+     * Searches through a table to find the _ID value of a vocabulary
+     *
+     * TODO: Currently only VerbDB and SubstantivDB can be targeted
+     *
+     * @param vocabulary The vocabulary where the corresponding _ID is needed
+     * @param currentCase current declination/konjugation of the vocabulary (Nom/Akk/Inf)
+     * @param targetTable The table where the vocabulary is supposed to be in
+     * @return the _ID value of the vocabulary (-1 for no result)
+     */
+    private int getIdOfVocabulary(String vocabulary, String currentCase, String targetTable){
+
+        int entryAmount = countTableEntries(targetTable);
+
+        if (targetTable.equals(SubstantivDB.FeedEntry.TABLE_NAME)){
+
+            for (int id = 1; id <= entryAmount; id++){
+                if (vocabulary.equals(getDekliniertenSubstantiv(id, currentCase))) return id;
+            }
+
+        }else if (targetTable.equals(VerbDB.FeedEntry.TABLE_NAME)){
+
+            for (int id = 1; id <= entryAmount; id++){
+                if (vocabulary.equals(getKonjugiertesVerb(id, currentCase))) return id;
+            }
+
+        }else {
+            Log.e("TableNotFound", "The targetted table in \"getIdOfVocabulary(..)\" was not found.\n"
+                    +"targetTable: " + targetTable +"\n"
+                    +"vocabulary: " + vocabulary + "\n"
+                    +"currentCase: " + currentCase);
+        }
+
+        return -1;
+    }
+
+
+    //
+    // Methods for getting forms of vocabularies
+    //
+
+    /**
+     * Returns a noun in the wanted declination
+     * @param vokabelID _ID of the entry in the table 'Substantiv'
+     * @param deklinationsendungsName deklination of the wanted substantiv (from Deklinationsendung)
+     * @return the final word in the right declination
+     */
+    public String getDekliniertenSubstantiv(int vokabelID, String deklinationsendungsName){
+
+        //Gets the first part of the word (wortstamm)
+        String query = "SELECT " + SubstantivDB.FeedEntry.COLUMN_WORTSTAMM +
+                " FROM "+ SubstantivDB.FeedEntry.TABLE_NAME +
+                " WHERE _ID = ?";
+        Cursor substantivCursor = database.rawQuery(query, new String[] {vokabelID+""});
+        substantivCursor.moveToNext();
+        String wortstamm = substantivCursor.getString(0);
+        substantivCursor.close();
+
+        //TODO: 'Sprechvokal' is missing because there haven't been any vocabulary having one yet.
+
+        //gets the last part of the word (endung)
+        query = "SELECT "
+                + DeklinationsendungDB.FeedEntry.TABLE_NAME+"."+deklinationsendungsName +
+                " FROM " +
+                DeklinationsendungDB.FeedEntry.TABLE_NAME + ", " +
+                SubstantivDB.FeedEntry.TABLE_NAME +
+                " WHERE " +
+                SubstantivDB.FeedEntry.TABLE_NAME+"."+SubstantivDB.FeedEntry._ID +
+                " = " +
+                "?" +
+                " AND " +
+                SubstantivDB.FeedEntry.TABLE_NAME+"."+SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID +
+                " = " +
+                DeklinationsendungDB.FeedEntry.TABLE_NAME+"."+DeklinationsendungDB.FeedEntry._ID;
+        Cursor endungCursor = database.rawQuery(query, new String[] {""+vokabelID}
+        );
+        endungCursor.moveToNext();
+        String endung = endungCursor.getString(0);
+        endungCursor.close();
+
+        return (wortstamm + endung);
+
+    }
+
+    /**
+     *
+     * @param vokabelID _ID of the entry in the table 'Adjektiv'
+     * @param deklinationsendungName deklination of the wanted adjectiv (a column from Deklinationsendung)
+     * @param endungstype Many adjektives can be masculine/feminin/... -> indicate which one
+     *                    with the identifyer 'a-Deklination / o-Deklination_m / ...' and so on
+     * @return the final word in the right declination
+     */
+    public String getDekliniertesAdjektiv(int vokabelID, String deklinationsendungName, String endungstype){
+
+        //Gets the first part of the word (wortstamm)
+        String query = "SELECT " + AdjektivDB.FeedEntry.COLUMN_WORTSTAMM +
+                " FROM "+ AdjektivDB.FeedEntry.TABLE_NAME +
+                " WHERE _ID = ?";
+        Cursor adjektivCursor = database.rawQuery(query, new String[] {vokabelID+""});
+        adjektivCursor.moveToNext();
+        String wortstamm = adjektivCursor.getString(0);
+        adjektivCursor.close();
+
+
+        //gets the last part of the word (endung)
+
+        //FIXME: Adjectives not final! (multiline TODO)
+        //We need to check for special cases where the adjective
+        //cannot be m/f/n anymore -> special cases.
+        //We might also need to expand our database for this
+        query = "SELECT "
+                + DeklinationsendungDB.FeedEntry.TABLE_NAME+"."+deklinationsendungName +
+                " FROM " +
+                DeklinationsendungDB.FeedEntry.TABLE_NAME + ", " +
+                AdjektivDB.FeedEntry.TABLE_NAME +
+                " WHERE " +
+                AdjektivDB.FeedEntry.TABLE_NAME+"."+AdjektivDB.FeedEntry._ID +
+                " = " +
+                "?" +
+                " AND " +
+                "'"+endungstype+"'" +
+                " = " +
+                DeklinationsendungDB.FeedEntry.TABLE_NAME+"."+DeklinationsendungDB.FeedEntry.COLUMN_NAME;
+        Cursor endungCursor = database.rawQuery(query, new String[] {""+vokabelID}
+        );
+        endungCursor.moveToNext();
+        String endung = endungCursor.getString(0);
+        endungCursor.close();
+
+        return (wortstamm+endung);
+    }
+
+    /**
+     * Returns a verb in the wanted konjugation
+     * @param vokabelID _ID of the entry in the table 'Verb'
+     * @param personalendung konjugation of the wanted verb (from Personalendung_Präsens/"Inf",... for infinitiv)
+     * @return the final word in the right declination
+     */
+    public String getKonjugiertesVerb(int vokabelID, String personalendung){
+        //TODO: add parameter for tenses
+
+        //Gets the first part of the word (Wortstamm)
+        String query = "SELECT * FROM " + VerbDB.FeedEntry.TABLE_NAME + " WHERE _ID = ?";
+        Cursor verbCursor = database.rawQuery(query, new String[] {"" + vokabelID});
+        verbCursor.moveToNext();
+        String verbStamm = verbCursor.getString(verbCursor.getColumnIndex("Wortstamm"));
+        verbCursor.close();
+
+
+        String sprechvokal;
+        String endung;
+
+        if (personalendung.equals("inf") || personalendung.equals("infinitiv") ||
+                personalendung.equals("Inf") || personalendung.equals("Infinitiv")){
+
+
+            String sprechvokalQuery = "SELECT "
+                    + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME+"."+Sprechvokal_PräsensDB.FeedEntry.COLUMN_INFINITV +
+                    " FROM " +
+                    Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + ", " +
+                    VerbDB.FeedEntry.TABLE_NAME +
+                    " WHERE " +
+                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry._ID +
+                    " = " +
+                    vokabelID +
+                    " AND " +
+                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID +
+                    " = " +
+                    Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME+"."+Sprechvokal_PräsensDB.FeedEntry._ID;
+            Cursor sprechvokalCursor = database.rawQuery(sprechvokalQuery, new String[]{});
+            sprechvokalCursor.moveToNext();
+            sprechvokal = sprechvokalCursor.getString(0);
+            sprechvokalCursor.close();
+
+            String konjugationQuery = "SELECT " + VerbDB.FeedEntry.COLUMN_KONJUGATION +
+                    " FROM " + VerbDB.FeedEntry.TABLE_NAME +
+                    " WHERE _ID = " + vokabelID;
+            Cursor konjugationCursor = database.rawQuery(konjugationQuery, new String[]{});
+            konjugationCursor.moveToNext();
+            String konjugation = konjugationCursor.getString(0);
+            konjugationCursor.close();
+
+            if (konjugation.equals("special")) {
+                endung = "";
+            }else{
+                endung = "re";
+            }
+
+        }else{
+            //gets the middle part of the word (Sprechvokal)
+            query = "SELECT "
+                    + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME+"."+personalendung +
+                    " FROM " +
+                    Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + ", " +
+                    VerbDB.FeedEntry.TABLE_NAME +
+                    " WHERE " +
+                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry._ID +
+                    " = " +
+                    vokabelID +
+                    " AND " +
+                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID +
+                    " = " +
+                    Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME+"."+Sprechvokal_PräsensDB.FeedEntry._ID;
+            Cursor sprechvokalCursor = database.rawQuery(query, new String[]{});
+            sprechvokalCursor.moveToNext();
+            sprechvokal = sprechvokalCursor.getString(sprechvokalCursor.getColumnIndex(personalendung));
+            sprechvokalCursor.close();
+
+            //Gets the last part of the word (Endung)
+            query = "SELECT "
+                    + Personalendung_PräsensDB.FeedEntry.TABLE_NAME+"."+personalendung+
+                    " FROM " +
+                    Personalendung_PräsensDB.FeedEntry.TABLE_NAME + ", " +
+                    VerbDB.FeedEntry.TABLE_NAME +
+                    " WHERE " +
+                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry._ID +
+                    " = " +
+                    "?" +
+                    " AND " +
+                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID +
+                    " = " +
+                    Personalendung_PräsensDB.FeedEntry.TABLE_NAME+"."+Personalendung_PräsensDB.FeedEntry._ID;
+            Cursor personalendungCursor = database.rawQuery(query , new String[] { ""+vokabelID}
+            );
+            personalendungCursor.moveToNext();
+            endung = personalendungCursor.getString(personalendungCursor.getColumnIndex(personalendung));
+            personalendungCursor.close();
+        }
+
+        return (verbStamm + sprechvokal + endung);
+    }
+
+
+    //
+    // Methods for counting table entries
+    //
 
     public int countTableEntries(String[] tables){
 
@@ -885,317 +1024,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    /**
-     * Gets a specific column from a table-entry
-     * @param id _ID of the entry
-     * @param table table of the entry
-     * @param column wanted column
-     * @return a String of the content of the entry in the wanted column
-     */
-    public String getColumnFromId(int id, String table, String column){
 
-        String query = "SELECT "+ column +
-                " FROM " + table +
-                " WHERE _ID = ?";
-
-        Cursor cursor = database.rawQuery(query, new String[]{""+id});
-
-        cursor.moveToNext();
-
-        String columnContent = cursor.getString(0);
-
-        cursor.close();
-
-        return columnContent;
-    }
-
-    /**
-     * Gets a percentage of how many vocabularies in a specific 'Lektion' have been completed
-     * @param lektion the lektion where a percentage is wanted
-     * @return a percentage of how many vocabularies have been learned. Range: 0 to 1
-     */
-    public float getGelerntProzent(int lektion){
-
-        int entryAmout = countTableEntries(new String[] {
-                        AdverbDB.FeedEntry.TABLE_NAME,
-                        PräpositionDB.FeedEntry.TABLE_NAME,
-                        SprichwortDB.FeedEntry.TABLE_NAME,
-                        SubstantivDB.FeedEntry.TABLE_NAME,
-                        VerbDB.FeedEntry.TABLE_NAME}, lektion);
-
-        //Returning -1 if the database doesn't have any entries to avoid division by 0
-        if (entryAmout == 0){
-            Log.e("getGelerntProzent", "Division by 0: no entries in lektion " + lektion);
-            return -1;
-        }
-
-        int entryAmountGelernt = countTableEntries(new String[] {
-                AdverbDB.FeedEntry.TABLE_NAME,
-                PräpositionDB.FeedEntry.TABLE_NAME,
-                SprichwortDB.FeedEntry.TABLE_NAME,
-                SubstantivDB.FeedEntry.TABLE_NAME,
-                VerbDB.FeedEntry.TABLE_NAME}, lektion, true);
-
-
-        return ((float)entryAmountGelernt/entryAmout);
-    }
-
-    /**
-     * Returning all wanted columns of a table with a passed value for 'Lektion'
-     * @param table the table from which the entries are wanted
-     * @param columns array of wanted columns
-     * @param lektion the wanted lektion
-     * @return a 2D-array containing the all entries (1st D) & the wanted columns (2nd D)
-     */
-    public String[][] getColumns(String table, String[] columns, int lektion){
-
-        //Creating the 'query'-String
-        StringBuilder stringBuilder = new StringBuilder(63);
-        stringBuilder.append("SELECT ");
-        for (int i = 0; i < columns.length; i++){
-            stringBuilder.append(columns[i]);
-            if (i < columns.length-1){
-                stringBuilder.append(",");
-            }
-            stringBuilder.append(" ");
-        }
-        String query = stringBuilder.toString();
-        query += "FROM " + table + " WHERE Lektion_ID = " + lektion;
-
-        //Getting the result-cursor
-        Cursor cursor = database.rawQuery(query, new String[]{});
-
-        //Putting the results in a 2-dimensional array
-        //where the first dimension is the entryNr
-        //and the second dimension a list of the wanted columns
-        String[][] values = new String[cursor.getCount()][columns.length];
-        int count = 0;
-        while (cursor.moveToNext()){
-            for (int i = 0; i < columns.length; i++){
-                values[count][i] = cursor.getString(i);
-            }
-            count++;
-        }
-
-        cursor.close();
-
-        return values;
-    }
-
-    /**
-     * Returns a noun in the wanted declination
-     * @param vokabelID _ID of the entry in the table 'Substantiv'
-     * @param deklinationsendungsName deklination of the wanted substantiv (from Deklinationsendung)
-     * @return the final word in the right declination
-     */
-    public String getDekliniertenSubstantiv(int vokabelID, String deklinationsendungsName){
-
-        //Gets the first part of the word (wortstamm)
-        String query = "SELECT " + SubstantivDB.FeedEntry.COLUMN_WORTSTAMM +
-                       " FROM "+ SubstantivDB.FeedEntry.TABLE_NAME +
-                       " WHERE _ID = ?";
-        Cursor substantivCursor = database.rawQuery(query, new String[] {vokabelID+""});
-        substantivCursor.moveToNext();
-        String wortstamm = substantivCursor.getString(0);
-        substantivCursor.close();
-
-        //TODO: 'Sprechvokal' is missing because there haven't been any vocabulary having one yet.
-
-        //gets the last part of the word (endung)
-        query = "SELECT "
-                + DeklinationsendungDB.FeedEntry.TABLE_NAME+"."+deklinationsendungsName +
-                " FROM " +
-                DeklinationsendungDB.FeedEntry.TABLE_NAME + ", " +
-                SubstantivDB.FeedEntry.TABLE_NAME +
-                " WHERE " +
-                SubstantivDB.FeedEntry.TABLE_NAME+"."+SubstantivDB.FeedEntry._ID +
-                " = " +
-                "?" +
-                " AND " +
-                SubstantivDB.FeedEntry.TABLE_NAME+"."+SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID +
-                " = " +
-                DeklinationsendungDB.FeedEntry.TABLE_NAME+"."+DeklinationsendungDB.FeedEntry._ID;
-        Cursor endungCursor = database.rawQuery(query, new String[] {""+vokabelID}
-        );
-        endungCursor.moveToNext();
-        String endung = endungCursor.getString(0);
-        endungCursor.close();
-
-        return (wortstamm + endung);
-
-    }
-
-    /**
-     *
-     * @param vokabelID _ID of the entry in the table 'Adjektiv'
-     * @param deklinationsendungName deklination of the wanted adjectiv (a column from Deklinationsendung)
-     * @param endungstype Many adjektives can be masculine/feminin/... -> indicate which one
-     *                    with the identifyer 'a-Deklination / o-Deklination_m / ...' and so on
-     * @return the final word in the right declination
-     */
-    public String getDekliniertesAdjektiv(int vokabelID, String deklinationsendungName, String endungstype){
-
-        //Gets the first part of the word (wortstamm)
-        String query = "SELECT " + AdjektivDB.FeedEntry.COLUMN_WORTSTAMM +
-                " FROM "+ AdjektivDB.FeedEntry.TABLE_NAME +
-                " WHERE _ID = ?";
-        Cursor adjektivCursor = database.rawQuery(query, new String[] {vokabelID+""});
-        adjektivCursor.moveToNext();
-        String wortstamm = adjektivCursor.getString(0);
-        adjektivCursor.close();
-
-
-        //gets the last part of the word (endung)
-
-        //FIXME: Adjectives not final! (multiline TODO)
-        //We need to check for special cases where the adjective
-        //cannot be m/f/n anymore -> special cases.
-        //We might also need to expand our database for this
-        query = "SELECT "
-                + DeklinationsendungDB.FeedEntry.TABLE_NAME+"."+deklinationsendungName +
-                " FROM " +
-                DeklinationsendungDB.FeedEntry.TABLE_NAME + ", " +
-                AdjektivDB.FeedEntry.TABLE_NAME +
-                " WHERE " +
-                AdjektivDB.FeedEntry.TABLE_NAME+"."+AdjektivDB.FeedEntry._ID +
-                " = " +
-                "?" +
-                " AND " +
-                "'"+endungstype+"'" +
-                " = " +
-                DeklinationsendungDB.FeedEntry.TABLE_NAME+"."+DeklinationsendungDB.FeedEntry.COLUMN_NAME;
-        Cursor endungCursor = database.rawQuery(query, new String[] {""+vokabelID}
-        );
-        endungCursor.moveToNext();
-        String endung = endungCursor.getString(0);
-        endungCursor.close();
-
-        return (wortstamm+endung);
-    }
-
-    /**
-     * Returns a verb in the wanted konjugation
-     * @param vokabelID _ID of the entry in the table 'Verb'
-     * @param personalendung konjugation of the wanted verb (from Personalendung_Präsens/"Inf",... for infinitiv)
-     * @return the final word in the right declination
-     */
-    public String getKonjugiertesVerb(int vokabelID, String personalendung){
-        //TODO: add parameter for tenses
-
-        //Gets the first part of the word (Wortstamm)
-        String query = "SELECT * FROM " + VerbDB.FeedEntry.TABLE_NAME + " WHERE _ID = ?";
-        Cursor verbCursor = database.rawQuery(query, new String[] {"" + vokabelID});
-        verbCursor.moveToNext();
-        String verbStamm = verbCursor.getString(verbCursor.getColumnIndex("Wortstamm"));
-        verbCursor.close();
-
-
-        String sprechvokal;
-        String endung;
-
-        if (personalendung.equals("inf") || personalendung.equals("infinitiv") ||
-            personalendung.equals("Inf") || personalendung.equals("Infinitiv")){
-
-
-            String sprechvokalQuery = "SELECT "
-                    + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME+"."+Sprechvokal_PräsensDB.FeedEntry.COLUMN_INFINITV +
-                    " FROM " +
-                    Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + ", " +
-                    VerbDB.FeedEntry.TABLE_NAME +
-                    " WHERE " +
-                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry._ID +
-                    " = " +
-                    vokabelID +
-                    " AND " +
-                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID +
-                    " = " +
-                    Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME+"."+Sprechvokal_PräsensDB.FeedEntry._ID;
-            Cursor sprechvokalCursor = database.rawQuery(sprechvokalQuery, new String[]{});
-            sprechvokalCursor.moveToNext();
-            sprechvokal = sprechvokalCursor.getString(0);
-            sprechvokalCursor.close();
-
-            String konjugationQuery = "SELECT " + VerbDB.FeedEntry.COLUMN_KONJUGATION +
-                    " FROM " + VerbDB.FeedEntry.TABLE_NAME +
-                    " WHERE _ID = " + vokabelID;
-            Cursor konjugationCursor = database.rawQuery(konjugationQuery, new String[]{});
-            konjugationCursor.moveToNext();
-            String konjugation = konjugationCursor.getString(0);
-            konjugationCursor.close();
-
-            if (konjugation.equals("special")) {
-                endung = "";
-            }else{
-                endung = "re";
-            }
-
-        }else{
-            //gets the middle part of the word (Sprechvokal)
-            query = "SELECT "
-                    + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME+"."+personalendung +
-                    " FROM " +
-                    Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + ", " +
-                    VerbDB.FeedEntry.TABLE_NAME +
-                    " WHERE " +
-                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry._ID +
-                    " = " +
-                    vokabelID +
-                    " AND " +
-                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID +
-                    " = " +
-                    Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME+"."+Sprechvokal_PräsensDB.FeedEntry._ID;
-            Cursor sprechvokalCursor = database.rawQuery(query, new String[]{});
-            sprechvokalCursor.moveToNext();
-            sprechvokal = sprechvokalCursor.getString(sprechvokalCursor.getColumnIndex(personalendung));
-            sprechvokalCursor.close();
-
-            //Gets the last part of the word (Endung)
-            query = "SELECT "
-                    + Personalendung_PräsensDB.FeedEntry.TABLE_NAME+"."+personalendung+
-                    " FROM " +
-                    Personalendung_PräsensDB.FeedEntry.TABLE_NAME + ", " +
-                    VerbDB.FeedEntry.TABLE_NAME +
-                    " WHERE " +
-                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry._ID +
-                    " = " +
-                    "?" +
-                    " AND " +
-                    VerbDB.FeedEntry.TABLE_NAME+"."+VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID +
-                    " = " +
-                    Personalendung_PräsensDB.FeedEntry.TABLE_NAME+"."+Personalendung_PräsensDB.FeedEntry._ID;
-            Cursor personalendungCursor = database.rawQuery(query , new String[] { ""+vokabelID}
-            );
-            personalendungCursor.moveToNext();
-            endung = personalendungCursor.getString(personalendungCursor.getColumnIndex(personalendung));
-            personalendungCursor.close();
-        }
-
-        return (verbStamm + sprechvokal + endung);
-    }
-
-    /**
-     * Gets a vocabulary at the 'count'-position in a table with a specific 'gelernt'-value
-     * @param lektion the 'lektion' where the vocabularies are from
-     * @param count the amount of vocabularies previous to this one - 1
-     * @param gelernt 'gelernt'-value
-     * @param table table of the wanted vocabulary
-     * @return the _ID of the selected vocabulary
-     */
-    public int getIdFromCount(int lektion, int count, boolean gelernt, String table){
-
-        String query = "SELECT _ID FROM "+ table
-                      + " WHERE Gelernt = "+(gelernt ? 1 : 0)
-                       + " AND Lektion_ID = " + lektion;
-        Cursor cursor = database.rawQuery(query, new String[]{});
-
-        cursor.moveToPosition(count-1);
-
-        int id = cursor.getInt(0);
-
-        cursor.close();
-
-        return id;
-    }
+    //
+    // Methods for getting randomized vocabularies
+    //
 
     /**
      * Choses a random vocabulary from a lektion
@@ -1203,7 +1035,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return a instance of the chosen vocabulary as object
      */
     public Vokabel getRandomVocabulary(int lektionNr){
-      
+
         //Get the amount of entries with a matching lektionNr
         int entryAmountVerb = countTableEntries(VerbDB.FeedEntry.TABLE_NAME, lektionNr,false);
         int entryAmountAdjektiv = countTableEntries(AdjektivDB.FeedEntry.TABLE_NAME, lektionNr, false);
@@ -1226,7 +1058,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
-            
+
             //constructs a instance of Substantiv from the given randomNumber
             count = randomNumber;
 
@@ -1389,108 +1221,299 @@ public class DBHelper extends SQLiteOpenHelper {
         return verbInstance;
     }
 
+
+    //
+    // Methods for adding entries to the database
+    //
+
     /**
-     * Sets the 'gelernt' value of a single entry
-     * @param tableName Name of the table where the vocabulary is in
-     * @param vokabelID _ID of the vocabulary
-     * @param gelerntWert value of 'gelernt' that the vocabulary is to be set to
+     * Adds a entry to the 'Adverb' table in the database with given parameters.
+     * @param deutsch    content of the column 'deutsch' in the database entry
+     * @param latein     content of the column 'latein' in the database entry
+     * @param gelernt    content of the column 'gelernt' in the database entry
+     * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
      */
-    public void setGelernt(String tableName, int vokabelID, boolean gelerntWert){
+    private void addRowAdverb(String deutsch, String latein, boolean gelernt, int lektion_id){
 
-        String query = "UPDATE " + tableName +
-                " SET Gelernt = ?" +
-                " WHERE _ID = ?";
+        ContentValues values = new ContentValues();
+        values.put(allColumnsAdverb[1], deutsch);
+        values.put(allColumnsAdverb[2], latein);
+        values.put(allColumnsAdverb[3], gelernt ? 1 : 0);
+        values.put(allColumnsAdverb[4], lektion_id);
 
-        Cursor cursor = database.rawQuery(query, new String [] {"" + (gelerntWert ? 1 : 0), "" + vokabelID});
-        //We need to call 'moveToFirst()' or 'moveToNext()' here for the database to properly update
-        cursor.moveToFirst();
-
-        cursor.close();
+        database.insert(AdverbDB.FeedEntry.TABLE_NAME, null, values);
     }
 
     /**
-     * Searches through a table to find the _ID value of a vocabulary
-     *
-     * TODO: Currently only VerbDB and SubstantivDB can be targeted
-     *
-     * @param vocabulary The vocabulary where the corresponding _ID is needed
-     * @param currentCase current declination/konjugation of the vocabulary (Nom/Akk/Inf)
-     * @param targetTable The table where the vocabulary is supposed to be in
-     * @return the _ID value of the vocabulary (-1 for no result)
+     * Adds a entry to the 'Adverb' table in the database with given parameters.
+     * @param deutsch    content of the column 'deutsch' in the database entry
+     * @param latein     content of the column 'latein' in the database entry
+     * @param gelernt    content of the column 'gelernt' in the database entry
+     * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
+     * @param type       content of the column 'type' in the database entry
      */
-    private int getIdOfVocabulary(String vocabulary, String currentCase, String targetTable){
+    private void addRowAdjektiv(String deutsch, String latein, boolean gelernt, int lektion_id, String type){
 
-        int entryAmount = countTableEntries(targetTable);
+        ContentValues values = new ContentValues();
+        values.put(allColumnsAdjektiv[1], deutsch);
+        values.put(allColumnsAdjektiv[2], latein);
+        values.put(allColumnsAdjektiv[3], gelernt ? 1 : 0);
+        values.put(allColumnsAdjektiv[4], lektion_id);
+        values.put(allColumnsAdjektiv[5], type);
 
-        if (targetTable.equals(SubstantivDB.FeedEntry.TABLE_NAME)){
+        database.insert(AdjektivDB.FeedEntry.TABLE_NAME, null, values);
 
-            for (int id = 1; id <= entryAmount; id++){
-                if (vocabulary.equals(getDekliniertenSubstantiv(id, currentCase))) return id;
-            }
-
-        }else if (targetTable.equals(VerbDB.FeedEntry.TABLE_NAME)){
-
-            for (int id = 1; id <= entryAmount; id++){
-                if (vocabulary.equals(getKonjugiertesVerb(id, currentCase))) return id;
-            }
-
-        }else {
-            Log.e("TableNotFound", "The targetted table in \"getIdOfVocabulary(..)\" was not found.\n"
-                    +"targetTable: " + targetTable +"\n"
-                    +"vocabulary: " + vocabulary + "\n"
-                    +"currentCase: " + currentCase);
-        }
-
-        return -1;
     }
 
     /**
-     * Resets the 'gelernt' status of all vocabularies in a 'lektion' back to false
-     * @param lektionNr the 'lektion' that is to be reset
+     * Adds a entry to the 'Deklinationsendung' table in the database with given parameters.
+     * @param name   content of the column 'name' in the database entry
+     * @param nom_sg content of the column 'nom_sg' in the database entry
+     * @param nom_pl content of the column 'nom_pl' in the database entry
+     * @param gen_sg content of the column 'gen_sg' in the database entry
+     * @param gen_pl content of the column 'gen_pl' in the database entry
+     * @param dat_sg content of the column 'dat_sg' in the database entry
+     * @param dat_pl content of the column 'dat_pl' in the database entry
+     * @param akk_sg content of the column 'akk_sg' in the database entry
+     * @param akk_pl content of the column 'akk_pl' in the database entry
+     * @param abl_sg content of the column 'abl_sg' in the database entry
+     * @param abl_pl content of the column 'abl_pl' in the database entry
      */
-    public void resetLektion(int lektionNr){
+    private void addRowDeklinationsendung(String name,
+                                          String nom_sg, String nom_pl,
+                                          String gen_sg, String gen_pl,
+                                          String dat_sg, String dat_pl,
+                                          String akk_sg, String akk_pl,
+                                          String abl_sg, String abl_pl) {
 
-        String query = "UPDATE "
-                + AdverbDB.FeedEntry.TABLE_NAME
-                + " SET Gelernt = 0"
-                + " WHERE Lektion_ID = " + lektionNr;
-        Cursor cursor = database.rawQuery(query, new String[]{});
-        cursor.moveToFirst();
-        cursor.close();
+        ContentValues values = new ContentValues();
+        values.put(allColumnsDeklinationsendung[1], name);
+        values.put(allColumnsDeklinationsendung[2], nom_sg);
+        values.put(allColumnsDeklinationsendung[3], nom_pl);
+        values.put(allColumnsDeklinationsendung[4], gen_sg);
+        values.put(allColumnsDeklinationsendung[5], gen_pl);
+        values.put(allColumnsDeklinationsendung[6], dat_sg);
+        values.put(allColumnsDeklinationsendung[7], dat_pl);
+        values.put(allColumnsDeklinationsendung[8], akk_sg);
+        values.put(allColumnsDeklinationsendung[9], akk_pl);
+        values.put(allColumnsDeklinationsendung[10], abl_sg);
+        values.put(allColumnsDeklinationsendung[11], abl_pl);
 
-        query = "UPDATE "
-                + PräpositionDB.FeedEntry.TABLE_NAME
-                + " SET Gelernt = 0"
-                + " WHERE Lektion_ID = " + lektionNr;
-        Cursor cursor1 = database.rawQuery(query, new String[]{});
-        cursor1.moveToFirst();
-        cursor1.close();
+        database.insert(DeklinationsendungDB.FeedEntry.TABLE_NAME, null, values);
+    }
 
-        query = "UPDATE "
-                + SprichwortDB.FeedEntry.TABLE_NAME
-                + " SET Gelernt = 0"
-                + " WHERE Lektion_ID = " + lektionNr;
-        Cursor cursor2 = database.rawQuery(query, new String[]{});
-        cursor2.moveToFirst();
-        cursor2.close();
+    /**
+     * Adds a entry to the 'Lektion' table in the database with given parameters.
+     * @param titel content of the column 'titel' in the database entry
+     * @param thema content of the column 'thema' in the database entry
+     */
+    private void addRowLektion(int lektionNr, String titel, String thema) {
 
-        query = "UPDATE "
-                + SubstantivDB.FeedEntry.TABLE_NAME
-                + " SET Gelernt = 0"
-                + " WHERE Lektion_ID = " + lektionNr;
-        Cursor cursor3 = database.rawQuery(query, new String[]{});
-        cursor3.moveToFirst();
-        cursor3.close();
+        ContentValues values = new ContentValues();
+        values.put(allColumnsLektion[1], lektionNr);
+        values.put(allColumnsLektion[2], titel);
+        values.put(allColumnsLektion[3], thema);
 
-        query = "UPDATE "
-                + VerbDB.FeedEntry.TABLE_NAME
-                + " SET Gelernt = 0"
-                + " WHERE Lektion_ID = " + lektionNr;
-        Cursor cursor4 = database.rawQuery(query, new String[]{});
-        cursor4.moveToFirst();
-        cursor4.close();
+        database.insert(LektionDB.FeedEntry.TABLE_NAME, null, values);
+    }
+
+    /**
+     * Adds a entry to the 'Personalendung_Präsens' table in the database with given parameters.
+     * @param erste_sg  content of the column 'erste_sg' in the database entry
+     * @param zweite_sg content of the column 'zweite_sg' in the database entry
+     * @param dritte_sg content of the column 'dritte_sg' in the database entry
+     * @param erste_pl  content of the column 'erste_pl' in the database entry
+     * @param zweite_pl content of the column 'zweite_pl' in the database entry
+     * @param dritte_pl content of the column 'dritte_pl' in the database entry
+     */
+    private void addRowPersonalendung_Praesens(String erste_sg, String zweite_sg,
+                                               String dritte_sg, String erste_pl,
+                                               String zweite_pl, String dritte_pl) {
+
+        ContentValues values = new ContentValues();
+        values.put(allColumnsPersonalendung_Präsens[1], erste_sg);
+        values.put(allColumnsPersonalendung_Präsens[2], erste_pl);
+        values.put(allColumnsPersonalendung_Präsens[3], zweite_sg);
+        values.put(allColumnsPersonalendung_Präsens[4], zweite_pl);
+        values.put(allColumnsPersonalendung_Präsens[5], dritte_sg);
+        values.put(allColumnsPersonalendung_Präsens[6], dritte_pl);
+
+        database.insert(Personalendung_PräsensDB.FeedEntry.TABLE_NAME, null, values);
+    }
+
+    /**
+     * Adds a entry to the 'Präposition' table in the database with given parameters.
+     * @param deutsch    content of the column 'deutsch' in the database entry
+     * @param latein     content of the column 'latein' in the database entry
+     * @param gelernt    content of the column 'gelernt' in the database entry
+     * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
+     */
+    private void addRowPraeposition(String deutsch, String latein, boolean gelernt,
+                                    int lektion_id){
+
+        ContentValues values = new ContentValues();
+        values.put(allColumnsPraeposition[1], deutsch);
+        values.put(allColumnsPraeposition[2], latein);
+        values.put(allColumnsPraeposition[3], gelernt ? 1 : 0);
+        values.put(allColumnsPraeposition[4], lektion_id);
+
+        database.insert(PräpositionDB.FeedEntry.TABLE_NAME, null, values);
+    }
+
+    /**
+     * Adds a entry to the 'Sprechvokal_Präsens' table in the database with given parameters.
+     * @param erste_sg  content of the column 'erste_sg' in the database entry
+     * @param zweite_sg content of the column 'zweite_sg' in the database entry
+     * @param dritte_sg content of the column 'dritte_sg' in the database entry
+     * @param erste_pl  content of the column 'erste_pl' in the database entry
+     * @param zweite_pl content of the column 'zweite_pl' in the database entry
+     * @param dritte_pl content of the column 'dritte_pl' in the database entry
+     */
+    private void addRowSprechvokal_Praesens(String titel, String infinitiv,
+                                            String erste_sg, String zweite_sg,
+                                            String dritte_sg, String erste_pl,
+                                            String zweite_pl, String dritte_pl) {
+
+        ContentValues values = new ContentValues();
+        values.put(allColumnsSprechvokal_Präsens[1], titel);
+        values.put(allColumnsSprechvokal_Präsens[2], infinitiv);
+        values.put(allColumnsSprechvokal_Präsens[3], erste_sg);
+        values.put(allColumnsSprechvokal_Präsens[4], zweite_sg);
+        values.put(allColumnsSprechvokal_Präsens[5], dritte_sg);
+        values.put(allColumnsSprechvokal_Präsens[6], erste_pl);
+        values.put(allColumnsSprechvokal_Präsens[7], zweite_pl);
+        values.put(allColumnsSprechvokal_Präsens[8], dritte_pl);
+
+        database.insert(Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME, null, values);
 
     }
+
+    /**
+     * Adds a entry to the 'Sprechvokal_Substantiv' table in the database with given parameters.
+     * @param nom_sg content of the column 'nom_sg' in the database entry
+     * @param nom_pl content of the column 'nom_pl' in the database entry
+     * @param gen_sg content of the column 'gen_sg' in the database entry
+     * @param gen_pl content of the column 'gen_pl' in the database entry
+     * @param dat_sg content of the column 'dat_sg' in the database entry
+     * @param dat_pl content of the column 'dat_sg' in the database entry
+     * @param akk_sg content of the column 'akk_sg' in the database entry
+     * @param akk_pl content of the column 'akk_pl' in the database entry
+     * @param abl_sg content of the column 'abl_sg' in the database entry
+     * @param abl_pl content of the column 'abl_pl' in the database entry
+     */
+    private void addRowSprechvokal_Substantiv(
+            String nom_sg, String nom_pl,
+            String gen_sg, String gen_pl,
+            String dat_sg, String dat_pl,
+            String akk_sg, String akk_pl,
+            String abl_sg, String abl_pl) {
+
+        ContentValues values = new ContentValues();
+        values.put(allColumnsSprechvokal_Substantiv[1], nom_sg);
+        values.put(allColumnsSprechvokal_Substantiv[2], nom_pl);
+        values.put(allColumnsSprechvokal_Substantiv[3], gen_sg);
+        values.put(allColumnsSprechvokal_Substantiv[4], gen_pl);
+        values.put(allColumnsSprechvokal_Substantiv[5], dat_sg);
+        values.put(allColumnsSprechvokal_Substantiv[6], dat_pl);
+        values.put(allColumnsSprechvokal_Substantiv[7], akk_sg);
+        values.put(allColumnsSprechvokal_Substantiv[8], akk_pl);
+        values.put(allColumnsSprechvokal_Substantiv[9], abl_sg);
+        values.put(allColumnsSprechvokal_Substantiv[10], abl_pl);
+
+        database.insert(Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME, null, values);
+    }
+
+    /**
+     * Adds a entry to the 'Sprichwort' table in the database with given parameters.
+     * @param deutsch    content of the column 'deutsch' in the database entry
+     * @param latein     content of the column 'latein' in the database entry
+     * @param gelernt    content of the column 'gelernt' in the database entry
+     * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
+     */
+    private void addRowSprichwort(String deutsch, String latein, boolean gelernt,
+                                  int lektion_id){
+
+        ContentValues values = new ContentValues();
+        values.put(allColumnsSprichwort[1], deutsch);
+        values.put(allColumnsSprichwort[2], latein);
+        values.put(allColumnsSprichwort[3], gelernt ? 1 : 0);
+        values.put(allColumnsSprichwort[4], lektion_id);
+
+        database.insert(SprichwortDB.FeedEntry.TABLE_NAME, null, values);
+    }
+
+    /**
+     * Adds a entry to the 'Substantiv' table in the database with given parameters.
+     * @param nom_sg_deutsch        content of the column 'nom_sg_deutsch' in the database entry
+     * @param wortstamm             content of the column 'wortstamm' in the database entry
+     * @param gelernt               content of the column 'gelernt' in the database entry
+     * @param lektion_id            foreign key: the corresponding entry from the 'Lektion' table
+     * @param sprechvokal_id        foreign key: the corresponding entry from the 'Sprechvokal_Substantiv' table
+     * @param deklinationsendung_id foreign key: the corresponding entry from the 'Deklinationsendung' table
+     */
+    private void addRowSubstantiv(String nom_sg_deutsch, String wortstamm, boolean gelernt,
+                                  int lektion_id, int sprechvokal_id, int deklinationsendung_id) {
+
+        ContentValues values = new ContentValues();
+        values.put(allColumnsSubstantiv[1], nom_sg_deutsch);
+        values.put(allColumnsSubstantiv[2], wortstamm);
+        values.put(allColumnsSubstantiv[3], gelernt ? 1 : 0);
+        values.put(allColumnsSubstantiv[4], lektion_id);
+        values.put(allColumnsSubstantiv[5], sprechvokal_id);
+        values.put(allColumnsSubstantiv[6], deklinationsendung_id);
+
+        database.insert(SubstantivDB.FeedEntry.TABLE_NAME, null, values);
+    }
+    /**
+     * Adds a entry to the 'Verb' table in the database with given parameters.
+     * @param infinitiv_deutsch content of the column 'infinitiv_deutsch' in the database entry
+     * @param wortstamm         content of the column 'wortstamm' in the database entry
+     * @param konjugation       content of the column 'konjugation' in the database entry
+     * @param gelernt           content of the column 'gelernt' in the database entry
+     * @param lektion_id        foreign key: the corresponding entry from the 'Lektion' table
+     * @param personalendung_id foreign key: the corresponding entry from the 'Personalendung_Präsens' table
+     * @param sprechvokal_id    foreign key: the corresponding entry from the 'Sprechvokal_Substantiv' table
+     */
+    private void addRowVerb(String infinitiv_deutsch, String wortstamm, String konjugation, boolean gelernt,
+                            int lektion_id, int personalendung_id, int sprechvokal_id) {
+
+        ContentValues values = new ContentValues();
+        values.put(allColumnsVerb[1], infinitiv_deutsch);
+        values.put(allColumnsVerb[2], wortstamm);
+        values.put(allColumnsVerb[3], konjugation);
+        values.put(allColumnsVerb[4], gelernt ? 1 : 0);
+        values.put(allColumnsVerb[5], lektion_id);
+        values.put(allColumnsVerb[6], personalendung_id);
+        values.put(allColumnsVerb[7], sprechvokal_id);
+
+        database.insert(VerbDB.FeedEntry.TABLE_NAME, null, values);
+    }
+
+    private void addRowBeispielsatz(int subjekt_id, int praedikat_id, int genitiv_id, int dativ_id, int akkusativ_id){
+
+        //FIXME: We currently add a placeholder vocabulary for empty spaces (_ID == -1)
+        //We need to fill out all spaces in the initialisation document or find a better solution.
+        //The way this is handled right now is not acceptable and cannot be released this way
+        if (subjekt_id == -1) subjekt_id = 2;
+        if (praedikat_id == -1) praedikat_id = 2;
+        if (genitiv_id == -1) genitiv_id = 2;
+        if (dativ_id == -1) dativ_id = 2;
+        if (akkusativ_id == -1) akkusativ_id = 2;
+
+        ContentValues values = new ContentValues();
+        values.put(allColumnsBeispielsatz[1], subjekt_id);
+        values.put(allColumnsBeispielsatz[2], praedikat_id);
+        values.put(allColumnsBeispielsatz[3], genitiv_id);
+        values.put(allColumnsBeispielsatz[4], dativ_id);
+        values.put(allColumnsBeispielsatz[5], akkusativ_id);
+
+        database.insert(BeispielsatzDB.FeedEntry.TABLE_NAME, null, values);
+    }
+
+
+
+
+
 
     /**
      * This method is for the class 'AndroidDatabaseManager'
