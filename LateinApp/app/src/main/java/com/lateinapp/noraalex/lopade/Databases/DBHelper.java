@@ -11,7 +11,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import android.content.SharedPreferences;
 
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdjektivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
@@ -26,6 +25,7 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.SprichwortDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.SubstantivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
+import com.lateinapp.noraalex.lopade.General;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -38,8 +38,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import static com.lateinapp.noraalex.lopade.Databases.SQL_DUMP.*;
-
-//TODO: Simplify SQL-Stuff with "JOIN"
 
 /**
  * DBHelper is used for managing the database and its tables.
@@ -72,15 +70,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
         this.context = context;
 
-        if (DATABASE_PATH.equals("")){
-            if(android.os.Build.VERSION.SDK_INT >= 17) {
-                DATABASE_PATH = context.getApplicationInfo().dataDir + "/databases/";
-            }
-            else {
-                DATABASE_PATH = "/data/data/" + context.getPackageName() + "/databases/";
-            }
-        }
 
+        if (DATABASE_PATH.isEmpty()){
+            DATABASE_PATH = context.getFilesDir().getPath();
+        }
         //Copying the database from the assets folder on first startup of the app
         SharedPreferences sharedPreferences = context.getSharedPreferences("SharedPreferences", 0);
         boolean firstStartup = sharedPreferences.getBoolean("FirstStartup", true);
@@ -103,7 +96,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    private void createDataBase() throws IOException {
+    private void createDataBase() {
 
         this.getReadableDatabase();
         this.close();
@@ -141,12 +134,9 @@ public class DBHelper extends SQLiteOpenHelper {
             database.delete(table, null, null);
         }
 
-        database.close();
-
-
         addRowSprechvokal_Substantiv("", "", "", "", "", "", "", "", "", "");
 
-        addRowSprechvokal_Präsens("", "", "", "", "", "", "", "");
+        addRowSprechvokal_Praesens("", "", "", "", "", "", "", "");
 
         addEntriesFromFile("db_initialisation/deklinationsendung.csv", DeklinationsendungDB.FeedEntry.TABLE_NAME, context);
         addEntriesFromFile("db_initialisation/lektion.csv", LektionDB.FeedEntry.TABLE_NAME, context);
@@ -323,7 +313,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param zweite_pl content of the column 'zweite_pl' in the database entry
      * @param dritte_pl content of the column 'dritte_pl' in the database entry
      */
-    private void addRowPersonalendung_Präsens(String erste_sg, String zweite_sg,
+    private void addRowPersonalendung_Praesens(String erste_sg, String zweite_sg,
                                              String dritte_sg, String erste_pl,
                                              String zweite_pl, String dritte_pl) {
 
@@ -345,7 +335,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param gelernt    content of the column 'gelernt' in the database entry
      * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
      */
-    private void addRowPräposition(String deutsch, String latein, boolean gelernt,
+    private void addRowPraeposition(String deutsch, String latein, boolean gelernt,
                                    int lektion_id){
 
         ContentValues values = new ContentValues();
@@ -366,7 +356,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param zweite_pl content of the column 'zweite_pl' in the database entry
      * @param dritte_pl content of the column 'dritte_pl' in the database entry
      */
-    private void addRowSprechvokal_Präsens(String titel, String infinitiv,
+    private void addRowSprechvokal_Praesens(String titel, String infinitiv,
                                            String erste_sg, String zweite_sg,
                                           String dritte_sg, String erste_pl,
                                           String zweite_pl, String dritte_pl) {
@@ -544,7 +534,7 @@ public class DBHelper extends SQLiteOpenHelper {
             String line;
             for(int i = 0; i < lineAmount; i++){
                 line = bufferedReader.readLine();
-                line = replaceWithUmlaut(line);
+                line = General.replaceWithUmlaut(line);
 
                 if(line != null){
                     String[] tokens = line.split(";", -1);
@@ -586,7 +576,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
                             //Personalendung_Präsens
                             case Personalendung_PräsensDB.FeedEntry.TABLE_NAME:
-                                addRowPersonalendung_Präsens(tokens[0], tokens[1],
+                                addRowPersonalendung_Praesens(tokens[0], tokens[1],
                                                              tokens[2], tokens[3],
                                                              tokens[4], tokens[5]);
                                 break;
@@ -594,14 +584,14 @@ public class DBHelper extends SQLiteOpenHelper {
                             //Präposition
                             case PräpositionDB.FeedEntry.TABLE_NAME:
 
-                                addRowPräposition(tokens[0], tokens[1],
+                                addRowPraeposition(tokens[0], tokens[1],
                                                   false, Integer.parseInt(tokens[2]));
 
                                 break;
 
                             //Sprechvokal_Präsens
                             case Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME:
-                                addRowSprechvokal_Präsens(tokens[0], tokens[1],
+                                addRowSprechvokal_Praesens(tokens[0], tokens[1],
                                                           tokens[2], tokens[3],
                                                           tokens[4], tokens[5],
                                                           tokens[6], tokens[7]);
@@ -685,7 +675,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                 break;
 
                             default:
-                                Log.e(DBHelper.class.getName(),
+                                Log.e(TAG,
                                         "A table was not found while trying to add a entry from a file:\n" +
                                                 "Method: DBHelper.class -> addEntriesFromFile(String path, String table, String context\n" +
                                                 "Table: " + table);
@@ -1191,10 +1181,10 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param table table of the wanted vocabulary
      * @return the _ID of the selected vocabulary
      */
-    private int getIdFromCount(int lektion, int count, boolean gelernt, String table){
+    public int getIdFromCount(int lektion, int count, boolean gelernt, String table){
 
         String query = "SELECT _ID FROM "+ table
-                       + " WHERE Gelernt = "+(gelernt ? 1 : 0)
+                      + " WHERE Gelernt = "+(gelernt ? 1 : 0)
                        + " AND Lektion_ID = " + lektion;
         Cursor cursor = database.rawQuery(query, new String[]{});
 
@@ -1419,50 +1409,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Replaces a set of characterCombinations with a corresponding umlaut each
-     * TODO: This would be redundant if we could just import a .csv file with a better charset -> Maybe google sheets??
-     * @param s the String to be updated
-     * @return the updated String
-     */
-    private String replaceWithUmlaut(String s){
-
-        s = s.replace("aeae", "ä");
-        s = s.replace("AeAe", "Ä");
-        s = s.replace("ueue", "ü");
-        s = s.replace("UeUe", "Ü");
-        s = s.replace("oeoe", "ö");
-        s = s.replace("OeOe", "Ö");
-        s = s.replace("sz", "ß");
-
-        /*
-       TODO: Implement this
-        s = s.replace("-A", "Ā");
-        s = s.replace("-a", "ā");
-        s = s.replace("-E", "Ē");
-        s = s.replace("-e", "ē");
-        s = s.replace("-I", "Ī");
-        s = s.replace("-i", "ī");
-        s = s.replace("-O", "Ō");
-        s = s.replace("-o", "ō");
-        s = s.replace("-U", "Ū");
-        s = s.replace("-u", "ū");
-
-        s = s.replace("#A", "Ă");
-        s = s.replace("#a", "ă");
-        s = s.replace("#E", "Ĕ");
-        s = s.replace("#e", "ĕ");
-        s = s.replace("#I", "Ĭ");
-        s = s.replace("#i", "ĭ");
-        s = s.replace("#O", "Ŏ");
-        s = s.replace("#o", "ŏ");
-        s = s.replace("#U", "Ŭ");
-        s = s.replace("#u", "ŭ");
-        */
-
-        return s;
-    }
-
-    /**
      * Searches through a table to find the _ID value of a vocabulary
      *
      * TODO: Currently only VerbDB and SubstantivDB can be targeted
@@ -1475,8 +1421,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private int getIdOfVocabulary(String vocabulary, String currentCase, String targetTable){
 
         int entryAmount = countTableEntries(targetTable);
-
-        //Why do _IDs start at 1 not 0????
 
         if (targetTable.equals(SubstantivDB.FeedEntry.TABLE_NAME)){
 
@@ -1496,8 +1440,6 @@ public class DBHelper extends SQLiteOpenHelper {
                     +"vocabulary: " + vocabulary + "\n"
                     +"currentCase: " + currentCase);
         }
-
-
 
         return -1;
     }
