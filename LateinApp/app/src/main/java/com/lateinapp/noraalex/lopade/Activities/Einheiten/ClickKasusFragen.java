@@ -102,7 +102,7 @@ public class ClickKasusFragen extends LateinAppActivity {
 
         progressBar.setMax(maxProgress);
 
-        int progress = sharedPreferences.getInt("ClickKasusFragen", 0);
+        int progress = sharedPreferences.getInt(TAG, 0);
         if (progress > maxProgress) progress = maxProgress;
         progressBar.setProgress(progress);
     }
@@ -163,7 +163,7 @@ public class ClickKasusFragen extends LateinAppActivity {
 
             case (R.id.buttonGrammatikKasusFragenReset):
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("ClickKasusFragen", 0);
+                editor.putInt(TAG, 0);
                 editor.apply();
                 finish();
 
@@ -180,7 +180,7 @@ public class ClickKasusFragen extends LateinAppActivity {
             b.setBackgroundColor(colorButtonDefault);
         }
 
-        int progress = sharedPreferences.getInt("ClickKasusFragen", 0);
+        int progress = sharedPreferences.getInt(TAG, 0);
 
         kasusText.setBackgroundColor(backgroundColor);
 
@@ -243,15 +243,15 @@ public class ClickKasusFragen extends LateinAppActivity {
 
             color = colorButtonCorrect;
 
-            editor.putInt("ClickKasusFragen",
-                    sharedPreferences.getInt("ClickKasusFragen", 0) +1);
+            editor.putInt(TAG,
+                    sharedPreferences.getInt(TAG, 0) +1);
 
         }else{
 
             color = colorButtonIncorrect;
-            if (sharedPreferences.getInt("ClickKasusFragen", 0) > 0) {
-                editor.putInt("ClickKasusFragen",
-                        sharedPreferences.getInt("ClickKasusFragen", 0) - 1);
+            if (sharedPreferences.getInt(TAG, 0) > 0) {
+                editor.putInt(TAG,
+                        sharedPreferences.getInt(TAG, 0) - 1);
             }
             for (Button b : buttons){
 
@@ -262,7 +262,7 @@ public class ClickKasusFragen extends LateinAppActivity {
             }
         }
         editor.apply();
-        progressBar.setProgress(sharedPreferences.getInt("ClickKasusFragen", 0));
+        progressBar.setProgress(sharedPreferences.getInt(TAG, 0));
 
         button.setBackgroundColor(color);
         kasusText.setBackgroundColor(color);

@@ -108,7 +108,7 @@ public class ClickPersonalendung extends LateinAppActivity {
         weiter.setVisibility(View.GONE);
 
         progressBar.setMax(maxProgress);
-        int progress = sharedPref.getInt("ClickPersonalendung"+extraFromEinheitenUebersicht, 0);
+        int progress = sharedPref.getInt(TAG+extraFromEinheitenUebersicht, 0);
         if (progress > maxProgress) progress = maxProgress;
         progressBar.setProgress(progress);
 
@@ -224,7 +224,7 @@ public class ClickPersonalendung extends LateinAppActivity {
             case (R.id.buttonGrammatikPersonalendungReset):
 
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("ClickPersonalendung"+extraFromEinheitenUebersicht, 0);
+                editor.putInt(TAG+extraFromEinheitenUebersicht, 0);
                 editor.apply();
                 finish();
 
@@ -242,7 +242,7 @@ public class ClickPersonalendung extends LateinAppActivity {
      */
     private void newVocabulary(){
         
-        int progress = sharedPref.getInt("ClickPersonalendung"+extraFromEinheitenUebersicht, 0);
+        int progress = sharedPref.getInt(TAG+extraFromEinheitenUebersicht, 0);
         latein.setBackgroundColor(backgroundColor);
 
         //Checks if the user has had enough correct inputs to complete the 'grammatikKonjugation'
@@ -410,14 +410,14 @@ public class ClickPersonalendung extends LateinAppActivity {
             color = colorButtonCorrect;
 
             //Increasing the counter by 1
-            editor.putInt("ClickPersonalendung" + extraFromEinheitenUebersicht,
-                          sharedPref.getInt("ClickPersonalendung"+extraFromEinheitenUebersicht, 0) + 1);
+            editor.putInt(TAG + extraFromEinheitenUebersicht,
+                          sharedPref.getInt(TAG + extraFromEinheitenUebersicht, 0) + 1);
         }else {
             color = colorButtonIncorrect;
 
-            if (sharedPref.getInt("ClickPersonalendung"+extraFromEinheitenUebersicht, 0) > 0) {
-                editor.putInt("ClickPersonalendung" + extraFromEinheitenUebersicht,
-                        sharedPref.getInt("ClickPersonalendung" + extraFromEinheitenUebersicht, 0) - 1);
+            if (sharedPref.getInt(TAG + extraFromEinheitenUebersicht, 0) > 0) {
+                editor.putInt(TAG + extraFromEinheitenUebersicht,
+                        sharedPref.getInt(TAG + extraFromEinheitenUebersicht, 0) - 1);
             }
 
             for (int i = 0; i < faelle.length; i++){
@@ -428,7 +428,7 @@ public class ClickPersonalendung extends LateinAppActivity {
         }
         editor.apply();
 
-        progressBar.setProgress(sharedPref.getInt("ClickPersonalendung" +extraFromEinheitenUebersicht, 0));
+        progressBar.setProgress(sharedPref.getInt(TAG + extraFromEinheitenUebersicht, 0));
 
         button.setBackgroundColor(color);
         latein.setBackgroundColor(color);

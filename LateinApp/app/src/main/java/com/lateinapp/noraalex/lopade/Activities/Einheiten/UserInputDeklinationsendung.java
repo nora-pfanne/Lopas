@@ -122,7 +122,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
 
     private void newVocabulary(){
 
-        int progress = sharedPref.getInt("UserInputDeklinationsendung"+extraFromEinheitenUebersicht, 0);
+        int progress = sharedPref.getInt(TAG + extraFromEinheitenUebersicht, 0);
 
         if (progress < maxProgress) {
 

@@ -125,7 +125,7 @@ public class Satzglieder extends LateinAppActivity {
     private void newSentence(){
 
 
-        int progress = sharedPref.getInt("Satzglieder", 0);
+        int progress = sharedPref.getInt(TAG, 0);
 
         if (progress < maxProgress) {
 
@@ -599,13 +599,13 @@ public class Satzglieder extends LateinAppActivity {
     private void answerSelected(boolean correct, Button button){
 
         SharedPreferences.Editor editor = sharedPref.edit();
-        int currentProgress = sharedPref.getInt("Satzglieder", 0);
+        int currentProgress = sharedPref.getInt(TAG, 0);
 
         if (correct){
             button.setBackgroundColor(colorButtonCorrect);
 
             if (currentProgress <= maxProgress) {
-                editor.putInt("Satzglieder",
+                editor.putInt(TAG,
                         currentProgress + 1);
             }
 
@@ -615,7 +615,7 @@ public class Satzglieder extends LateinAppActivity {
             buttons.get(correctButtonLocation).setBackgroundColor(colorButtonCorrect);
 
             if (currentProgress > 0){
-                editor.putInt("Satzglieder",
+                editor.putInt(TAG,
                         currentProgress - 1);
             }
         }
@@ -652,7 +652,7 @@ public class Satzglieder extends LateinAppActivity {
 
             case R.id.satzglieder_progress_reset_button:
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("Satzglieder", 0);
+                editor.putInt(TAG, 0);
                 editor.apply();
                 finish();
                 break;

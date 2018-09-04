@@ -151,7 +151,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
         weiter.setVisibility(View.GONE);
 
         progressBar.setMax(maxProgress);
-        int progress = sharedPref.getInt("ClickDeklinationsendung"+extraFromEinheitenUebersicht, 0);
+        int progress = sharedPref.getInt(TAG+extraFromEinheitenUebersicht, 0);
         if (progress > maxProgress){
             progress = maxProgress;
             finished = true;
@@ -282,7 +282,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
      */
     private void newVocabulary(){
 
-        int progress = sharedPref.getInt("ClickDeklinationsendung"+extraFromEinheitenUebersicht, 0);
+        int progress = sharedPref.getInt(TAG+extraFromEinheitenUebersicht, 0);
 
 
         lateinVokabel.setBackgroundColor(backgroundColor);
@@ -578,7 +578,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
             case (R.id.buttonGrammatikDeklinationReset):
 
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("ClickDeklinationsendung"+extraFromEinheitenUebersicht, 0);
+                editor.putInt(TAG+extraFromEinheitenUebersicht, 0);
                 editor.apply();
                 finish();
 
@@ -855,15 +855,15 @@ public class ClickDeklinationsendung extends LateinAppActivity {
             color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
 
             //Increasing the counter by 1
-            editor.putInt("ClickDeklinationsendung" + extraFromEinheitenUebersicht,
-                          sharedPref.getInt("ClickDeklinationsendung"+extraFromEinheitenUebersicht, 0) + 1);
+            editor.putInt(TAG+extraFromEinheitenUebersicht,
+                          sharedPref.getInt(TAG+extraFromEinheitenUebersicht, 0) + 1);
         }else {
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
 
             //Decreasing the counter by 1
-            if (sharedPref.getInt("ClickDeklinationsendung" + extraFromEinheitenUebersicht, 0) > 0) {
-                editor.putInt("ClickDeklinationsendung" + extraFromEinheitenUebersicht,
-                              sharedPref.getInt("ClickDeklinationsendung" + extraFromEinheitenUebersicht, 0) - 1);
+            if (sharedPref.getInt(TAG+extraFromEinheitenUebersicht, 0) > 0) {
+                editor.putInt(TAG+extraFromEinheitenUebersicht,
+                              sharedPref.getInt(TAG+extraFromEinheitenUebersicht, 0) - 1);
             }
         }
         editor.apply();
