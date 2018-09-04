@@ -143,7 +143,7 @@ public class DBHelper extends SQLiteOpenHelper {
     // Methods for initializing the database
     //
 
-    private void copyDataBaseFromAssets() {
+    public void copyDataBaseFromAssets() {
 
         try {
             InputStream input = context.getAssets().open(DATABASE_NAME);
