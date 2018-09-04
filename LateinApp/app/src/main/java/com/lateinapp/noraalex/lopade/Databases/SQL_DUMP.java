@@ -34,6 +34,10 @@ final class SQL_DUMP {
                     + " TEXT, "
                     + AdverbDB.FeedEntry.COLUMN_GELERNT
                     + " INTEGER, "
+                    + AdverbDB.FeedEntry.COLUMN_AMOUNT_CORRECT
+                    + " INTEGER, "
+                    + AdverbDB.FeedEntry.COLUMN_AMOUNT_INCORRECT
+                    + " INTEGER, "
                     + AdverbDB.FeedEntry.COLUMN_LEKTION_ID
                     + " INTEGER, "
 
@@ -57,6 +61,10 @@ final class SQL_DUMP {
                     + AdjektivDB.FeedEntry.COLUMN_WORTSTAMM
                     + " TEXT, "
                     + AdjektivDB.FeedEntry.COLUMN_GELERNT
+                    + " INTEGER, "
+                    + AdjektivDB.FeedEntry.COLUMN_AMOUNT_CORRECT
+                    + " INTEGER, "
+                    + AdjektivDB.FeedEntry.COLUMN_AMOUNT_INCORRECT
                     + " INTEGER, "
                     + AdjektivDB.FeedEntry.COLUMN_LEKTION_ID
                     + " INTEGER, "
@@ -145,6 +153,10 @@ final class SQL_DUMP {
                     + " TEXT, "
                     + PräpositionDB.FeedEntry.COLUMN_GELERNT
                     + " INTEGER, "
+                    + PräpositionDB.FeedEntry.COLUMN_AMOUNT_CORRECT
+                    + " INTEGER, "
+                    + PräpositionDB.FeedEntry.COLUMN_AMOUNT_INCORRECT
+                    + " INTEGER, "
                     + PräpositionDB.FeedEntry.COLUMN_LEKTION_ID
                     + " INTEGER, "
 
@@ -220,6 +232,10 @@ final class SQL_DUMP {
                     + " TEXT, "
                     + SubstantivDB.FeedEntry.COLUMN_GELERNT
                     + " INTEGER, "
+                    + SubstantivDB.FeedEntry.COLUMN_AMOUNT_CORRECT
+                    + " INTEGER, "
+                    + SubstantivDB.FeedEntry.COLUMN_AMOUNT_INCORRECT
+                    + " INTEGER, "
                     + SubstantivDB.FeedEntry.COLUMN_LEKTION_ID
                     + " INTEGER,"
                     + SubstantivDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
@@ -265,6 +281,10 @@ final class SQL_DUMP {
                     + " TEXT, "
                     + VerbDB.FeedEntry.COLUMN_GELERNT
                     + " INTEGER,"
+                    + VerbDB.FeedEntry.COLUMN_AMOUNT_CORRECT
+                    + " INTEGER, "
+                    + VerbDB.FeedEntry.COLUMN_AMOUNT_INCORRECT
+                    + " INTEGER, "
                     + VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID
                     + " INTEGER, "
                     + VerbDB.FeedEntry.COLUMN_LEKTION_ID
@@ -307,6 +327,10 @@ final class SQL_DUMP {
                     + SprichwortDB.FeedEntry.COLUMN_LATEIN
                     + " TEXT, "
                     + SprichwortDB.FeedEntry.COLUMN_GELERNT
+                    + " INTEGER, "
+                    + SprichwortDB.FeedEntry.COLUMN_AMOUNT_CORRECT
+                    + " INTEGER, "
+                    + SprichwortDB.FeedEntry.COLUMN_AMOUNT_INCORRECT
                     + " INTEGER, "
                     + SprichwortDB.FeedEntry.COLUMN_LEKTION_ID
                     + " INTEGER, "
@@ -452,6 +476,8 @@ final class SQL_DUMP {
              AdjektivDB.FeedEntry.COLUMN_DEUTSCH,
              AdjektivDB.FeedEntry.COLUMN_WORTSTAMM,
              AdjektivDB.FeedEntry.COLUMN_GELERNT,
+             AdjektivDB.FeedEntry.COLUMN_AMOUNT_CORRECT,
+             AdjektivDB.FeedEntry.COLUMN_AMOUNT_INCORRECT,
              AdjektivDB.FeedEntry.COLUMN_LEKTION_ID,
              AdjektivDB.FeedEntry.COLUMN_TYPE
      };
@@ -462,6 +488,8 @@ final class SQL_DUMP {
             AdverbDB.FeedEntry.COLUMN_DEUTSCH,
             AdverbDB.FeedEntry.COLUMN_LATEIN,
             AdverbDB.FeedEntry.COLUMN_GELERNT,
+            AdverbDB.FeedEntry.COLUMN_AMOUNT_CORRECT,
+            AdverbDB.FeedEntry.COLUMN_AMOUNT_INCORRECT,
             AdverbDB.FeedEntry.COLUMN_LEKTION_ID
     };
 
@@ -482,7 +510,7 @@ final class SQL_DUMP {
 
      static final String[] allColumnsLektion = {
             LektionDB.FeedEntry._ID,
-             LektionDB.FeedEntry.COLUMN_LEKTION_NR,
+            LektionDB.FeedEntry.COLUMN_LEKTION_NR,
             LektionDB.FeedEntry.COLUMN_TITEL,
             LektionDB.FeedEntry.COLUMN_THEMA
     };
@@ -503,6 +531,8 @@ final class SQL_DUMP {
             PräpositionDB.FeedEntry.COLUMN_DEUTSCH,
             PräpositionDB.FeedEntry.COLUMN_LATEIN,
             PräpositionDB.FeedEntry.COLUMN_GELERNT,
+            PräpositionDB.FeedEntry.COLUMN_AMOUNT_CORRECT,
+            PräpositionDB.FeedEntry.COLUMN_AMOUNT_INCORRECT,
             PräpositionDB.FeedEntry.COLUMN_LEKTION_ID
     };
 
@@ -540,6 +570,8 @@ final class SQL_DUMP {
             SprichwortDB.FeedEntry.COLUMN_DEUTSCH,
             SprichwortDB.FeedEntry.COLUMN_LATEIN,
             SprichwortDB.FeedEntry.COLUMN_GELERNT,
+            SprichwortDB.FeedEntry.COLUMN_AMOUNT_CORRECT,
+            SprichwortDB.FeedEntry.COLUMN_AMOUNT_INCORRECT,
             SprichwortDB.FeedEntry.COLUMN_LEKTION_ID
     };
 
@@ -548,6 +580,8 @@ final class SQL_DUMP {
             SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH,
             SubstantivDB.FeedEntry.COLUMN_WORTSTAMM,
             SubstantivDB.FeedEntry.COLUMN_GELERNT,
+            SubstantivDB.FeedEntry.COLUMN_AMOUNT_CORRECT,
+            SubstantivDB.FeedEntry.COLUMN_AMOUNT_INCORRECT,
             SubstantivDB.FeedEntry.COLUMN_LEKTION_ID,
             SubstantivDB.FeedEntry.COLUMN_SPRECHVOKAL_ID,
             SubstantivDB.FeedEntry.COLUMN_DEKLINATIONSENDUNG_ID
@@ -560,6 +594,8 @@ final class SQL_DUMP {
             VerbDB.FeedEntry.COLUMN_WORTSTAMM,
             VerbDB.FeedEntry.COLUMN_KONJUGATION,
             VerbDB.FeedEntry.COLUMN_GELERNT,
+            VerbDB.FeedEntry.COLUMN_AMOUNT_CORRECT,
+            VerbDB.FeedEntry.COLUMN_AMOUNT_INCORRECT,
             VerbDB.FeedEntry.COLUMN_LEKTION_ID,
             VerbDB.FeedEntry.COLUMN_PERSONALENDUNG_ID,
             VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
