@@ -1,6 +1,7 @@
 package com.lateinapp.noraalex.lopade;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 public class General {
@@ -58,4 +59,28 @@ public class General {
 
         return s;
     }
+
+    public static void modifyPoints(int lektion, int pointDifference, SharedPreferences sharedPreferences){
+
+        //TODO: Should points be able to be negative?
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt("Points_" + lektion,
+                sharedPreferences.getInt("Points_" + lektion, 0) + pointDifference);
+
+        editor.putInt("Points_All",
+                sharedPreferences.getInt("Points_All", 0) + pointDifference);
+
+        editor.apply();
+    }
+
+    public static int getPoints(int lektion, SharedPreferences sharedPreferences){
+        return sharedPreferences.getInt("Points_" + lektion, 0);
+    }
+
+    public static int getPoints(SharedPreferences sharedPreferences){
+        return sharedPreferences.getInt("Points_All", 0);
+    }
+
 }
