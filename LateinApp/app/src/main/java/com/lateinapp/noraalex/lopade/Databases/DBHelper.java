@@ -427,7 +427,6 @@ public class DBHelper extends SQLiteOpenHelper {
     //Methods for modifying database content
     //
 
-
     private void createTables(SQLiteDatabase db){
         //Creating the tables in the database
         db.execSQL(SQL_CREATE_ENTRIES_ADVERB);
@@ -478,6 +477,16 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
 
         cursor.close();
+    }
+
+    public void incrementValue(String table, String column, int entryID,int incrementBy){
+
+        String query =
+                "UPDATE " + table +
+                " SET " + column + " = " + column + " + " + incrementBy +
+                " WHERE _ID = " + entryID;
+
+        database.rawQuery(query, new String[]{});
     }
 
     /**

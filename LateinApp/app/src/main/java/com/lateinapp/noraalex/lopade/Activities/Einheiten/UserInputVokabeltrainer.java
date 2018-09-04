@@ -160,12 +160,21 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
         int color;
         if(compareTranslation(userInput.getText().toString(), currentVokabel.getDeutsch())){
 
+            //Input was correct
+
+            dbHelper.incrementValue(getVokabelTable(currentVokabel), "Amount_Correct", currentVokabel.getId(), 1);
+
             //Checking the vocabulary as learned
             dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
 
             color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
 
         }else {
+
+            //Input was incorrect
+
+            dbHelper.incrementValue(getVokabelTable(currentVokabel), "Amount_Incorrect", currentVokabel.getId(), 1);
+
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
         }
         userInput.setBackgroundColor(color);
