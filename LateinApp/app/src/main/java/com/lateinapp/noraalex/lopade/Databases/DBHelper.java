@@ -242,14 +242,14 @@ public class DBHelper extends SQLiteOpenHelper {
                             case AdverbDB.FeedEntry.TABLE_NAME:
 
                                 addRowAdverb(tokens[0], tokens[1],
-                                        false, Integer.parseInt(tokens[2]));
+                                        Integer.parseInt(tokens[2]));
 
                                 break;
 
                             case AdjektivDB.FeedEntry.TABLE_NAME:
 
                                 addRowAdjektiv(tokens[0], tokens[1],
-                                        false, Integer.parseInt(tokens[2]),
+                                        Integer.parseInt(tokens[2]),
                                         tokens[3]);
 
                                 break;
@@ -280,7 +280,7 @@ public class DBHelper extends SQLiteOpenHelper {
                             case PräpositionDB.FeedEntry.TABLE_NAME:
 
                                 addRowPraeposition(tokens[0], tokens[1],
-                                        false, Integer.parseInt(tokens[2]));
+                                        Integer.parseInt(tokens[2]));
 
                                 break;
 
@@ -302,7 +302,7 @@ public class DBHelper extends SQLiteOpenHelper {
                             case SprichwortDB.FeedEntry.TABLE_NAME:
 
                                 addRowSprichwort(tokens[0], tokens[1],
-                                        false, Integer.parseInt(tokens[2]));
+                                        Integer.parseInt(tokens[2]));
 
                                 break;
 
@@ -323,7 +323,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
                                 //TODO: Sprechvokale einfügen (nicht '1') -> momentan nur als placeholder here
                                 addRowSubstantiv(tokens[0], tokens[1],
-                                        false, Integer.parseInt(tokens[2]),
+                                        Integer.parseInt(tokens[2]),
                                         1, deklinationId);
                                 break;
 
@@ -350,7 +350,7 @@ public class DBHelper extends SQLiteOpenHelper {
                                 sprechvokalCursor.close();
 
                                 addRowVerb(tokens[0], tokens[1],
-                                        tokens[2], false,
+                                        tokens[2],
                                         Integer.parseInt(tokens[3]),
                                         personalendungID, sprechvokalID);
 
@@ -1230,15 +1230,14 @@ public class DBHelper extends SQLiteOpenHelper {
      * Adds a entry to the 'Adverb' table in the database with given parameters.
      * @param deutsch    content of the column 'deutsch' in the database entry
      * @param latein     content of the column 'latein' in the database entry
-     * @param gelernt    content of the column 'gelernt' in the database entry
      * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
      */
-    private void addRowAdverb(String deutsch, String latein, boolean gelernt, int lektion_id){
+    private void addRowAdverb(String deutsch, String latein, int lektion_id){
 
         ContentValues values = new ContentValues();
         values.put(allColumnsAdverb[1], deutsch);
         values.put(allColumnsAdverb[2], latein);
-        values.put(allColumnsAdverb[3], gelernt ? 1 : 0);
+        values.put(allColumnsAdverb[3], 0);
         values.put(allColumnsAdverb[4], 0);
         values.put(allColumnsAdverb[5], 0);
         values.put(allColumnsAdverb[6], lektion_id);
@@ -1250,16 +1249,15 @@ public class DBHelper extends SQLiteOpenHelper {
      * Adds a entry to the 'Adverb' table in the database with given parameters.
      * @param deutsch    content of the column 'deutsch' in the database entry
      * @param latein     content of the column 'latein' in the database entry
-     * @param gelernt    content of the column 'gelernt' in the database entry
      * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
      * @param type       content of the column 'type' in the database entry
      */
-    private void addRowAdjektiv(String deutsch, String latein, boolean gelernt, int lektion_id, String type){
+    private void addRowAdjektiv(String deutsch, String latein, int lektion_id, String type){
 
         ContentValues values = new ContentValues();
         values.put(allColumnsAdjektiv[1], deutsch);
         values.put(allColumnsAdjektiv[2], latein);
-        values.put(allColumnsAdjektiv[3], gelernt ? 1 : 0);
+        values.put(allColumnsAdjektiv[3], 0);
         values.put(allColumnsAdjektiv[4], 0);
         values.put(allColumnsAdjektiv[5], 0);
         values.put(allColumnsAdjektiv[6], lektion_id);
@@ -1349,16 +1347,15 @@ public class DBHelper extends SQLiteOpenHelper {
      * Adds a entry to the 'Präposition' table in the database with given parameters.
      * @param deutsch    content of the column 'deutsch' in the database entry
      * @param latein     content of the column 'latein' in the database entry
-     * @param gelernt    content of the column 'gelernt' in the database entry
      * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
      */
-    private void addRowPraeposition(String deutsch, String latein, boolean gelernt,
+    private void addRowPraeposition(String deutsch, String latein,
                                     int lektion_id){
 
         ContentValues values = new ContentValues();
         values.put(allColumnsPraeposition[1], deutsch);
         values.put(allColumnsPraeposition[2], latein);
-        values.put(allColumnsPraeposition[3], gelernt ? 1 : 0);
+        values.put(allColumnsPraeposition[3], 0);
         values.put(allColumnsPraeposition[4], 0);
         values.put(allColumnsPraeposition[5], 0);
         values.put(allColumnsPraeposition[6], lektion_id);
@@ -1433,16 +1430,15 @@ public class DBHelper extends SQLiteOpenHelper {
      * Adds a entry to the 'Sprichwort' table in the database with given parameters.
      * @param deutsch    content of the column 'deutsch' in the database entry
      * @param latein     content of the column 'latein' in the database entry
-     * @param gelernt    content of the column 'gelernt' in the database entry
      * @param lektion_id foreign key: the corresponding entry from the 'Lektion' table
      */
-    private void addRowSprichwort(String deutsch, String latein, boolean gelernt,
+    private void addRowSprichwort(String deutsch, String latein,
                                   int lektion_id){
 
         ContentValues values = new ContentValues();
         values.put(allColumnsSprichwort[1], deutsch);
         values.put(allColumnsSprichwort[2], latein);
-        values.put(allColumnsSprichwort[3], gelernt ? 1 : 0);
+        values.put(allColumnsSprichwort[3], 0);
         values.put(allColumnsSprichwort[4], 0);
         values.put(allColumnsSprichwort[5], 0);
         values.put(allColumnsSprichwort[6], lektion_id);
@@ -1454,18 +1450,17 @@ public class DBHelper extends SQLiteOpenHelper {
      * Adds a entry to the 'Substantiv' table in the database with given parameters.
      * @param nom_sg_deutsch        content of the column 'nom_sg_deutsch' in the database entry
      * @param wortstamm             content of the column 'wortstamm' in the database entry
-     * @param gelernt               content of the column 'gelernt' in the database entry
      * @param lektion_id            foreign key: the corresponding entry from the 'Lektion' table
      * @param sprechvokal_id        foreign key: the corresponding entry from the 'Sprechvokal_Substantiv' table
      * @param deklinationsendung_id foreign key: the corresponding entry from the 'Deklinationsendung' table
      */
-    private void addRowSubstantiv(String nom_sg_deutsch, String wortstamm, boolean gelernt,
+    private void addRowSubstantiv(String nom_sg_deutsch, String wortstamm,
                                   int lektion_id, int sprechvokal_id, int deklinationsendung_id) {
 
         ContentValues values = new ContentValues();
         values.put(allColumnsSubstantiv[1], nom_sg_deutsch);
         values.put(allColumnsSubstantiv[2], wortstamm);
-        values.put(allColumnsSubstantiv[3], gelernt ? 1 : 0);
+        values.put(allColumnsSubstantiv[3], 0);
         values.put(allColumnsSubstantiv[4], 0);
         values.put(allColumnsSubstantiv[5], 0);
         values.put(allColumnsSubstantiv[6], lektion_id);
@@ -1479,19 +1474,18 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param infinitiv_deutsch content of the column 'infinitiv_deutsch' in the database entry
      * @param wortstamm         content of the column 'wortstamm' in the database entry
      * @param konjugation       content of the column 'konjugation' in the database entry
-     * @param gelernt           content of the column 'gelernt' in the database entry
      * @param lektion_id        foreign key: the corresponding entry from the 'Lektion' table
      * @param personalendung_id foreign key: the corresponding entry from the 'Personalendung_Präsens' table
      * @param sprechvokal_id    foreign key: the corresponding entry from the 'Sprechvokal_Substantiv' table
      */
-    private void addRowVerb(String infinitiv_deutsch, String wortstamm, String konjugation, boolean gelernt,
+    private void addRowVerb(String infinitiv_deutsch, String wortstamm, String konjugation,
                             int lektion_id, int personalendung_id, int sprechvokal_id) {
 
         ContentValues values = new ContentValues();
         values.put(allColumnsVerb[1], infinitiv_deutsch);
         values.put(allColumnsVerb[2], wortstamm);
         values.put(allColumnsVerb[3], konjugation);
-        values.put(allColumnsVerb[4], gelernt ? 1 : 0);
+        values.put(allColumnsVerb[4], 0);
         values.put(allColumnsVerb[5], 0);
         values.put(allColumnsVerb[6], 0);
         values.put(allColumnsVerb[7], lektion_id);
