@@ -8,4 +8,21 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--Buttons-->
+
+    <style name="VocabularyBasicButton">
+        <item name="android:fontFamily">@font/cabin_bold</item>
+        <item name="android:backgroundTint">@color/YellowGold</item>
+        <item name="android:textColor">@color/Grey</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">15dp</item>
+    </style>
+
+    <!--TextViews-->
+
+    <style name="TitelTextView">
+        <item name="android:textColor">@color/Grey</item>
+        <item name="android:fontFamily">@font/cabin_bold</item>
+        <item name="android:textSize">20dp</item>
+    </style>
 </resources>

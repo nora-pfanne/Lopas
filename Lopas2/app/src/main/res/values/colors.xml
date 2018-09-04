@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="GhostWhite">#fafaff</color>
+    <color name="GhostWhite">#ffffff</color>
     <color name="DeepRed">#70020f</color>
     <color name="Black">#000000</color>
     <color name="Grey">#808782</color>
