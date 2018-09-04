@@ -30,6 +30,8 @@ public class Satzglieder extends LateinAppActivity {
     //TODO: We may want to weight the sentences
     //TODO: We may want to weight the selected elements
 
+    private static final String TAG = "Satzglieder";
+
     private LinearLayout linearLayout;
     private Button weiterButton;
     private ProgressBar progressBar;
@@ -110,7 +112,7 @@ public class Satzglieder extends LateinAppActivity {
         weiterButton.setVisibility(View.GONE);
         progressBar.setMax(maxProgress);
 
-        sentenceCount = dbHelper.countTableEntries(new String[] {BeispielsatzDB.FeedEntry.TABLE_NAME});
+        sentenceCount = dbHelper.countTableEntries(BeispielsatzDB.FeedEntry.TABLE_NAME);
 
         newSentence();
 
@@ -454,7 +456,7 @@ public class Satzglieder extends LateinAppActivity {
                     break;
 
                 default:
-                    Log.e("CaseNotFound", "The requested case '" + s + "' in \"addButtons\" was not found");
+                    Log.e(TAG, "The requested case '" + s + "' in \"addButtons\" was not found");
 
                     text += "N/A";
 
@@ -666,5 +668,11 @@ public class Satzglieder extends LateinAppActivity {
         back.setVisibility(View.VISIBLE);
 
         aufgabenstellung.setText("");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbHelper.close();
     }
 }

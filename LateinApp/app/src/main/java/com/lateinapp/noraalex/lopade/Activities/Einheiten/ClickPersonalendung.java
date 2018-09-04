@@ -20,7 +20,9 @@ import com.lateinapp.noraalex.lopade.R;
 import java.util.Random;
 
 public class ClickPersonalendung extends LateinAppActivity {
-    
+
+    private static final String TAG = "ClickPersonalendung";
+
     private DBHelper dbHelper;
     private SharedPreferences sharedPref;
 
@@ -317,7 +319,7 @@ public class ClickPersonalendung extends LateinAppActivity {
 
         if(randomVocabulary == -1){
             //Something went wrong. Log error-message
-            Log.e("randomVocabulary", "Getting a randomKonjugation failed! Returned -1 for " +
+            Log.e(TAG, "Getting a randomKonjugation failed! Returned -1 for " +
                     "\nrandomNumber: " + randomNumber +
                     "\nlektion: " + extraFromEinheitenUebersicht);
         }
@@ -441,7 +443,6 @@ public class ClickPersonalendung extends LateinAppActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dbHelper.closeDb();
         dbHelper.close();
     }
 

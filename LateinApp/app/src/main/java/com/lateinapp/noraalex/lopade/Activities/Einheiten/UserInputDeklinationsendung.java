@@ -30,6 +30,9 @@ import java.util.Random;
 //TODO: Make compatible with multiple tenses
 public class UserInputDeklinationsendung extends LateinAppActivity {
 
+    //FIXME: Class name is too long for logging -> max 23 chars
+    private static final String TAG = "UserInputDekl";
+
     private SharedPreferences sharedPref;
     private DBHelper dbHelper;
 
@@ -347,7 +350,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
 
         if(randomVocabulary == -1){
             //Something went wrong. Log error-message
-            Log.e("randomVocabulary", "Getting a randomDeclination failed! Returned -1 for " +
+            Log.e(TAG, "Getting a randomDeclination failed! Returned -1 for " +
                     "\nrandomNumber: " + randomNumber +
                     "\nlektion: " + extraFromEinheitenUebersicht);
         }
@@ -494,5 +497,11 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
         }catch (Exception e){
             //do nothing
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbHelper.close();
     }
 }

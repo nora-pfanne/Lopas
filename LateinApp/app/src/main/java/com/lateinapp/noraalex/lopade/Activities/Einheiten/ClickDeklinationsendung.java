@@ -22,6 +22,8 @@ import java.util.Random;
 
 public class ClickDeklinationsendung extends LateinAppActivity {
 
+    private static final String TAG = "ClickDeklinationsendung";
+
     private DBHelper dbHelper;
     private SharedPreferences sharedPref;
 
@@ -472,7 +474,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
 
         if(randomVocabulary == -1){
             //Something went wrong. Log error-message
-            Log.e("randomVocabulary", "Getting a randomDeclination failed! Returned -1 for " +
+            Log.e(TAG, "Getting a randomDeclination failed! Returned -1 for " +
                     "\nrandomNumber: " + randomNumber +
                     "\nlektion: " + extraFromEinheitenUebersicht);
         }
@@ -879,7 +881,6 @@ public class ClickDeklinationsendung extends LateinAppActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dbHelper.closeDb();
         dbHelper.close();
     }
 }

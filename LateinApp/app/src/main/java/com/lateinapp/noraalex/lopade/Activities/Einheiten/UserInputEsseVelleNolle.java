@@ -27,6 +27,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class UserInputEsseVelleNolle extends LateinAppActivity {
 
+    private static final String TAG = "UserInputEsseVelleNolle";
 
     private ArrayList<Vokabel> viableVocabularies;
 
@@ -338,4 +339,9 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
         return vocabularies;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbHelper.close();
+    }
 }

@@ -17,6 +17,8 @@ import com.lateinapp.noraalex.lopade.R;
 
 public class UserInputAdjektive extends LateinAppActivity {
 
+    private static final String TAG = "UserInputAdjektive";
+
     private SharedPreferences sharedPref;
 
     private TextView request,

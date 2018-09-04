@@ -19,6 +19,7 @@ import com.lateinapp.noraalex.lopade.R;
 
 public class EinheitenUebersicht extends LateinAppActivity {
 
+    private static final String TAG = "EinheitenUebersicht";
 
     //#DEVELOPER
     public static boolean DEVELOPER = true;
@@ -176,9 +177,8 @@ public class EinheitenUebersicht extends LateinAppActivity {
 
 
             default:
-                Log.e("ButtonNotFound",
-                        "The button that called 'uebersichtButtonClicked' was not" +
-                                "identified");
+                Log.e(TAG, "The button that called 'uebersichtButtonClicked' was not" +
+                                "identified\nID: " + v.getId());
                 break;
         }
     }
