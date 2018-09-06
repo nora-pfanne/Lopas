@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
+
 public class General {
+
+    private static SharedPreferences sharedPreferences;
 
     public static void showMessage(String msg, Context context){
 
@@ -81,6 +84,14 @@ public class General {
 
     public static int getPoints(SharedPreferences sharedPreferences){
         return sharedPreferences.getInt("Points_All", 0);
+    }
+
+    public static SharedPreferences getSharedPrefrences(Context context){
+        if(sharedPreferences == null){
+            sharedPreferences = context.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE);
+        }
+
+        return sharedPreferences;
     }
 
 }

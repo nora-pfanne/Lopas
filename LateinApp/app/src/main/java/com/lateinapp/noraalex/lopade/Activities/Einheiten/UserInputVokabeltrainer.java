@@ -18,7 +18,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.EinheitenUebersicht;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdjektivDB;
@@ -28,7 +27,12 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.SprichwortDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.SubstantivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
+import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
+
+import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
+import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
+import static com.lateinapp.noraalex.lopade.Global.KEY_FINISHED_USERINPUT_VOKABELTRAINER;
 
 public class UserInputVokabeltrainer extends LateinAppActivity {
 
@@ -68,7 +72,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
         Intent intent = getIntent();
         lektion = intent.getIntExtra("lektion",0);
 
-        sharedPref = getSharedPreferences("SharedPreferences", 0);
+        sharedPref = General.getSharedPrefrences(getApplicationContext());
         dbHelper = new DBHelper(getApplicationContext());
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
@@ -132,7 +136,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
             currentVokabel = dbHelper.getRandomVocabulary(lektion);
             String lateinText = currentVokabel.getLatein();
             //#DEVELOPER
-            if (EinheitenUebersicht.DEVELOPER && EinheitenUebersicht.DEV_CHEAT_MODE) lateinText += "\n" + currentVokabel.getDeutsch();
+            if (DEVELOPER && DEV_CHEAT_MODE) lateinText += "\n" + currentVokabel.getDeutsch();
             request.setText(lateinText);
 
             //Adjusting the visibility of the buttons.
@@ -319,7 +323,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
         zurück.setVisibility(View.VISIBLE);
 
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean("UserInputVokabeltrainer"+lektion, true);
+        editor.putBoolean(KEY_FINISHED_USERINPUT_VOKABELTRAINER + lektion, true);
         editor.apply();
     }
 

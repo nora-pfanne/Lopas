@@ -2,7 +2,6 @@ package com.lateinapp.noraalex.lopade.Activities;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;

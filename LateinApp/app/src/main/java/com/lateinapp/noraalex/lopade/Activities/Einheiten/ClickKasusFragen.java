@@ -16,6 +16,10 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
+import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
+import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_CLICK_KASUSFRAGEN;
+
 public class ClickKasusFragen extends LateinAppActivity {
 
     private static final String TAG = "ClickKasusFragen";
@@ -102,7 +106,7 @@ public class ClickKasusFragen extends LateinAppActivity {
 
         progressBar.setMax(maxProgress);
 
-        int progress = sharedPreferences.getInt(TAG, 0);
+        int progress = sharedPreferences.getInt(KEY_PROGRESS_CLICK_KASUSFRAGEN, 0);
         if (progress > maxProgress) progress = maxProgress;
         progressBar.setProgress(progress);
     }
@@ -163,7 +167,7 @@ public class ClickKasusFragen extends LateinAppActivity {
 
             case (R.id.buttonGrammatikKasusFragenReset):
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt(TAG, 0);
+                editor.putInt(KEY_PROGRESS_CLICK_KASUSFRAGEN, 0);
                 editor.apply();
                 finish();
 
@@ -180,7 +184,7 @@ public class ClickKasusFragen extends LateinAppActivity {
             b.setBackgroundColor(colorButtonDefault);
         }
 
-        int progress = sharedPreferences.getInt(TAG, 0);
+        int progress = sharedPreferences.getInt(KEY_PROGRESS_CLICK_KASUSFRAGEN, 0);
 
         kasusText.setBackgroundColor(backgroundColor);
 
@@ -192,7 +196,7 @@ public class ClickKasusFragen extends LateinAppActivity {
 
             currentKasus = kasusName[new Random().nextInt(5)];
             kasusText.setText(currentKasus);
-            if (EinheitenUebersicht.DEVELOPER && EinheitenUebersicht.DEV_CHEAT_MODE){
+            if (DEVELOPER && DEV_CHEAT_MODE){
                 kasusText.setText(currentKasus + "\n" + kasusToFrage.get(currentKasus));
             }
 
@@ -243,15 +247,15 @@ public class ClickKasusFragen extends LateinAppActivity {
 
             color = colorButtonCorrect;
 
-            editor.putInt(TAG,
-                    sharedPreferences.getInt(TAG, 0) +1);
+            editor.putInt(KEY_PROGRESS_CLICK_KASUSFRAGEN,
+                    sharedPreferences.getInt(KEY_PROGRESS_CLICK_KASUSFRAGEN, 0) +1);
 
         }else{
 
             color = colorButtonIncorrect;
-            if (sharedPreferences.getInt(TAG, 0) > 0) {
-                editor.putInt(TAG,
-                        sharedPreferences.getInt(TAG, 0) - 1);
+            if (sharedPreferences.getInt(KEY_PROGRESS_CLICK_KASUSFRAGEN, 0) > 0) {
+                editor.putInt(KEY_PROGRESS_CLICK_KASUSFRAGEN,
+                        sharedPreferences.getInt(KEY_PROGRESS_CLICK_KASUSFRAGEN, 0) - 1);
             }
             for (Button b : buttons){
 
@@ -262,7 +266,7 @@ public class ClickKasusFragen extends LateinAppActivity {
             }
         }
         editor.apply();
-        progressBar.setProgress(sharedPreferences.getInt(TAG, 0));
+        progressBar.setProgress(sharedPreferences.getInt(KEY_PROGRESS_CLICK_KASUSFRAGEN, 0));
 
         button.setBackgroundColor(color);
         kasusText.setBackgroundColor(color);

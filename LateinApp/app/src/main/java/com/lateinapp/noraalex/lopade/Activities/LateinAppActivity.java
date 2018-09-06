@@ -19,6 +19,9 @@ import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
 
+import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
+import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
+
 public abstract class LateinAppActivity extends AppCompatActivity{
 
     private static final String TAG = "LateinAppActivity";
@@ -71,7 +74,7 @@ public abstract class LateinAppActivity extends AppCompatActivity{
         devReloadDatabaseIterative = this.menu.findItem(R.id.action_dev_reload_database_iterative);
 
 
-        sharedPref = getSharedPreferences("SharedPreferences", 0);
+        sharedPref = General.getSharedPrefrences(getApplicationContext());
 
         adjustSettings();
 
@@ -112,12 +115,12 @@ public abstract class LateinAppActivity extends AppCompatActivity{
             //toggles the DevCheatMode
             case (R.id.action_dev_Vokabeltrainer_Cheat):
                 SharedPreferences.Editor editor = sharedPref.edit();
-                EinheitenUebersicht.DEV_CHEAT_MODE = !EinheitenUebersicht.DEV_CHEAT_MODE;
-                editor.putBoolean("DEV_CHEAT_MODE", EinheitenUebersicht.DEV_CHEAT_MODE);
+                DEV_CHEAT_MODE = !DEV_CHEAT_MODE;
+                editor.putBoolean("DEV_CHEAT_MODE", DEV_CHEAT_MODE);
                 editor.apply();
                 adjustSettings();
 
-                General.showMessage("Cheat Mode " + (EinheitenUebersicht.DEV_CHEAT_MODE ? "Activated" : "Deactivated"), getApplicationContext());
+                General.showMessage("Cheat Mode " + (DEV_CHEAT_MODE ? "Activated" : "Deactivated"), getApplicationContext());
                 break;
 
             //#DEVELOPER
@@ -206,13 +209,13 @@ public abstract class LateinAppActivity extends AppCompatActivity{
         //FIXME: Why does this sometimes crash with "couldnt invoke method on null object"?
         try {
             //#DEVELOPER
-            if (EinheitenUebersicht.DEVELOPER) {
+            if (DEVELOPER) {
                 devDBHelper.setVisible(true);
                 devVokCheat.setVisible(true);
                 devReloadDatabaseAssets.setVisible(true);
                 devReloadDatabaseIterative.setVisible(true);
 
-                devVokCheat.setTitle("DEV: Cheat-Mode: " + (EinheitenUebersicht.DEV_CHEAT_MODE ? "ON" : "OFF"));
+                devVokCheat.setTitle("DEV: Cheat-Mode: " + (DEV_CHEAT_MODE ? "ON" : "OFF"));
 
             } else {
                 devDBHelper.setVisible(false);

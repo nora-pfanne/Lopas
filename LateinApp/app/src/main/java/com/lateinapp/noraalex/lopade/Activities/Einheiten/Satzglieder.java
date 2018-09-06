@@ -18,12 +18,16 @@ import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.BeispielsatzDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Personalendung_PräsensDB;
+import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
+import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_SATZGLIEDER;
 
 public class Satzglieder extends LateinAppActivity {
 
@@ -101,7 +105,7 @@ public class Satzglieder extends LateinAppActivity {
 
         dbHelper = new DBHelper(this);
         buttonHashMap = new HashMap<>();
-        sharedPref = getSharedPreferences("SharedPreferences", 0);
+        sharedPref = General.getSharedPrefrences(getApplicationContext());
 
         weiterButton = findViewById(R.id.satzglieder_next_button);
         linearLayout = findViewById(R.id.satzglieder_lin_layout);
@@ -125,7 +129,7 @@ public class Satzglieder extends LateinAppActivity {
     private void newSentence(){
 
 
-        int progress = sharedPref.getInt(TAG, 0);
+        int progress = sharedPref.getInt(KEY_PROGRESS_SATZGLIEDER, 0);
 
         if (progress < maxProgress) {
 
@@ -279,7 +283,7 @@ public class Satzglieder extends LateinAppActivity {
                     }
 
                     //#DEVELOPER
-                    if (EinheitenUebersicht.DEV_CHEAT_MODE){
+                    if (DEV_CHEAT_MODE){
                         text += "(S)";
                     }
 
@@ -319,7 +323,7 @@ public class Satzglieder extends LateinAppActivity {
                             konjugation);
 
                     //#DEVELOPER
-                    if (EinheitenUebersicht.DEV_CHEAT_MODE){
+                    if (DEV_CHEAT_MODE){
                         text += "(SP)";
                     }
 
@@ -352,7 +356,7 @@ public class Satzglieder extends LateinAppActivity {
 
                     }
                     //#DEVELOPER
-                    if (EinheitenUebersicht.DEV_CHEAT_MODE){
+                    if (DEV_CHEAT_MODE){
                         text += "(P)";
                     }
 
@@ -385,7 +389,7 @@ public class Satzglieder extends LateinAppActivity {
                     }
 
                     //#DEVELOPER
-                    if (EinheitenUebersicht.DEV_CHEAT_MODE){
+                    if (DEV_CHEAT_MODE){
                         text += "(G)";
                     }
 
@@ -417,7 +421,7 @@ public class Satzglieder extends LateinAppActivity {
                     }
 
                     //#DEVELOPER
-                    if (EinheitenUebersicht.DEV_CHEAT_MODE){
+                    if (DEV_CHEAT_MODE){
                         text += "(D)";
                     }
 
@@ -449,14 +453,14 @@ public class Satzglieder extends LateinAppActivity {
                     }
 
                     //#DEVELOPER
-                    if (EinheitenUebersicht.DEV_CHEAT_MODE){
+                    if (DEV_CHEAT_MODE){
                         text += "(A)";
                     }
 
                     break;
 
                 default:
-                    Log.e(TAG, "The requested case '" + s + "' in \"addButtons\" was not found");
+                    Log.e(KEY_PROGRESS_SATZGLIEDER, "The requested case '" + s + "' in \"addButtons\" was not found");
 
                     text += "N/A";
 
@@ -599,13 +603,13 @@ public class Satzglieder extends LateinAppActivity {
     private void answerSelected(boolean correct, Button button){
 
         SharedPreferences.Editor editor = sharedPref.edit();
-        int currentProgress = sharedPref.getInt(TAG, 0);
+        int currentProgress = sharedPref.getInt(KEY_PROGRESS_SATZGLIEDER, 0);
 
         if (correct){
             button.setBackgroundColor(colorButtonCorrect);
 
             if (currentProgress <= maxProgress) {
-                editor.putInt(TAG,
+                editor.putInt(KEY_PROGRESS_SATZGLIEDER,
                         currentProgress + 1);
             }
 
@@ -615,7 +619,7 @@ public class Satzglieder extends LateinAppActivity {
             buttons.get(correctButtonLocation).setBackgroundColor(colorButtonCorrect);
 
             if (currentProgress > 0){
-                editor.putInt(TAG,
+                editor.putInt(KEY_PROGRESS_SATZGLIEDER,
                         currentProgress - 1);
             }
         }
@@ -652,7 +656,7 @@ public class Satzglieder extends LateinAppActivity {
 
             case R.id.satzglieder_progress_reset_button:
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt(TAG, 0);
+                editor.putInt(KEY_PROGRESS_SATZGLIEDER, 0);
                 editor.apply();
                 finish();
                 break;

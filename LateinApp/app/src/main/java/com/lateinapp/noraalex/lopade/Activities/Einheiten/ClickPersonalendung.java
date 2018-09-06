@@ -19,6 +19,10 @@ import com.lateinapp.noraalex.lopade.R;
 
 import java.util.Random;
 
+import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
+import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
+import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_CLICK_PERSONALENDUNG;
+
 public class ClickPersonalendung extends LateinAppActivity {
 
     private static final String TAG = "ClickPersonalendung";
@@ -108,7 +112,7 @@ public class ClickPersonalendung extends LateinAppActivity {
         weiter.setVisibility(View.GONE);
 
         progressBar.setMax(maxProgress);
-        int progress = sharedPref.getInt(TAG+extraFromEinheitenUebersicht, 0);
+        int progress = sharedPref.getInt(KEY_PROGRESS_CLICK_PERSONALENDUNG+extraFromEinheitenUebersicht, 0);
         if (progress > maxProgress) progress = maxProgress;
         progressBar.setProgress(progress);
 
@@ -224,7 +228,7 @@ public class ClickPersonalendung extends LateinAppActivity {
             case (R.id.buttonGrammatikPersonalendungReset):
 
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt(TAG+extraFromEinheitenUebersicht, 0);
+                editor.putInt(KEY_PROGRESS_CLICK_PERSONALENDUNG+extraFromEinheitenUebersicht, 0);
                 editor.apply();
                 finish();
 
@@ -242,7 +246,7 @@ public class ClickPersonalendung extends LateinAppActivity {
      */
     private void newVocabulary(){
         
-        int progress = sharedPref.getInt(TAG+extraFromEinheitenUebersicht, 0);
+        int progress = sharedPref.getInt(KEY_PROGRESS_CLICK_PERSONALENDUNG+extraFromEinheitenUebersicht, 0);
         latein.setBackgroundColor(backgroundColor);
 
         //Checks if the user has had enough correct inputs to complete the 'grammatikKonjugation'
@@ -257,7 +261,7 @@ public class ClickPersonalendung extends LateinAppActivity {
             String lateinText = dbHelper.getKonjugiertesVerb(currentVokabel.getId(), konjugation);
 
             //#DEVELOPER
-            if (EinheitenUebersicht.DEVELOPER && EinheitenUebersicht.DEV_CHEAT_MODE) lateinText += "\n" + konjugation;
+            if (DEVELOPER && DEV_CHEAT_MODE) lateinText += "\n" + konjugation;
           
             latein.setText(lateinText);
 
@@ -319,7 +323,7 @@ public class ClickPersonalendung extends LateinAppActivity {
 
         if(randomVocabulary == -1){
             //Something went wrong. Log error-message
-            Log.e(TAG, "Getting a randomKonjugation failed! Returned -1 for " +
+            Log.e(KEY_PROGRESS_CLICK_PERSONALENDUNG, "Getting a randomKonjugation failed! Returned -1 for " +
                     "\nrandomNumber: " + randomNumber +
                     "\nlektion: " + extraFromEinheitenUebersicht);
         }
@@ -410,14 +414,14 @@ public class ClickPersonalendung extends LateinAppActivity {
             color = colorButtonCorrect;
 
             //Increasing the counter by 1
-            editor.putInt(TAG + extraFromEinheitenUebersicht,
-                          sharedPref.getInt(TAG + extraFromEinheitenUebersicht, 0) + 1);
+            editor.putInt(KEY_PROGRESS_CLICK_PERSONALENDUNG + extraFromEinheitenUebersicht,
+                          sharedPref.getInt(KEY_PROGRESS_CLICK_PERSONALENDUNG + extraFromEinheitenUebersicht, 0) + 1);
         }else {
             color = colorButtonIncorrect;
 
-            if (sharedPref.getInt(TAG + extraFromEinheitenUebersicht, 0) > 0) {
-                editor.putInt(TAG + extraFromEinheitenUebersicht,
-                        sharedPref.getInt(TAG + extraFromEinheitenUebersicht, 0) - 1);
+            if (sharedPref.getInt(KEY_PROGRESS_CLICK_PERSONALENDUNG + extraFromEinheitenUebersicht, 0) > 0) {
+                editor.putInt(KEY_PROGRESS_CLICK_PERSONALENDUNG + extraFromEinheitenUebersicht,
+                        sharedPref.getInt(KEY_PROGRESS_CLICK_PERSONALENDUNG + extraFromEinheitenUebersicht, 0) - 1);
             }
 
             for (int i = 0; i < faelle.length; i++){
@@ -428,7 +432,7 @@ public class ClickPersonalendung extends LateinAppActivity {
         }
         editor.apply();
 
-        progressBar.setProgress(sharedPref.getInt(TAG + extraFromEinheitenUebersicht, 0));
+        progressBar.setProgress(sharedPref.getInt(KEY_PROGRESS_CLICK_PERSONALENDUNG + extraFromEinheitenUebersicht, 0));
 
         button.setBackgroundColor(color);
         latein.setBackgroundColor(color);

@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import static com.lateinapp.noraalex.lopade.Databases.SQL_DUMP.*;
+import static com.lateinapp.noraalex.lopade.Global.KEY_NOT_FIRST_STARTUP;
 
 /**
  * DBHelper is used for managing the database and its tables.
@@ -75,13 +76,13 @@ public class DBHelper extends SQLiteOpenHelper {
             DATABASE_PATH = context.getFilesDir().getPath();
         }
         //Copying the database from the assets folder on first startup of the app
-        SharedPreferences sharedPreferences = context.getSharedPreferences("SharedPreferences", 0);
-        boolean firstStartup = sharedPreferences.getBoolean("FirstStartup", true);
+        SharedPreferences sharedPreferences = General.getSharedPrefrences(context);
+        boolean notFirstStartup = sharedPreferences.getBoolean(KEY_NOT_FIRST_STARTUP, false);
 
-        if(firstStartup) {
+        if(!notFirstStartup) {
             copyDataBaseFromAssets();
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("FirstStartup", false);
+            editor.putBoolean(KEY_NOT_FIRST_STARTUP, true);
             editor.apply();
         }
 
@@ -113,7 +114,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         onCreate(db);
     }
-    
+
+
     @Override
     public synchronized void close() {
         super.close();

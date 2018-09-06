@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.EinheitenUebersicht;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
@@ -19,6 +18,10 @@ import com.lateinapp.noraalex.lopade.R;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
+import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
+import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_CLICK_DEKLINATIONSENDUNG;
 
 public class ClickDeklinationsendung extends LateinAppActivity {
 
@@ -151,7 +154,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
         weiter.setVisibility(View.GONE);
 
         progressBar.setMax(maxProgress);
-        int progress = sharedPref.getInt(TAG+extraFromEinheitenUebersicht, 0);
+        int progress = sharedPref.getInt(KEY_PROGRESS_CLICK_DEKLINATIONSENDUNG + extraFromEinheitenUebersicht, 0);
         if (progress > maxProgress){
             progress = maxProgress;
             finished = true;
@@ -282,7 +285,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
      */
     private void newVocabulary(){
 
-        int progress = sharedPref.getInt(TAG+extraFromEinheitenUebersicht, 0);
+        int progress = sharedPref.getInt(KEY_PROGRESS_CLICK_DEKLINATIONSENDUNG + extraFromEinheitenUebersicht, 0);
 
 
         lateinVokabel.setBackgroundColor(backgroundColor);
@@ -382,7 +385,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                     allCorrectCases.get(0)));
 
             //#DEVELOPER
-            if (EinheitenUebersicht.DEVELOPER && EinheitenUebersicht.DEV_CHEAT_MODE) {
+            if (DEVELOPER && DEV_CHEAT_MODE) {
                 //Lowering the text size if more than 2 correct cases exist so it fits the screen.
                 if (allCorrectCases.size() > 2) {
                     lateinVokabel.setTextSize(24);
@@ -578,7 +581,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
             case (R.id.buttonGrammatikDeklinationReset):
 
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt(TAG+extraFromEinheitenUebersicht, 0);
+                editor.putInt(KEY_PROGRESS_CLICK_DEKLINATIONSENDUNG + extraFromEinheitenUebersicht, 0);
                 editor.apply();
                 finish();
 
@@ -855,15 +858,15 @@ public class ClickDeklinationsendung extends LateinAppActivity {
             color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
 
             //Increasing the counter by 1
-            editor.putInt(TAG+extraFromEinheitenUebersicht,
-                          sharedPref.getInt(TAG+extraFromEinheitenUebersicht, 0) + 1);
+            editor.putInt(KEY_PROGRESS_CLICK_DEKLINATIONSENDUNG + extraFromEinheitenUebersicht,
+                          sharedPref.getInt(KEY_PROGRESS_CLICK_DEKLINATIONSENDUNG+extraFromEinheitenUebersicht, 0) + 1);
         }else {
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
 
             //Decreasing the counter by 1
-            if (sharedPref.getInt(TAG+extraFromEinheitenUebersicht, 0) > 0) {
-                editor.putInt(TAG+extraFromEinheitenUebersicht,
-                              sharedPref.getInt(TAG+extraFromEinheitenUebersicht, 0) - 1);
+            if (sharedPref.getInt(KEY_PROGRESS_CLICK_DEKLINATIONSENDUNG+extraFromEinheitenUebersicht, 0) > 0) {
+                editor.putInt(KEY_PROGRESS_CLICK_DEKLINATIONSENDUNG+extraFromEinheitenUebersicht,
+                              sharedPref.getInt(KEY_PROGRESS_CLICK_DEKLINATIONSENDUNG+extraFromEinheitenUebersicht, 0) - 1);
             }
         }
         editor.apply();

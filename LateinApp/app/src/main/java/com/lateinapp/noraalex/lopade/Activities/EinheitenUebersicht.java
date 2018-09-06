@@ -15,15 +15,17 @@ import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputDeklinationse
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputEsseVelleNolle;
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputVokabeltrainer;
+import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
+
+import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
+import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
+import static com.lateinapp.noraalex.lopade.Global.KEY_DEV_CHEAT_MODE;
+import static com.lateinapp.noraalex.lopade.Global.KEY_DEV_MODE;
 
 public class EinheitenUebersicht extends LateinAppActivity {
 
     private static final String TAG = "EinheitenUebersicht";
-
-    //#DEVELOPER
-    public static boolean DEVELOPER = true;
-    public static boolean DEV_CHEAT_MODE = true;
 
     private SharedPreferences sharedPref;
 
@@ -38,11 +40,11 @@ public class EinheitenUebersicht extends LateinAppActivity {
 
     private void setup(){
 
-        //Sets the DEVELOPER state according to a variable saved in a previous instance of the app
+        //Sets the DEVELOPER modes state according to a variable saved in a previous instance of the app
         //#DEVELOPER
-        sharedPref = getSharedPreferences("SharedPreferences", 0);
-        DEVELOPER = sharedPref.getBoolean("DEVELOPER", DEVELOPER);
-        DEV_CHEAT_MODE = sharedPref.getBoolean("DEV_CHEAT_MODE", DEV_CHEAT_MODE);
+        sharedPref = General.getSharedPrefrences(getApplicationContext());
+        DEVELOPER = sharedPref.getBoolean(KEY_DEV_MODE, DEVELOPER);
+        DEV_CHEAT_MODE = sharedPref.getBoolean(KEY_DEV_CHEAT_MODE, DEV_CHEAT_MODE);
     }
 
     public void uebersichtButtonClicked(View v) {

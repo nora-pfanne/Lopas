@@ -8,6 +8,7 @@ import android.widget.Switch;
 import com.lateinapp.noraalex.lopade.R;
 import com.lateinapp.noraalex.lopade.General;
 
+import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
 public class SettingsActivity extends LateinAppActivity {
 
     private static final String TAG = "SettingsActivity";
@@ -26,7 +27,7 @@ public class SettingsActivity extends LateinAppActivity {
 
         //#DEVELOPER
         toggleDevModeSwitch = findViewById(R.id.switchToggleDevMode);
-        toggleDevModeSwitch.setChecked(EinheitenUebersicht.DEVELOPER);
+        toggleDevModeSwitch.setChecked(DEVELOPER);
         toggleDevModeSwitch.setVisibility(View.GONE);
 
         /* TODO
@@ -42,8 +43,8 @@ public class SettingsActivity extends LateinAppActivity {
             //toggling the developer mode
             //#DEVELOPER
             case (R.id.switchToggleDevMode):
-                EinheitenUebersicht.DEVELOPER = toggleDevModeSwitch.isChecked();
-                SharedPreferences sharedPref = getSharedPreferences("SharedPreferences", 0);
+                DEVELOPER = toggleDevModeSwitch.isChecked();
+                SharedPreferences sharedPref = General.getSharedPrefrences(getApplicationContext());
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putBoolean("DEVELOPER", toggleDevModeSwitch.isChecked());
                 editor.apply();

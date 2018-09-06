@@ -19,9 +19,14 @@ import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Personalendung_PräsensDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
+import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
 
 import java.util.Random;
+
+import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
+import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
+import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_USERINPUT_PERSONALENDUNG;
 
 public class UserInputPersonalendung extends LateinAppActivity {
 
@@ -71,7 +76,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
         Intent intent = getIntent();
         extraFromEinheitenUebersicht = intent.getStringExtra("ExtraInputPersonalendung");
 
-        sharedPref = getSharedPreferences("SharedPreferences", 0);
+        sharedPref = General.getSharedPrefrences(getApplicationContext());
         dbHelper = new DBHelper(getApplicationContext());
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
@@ -112,7 +117,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
 
     private void newVocabulary(){
 
-        int progress = sharedPref.getInt(TAG + extraFromEinheitenUebersicht, 0);
+        int progress = sharedPref.getInt(KEY_PROGRESS_USERINPUT_PERSONALENDUNG + extraFromEinheitenUebersicht, 0);
 
         if (progress < maxProgress) {
 
@@ -145,7 +150,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
             personalendungUser = personalendungUser.replace("Pl", "Pers. Pl.");
             lateinText += "\n" + personalendungUser + " Präsens";
             //#DEVELOPER
-            if (EinheitenUebersicht.DEVELOPER && EinheitenUebersicht.DEV_CHEAT_MODE){
+            if (DEVELOPER && DEV_CHEAT_MODE){
                 lateinText += "\n" + dbHelper.getKonjugiertesVerb(currentVokabel.getId(), currentPersonalendung);
             }
             request.setText(lateinText);
@@ -191,8 +196,8 @@ public class UserInputPersonalendung extends LateinAppActivity {
             SharedPreferences.Editor editor = sharedPref.edit();
 
             //Increasing the counter by 1
-            editor.putInt(TAG + extraFromEinheitenUebersicht,
-                    sharedPref.getInt(TAG + extraFromEinheitenUebersicht, 0) + 1);
+            editor.putInt(KEY_PROGRESS_USERINPUT_PERSONALENDUNG + extraFromEinheitenUebersicht,
+                    sharedPref.getInt(KEY_PROGRESS_USERINPUT_PERSONALENDUNG + extraFromEinheitenUebersicht, 0) + 1);
             editor.apply();
         }else {
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
@@ -200,8 +205,8 @@ public class UserInputPersonalendung extends LateinAppActivity {
             if (sharedPref.getInt(TAG + extraFromEinheitenUebersicht, 0) > 0) {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 //Decreasing the counter by 1
-                editor.putInt(TAG + extraFromEinheitenUebersicht,
-                        sharedPref.getInt(TAG + extraFromEinheitenUebersicht, 0) - 1);
+                editor.putInt(KEY_PROGRESS_USERINPUT_PERSONALENDUNG + extraFromEinheitenUebersicht,
+                        sharedPref.getInt(KEY_PROGRESS_USERINPUT_PERSONALENDUNG + extraFromEinheitenUebersicht, 0) - 1);
                 editor.apply();
             }
         }
@@ -386,7 +391,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
             //Setting the 'learned' state of all vocabularies of the current lektion to false
             case (R.id.buttonUserInputFortschrittLöschen):
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt(TAG + extraFromEinheitenUebersicht, 0);
+                editor.putInt(KEY_PROGRESS_USERINPUT_PERSONALENDUNG + extraFromEinheitenUebersicht, 0);
                 editor.apply();
                 finish();
                 break;
