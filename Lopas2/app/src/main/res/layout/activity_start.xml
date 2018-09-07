@@ -6,14 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".start">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/image2vector"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="130dp" />
-
     <TextView
         android:layout_width="208dp"
         android:layout_height="wrap_content"

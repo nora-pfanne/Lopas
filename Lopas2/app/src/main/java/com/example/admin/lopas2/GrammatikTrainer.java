@@ -3,11 +3,11 @@ package com.example.admin.lopas2;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class start extends AppCompatActivity {
+public class GrammatikTrainer extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start_vocabulary);
+        setContentView(R.layout.activity_grammatik_trainer);
     }
 }

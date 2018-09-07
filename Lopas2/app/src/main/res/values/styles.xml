@@ -10,13 +10,23 @@
 
     <!--Buttons-->
 
-    <style name="VocabularyBasicButton">
+    <style name="VocabularyBasicButtonLernen">
         <item name="android:fontFamily">@font/cabin_bold</item>
-        <item name="android:backgroundTint">@color/YellowGold</item>
-        <item name="android:textColor">@color/Grey</item>
+        <item name="android:backgroundTint">@color/Black </item>
+        <item name="android:textColor">@color/GhostWhite</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">15dp</item>
+        <item name="android:text">@string/lernen</item>
     </style>
+
+    <style name="VocabularyBasicButtonTest">
+        <item name="android:fontFamily">@font/cabin_bold</item>
+        <item name="android:backgroundTint">@color/GhostWhite</item>
+        <item name="android:textColor">@color/Black</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:text">@string/test</item>
+        </style>
 
     <!--TextViews-->
 
@@ -24,5 +34,12 @@
         <item name="android:textColor">@color/Grey</item>
         <item name="android:fontFamily">@font/cabin_bold</item>
         <item name="android:textSize">20dp</item>
+    </style>
+
+    <style name="ThemaTextView">
+        <item name="android:textColor">@color/Black</item>
+        <item name="android:fontFamily">@font/cabin</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textAlignment">center</item>
     </style>
 </resources>
