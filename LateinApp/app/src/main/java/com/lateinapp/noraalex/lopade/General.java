@@ -77,25 +77,42 @@ public class General {
     //Scoring System
     //
 
-    public static void modifyScore(int pointBaseline, boolean inputCorrect, int lektion, SharedPreferences sharedPreferences){
 
-        //TODO: Should points be able to be negative?
+    //
+    //TODO: THIS IS ALL UNTESTED.
+    //FIXME: TEST THIS ASAP.
+    //
 
-        int amount;
-        int combo = getCombo(lektion, sharedPreferences);
+    private static final int maxCombo = 3;
+    private static final int minCombo = 0;
 
-        //Calculating the combo multiplier
-        int comboMultiplier = (int)pow(2, combo);
+    public static int calculateMaxPossiblePoints(int pointBaseline, int inputAmount){
 
-        //Calculating final amount to increase the score by
-        if(inputCorrect){
-            amount = comboMultiplier * pointBaseline;
-        }else{
-            amount = -pointBaseline;
+        int score = 0;
+
+        int combo = minCombo;
+
+        for(int i = 0; i < inputAmount; i++){
+
+            score = getNewScore(score, combo, pointBaseline, true);
+
+            if(combo >= minCombo && combo < maxCombo){
+                combo++;
+            }
         }
 
+        return score;
+    }
+
+    public static void modifyScore(int pointBaseline, boolean inputCorrect, int lektion, SharedPreferences sharedPreferences){
+
+        int oldScore = getPoints(lektion, sharedPreferences);
+        int combo = getCombo(lektion, sharedPreferences);
+
+        int amount = getNewScore(oldScore, combo, pointBaseline, inputCorrect);
+
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("Score_" + lektion, getPoints(lektion, sharedPreferences) + amount);
+        editor.putInt("Score_" + lektion,  + amount);
         editor.putInt("Score_All", getPoints(lektion, sharedPreferences) + amount);
         editor.apply();
     }
@@ -107,9 +124,6 @@ public class General {
     public static int getTotalPoints(SharedPreferences sharedPreferences){
         return sharedPreferences.getInt("Score_All", 0);
     }
-
-    private static final int maxCombo = 3;
-    private static final int minCombo = 0;
 
     public static void increaseCombo(int lektion, SharedPreferences sharedPreferences){
 
@@ -137,7 +151,30 @@ public class General {
         editor.apply();
     }
 
-    public static int getCombo(int lektion, SharedPreferences sharedPreferences){
+
+    private static int getNewScore(int oldScore, int combo, int pointBaseline, boolean inputCorrect){
+        //TODO: Should points be able to be negative?
+
+        int amount;
+
+        //Calculating the combo multiplier
+        int comboMultiplier = getComboMultiplier(combo);
+
+        //Calculating final amount to increase the score by
+        if(inputCorrect){
+            amount = comboMultiplier * pointBaseline;
+        }else{
+            amount = -pointBaseline;
+        }
+
+        return (oldScore+amount);
+    }
+
+    private static int getComboMultiplier(int combo){
+        return (int)pow(2, combo);
+    }
+
+    private static int getCombo(int lektion, SharedPreferences sharedPreferences){
         return sharedPreferences.getInt("Combo_" + lektion, minCombo);
     }
 
@@ -151,9 +188,10 @@ public class General {
     }
 
 
+
     //https://en.wikipedia.org/wiki/Exponentiation_by_squaring
     //More efficient pow algorithm with O(log n) instead of O(n)
-    public static float pow(float base, int exp){
+    private static float pow(float base, int exp){
 
         if (exp < 0) {
             base = 1 / base;

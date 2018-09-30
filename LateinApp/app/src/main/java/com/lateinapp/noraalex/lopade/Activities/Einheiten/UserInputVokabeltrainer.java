@@ -359,6 +359,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
             case (R.id.buttonUserInputFortschrittLöschen):
 
                 dbHelper.resetLektion(lektion);
+                General.resetCombo(lektion, sharedPref);
                 finish();
                 break;
 
