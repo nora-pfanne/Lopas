@@ -57,6 +57,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
     private int lektion;
     private int backgroundColor;
 
+    private static final int pointBaseline = 100;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,6 +170,9 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
 
             dbHelper.incrementValue(getVokabelTable(currentVokabel), "Amount_Correct", currentVokabel.getId(), 1);
 
+            General.modifyScore(pointBaseline, true, lektion, sharedPref);
+            General.increaseCombo(lektion, sharedPref);
+
             //Checking the vocabulary as learned
             dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
 
@@ -176,6 +181,9 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
         }else {
 
             //Input was incorrect
+
+            General.modifyScore(pointBaseline, false, lektion, sharedPref);
+            General.decreaseCombo(lektion, sharedPref);
 
             dbHelper.incrementValue(getVokabelTable(currentVokabel), "Amount_Incorrect", currentVokabel.getId(), 1);
 

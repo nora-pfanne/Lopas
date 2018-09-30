@@ -63,29 +63,6 @@ public class General {
         return s;
     }
 
-    public static void modifyPoints(int lektion, int pointDifference, SharedPreferences sharedPreferences){
-
-        //TODO: Should points be able to be negative?
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putInt("Points_" + lektion,
-                sharedPreferences.getInt("Points_" + lektion, 0) + pointDifference);
-
-        editor.putInt("Points_All",
-                sharedPreferences.getInt("Points_All", 0) + pointDifference);
-
-        editor.apply();
-    }
-
-    public static int getPoints(int lektion, SharedPreferences sharedPreferences){
-        return sharedPreferences.getInt("Points_" + lektion, 0);
-    }
-
-    public static int getPoints(SharedPreferences sharedPreferences){
-        return sharedPreferences.getInt("Points_All", 0);
-    }
-
     public static SharedPreferences getSharedPrefrences(Context context){
         if(sharedPreferences == null){
             sharedPreferences = context.getSharedPreferences("SharedPreferences", Context.MODE_PRIVATE);
@@ -94,4 +71,110 @@ public class General {
         return sharedPreferences;
     }
 
+
+
+    //
+    //Scoring System
+    //
+
+    public static void modifyScore(int pointBaseline, boolean inputCorrect, int lektion, SharedPreferences sharedPreferences){
+
+        //TODO: Should points be able to be negative?
+
+        int amount;
+        int combo = getCombo(lektion, sharedPreferences);
+
+        //Calculating the combo multiplier
+        int comboMultiplier = (int)pow(2, combo);
+
+        //Calculating final amount to increase the score by
+        if(inputCorrect){
+            amount = comboMultiplier * pointBaseline;
+        }else{
+            amount = -pointBaseline;
+        }
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("Score_" + lektion, getPoints(lektion, sharedPreferences) + amount);
+        editor.putInt("Score_All", getPoints(lektion, sharedPreferences) + amount);
+        editor.apply();
+    }
+
+    public static int getPoints(int lektion, SharedPreferences sharedPreferences){
+        return sharedPreferences.getInt("Score_" + lektion, 0);
+    }
+
+    public static int getTotalPoints(SharedPreferences sharedPreferences){
+        return sharedPreferences.getInt("Score_All", 0);
+    }
+
+    private static final int maxCombo = 3;
+    private static final int minCombo = 0;
+
+    public static void increaseCombo(int lektion, SharedPreferences sharedPreferences){
+
+        int currentCombo = sharedPreferences.getInt("Combo_" + lektion, minCombo);
+
+        if(currentCombo >= minCombo && currentCombo < maxCombo){
+            currentCombo++;
+        }
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("Combo_" + lektion, currentCombo);
+        editor.apply();
+    }
+
+    public static void decreaseCombo(int lektion, SharedPreferences sharedPreferences){
+
+        int currentCombo = sharedPreferences.getInt("Combo_" + lektion, minCombo);
+
+        if(currentCombo > minCombo && currentCombo <= maxCombo){
+            currentCombo--;
+        }
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("Combo_" + lektion, currentCombo);
+        editor.apply();
+    }
+
+    public static int getCombo(int lektion, SharedPreferences sharedPreferences){
+        return sharedPreferences.getInt("Combo_" + lektion, minCombo);
+    }
+
+    public static void resetCombo(int lektion, SharedPreferences sharedPreferences){
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt("Combo_" + lektion, minCombo);
+
+        editor.apply();
+    }
+
+
+    //https://en.wikipedia.org/wiki/Exponentiation_by_squaring
+    //More efficient pow algorithm with O(log n) instead of O(n)
+    public static float pow(float base, int exp){
+
+        if (exp < 0) {
+            base = 1 / base;
+            exp *= -1;
+        }else if(exp == 0){
+            return 1;
+        }
+
+        int y = 1;
+
+        while (exp > 1) {
+            if(exp % 2 == 0){
+                base *= base;
+                exp /= 2;
+            }else{
+                y *= base;
+                base *= base;
+                exp = (exp - 1)/2;
+            }
+        }
+        return base * y;
+
+    }
 }
