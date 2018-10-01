@@ -1,6 +1,5 @@
 package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -16,10 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -27,7 +24,6 @@ import android.widget.TextView;
 
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
-import com.lateinapp.noraalex.lopade.Databases.SQL_DUMP;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdjektivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.PräpositionDB;
@@ -336,8 +332,6 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
      * Executed when all vocabularies are learned.
      */
     private void allLearned(){
-
-        int vocabularyCount = dbHelper.countTableEntries(SQL_DUMP.allVocabularyTables, lektion);
 
         request.setVisibility(View.GONE);
         solution.setVisibility(View.GONE);
