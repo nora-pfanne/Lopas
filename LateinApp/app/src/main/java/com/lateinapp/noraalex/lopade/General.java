@@ -2,6 +2,8 @@ package com.lateinapp.noraalex.lopade;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
@@ -70,8 +72,6 @@ public class General {
 
         return sharedPreferences;
     }
-
-
 
     //
     //Scoring System

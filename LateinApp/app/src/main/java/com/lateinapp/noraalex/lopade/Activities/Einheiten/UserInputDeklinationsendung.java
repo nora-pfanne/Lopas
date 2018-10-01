@@ -133,12 +133,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
 
             progressBar.setProgress(progress);
 
-            try {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-            }catch (NullPointerException npe){
-                npe.printStackTrace();
-            }
+            showKeyboard();
 
             //Resetting the userInput.
             userInput.setText("");
@@ -183,14 +178,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
 
             progressBar.setProgress(maxProgress);
 
-            //Hiding the keyboard.
-            try {
-                InputMethodManager imm = (InputMethodManager)getSystemService(
-                        Context.INPUT_METHOD_SERVICE);
-                if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
-            }catch (NullPointerException npe){
-                npe.printStackTrace();
-            }
+            hideKeyboard();
 
             allLearned();
         }
@@ -366,14 +354,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
     private void checkInput(){
         userInput.setFocusable(false);
 
-        //Hiding the keyboard
-        try {
-            View v = getWindow().getDecorView().getRootView();
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        }catch (NullPointerException npe){
-            npe.printStackTrace();
-        }
+        hideKeyboard();
 
 
         //Checking the userInput against the translation
@@ -494,14 +475,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
     public void onPause() {
         super.onPause();
 
-        try{
-            //Hiding the keyboard.
-            InputMethodManager imm = (InputMethodManager)getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
-            if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
-        }catch (Exception e){
-            //do nothing
-        }
+        hideKeyboard();
     }
 
     @Override

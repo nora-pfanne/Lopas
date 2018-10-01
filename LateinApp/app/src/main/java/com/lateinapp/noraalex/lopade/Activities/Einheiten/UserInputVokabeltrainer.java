@@ -117,10 +117,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
 
         //Checks if all vocabularies have been learned already
         if (dbHelper.getGelerntProzent(lektion) == 1) {
-            //Hiding the keyboard.
-            InputMethodManager imm = (InputMethodManager)getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
-            if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+
+            hideKeyboard();
 
             allLearned();
 
@@ -130,9 +128,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
             userInput.setBackgroundColor(backgroundColor);
             userInput.setFocusableInTouchMode(true);
 
-            //Showing the keyboard
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+            showKeyboard();
 
             //Getting a new vocabulary.
             currentVokabel = dbHelper.getRandomVocabulary(lektion);
@@ -151,15 +147,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
     private void checkInput(){
         userInput.setFocusable(false);
 
-        //Hiding the keyboard
-        try {
-            //Hiding the Keyboard.
-            View v = getWindow().getDecorView().getRootView();
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        }catch (NullPointerException npe){
-            npe.printStackTrace();
-        }
+        hideKeyboard();
 
 
         //Checking the userInput against the translation
@@ -375,14 +363,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
     public void onPause() {
         super.onPause();
 
-        try{
-            //Hiding the keyboard.
-            InputMethodManager imm = (InputMethodManager)getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
-            if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
-        }catch (Exception e){
-            //do nothing
-        }
+        hideKeyboard();
     }
 
     @Override

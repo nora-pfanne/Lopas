@@ -123,9 +123,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
 
             progressBar.setProgress(progress);
 
-            //Showing the Keyboard.
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+            showKeyboard();
 
 
             //Resetting the userInput.
@@ -164,10 +162,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
 
             progressBar.setProgress(maxProgress);
 
-            //Hiding the keyboard.
-            InputMethodManager imm = (InputMethodManager)getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
-            if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+            hideKeyboard();
 
             allLearned();
         }
@@ -178,14 +173,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
     private void checkInput(){
         userInput.setFocusable(false);
 
-        //Hiding the keyboard
-        try {
-            View v = getWindow().getDecorView().getRootView();
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        }catch (NullPointerException npe){
-            npe.printStackTrace();
-        }
+        hideKeyboard();
 
 
         //Checking the userInput against the translation
@@ -407,14 +395,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
     public void onPause() {
         super.onPause();
 
-        try{
-            //Hiding the keyboard.
-            InputMethodManager imm = (InputMethodManager)getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
-            if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
-        }catch (Exception e){
-            //do nothing
-        }
+        hideKeyboard();
     }
 
     @Override
