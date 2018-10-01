@@ -19,7 +19,7 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
  * A dump for all the SQL-Statements and Arrays used in DBHelper.class
  */
 //@SuppressWarnings("WeakerAccess")
-final class SQL_DUMP {
+public final class SQL_DUMP {
 
     //Strings used for the creation of all database tables
     static final String SQL_CREATE_ENTRIES_ADVERB =
@@ -608,5 +608,14 @@ final class SQL_DUMP {
              BeispielsatzDB.FeedEntry.COLUMN_GENITIV,
              BeispielsatzDB.FeedEntry.COLUMN_DATIV,
              BeispielsatzDB.FeedEntry.COLUMN_AKKUSATIV
+     };
+
+     public static final String[] allVocabularyTables = {
+            AdjektivDB.FeedEntry.TABLE_NAME,
+            AdverbDB.FeedEntry.TABLE_NAME,
+            PräpositionDB.FeedEntry.TABLE_NAME,
+            SprichwortDB.FeedEntry.TABLE_NAME,
+            SubstantivDB.FeedEntry.TABLE_NAME,
+            VerbDB.FeedEntry.TABLE_NAME
      };
 }

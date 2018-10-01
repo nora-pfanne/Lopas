@@ -497,45 +497,15 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public void resetLektion(int lektionNr){
 
-        String query = "UPDATE "
-                + AdverbDB.FeedEntry.TABLE_NAME
-                + " SET Gelernt = 0"
-                + " WHERE Lektion_ID = " + lektionNr;
-        Cursor cursor = database.rawQuery(query, new String[]{});
-        cursor.moveToFirst();
-        cursor.close();
-
-        query = "UPDATE "
-                + PräpositionDB.FeedEntry.TABLE_NAME
-                + " SET Gelernt = 0"
-                + " WHERE Lektion_ID = " + lektionNr;
-        Cursor cursor1 = database.rawQuery(query, new String[]{});
-        cursor1.moveToFirst();
-        cursor1.close();
-
-        query = "UPDATE "
-                + SprichwortDB.FeedEntry.TABLE_NAME
-                + " SET Gelernt = 0"
-                + " WHERE Lektion_ID = " + lektionNr;
-        Cursor cursor2 = database.rawQuery(query, new String[]{});
-        cursor2.moveToFirst();
-        cursor2.close();
-
-        query = "UPDATE "
-                + SubstantivDB.FeedEntry.TABLE_NAME
-                + " SET Gelernt = 0"
-                + " WHERE Lektion_ID = " + lektionNr;
-        Cursor cursor3 = database.rawQuery(query, new String[]{});
-        cursor3.moveToFirst();
-        cursor3.close();
-
-        query = "UPDATE "
-                + VerbDB.FeedEntry.TABLE_NAME
-                + " SET Gelernt = 0"
-                + " WHERE Lektion_ID = " + lektionNr;
-        Cursor cursor4 = database.rawQuery(query, new String[]{});
-        cursor4.moveToFirst();
-        cursor4.close();
+        for(String table: allVocabularyTables){
+            String query = "UPDATE "
+                    + table
+                    + " SET Gelernt = 0"
+                    + " WHERE Lektion_ID = " + lektionNr;
+            Cursor cursor = database.rawQuery(query, new String[]{});
+            cursor.moveToFirst();
+            cursor.close();
+        }
 
     }
 
@@ -574,12 +544,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public float getGelerntProzent(int lektion){
 
-        int entryAmout = countTableEntries(new String[] {
-                        AdverbDB.FeedEntry.TABLE_NAME,
-                        PräpositionDB.FeedEntry.TABLE_NAME,
-                        SprichwortDB.FeedEntry.TABLE_NAME,
-                        SubstantivDB.FeedEntry.TABLE_NAME,
-                        VerbDB.FeedEntry.TABLE_NAME}, lektion);
+        int entryAmout = countTableEntries(allVocabularyTables, lektion);
 
         //Returning -1 if the database doesn't have any entries to avoid division by 0
         if (entryAmout == 0){
@@ -587,12 +552,7 @@ public class DBHelper extends SQLiteOpenHelper {
             return -1;
         }
 
-        int entryAmountGelernt = countTableEntries(new String[] {
-                AdverbDB.FeedEntry.TABLE_NAME,
-                PräpositionDB.FeedEntry.TABLE_NAME,
-                SprichwortDB.FeedEntry.TABLE_NAME,
-                SubstantivDB.FeedEntry.TABLE_NAME,
-                VerbDB.FeedEntry.TABLE_NAME}, lektion, true);
+        int entryAmountGelernt = countTableEntries(allVocabularyTables, lektion, true);
 
 
         return ((float)entryAmountGelernt/entryAmout);
@@ -932,7 +892,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param lektionNr the id of the 'lektion', where the entries are to be counted
      * @return the amount of entries in the tables of the array; returns -1 if the any table doesn't have 'Lektion_id' as foreign key
      */
-    private int countTableEntries(String[] tables, int lektionNr){
+    public int countTableEntries(String[] tables, int lektionNr){
 
         //TODO: NOT YET TESTED, JUST CPY&PASTED FROM ABOVE ->INPORTANT
 

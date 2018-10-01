@@ -3,8 +3,6 @@ package com.lateinapp.noraalex.lopade;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.Toast;
 
 
@@ -78,26 +76,20 @@ public class General {
     //Scoring System
     //
 
-
-    //
-    //TODO: THIS IS ALL UNTESTED.
-    //FIXME: TEST THIS ASAP.
-    //
-
-    private static final int maxCombo = 3;
-    private static final int minCombo = 0;
+    private static final int MAX_COMBO = 3;
+    private static final int MIN_COMBO = 0;
 
     public static int calculateMaxPossiblePoints(int pointBaseline, int inputAmount){
 
         int score = 0;
 
-        int combo = minCombo;
+        int combo = MIN_COMBO;
 
         for(int i = 0; i < inputAmount; i++){
 
-            score += getScoreDifference(combo, pointBaseline, true);
+            score += getScoreDifference(getComboMultiplier(combo), pointBaseline, true);;
 
-            if(combo >= minCombo && combo < maxCombo){
+            if(combo >= MIN_COMBO && combo < MAX_COMBO){
                 combo++;
             }
         }
@@ -135,11 +127,21 @@ public class General {
         return sharedPreferences.getInt("Score_All", 0);
     }
 
+    public static void resetPoints(int lektion, SharedPreferences sharedPreferences){
+
+        int oldPoints = getPoints(lektion, sharedPreferences);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("Score_" + lektion, 0);
+        editor.putInt("Score_All", getPoints(lektion, sharedPreferences) - oldPoints);
+        editor.apply();
+    }
+
     public static void increaseCombo(int lektion, SharedPreferences sharedPreferences){
 
-        int currentCombo = sharedPreferences.getInt("Combo_" + lektion, minCombo);
+        int currentCombo = sharedPreferences.getInt("Combo_" + lektion, MIN_COMBO);
 
-        if(currentCombo >= minCombo && currentCombo < maxCombo){
+        if(currentCombo >= MIN_COMBO && currentCombo < MAX_COMBO){
             currentCombo++;
         }
 
@@ -150,9 +152,9 @@ public class General {
 
     public static void decreaseCombo(int lektion, SharedPreferences sharedPreferences){
 
-        int currentCombo = sharedPreferences.getInt("Combo_" + lektion, minCombo);
+        int currentCombo = sharedPreferences.getInt("Combo_" + lektion, MIN_COMBO);
 
-        if(currentCombo > minCombo && currentCombo <= maxCombo){
+        if(currentCombo > MIN_COMBO && currentCombo <= MAX_COMBO){
             currentCombo--;
         }
 
@@ -172,7 +174,6 @@ public class General {
         }else{
             amount = -pointBaseline;
         }
-        Log.d("__getScoreDifference", "\namount: "+amount + "\ncombo: " + combo + "\npointBaseLine: "+pointBaseline + "\ninputCorret: " + inputCorrect);
         return (amount);
     }
 
@@ -181,7 +182,7 @@ public class General {
     }
 
     public static int getCombo(int lektion, SharedPreferences sharedPreferences){
-        int combo = sharedPreferences.getInt("Combo_" + lektion, minCombo);
+        int combo = sharedPreferences.getInt("Combo_" + lektion, MIN_COMBO);
         return getComboMultiplier(combo);
     }
 
@@ -189,7 +190,7 @@ public class General {
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putInt("Combo_" + lektion, minCombo);
+        editor.putInt("Combo_" + lektion, MIN_COMBO);
 
         editor.apply();
     }

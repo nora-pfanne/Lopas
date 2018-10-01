@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
+import com.lateinapp.noraalex.lopade.Databases.SQL_DUMP;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdjektivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.PräpositionDB;
@@ -336,6 +337,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
      */
     private void allLearned(){
 
+        int vocabularyCount = dbHelper.countTableEntries(SQL_DUMP.allVocabularyTables, lektion);
+
         request.setVisibility(View.GONE);
         solution.setVisibility(View.GONE);
         userInput.setVisibility(View.GONE);
@@ -374,6 +377,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
 
                 dbHelper.resetLektion(lektion);
                 General.resetCombo(lektion, sharedPref);
+                General.resetPoints(lektion, sharedPref);
                 finish();
                 break;
 
