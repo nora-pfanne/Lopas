@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -233,8 +235,6 @@ public abstract class LateinAppActivity extends AppCompatActivity{
 
     }
 
-
-
     public void hideKeyboard(){
         try {
             //Hiding the Keyboard.
@@ -249,5 +249,21 @@ public abstract class LateinAppActivity extends AppCompatActivity{
     public void showKeyboard(){
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+
+    public void animationFadeOut(View view){
+        Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
+        view.startAnimation(anim);
+    }
+
+    public void animationFadeIn(View view){
+        Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
+        view.startAnimation(anim);
+    }
+
+    public void animationMove(View view){
+        Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.move);
+        view.startAnimation(anim);
     }
 }
