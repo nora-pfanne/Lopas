@@ -50,7 +50,9 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
 
     private TextView request,
          solution,
-         titel;
+         titel,
+         score,
+         combo;
     private EditText userInput;
     private ProgressBar progressBar;
     //FIXME: Remove button elevation to make it align with 'userInput'-EditText
@@ -94,6 +96,14 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         reset = findViewById(R.id.buttonUserInputFortschrittLöschen);
         zurück = findViewById(R.id.buttonUserInputZurück);
         titel = findViewById(R.id.textUserInputÜberschrift);
+        score = findViewById(R.id.textUserInputScore);
+        combo = findViewById(R.id.textUserInputCombo);
+
+        //TODO: We dont have a score on other trainers yet.
+        //This means that we have to hide the score/combo TextView originally
+        //and only make it visible here in this trainer
+        score.setVisibility(View.VISIBLE);
+        combo.setVisibility(View.VISIBLE);
 
         userInput.setHint("Übersetzung");
         //Makes it possible to move to the next vocabulary by pressing "enter"
@@ -116,6 +126,9 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
 
         progressBar.setMax(100);
         progressBar.setProgress((int)(dbHelper.getGelerntProzent(lektion) * 100));
+
+        combo.setText("Combo: " + General.getCombo(lektion, sharedPref) + "x");
+        score.setText("Score: " + General.getPoints(lektion, sharedPref));
     }
 
     private void newRequest(){
@@ -179,7 +192,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
             //Input was incorrect
 
             scoreDifference = General.modifyScore(pointBaseline, false, lektion, sharedPref);
-            General.decreaseCombo(lektion, sharedPref);
+            General.resetCombo(lektion, sharedPref);
 
             dbHelper.incrementValue(getVokabelTable(currentVokabel), "Amount_Incorrect", currentVokabel.getId(), 1);
 
@@ -188,6 +201,9 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         userInput.setBackgroundColor(color);
 
         popupScore(scoreDifference);
+        combo.setText("Combo: " + General.getCombo(lektion, sharedPref) + "x");
+        score.setText("Score: " + General.getPoints(lektion, sharedPref));
+
 
         //Showing the correct translation
         solution.setText(currentVokabel.getDeutsch());

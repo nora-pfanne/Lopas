@@ -2,6 +2,7 @@ package com.lateinapp.noraalex.lopade;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -111,11 +112,18 @@ public class General {
 
         int difference = getScoreDifference(combo, pointBaseline, inputCorrect);
 
+        int delta = difference;
+        if(oldScore + difference < 0){
+            delta = 0;
+        }
+
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("Score_" + lektion, oldScore + difference);
-        editor.putInt("Score_All", getPoints(lektion, sharedPreferences) + difference);
+        editor.putInt("Score_" + lektion, oldScore + delta);
+        editor.putInt("Score_All", getPoints(lektion, sharedPreferences) + delta);
         editor.apply();
 
+        //Does not return the change in score.
+        //if the score is 0 we dont subtract points but still show a "-100" for example
         return difference;
     }
 
@@ -155,20 +163,16 @@ public class General {
 
 
     private static int getScoreDifference(int combo, int pointBaseline, boolean inputCorrect){
-        //TODO: Should points be able to be negative?
 
         int amount;
 
-        //Calculating the combo multiplier
-        int comboMultiplier = getComboMultiplier(combo);
-
         //Calculating final amount to increase the score by
         if(inputCorrect){
-            amount = comboMultiplier * pointBaseline;
+            amount = combo * pointBaseline;
         }else{
             amount = -pointBaseline;
         }
-
+        Log.d("__getScoreDifference", "\namount: "+amount + "\ncombo: " + combo + "\npointBaseLine: "+pointBaseline + "\ninputCorret: " + inputCorrect);
         return (amount);
     }
 
@@ -176,8 +180,9 @@ public class General {
         return (int)pow(2, combo);
     }
 
-    private static int getCombo(int lektion, SharedPreferences sharedPreferences){
-        return sharedPreferences.getInt("Combo_" + lektion, minCombo);
+    public static int getCombo(int lektion, SharedPreferences sharedPreferences){
+        int combo = sharedPreferences.getInt("Combo_" + lektion, minCombo);
+        return getComboMultiplier(combo);
     }
 
     public static void resetCombo(int lektion, SharedPreferences sharedPreferences){
