@@ -3,6 +3,9 @@ package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,9 +13,13 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -34,7 +41,7 @@ import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
 import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
 import static com.lateinapp.noraalex.lopade.Global.KEY_FINISHED_USERINPUT_VOKABELTRAINER;
 
-public class UserInputVokabeltrainer extends LateinAppActivity {
+public class UserInputVokabeltrainer extends LateinAppActivity implements Animation.AnimationListener {
 
     private static final String TAG = "UserInputVokabeltrainer";
 
@@ -152,13 +159,14 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
 
         //Checking the userInput against the translation
         int color;
+        int scoreDifference;
         if(compareTranslation(userInput.getText().toString(), currentVokabel.getDeutsch())){
 
             //Input was correct
 
             dbHelper.incrementValue(getVokabelTable(currentVokabel), "Amount_Correct", currentVokabel.getId(), 1);
 
-            General.modifyScore(pointBaseline, true, lektion, sharedPref);
+            scoreDifference = General.modifyScore(pointBaseline, true, lektion, sharedPref);
             General.increaseCombo(lektion, sharedPref);
 
             //Checking the vocabulary as learned
@@ -170,7 +178,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
 
             //Input was incorrect
 
-            General.modifyScore(pointBaseline, false, lektion, sharedPref);
+            scoreDifference = General.modifyScore(pointBaseline, false, lektion, sharedPref);
             General.decreaseCombo(lektion, sharedPref);
 
             dbHelper.incrementValue(getVokabelTable(currentVokabel), "Amount_Incorrect", currentVokabel.getId(), 1);
@@ -178,6 +186,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
         }
         userInput.setBackgroundColor(color);
+
+        popupScore(scoreDifference);
 
         //Showing the correct translation
         solution.setText(currentVokabel.getDeutsch());
@@ -398,6 +408,71 @@ public class UserInputVokabeltrainer extends LateinAppActivity {
         super.onDestroy();
         dbHelper.close();
     }
+
+    private TextView tempScoreView;
+    private void popupScore(int score){
+
+
+        String message = "";
+        int color;
+
+        if(score > 0){
+            message += "+";
+            color = ResourcesCompat.getColor(getResources(), R.color.fullGreen, null);
+
+        }else if(score < 0){
+            color = ResourcesCompat.getColor(getResources(), R.color.fullRed, null);
+
+        }else{
+            //No score difference
+            color = ResourcesCompat.getColor(getResources(), R.color.fullGray, null);
+
+        }
+        message += score;
+
+
+        tempScoreView = new TextView(this);
+        tempScoreView.setText(message);
+        tempScoreView.setTextColor(color);
+        tempScoreView.setTextSize(30);
+        tempScoreView.setTypeface(tempScoreView.getTypeface(), Typeface.BOLD);
+        tempScoreView.setId(View.generateViewId());
+
+        tempScoreView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        ConstraintLayout layout = findViewById(R.id.constraint_Layout);
+        layout.addView(tempScoreView, tempScoreView.getLayoutParams());
+
+        ConstraintSet c = new ConstraintSet();
+        c.clone(layout);
+        c.connect(tempScoreView.getId(), ConstraintSet.RIGHT, layout.getId(), ConstraintSet.RIGHT,0);
+        c.connect(tempScoreView.getId(), ConstraintSet.LEFT,   layout.getId(), ConstraintSet.LEFT,0);
+        c.connect(tempScoreView.getId(), ConstraintSet.TOP,   layout.getId(), ConstraintSet.TOP,0);
+        c.connect(tempScoreView.getId(), ConstraintSet.BOTTOM,   layout.getId(), ConstraintSet.BOTTOM,0);
+        c.applyTo(layout);
+
+        animationScore(tempScoreView);
+
+    }
+
+    public void animationScore(View view){
+        Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.score_move_fade);
+        anim.setAnimationListener(this);
+        view.startAnimation(anim);
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+        tempScoreView.setVisibility(View.GONE);
+
+    }
+
+    @Override
+    public void onAnimationStart(Animation animation) {}
+    @Override
+    public void onAnimationRepeat(Animation animation) {}
 }
 
 

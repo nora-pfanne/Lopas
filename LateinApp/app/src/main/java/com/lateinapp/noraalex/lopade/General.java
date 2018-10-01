@@ -94,7 +94,7 @@ public class General {
 
         for(int i = 0; i < inputAmount; i++){
 
-            score = getNewScore(score, combo, pointBaseline, true);
+            score += getScoreDifference(combo, pointBaseline, true);
 
             if(combo >= minCombo && combo < maxCombo){
                 combo++;
@@ -104,17 +104,19 @@ public class General {
         return score;
     }
 
-    public static void modifyScore(int pointBaseline, boolean inputCorrect, int lektion, SharedPreferences sharedPreferences){
+    public static int modifyScore(int pointBaseline, boolean inputCorrect, int lektion, SharedPreferences sharedPreferences){
 
         int oldScore = getPoints(lektion, sharedPreferences);
         int combo = getCombo(lektion, sharedPreferences);
 
-        int amount = getNewScore(oldScore, combo, pointBaseline, inputCorrect);
+        int difference = getScoreDifference(combo, pointBaseline, inputCorrect);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("Score_" + lektion,  + amount);
-        editor.putInt("Score_All", getPoints(lektion, sharedPreferences) + amount);
+        editor.putInt("Score_" + lektion, oldScore + difference);
+        editor.putInt("Score_All", getPoints(lektion, sharedPreferences) + difference);
         editor.apply();
+
+        return difference;
     }
 
     public static int getPoints(int lektion, SharedPreferences sharedPreferences){
@@ -152,7 +154,7 @@ public class General {
     }
 
 
-    private static int getNewScore(int oldScore, int combo, int pointBaseline, boolean inputCorrect){
+    private static int getScoreDifference(int combo, int pointBaseline, boolean inputCorrect){
         //TODO: Should points be able to be negative?
 
         int amount;
@@ -167,7 +169,7 @@ public class General {
             amount = -pointBaseline;
         }
 
-        return (oldScore+amount);
+        return (amount);
     }
 
     private static int getComboMultiplier(int combo){
