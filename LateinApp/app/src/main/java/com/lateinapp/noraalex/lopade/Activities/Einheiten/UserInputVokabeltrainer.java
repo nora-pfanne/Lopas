@@ -65,6 +65,9 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
 
     private static final int pointBaseline = 100;
 
+    Animation animScore,
+        animShake;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +98,12 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         titel = findViewById(R.id.textUserInputÜberschrift);
         score = findViewById(R.id.textUserInputScore);
         combo = findViewById(R.id.textUserInputCombo);
+
+        animScore = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.score_move_fade);
+        animScore.setAnimationListener(this);
+
+        animShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+        animShake.setAnimationListener(this);
 
         //TODO: We dont have a score on other trainers yet.
         //This means that we have to hide the score/combo TextView originally
@@ -166,6 +175,9 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
 
         hideKeyboard();
 
+        bestaetigung.setVisibility(View.GONE);
+        weiter.setVisibility(View.VISIBLE);
+        solution.setVisibility(View.VISIBLE);
 
         //Checking the userInput against the translation
         int color;
@@ -183,7 +195,6 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
             dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
 
             color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
-
         }else {
 
             //Input was incorrect
@@ -194,6 +205,9 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
             dbHelper.incrementValue(getVokabelTable(currentVokabel), "Amount_Incorrect", currentVokabel.getId(), 1);
 
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+
+            weiter.startAnimation(animShake);
+            userInput.startAnimation(animShake);
         }
         userInput.setBackgroundColor(color);
 
@@ -205,9 +219,6 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         //Showing the correct translation
         solution.setText(currentVokabel.getDeutsch());
 
-        bestaetigung.setVisibility(View.GONE);
-        weiter.setVisibility(View.VISIBLE);
-        solution.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -467,19 +478,15 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         c.connect(tempScoreView.getId(), ConstraintSet.BOTTOM,   layout.getId(), ConstraintSet.BOTTOM,0);
         c.applyTo(layout);
 
-        animationScore(tempScoreView);
+        tempScoreView.startAnimation(animScore);
 
-    }
-
-    public void animationScore(View view){
-        Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.score_move_fade);
-        anim.setAnimationListener(this);
-        view.startAnimation(anim);
     }
 
     @Override
     public void onAnimationEnd(Animation animation) {
-        tempScoreView.setVisibility(View.GONE);
+        if(animation == animScore) {
+            tempScoreView.setVisibility(View.GONE);
+        }
 
     }
 
