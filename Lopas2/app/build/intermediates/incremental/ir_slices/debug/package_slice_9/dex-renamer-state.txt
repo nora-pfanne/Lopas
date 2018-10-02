@@ -1,0 +1,4 @@
+#Wed Sep 05 10:54:44 CEST 2018
+base.0=C\:\\Users\\admin\\Documents\\GitHub\\AppLATEIN\\Lopas2\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\26
+path.0=classes.dex
+renamed.0=classes.dex
