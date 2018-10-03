@@ -195,6 +195,62 @@ public class General {
         editor.apply();
     }
 
+    public static int getGrade(int pointBaseline, int entryAmount, int lektion, SharedPreferences sharedPreferences){
+
+        int points = getPoints(lektion, sharedPreferences);
+        int maxPoints = calculateMaxPossiblePoints(pointBaseline, entryAmount);
+
+        float percentage = (float)points / (float)maxPoints;
+
+        return percentageToGrade(percentage);
+
+    }
+
+    private static int percentageToGrade(float percentage){
+        //Currently using this scale:
+        //http://www.wzemann.de/physik/page18/files/notenskala.jpg
+        //from 0 to 15, 15 being the best possible
+
+        int score;
+
+        if(percentage > 0.95f){
+            score = 15;
+        }else if(percentage > 0.90f){
+            score = 14;
+        }else if(percentage > 0.85f){
+            score = 13;
+        }else if(percentage > 0.80f){
+            score = 12;
+        }else if(percentage > 0.75f){
+            score = 11;
+        }else if(percentage > 0.70f){
+            score = 10;
+        }else if(percentage > 0.65f){
+            score = 9;
+        }else if(percentage > 0.60f){
+            score = 8;
+        }else if(percentage > 0.55f){
+            score = 7;
+        }else if(percentage > 0.50f){
+            score = 6;
+        }else if(percentage > 0.45f){
+            score = 5;
+        }else if(percentage > 0.40f){
+            score = 4;
+        }else if(percentage > 0.33f){
+            score = 3;
+        }else if(percentage > 0.26f){
+            score = 2;
+        }else if(percentage > 0.19f){
+            score = 1;
+        }else{
+            score = 0;
+        }
+
+            return score;
+
+    }
+
 
 
     //https://en.wikipedia.org/wiki/Exponentiation_by_squaring
