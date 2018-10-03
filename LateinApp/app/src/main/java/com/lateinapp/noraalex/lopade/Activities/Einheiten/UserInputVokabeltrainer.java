@@ -33,6 +33,7 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
 import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
+import com.lateinapp.noraalex.lopade.Score;
 
 import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
 import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
@@ -133,8 +134,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         progressBar.setMax(100);
         progressBar.setProgress((int)(dbHelper.getGelerntProzent(lektion) * 100));
 
-        combo.setText("Combo: " + General.getCombo(lektion, sharedPref) + "x");
-        score.setText("Score: " + General.getPoints(lektion, sharedPref));
+        combo.setText("Combo: " + Score.getCombo(lektion, sharedPref) + "x");
+        score.setText("Score: " + Score.getPoints(lektion, sharedPref));
     }
 
     private void newRequest(){
@@ -188,8 +189,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
 
             dbHelper.incrementValue(getVokabelTable(currentVokabel), "Amount_Correct", currentVokabel.getId(), 1);
 
-            scoreDifference = General.modifyScore(pointBaseline, true, lektion, sharedPref);
-            General.increaseCombo(lektion, sharedPref);
+            scoreDifference = Score.modifyScore(pointBaseline, true, lektion, sharedPref);
+            Score.increaseCombo(lektion, sharedPref);
 
             //Checking the vocabulary as learned
             dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
@@ -199,8 +200,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
 
             //Input was incorrect
 
-            scoreDifference = General.modifyScore(pointBaseline, false, lektion, sharedPref);
-            General.resetCombo(lektion, sharedPref);
+            scoreDifference = Score.modifyScore(pointBaseline, false, lektion, sharedPref);
+            Score.resetCombo(lektion, sharedPref);
 
             dbHelper.incrementValue(getVokabelTable(currentVokabel), "Amount_Incorrect", currentVokabel.getId(), 1);
 
@@ -212,8 +213,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         userInput.setBackgroundColor(color);
 
         popupScore(scoreDifference);
-        combo.setText("Combo: " + General.getCombo(lektion, sharedPref) + "x");
-        score.setText("Score: " + General.getPoints(lektion, sharedPref));
+        combo.setText("Combo: " + Score.getCombo(lektion, sharedPref) + "x");
+        score.setText("Score: " + Score.getPoints(lektion, sharedPref));
 
 
         //Showing the correct translation
@@ -381,8 +382,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
             case (R.id.buttonUserInputFortschrittLöschen):
 
                 dbHelper.resetLektion(lektion);
-                General.resetCombo(lektion, sharedPref);
-                General.resetPoints(lektion, sharedPref);
+                Score.resetCombo(lektion, sharedPref);
+                Score.resetPoints(lektion, sharedPref);
                 finish();
                 break;
 
