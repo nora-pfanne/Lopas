@@ -5,18 +5,16 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:fullBackupContent="@xml/backup_descriptor">
-
+        android:theme="@style/AppTheme">
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.EinheitenUebersicht"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name">
-
+            android:name=".Activities.EinheitenUebersicht"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,63 +22,59 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputVokabeltrainer"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.EinheitenUebersicht"/>
+            android:name=".Activities.Einheiten.UserInputVokabeltrainer"
+            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:screenOrientation="portrait" />
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.Woerterbuch"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.EinheitenUebersicht"/>
+            android:name=".Activities.Woerterbuch"
+            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Einheiten.ClickDeklinationsendung"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.EinheitenUebersicht"/>
-
+            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:screenOrientation="portrait" />
         <activity
-            android:name="com.lateinapp.noraalex.lopade.Activities.SettingsActivity"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.EinheitenUebersicht"/>
+            android:name=".Activities.SettingsActivity"
+            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Einheiten.ClickPersonalendung"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.EinheitenUebersicht"/>
-
+            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Einheiten.UserInputDeklinationsendung"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.EinheitenUebersicht"/>
-
+            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Einheiten.UserInputPersonalendung"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.EinheitenUebersicht"/>
-
+            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Einheiten.Satzglieder"
+            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Einheiten.ClickKasusFragen"
+            android:parentActivityName=".Activities.EinheitenUebersicht"
             android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.EinheitenUebersicht"/>
-
-        <activity android:name=".Activities.Einheiten.ClickKasusFragen"
-            android:screenOrientation="portrait"
-            tools:ignore="InnerclassSeparator"
-            android:parentActivityName=".Activities.EinheitenUebersicht"/>
-
-        <activity android:name=".Activities.Einheiten.UserInputAdjektive"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.EinheitenUebersicht"/>
-
-        <activity android:name=".Activities.AndroidDatabaseManager"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.EinheitenUebersicht"/>
-
-        <activity android:name=".Activities.Einheiten.UserInputEsseVelleNolle"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".Activities.EinheitenUebersicht"/>
-
+            tools:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".Activities.Einheiten.UserInputAdjektive"
+            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.AndroidDatabaseManager"
+            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Einheiten.UserInputEsseVelleNolle"
+            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>
