@@ -23,13 +23,20 @@ public class Global {
 
 
     //The trainers corresponding the SharedPrefrences values below have different modi. Append a number to the key to excess them.
-    //Example: Progress_UserInput_Deklinationsendung5
+    //Example: Progress_UserInput_Deklinationsendung_5
 
-    public static final String KEY_FINISHED_USERINPUT_VOKABELTRAINER = "Progress_UserInput_Vokabeltrainer";         //Integer
-    public static final String KEY_PROGRESS_USERINPUT_DEKLINATIONSENDUNG = "Progress_UserInput_Deklinationsendung"; //Integer
-    public static final String KEY_PROGRESS_USERINPUT_PERSONALENDUNG = "Progress_UserInput_Personalendung";         //Integer
-    public static final String KEY_PROGRESS_CLICK_DEKLINATIONSENDUNG = "Progress_Click_Deklinationsendung";         //Integer
-    public static final String KEY_PROGRESS_CLICK_PERSONALENDUNG = "Progress_Click_Personalendung";                 //Integer
+    public static final String KEY_FINISHED_USERINPUT_VOKABELTRAINER = "Progress_UserInput_Vokabeltrainer_";         //Integer
+    public static final String KEY_PROGRESS_USERINPUT_DEKLINATIONSENDUNG = "Progress_UserInput_Deklinationsendung_"; //Integer
+    public static final String KEY_PROGRESS_USERINPUT_PERSONALENDUNG = "Progress_UserInput_Personalendung_";         //Integer
+    public static final String KEY_PROGRESS_CLICK_DEKLINATIONSENDUNG = "Progress_Click_Deklinationsendung_";         //Integer
+    public static final String KEY_PROGRESS_CLICK_PERSONALENDUNG = "Progress_Click_Personalendung_";                 //Integer
 
+    //Example: High_Score_Vocabulary_Trainer_3
+    public static final String KEY_SCORE_VOCAULARY = "High_Score_Vocabulary_Trainer_";                          //Integer
+    public static final String KEY_HIGH_SCORE_VOCAULARY = "High_Score_Vocabulary_Trainer_";                          //Integer
+    public static final String KEY_HIGH_COMBO_VOCAULARY = "High_Score_Vocabulary_Combo_";                            //Integer
+
+
+    public static final String KEY_HIGH_SCORE_ALL_TRAINERS = "High_Score_All_Trainers";                              //Integer
 
 }
