@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -22,7 +24,9 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lateinapp.noraalex.lopade.Activities.AndroidDatabaseManager;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
+import com.lateinapp.noraalex.lopade.Activities.SettingsActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdjektivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
@@ -381,10 +385,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
             //Setting the 'learned' state of all vocabularies of the current lektion to false
             case (R.id.buttonUserInputFortschrittLöschen):
 
-                dbHelper.resetLektion(lektion);
-                Score.resetCombo(lektion, sharedPref);
-                Score.resetPoints(lektion, sharedPref);
-                finish();
+                resetCurrentLektion();
                 break;
 
             //Returning to the previous activity
@@ -393,6 +394,13 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
                 finish();
                 break;
         }
+    }
+
+    private void resetCurrentLektion(){
+        dbHelper.resetLektion(lektion);
+        Score.resetCombo(lektion, sharedPref);
+        Score.resetPoints(lektion, sharedPref);
+        finish();
     }
 
     @Override
@@ -495,6 +503,32 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
     public void onAnimationStart(Animation animation) {}
     @Override
     public void onAnimationRepeat(Animation animation) {}
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        getMenuInflater().inflate(R.menu.reset_trainer_button, menu);
+
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+
+            //Opening a popup window
+            case (R.id.action_reset_trainer):
+
+                resetCurrentLektion();
+
+                break;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
 
 
