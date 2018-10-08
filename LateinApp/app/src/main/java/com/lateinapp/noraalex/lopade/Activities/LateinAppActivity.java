@@ -125,7 +125,7 @@ public abstract class LateinAppActivity extends AppCompatActivity{
             case (R.id.action_dev_reload_database_from_assets):
                 DBHelper dbHelper = new DBHelper(getApplicationContext());
 
-                dbHelper.reloadDatabaseFromAssets();
+                dbHelper.copyDataBaseFromAssets();
 
                 dbHelper.close();
                 break;
