@@ -19,8 +19,8 @@
     ***********************************************************************************************
     -->
 
-    <color name="colorPrimary">#174061</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#1e639b</color>
+    <color name="colorPrimaryDark">#1a5483</color>
     <color name="colorAccent">#FF4081</color>
 
     <!-- Main theme colors -->

@@ -3,8 +3,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/GhostWhite</item>
+        <item name="colorPrimaryDark">@color/ButtonGrey</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
@@ -20,12 +20,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="BasicBlueButtonHome" parent="@android:style/Widget.Button">
+    <style name="BasicBlueButtonHome">
         <item name="android:textColor">@color/Gold</item>
-        <item name="android:fontFamily">@font/hind_light</item>
+        <item name="android:fontFamily">@font/roboto</item>
         <item name="android:background">@color/PrussianBlue</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">28sp</item>
+        <item name="android:textSize">10dp</item>
     </style>
 
     <style name="HomeScreenSelectionButton">
@@ -36,9 +35,9 @@
 
     <!--TextView styles-->
     <style name="titelGrammatik">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:fontFamily">@font/archivo_black</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">#000000</item>
     </style>
@@ -58,8 +57,15 @@
         <item name="android:textColor">#ffffff</item>
     </style>
 
+    <style name="Vokabel1Button">
+        <item name="android:backgroundTint">@color/PrussianBlue</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/Gold</item>
+    </style>
+
     <style name="PraepositionGrammatikButton">
-        <item name="android:backgroundTint">@color/WageningenGreen</item>
+        <item name="android:backgroundTint">@color/TangerineOrange</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">#ffffff</item>
