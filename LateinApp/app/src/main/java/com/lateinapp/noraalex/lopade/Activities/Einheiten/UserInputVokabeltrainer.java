@@ -1,6 +1,6 @@
 package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
-import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -8,6 +8,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -24,10 +25,9 @@ import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.lateinapp.noraalex.lopade.Activities.AndroidDatabaseManager;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
-import com.lateinapp.noraalex.lopade.Activities.SettingsActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdjektivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
@@ -522,7 +522,18 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
             //Opening a popup window
             case (R.id.action_reset_trainer):
 
-                resetCurrentLektion();
+                new AlertDialog.Builder(this)
+                        .setTitle("Lektion zurücksetzen?")
+                        .setMessage("Willst du den Vokabeltrainer für die Lektion " + lektion + "wirklich neu starten?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                General.showMessage("Lektion " + lektion + " zurückgesetzt!", getApplicationContext());
+                                resetCurrentLektion();
+                            }})
+                        .setNegativeButton(android.R.string.no, null).show();
+
 
                 break;
 
