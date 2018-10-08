@@ -1,5 +1,6 @@
 package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -139,7 +140,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         progressBar.setProgress((int)(dbHelper.getGelerntProzent(lektion) * 100));
 
         combo.setText("Combo: " + Score.getCombo(lektion, sharedPref) + "x");
-        score.setText("Score: " + Score.getPoints(lektion, sharedPref));
+        score.setText("Score: " + Score.getPointsVocabularyTrainer(lektion, sharedPref));
     }
 
     private void newRequest(){
@@ -218,7 +219,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
 
         popupScore(scoreDifference);
         combo.setText("Combo: " + Score.getCombo(lektion, sharedPref) + "x");
-        score.setText("Score: " + Score.getPoints(lektion, sharedPref));
+        score.setText("Score: " + Score.getPointsVocabularyTrainer(lektion, sharedPref));
 
 
         //Showing the correct translation
