@@ -9,6 +9,8 @@ import android.support.constraint.ConstraintSet;
 import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -40,6 +42,7 @@ import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
 import com.lateinapp.noraalex.lopade.Score;
 
+import static com.lateinapp.noraalex.lopade.Databases.SQL_DUMP.allVocabularyTables;
 import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
 import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
 import static com.lateinapp.noraalex.lopade.Global.KEY_FINISHED_USERINPUT_VOKABELTRAINER;
@@ -60,9 +63,23 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
     private ProgressBar progressBar;
     //FIXME: Remove button elevation to make it align with 'userInput'-EditText
     private Button bestaetigung,
-        weiter,
-        reset,
-        zurück;
+        weiter;
+
+    //Score stuff
+    private TextView sCongratulations,
+        sCurrentTrainer,
+        sPercent,
+        sPercentValue,
+        sEndScore,
+        sEndScoreValue,
+        sHighScore,
+        sHighScoreValue,
+        sGrade,
+        sGradeValue;
+    private Button sBack,
+        sReset;
+
+
 
     private Vokabel currentVokabel;
 
@@ -99,11 +116,24 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         progressBar = findViewById(R.id.progressBarUserInput);
         bestaetigung = findViewById(R.id.buttonUserInputEingabeBestätigt);
         weiter = findViewById(R.id.buttonUserInputNächsteVokabel);
-        reset = findViewById(R.id.buttonUserInputFortschrittLöschen);
-        zurück = findViewById(R.id.buttonUserInputZurück);
         titel = findViewById(R.id.textUserInputÜberschrift);
         score = findViewById(R.id.textUserInputScore);
         combo = findViewById(R.id.textUserInputCombo);
+
+        //Score stuff
+        sCongratulations = findViewById(R.id.scoreCongratulations);
+        sCurrentTrainer = findViewById(R.id.scoreCurrentTrainer);
+        sPercent = findViewById(R.id.scorePercent);
+        sPercentValue = findViewById(R.id.scorePercentValue);
+        sEndScore = findViewById(R.id.scoreEndScore);
+        sEndScoreValue = findViewById(R.id.scoreEndScoreValue);
+        sHighScore = findViewById(R.id.scoreHighScore);
+        sHighScoreValue = findViewById(R.id.scoreHighScoreValue);
+        sGrade = findViewById(R.id.scoreGrade);
+        sGradeValue = findViewById(R.id.scoreGradeValue);
+        sBack = findViewById(R.id.scoreButtonBack);
+        sReset = findViewById(R.id.scoreButtonReset);
+
 
         animScore = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.score_move_fade);
         animScore.setAnimationListener(this);
@@ -140,7 +170,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         progressBar.setProgress((int)(dbHelper.getGelerntProzent(lektion) * 100));
 
         combo.setText("Combo: " + Score.getCombo(lektion, sharedPref) + "x");
-        score.setText("Score: " + Score.getPointsVocabularyTrainer(lektion, sharedPref));
+        score.setText("Score: " + Score.getScoreVocabularyTrainer(lektion, sharedPref));
     }
 
     private void newRequest(){
@@ -195,7 +225,6 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
             dbHelper.incrementValue(getVokabelTable(currentVokabel), "Amount_Correct", currentVokabel.getId(), 1);
 
             scoreDifference = Score.modifyScore(pointBaseline, true, lektion, sharedPref);
-            Score.increaseCombo(lektion, sharedPref);
 
             //Checking the vocabulary as learned
             dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
@@ -206,7 +235,6 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
             //Input was incorrect
 
             scoreDifference = Score.modifyScore(pointBaseline, false, lektion, sharedPref);
-            Score.resetCombo(lektion, sharedPref);
 
             dbHelper.incrementValue(getVokabelTable(currentVokabel), "Amount_Incorrect", currentVokabel.getId(), 1);
 
@@ -218,8 +246,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         userInput.setBackgroundColor(color);
 
         popupScore(scoreDifference);
-        combo.setText("Combo: " + Score.getCombo(lektion, sharedPref) + "x");
-        score.setText("Score: " + Score.getPointsVocabularyTrainer(lektion, sharedPref));
+        combo.setText("Combo: " + Score.getCombo(lektion, sharedPref) + 'x');
+        score.setText("Score: " + Score.getScoreVocabularyTrainer(lektion, sharedPref) + " | HS: " + Score.getHighScoreVocabularyTrainer(sharedPref,lektion));
 
 
         //Showing the correct translation
@@ -355,8 +383,43 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         userInput.setVisibility(View.GONE);
         bestaetigung.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
-        reset.setVisibility(View.VISIBLE);
-        zurück.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+        score.setVisibility(View.GONE);
+        combo.setVisibility(View.GONE);
+
+        //Score screen
+        sCongratulations.setVisibility(View.VISIBLE);
+        sCurrentTrainer.setVisibility(View.VISIBLE);
+        sPercent.setVisibility(View.VISIBLE);
+        sPercentValue.setVisibility(View.VISIBLE);
+        sEndScore.setVisibility(View.VISIBLE);
+        sEndScoreValue.setVisibility(View.VISIBLE);
+        sHighScore.setVisibility(View.VISIBLE);
+        sHighScoreValue.setVisibility(View.VISIBLE);
+        sGrade.setVisibility(View.VISIBLE);
+        sGradeValue.setVisibility(View.VISIBLE);
+        sBack.setVisibility(View.VISIBLE);
+        sReset.setVisibility(View.VISIBLE);
+
+        sCurrentTrainer.setText("Du hast gerade Lektion " + lektion + " abgeschlossen!");
+
+        int vocabularyAmount = dbHelper.countTableEntries(allVocabularyTables, lektion);
+
+        int score = Score.getScoreVocabularyTrainer(lektion, sharedPref);
+        int scoreMax = Score.getMaxPossiblePoints(pointBaseline, vocabularyAmount);
+        float scorePercent = (float)score / (float)scoreMax;
+        int highScore = Score.getHighScoreVocabularyTrainer(sharedPref, lektion);
+        int grade = Score.getGrade(pointBaseline, vocabularyAmount, lektion, sharedPref);
+
+        SpannableStringBuilder percentText = General.makeSectionOfTextBold((int)(scorePercent*100) + "%", (int)(scorePercent*100) + "%");
+        SpannableStringBuilder endScoreText = General.makeSectionOfTextBold(score+"/"+scoreMax,""+score);
+        SpannableStringBuilder highScoreText = General.makeSectionOfTextBold(highScore + "/" + scoreMax, ""+highScore);
+        SpannableStringBuilder gradeText = General.makeSectionOfTextBold(grade+"P", ""+grade);
+
+        sPercentValue.setText(percentText);
+        sEndScoreValue.setText(endScoreText);
+        sHighScoreValue.setText(highScoreText);
+        sGradeValue.setText(gradeText);
 
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(KEY_FINISHED_USERINPUT_VOKABELTRAINER + lektion, true);
@@ -384,13 +447,13 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
                 break;
 
             //Setting the 'learned' state of all vocabularies of the current lektion to false
-            case (R.id.buttonUserInputFortschrittLöschen):
+            case (R.id.scoreButtonReset):
 
                 resetCurrentLektion();
                 break;
 
             //Returning to the previous activity
-            case (R.id.buttonUserInputZurück):
+            case (R.id.scoreButtonBack):
 
                 finish();
                 break;
@@ -399,8 +462,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
 
     private void resetCurrentLektion(){
         dbHelper.resetLektion(lektion);
-        Score.resetCombo(lektion, sharedPref);
-        Score.resetPoints(lektion, sharedPref);
+        Score.resetScoreVocabulary(lektion, sharedPref);
         finish();
     }
 

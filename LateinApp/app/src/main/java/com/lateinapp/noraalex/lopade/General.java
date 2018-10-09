@@ -2,8 +2,13 @@ package com.lateinapp.noraalex.lopade;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.util.Locale;
 
 
 public class General {
@@ -70,6 +75,44 @@ public class General {
         }
 
         return sharedPreferences;
+    }
+
+
+    //TODO: Maybe use a different solution here? This might be overkill for where we acually need it
+    //https://stackoverflow.com/questions/14371092/how-to-make-a-specific-text-on-textview-bold
+
+    /**
+     * Makes a substring of a string bold.
+     * @param text          Full text
+     * @param textToBold    Text you want to make bold
+     * @return              String with bold substring
+     */
+    public static SpannableStringBuilder makeSectionOfTextBold(String text, String textToBold){
+
+        SpannableStringBuilder builder=new SpannableStringBuilder();
+
+        if(textToBold.length() > 0 && !textToBold.trim().isEmpty()){
+
+            //for counting start/end indexes
+            String testText = text.toLowerCase(Locale.US);
+            String testTextToBold = textToBold.toLowerCase(Locale.US);
+            int startingIndex = testText.indexOf(testTextToBold);
+            int endingIndex = startingIndex + testTextToBold.length();
+            //for counting start/end indexes
+
+            if(startingIndex < 0 || endingIndex <0){
+                return builder.append(text);
+            }
+            else if(startingIndex >= 0 && endingIndex >=0){
+
+                builder.append(text);
+                builder.setSpan(new StyleSpan(Typeface.BOLD), startingIndex, endingIndex, 0);
+            }
+        }else{
+            return builder.append(text);
+        }
+
+        return builder;
     }
 
 

@@ -12,7 +12,7 @@ public class Score {
     private static final int MAX_COMBO = 3;
     private static final int MIN_COMBO = 0;
 
-    public static int calculateMaxPossiblePoints(int pointBaseline, int inputAmount){
+    public static int getMaxPossiblePoints(int pointBaseline, int inputAmount){
 
         int score = 0;
 
@@ -32,55 +32,54 @@ public class Score {
 
     public static int modifyScore(int pointBaseline, boolean inputCorrect, int lektion, SharedPreferences sharedPreferences){
 
-        int oldScore = getPointsVocabularyTrainer(lektion, sharedPreferences);
-        int combo = getCombo(lektion, sharedPreferences);
 
-        int difference = getScoreDifference(combo, pointBaseline, inputCorrect);
-
-        int delta = difference;
-        if(oldScore + difference < 0){
-            delta = 0;
-        }
-
-        int newScore = oldScore + delta;
+        int oldScore = getScoreVocabularyTrainer(lektion, sharedPreferences);
+        int difference = getScoreDifference(getCombo(lektion, sharedPreferences), pointBaseline, inputCorrect);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(KEY_SCORE_VOCAULARY + lektion, newScore);
 
-        if(newScore > getHighScoreVocabularyTrainer(sharedPreferences, lektion)) {
-            editor.putInt(KEY_HIGH_SCORE_ALL_TRAINERS, getTotalPoints(sharedPreferences) + delta);
-            editor.putInt(KEY_HIGH_SCORE_VOCAULARY + lektion, getHighScoreVocabularyTrainer(sharedPreferences, lektion) + delta);
+        //Score doesnt get modified when it does below 0
+        if(oldScore + difference >= 0){
+
+            int newScore = oldScore + difference;
+
+            editor.putInt(KEY_SCORE_VOCAULARY + lektion, newScore);
+
+            if(newScore > getHighScoreVocabularyTrainer(sharedPreferences, lektion)){
+                editor.putInt(KEY_HIGH_SCORE_ALL_TRAINERS,        getScoreAll(sharedPreferences) + difference);
+                editor.putInt(KEY_HIGH_SCORE_VOCAULARY + lektion, newScore);
+            }
+
         }
+
         editor.apply();
 
-        //Does not return the change in score.
-        //if the score is 0 we dont subtract points but still show a "-100" for example
+        //Updating combo
+        if(inputCorrect){
+            increaseCombo(lektion, sharedPreferences);
+        }else{
+            resetCombo(lektion, sharedPreferences);
+        }
+
+        //Does not return the change in score but what wouldve been changed..
+        //if the score is 0 we dont subtract points but still return a "-100" for example.
         return difference;
     }
 
-    private static int getHighScoreVocabularyTrainer(SharedPreferences sharedPreferences, int lektion){
-        return sharedPreferences.getInt(KEY_HIGH_SCORE_VOCAULARY + lektion, 0);
-    }
-
-    public static int getPointsVocabularyTrainer(int lektion, SharedPreferences sharedPreferences){
-        return sharedPreferences.getInt(KEY_SCORE_VOCAULARY + lektion, 0);
-    }
-
-    public static int getTotalPoints(SharedPreferences sharedPreferences){
-        return sharedPreferences.getInt(KEY_HIGH_SCORE_ALL_TRAINERS, 0);
-    }
-
-    public static void resetPoints(int lektion, SharedPreferences sharedPreferences){
-
-        int oldPoints = getPointsVocabularyTrainer(lektion, sharedPreferences);
+    public static void resetScoreVocabulary(int lektion, SharedPreferences sharedPreferences){
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(KEY_SCORE_VOCAULARY + lektion, 0);
-        editor.putInt(KEY_HIGH_SCORE_ALL_TRAINERS, getPointsVocabularyTrainer(lektion, sharedPreferences) - oldPoints);
         editor.apply();
+
+        resetCombo(lektion, sharedPreferences);
     }
 
-    public static void increaseCombo(int lektion, SharedPreferences sharedPreferences){
+    //
+    //Private methods
+    //
+
+    private static void increaseCombo(int lektion, SharedPreferences sharedPreferences){
 
         int currentCombo = sharedPreferences.getInt(KEY_HIGH_COMBO_VOCAULARY + lektion, MIN_COMBO);
 
@@ -93,7 +92,7 @@ public class Score {
         editor.apply();
     }
 
-    public static void decreaseCombo(int lektion, SharedPreferences sharedPreferences){
+    private static void decreaseCombo(int lektion, SharedPreferences sharedPreferences){
 
         int currentCombo = sharedPreferences.getInt(KEY_HIGH_COMBO_VOCAULARY + lektion, MIN_COMBO);
 
@@ -105,7 +104,6 @@ public class Score {
         editor.putInt(KEY_HIGH_COMBO_VOCAULARY + lektion, currentCombo);
         editor.apply();
     }
-
 
     private static int getScoreDifference(int combo, int pointBaseline, boolean inputCorrect){
 
@@ -120,33 +118,13 @@ public class Score {
         return (amount);
     }
 
-    private static int getComboMultiplier(int combo){
-        return (int)General.pow(2, combo);
-    }
-
-    public static int getCombo(int lektion, SharedPreferences sharedPreferences){
-        int combo = sharedPreferences.getInt(KEY_HIGH_COMBO_VOCAULARY + lektion, MIN_COMBO);
-        return getComboMultiplier(combo);
-    }
-
-    public static void resetCombo(int lektion, SharedPreferences sharedPreferences){
+    private static void resetCombo(int lektion, SharedPreferences sharedPreferences){
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putInt(KEY_HIGH_COMBO_VOCAULARY + lektion, MIN_COMBO);
 
         editor.apply();
-    }
-
-    public static int getGrade(int pointBaseline, int entryAmount, int lektion, SharedPreferences sharedPreferences){
-
-        int points = getPointsVocabularyTrainer(lektion, sharedPreferences);
-        int maxPoints = calculateMaxPossiblePoints(pointBaseline, entryAmount);
-
-        float percentage = (float)points / (float)maxPoints;
-
-        return percentageToGrade(percentage);
-
     }
 
     private static int percentageToGrade(float percentage){
@@ -192,5 +170,41 @@ public class Score {
 
         return score;
 
+    }
+
+    private static int getComboMultiplier(int combo){
+        return (int)General.pow(2, combo);
+    }
+
+    //
+    //Public getters and setters
+    //
+
+    public static int getCombo(int lektion, SharedPreferences sharedPreferences){
+        int combo = sharedPreferences.getInt(KEY_HIGH_COMBO_VOCAULARY + lektion, MIN_COMBO);
+        return getComboMultiplier(combo);
+    }
+
+    public static int getGrade(int pointBaseline, int entryAmount, int lektion, SharedPreferences sharedPreferences){
+
+        int points = getScoreVocabularyTrainer(lektion, sharedPreferences);
+        int maxPoints = getMaxPossiblePoints(pointBaseline, entryAmount);
+
+        float percentage = (float)points / (float)maxPoints;
+
+        return percentageToGrade(percentage);
+
+    }
+
+    public static int getHighScoreVocabularyTrainer(SharedPreferences sharedPreferences, int lektion){
+        return sharedPreferences.getInt(KEY_HIGH_SCORE_VOCAULARY + lektion, 0);
+    }
+
+    public static int getScoreVocabularyTrainer(int lektion, SharedPreferences sharedPreferences){
+        return sharedPreferences.getInt(KEY_SCORE_VOCAULARY + lektion, 0);
+    }
+
+    public static int getScoreAll(SharedPreferences sharedPreferences){
+        return sharedPreferences.getInt(KEY_HIGH_SCORE_ALL_TRAINERS, 0);
     }
 }

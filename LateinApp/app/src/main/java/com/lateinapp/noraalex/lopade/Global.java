@@ -32,7 +32,7 @@ public class Global {
     public static final String KEY_PROGRESS_CLICK_PERSONALENDUNG = "Progress_Click_Personalendung_";                 //Integer
 
     //Example: High_Score_Vocabulary_Trainer_3
-    public static final String KEY_SCORE_VOCAULARY = "High_Score_Vocabulary_Trainer_";                          //Integer
+    public static final String KEY_SCORE_VOCAULARY = "Score_Vocabulary_Trainer_";                                    //Integer
     public static final String KEY_HIGH_SCORE_VOCAULARY = "High_Score_Vocabulary_Trainer_";                          //Integer
     public static final String KEY_HIGH_COMBO_VOCAULARY = "High_Score_Vocabulary_Combo_";                            //Integer
 
