@@ -81,6 +81,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if(!notFirstStartup) {
             copyDataBaseFromAssets();
+            //fillDatabaseFromCsv();
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(KEY_NOT_FIRST_STARTUP, true);
             editor.apply();
@@ -171,8 +172,12 @@ public class DBHelper extends SQLiteOpenHelper {
         database = getWritableDatabase();
 
         for (String table : allTables){
-            database.delete(table, null, null);
+            Cursor cursor = database.rawQuery("DROP TABLE IF EXISTS " + table, null);
+            cursor.moveToFirst();
+            cursor.close();
         }
+
+        createTables(database);
 
         addRowSprechvokal_Substantiv("", "", "", "", "", "", "", "", "", "");
 
@@ -481,14 +486,18 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
     }
 
-    public void incrementValue(String table, String column, int entryID,int incrementBy){
+    public void incrementValue(String table, String column, int entryID){
 
         String query =
                 "UPDATE " + table +
-                " SET " + column + " = " + column + " + " + incrementBy +
-                " WHERE _ID = " + entryID;
+                " SET " + column + " = " + column + " + 1" +
+                " WHERE _id = " + entryID;
 
-        database.rawQuery(query, new String[]{});
+        Log.d("______", query);
+
+        Cursor cursor = database.rawQuery(query, new String[]{});
+        cursor.moveToFirst();
+        cursor.close();
     }
 
     /**
@@ -500,13 +509,30 @@ public class DBHelper extends SQLiteOpenHelper {
         for(String table: allVocabularyTables){
             String query = "UPDATE "
                     + table
-                    + " SET Gelernt = 0"
+                    + " SET Gelernt = 0, Amount_Incorrect = 0"
                     + " WHERE Lektion_ID = " + lektionNr;
             Cursor cursor = database.rawQuery(query, new String[]{});
             cursor.moveToFirst();
             cursor.close();
         }
 
+    }
+
+    public int getMistakeAmount(int lektion){
+
+        int count = 0;
+
+        for(String table: allVocabularyTables){
+            String query = "SELECT SUM(Amount_Incorrect) FROM " + table + " WHERE Lektion_ID = " + lektion;
+            Cursor cursor = database.rawQuery(query, new String[]{});
+            cursor.moveToFirst();
+
+            count += cursor.getInt(0);
+
+            cursor.close();
+        }
+
+        return count;
     }
 
     //
@@ -1210,8 +1236,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsAdverb[2], latein);
         values.put(allColumnsAdverb[3], 0);
         values.put(allColumnsAdverb[4], 0);
-        values.put(allColumnsAdverb[5], 0);
-        values.put(allColumnsAdverb[6], lektion_id);
+        values.put(allColumnsAdverb[5], lektion_id);
 
         database.insert(AdverbDB.FeedEntry.TABLE_NAME, null, values);
     }
@@ -1230,9 +1255,8 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsAdjektiv[2], latein);
         values.put(allColumnsAdjektiv[3], 0);
         values.put(allColumnsAdjektiv[4], 0);
-        values.put(allColumnsAdjektiv[5], 0);
-        values.put(allColumnsAdjektiv[6], lektion_id);
-        values.put(allColumnsAdjektiv[7], type);
+        values.put(allColumnsAdjektiv[5], lektion_id);
+        values.put(allColumnsAdjektiv[6], type);
 
         database.insert(AdjektivDB.FeedEntry.TABLE_NAME, null, values);
 
@@ -1328,8 +1352,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsPraeposition[2], latein);
         values.put(allColumnsPraeposition[3], 0);
         values.put(allColumnsPraeposition[4], 0);
-        values.put(allColumnsPraeposition[5], 0);
-        values.put(allColumnsPraeposition[6], lektion_id);
+        values.put(allColumnsPraeposition[5], lektion_id);
 
         database.insert(PräpositionDB.FeedEntry.TABLE_NAME, null, values);
     }
@@ -1411,8 +1434,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsSprichwort[2], latein);
         values.put(allColumnsSprichwort[3], 0);
         values.put(allColumnsSprichwort[4], 0);
-        values.put(allColumnsSprichwort[5], 0);
-        values.put(allColumnsSprichwort[6], lektion_id);
+        values.put(allColumnsSprichwort[5], lektion_id);
 
         database.insert(SprichwortDB.FeedEntry.TABLE_NAME, null, values);
     }
@@ -1433,10 +1455,9 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsSubstantiv[2], wortstamm);
         values.put(allColumnsSubstantiv[3], 0);
         values.put(allColumnsSubstantiv[4], 0);
-        values.put(allColumnsSubstantiv[5], 0);
-        values.put(allColumnsSubstantiv[6], lektion_id);
-        values.put(allColumnsSubstantiv[7], sprechvokal_id);
-        values.put(allColumnsSubstantiv[8], deklinationsendung_id);
+        values.put(allColumnsSubstantiv[5], lektion_id);
+        values.put(allColumnsSubstantiv[6], sprechvokal_id);
+        values.put(allColumnsSubstantiv[7], deklinationsendung_id);
 
         database.insert(SubstantivDB.FeedEntry.TABLE_NAME, null, values);
     }
@@ -1458,10 +1479,9 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsVerb[3], konjugation);
         values.put(allColumnsVerb[4], 0);
         values.put(allColumnsVerb[5], 0);
-        values.put(allColumnsVerb[6], 0);
-        values.put(allColumnsVerb[7], lektion_id);
-        values.put(allColumnsVerb[8], personalendung_id);
-        values.put(allColumnsVerb[9], sprechvokal_id);
+        values.put(allColumnsVerb[6], lektion_id);
+        values.put(allColumnsVerb[7], personalendung_id);
+        values.put(allColumnsVerb[8], sprechvokal_id);
 
         database.insert(VerbDB.FeedEntry.TABLE_NAME, null, values);
     }

@@ -17,7 +17,6 @@ public class PräpositionDB extends Vokabel{
     public static final String COLUMN_DEUTSCH = "Deutsch",
                                 COLUMN_LATEIN = "Latein",
                                 COLUMN_GELERNT = "Gelernt",
-                                COLUMN_AMOUNT_CORRECT = "Amount_Correct",
                                 COLUMN_AMOUNT_INCORRECT = "Amount_Incorrect",
                                 COLUMN_LEKTION_ID = "Lektion_ID";
     }

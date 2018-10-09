@@ -68,8 +68,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
     //Score stuff
     private TextView sCongratulations,
         sCurrentTrainer,
-        sPercent,
-        sPercentValue,
+        sMistakeAmount,
+        sMistakeAmountValue,
         sEndScore,
         sEndScoreValue,
         sHighScore,
@@ -123,8 +123,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         //Score stuff
         sCongratulations = findViewById(R.id.scoreCongratulations);
         sCurrentTrainer = findViewById(R.id.scoreCurrentTrainer);
-        sPercent = findViewById(R.id.scorePercent);
-        sPercentValue = findViewById(R.id.scorePercentValue);
+        sMistakeAmount = findViewById(R.id.scoreMistakes);
+        sMistakeAmountValue = findViewById(R.id.scoreMistakeValue);
         sEndScore = findViewById(R.id.scoreEndScore);
         sEndScoreValue = findViewById(R.id.scoreEndScoreValue);
         sHighScore = findViewById(R.id.scoreHighScore);
@@ -222,9 +222,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
 
             //Input was correct
 
-            dbHelper.incrementValue(getVokabelTable(currentVokabel), "Amount_Correct", currentVokabel.getId(), 1);
-
             scoreDifference = Score.modifyScore(pointBaseline, true, lektion, sharedPref);
+            Log.d("______", dbHelper.getColumnFromId(currentVokabel.getId(), getVokabelTable(currentVokabel), AdverbDB.FeedEntry.COLUMN_AMOUNT_INCORRECT));
 
             //Checking the vocabulary as learned
             dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
@@ -236,7 +235,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
 
             scoreDifference = Score.modifyScore(pointBaseline, false, lektion, sharedPref);
 
-            dbHelper.incrementValue(getVokabelTable(currentVokabel), "Amount_Incorrect", currentVokabel.getId(), 1);
+            dbHelper.incrementValue(getVokabelTable(currentVokabel), AdverbDB.FeedEntry.COLUMN_AMOUNT_INCORRECT, currentVokabel.getId());
+            Log.d("______", dbHelper.getColumnFromId(currentVokabel.getId(), getVokabelTable(currentVokabel), AdverbDB.FeedEntry.COLUMN_AMOUNT_INCORRECT));
 
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
 
@@ -390,8 +390,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         //Score screen
         sCongratulations.setVisibility(View.VISIBLE);
         sCurrentTrainer.setVisibility(View.VISIBLE);
-        sPercent.setVisibility(View.VISIBLE);
-        sPercentValue.setVisibility(View.VISIBLE);
+        sMistakeAmount.setVisibility(View.VISIBLE);
+        sMistakeAmountValue.setVisibility(View.VISIBLE);
         sEndScore.setVisibility(View.VISIBLE);
         sEndScoreValue.setVisibility(View.VISIBLE);
         sHighScore.setVisibility(View.VISIBLE);
@@ -411,12 +411,11 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         int highScore = Score.getHighScoreVocabularyTrainer(sharedPref, lektion);
         int grade = Score.getGrade(pointBaseline, vocabularyAmount, lektion, sharedPref);
 
-        SpannableStringBuilder percentText = General.makeSectionOfTextBold((int)(scorePercent*100) + "%", (int)(scorePercent*100) + "%");
         SpannableStringBuilder endScoreText = General.makeSectionOfTextBold(score+"/"+scoreMax,""+score);
         SpannableStringBuilder highScoreText = General.makeSectionOfTextBold(highScore + "/" + scoreMax, ""+highScore);
         SpannableStringBuilder gradeText = General.makeSectionOfTextBold(grade+"P", ""+grade);
 
-        sPercentValue.setText(percentText);
+        sMistakeAmountValue.setText(dbHelper.getMistakeAmount(lektion) + "");
         sEndScoreValue.setText(endScoreText);
         sHighScoreValue.setText(highScoreText);
         sGradeValue.setText(gradeText);

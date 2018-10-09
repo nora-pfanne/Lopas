@@ -18,7 +18,6 @@ public class VerbDB extends Vokabel{
                                    COLUMN_WORTSTAMM = "Wortstamm",
                                    COLUMN_KONJUGATION = "Konjugation",
                                    COLUMN_GELERNT = "Gelernt",
-                                   COLUMN_AMOUNT_CORRECT = "Amount_Correct",
                                    COLUMN_AMOUNT_INCORRECT = "Amount_Incorrect",
                                    COLUMN_LEKTION_ID = "Lektion_ID",
                                    COLUMN_PERSONALENDUNG_ID = "Personalendung_id",
