@@ -460,9 +460,26 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
     }
 
     private void resetCurrentLektion(){
-        dbHelper.resetLektion(lektion);
-        Score.resetScoreVocabulary(lektion, sharedPref);
-        finish();
+
+
+        new AlertDialog.Builder(this)
+                .setTitle("Lektion zurücksetzen?")
+                .setMessage("Willst du den Vokabeltrainer für die Lektion " + lektion + " wirklich neu starten?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        General.showMessage("Lektion " + lektion + " zurückgesetzt!", getApplicationContext());
+
+
+                        dbHelper.resetLektion(lektion);
+                        Score.resetScoreVocabulary(lektion, sharedPref);
+                        finish();
+
+
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
+
     }
 
     @Override
@@ -583,18 +600,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
             //Opening a popup window
             case (R.id.action_reset_trainer):
 
-                new AlertDialog.Builder(this)
-                        .setTitle("Lektion zurücksetzen?")
-                        .setMessage("Willst du den Vokabeltrainer für die Lektion " + lektion + "wirklich neu starten?")
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                General.showMessage("Lektion " + lektion + " zurückgesetzt!", getApplicationContext());
-                                resetCurrentLektion();
-                            }})
-                        .setNegativeButton(android.R.string.no, null).show();
-
+                resetCurrentLektion();
 
                 break;
 

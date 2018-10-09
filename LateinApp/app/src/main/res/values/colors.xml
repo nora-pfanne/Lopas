@@ -36,5 +36,7 @@
     <color name="fullRed">#FF0000</color>
     <color name="fullGreen">#00FF00</color>
     <color name="fullGray">#FF707370</color>
+    <color name="darkRed">#990000</color>
+
 
 </resources>
