@@ -127,11 +127,12 @@ public class Score {
         editor.apply();
     }
 
-    private static int percentageToGrade(float percentage){
+    private static String percentageToGrade(float percentage){
         //Currently using this scale:
         //http://www.wzemann.de/physik/page18/files/notenskala.jpg
         //from 0 to 15, 15 being the best possible
 
+        /*
         int score;
 
         if(percentage > 0.95f){
@@ -167,6 +168,43 @@ public class Score {
         }else{
             score = 0;
         }
+        */
+
+        String score;
+
+        if(percentage > 0.95f){
+            score = "1+";
+        }else if(percentage > 0.90f){
+            score = "1";
+        }else if(percentage > 0.85f){
+            score = "1-";
+        }else if(percentage > 0.80f){
+            score = "2+";
+        }else if(percentage > 0.75f){
+            score = "2";
+        }else if(percentage > 0.70f){
+            score = "2-";
+        }else if(percentage > 0.65f){
+            score = "3+";
+        }else if(percentage > 0.60f){
+            score = "3";
+        }else if(percentage > 0.55f){
+            score = "3-";
+        }else if(percentage > 0.50f){
+            score = "4+";
+        }else if(percentage > 0.45f){
+            score = "4";
+        }else if(percentage > 0.40f){
+            score = "4-";
+        }else if(percentage > 0.33f){
+            score = "5+";
+        }else if(percentage > 0.26f){
+            score = "5";
+        }else if(percentage > 0.19f){
+            score = "5-";
+        }else{
+            score = "6";
+        }
 
         return score;
 
@@ -185,7 +223,7 @@ public class Score {
         return getComboMultiplier(combo);
     }
 
-    public static int getGrade(int pointBaseline, int entryAmount, int lektion, SharedPreferences sharedPreferences){
+    public static String getGrade(int pointBaseline, int entryAmount, int lektion, SharedPreferences sharedPreferences){
 
         int points = getScoreVocabularyTrainer(lektion, sharedPreferences);
         int maxPoints = getMaxPossiblePoints(pointBaseline, entryAmount);

@@ -161,7 +161,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
                 return false;
             }
         });
-        titel.setText("Vokabeltrainer");
+        titel.setText("Vokabeltrainer " + lektion);
 
         solution.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
@@ -245,7 +245,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         userInput.setBackgroundColor(color);
 
         popupScore(scoreDifference);
-        combo.setText(Score.getCombo(lektion, sharedPref) + 'x');
+        combo.setText(Score.getCombo(lektion, sharedPref) + "x");
         score.setText("Score: " + Score.getScoreVocabularyTrainer(lektion, sharedPref));
         highScore.setText("High-Score: " + Score.getHighScoreVocabularyTrainer(sharedPref, lektion));
 
@@ -396,6 +396,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         progressBar.setVisibility(View.GONE);
         score.setVisibility(View.GONE);
         combo.setVisibility(View.GONE);
+        highScore.setVisibility(View.GONE);
+        titel.setVisibility(View.GONE);
 
         //Score screen
         sCongratulations.setVisibility(View.VISIBLE);
@@ -418,11 +420,11 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         int score = Score.getScoreVocabularyTrainer(lektion, sharedPref);
         int scoreMax = Score.getMaxPossiblePoints(pointBaseline, vocabularyAmount);
         int highScore = Score.getHighScoreVocabularyTrainer(sharedPref, lektion);
-        int grade = Score.getGrade(pointBaseline, vocabularyAmount, lektion, sharedPref);
+        String grade = Score.getGrade(pointBaseline, vocabularyAmount, lektion, sharedPref);
 
         SpannableStringBuilder endScoreText = General.makeSectionOfTextBold(score+"/"+scoreMax,""+score);
         SpannableStringBuilder highScoreText = General.makeSectionOfTextBold(highScore + "/" + scoreMax, ""+highScore);
-        SpannableStringBuilder gradeText = General.makeSectionOfTextBold(grade+"P", ""+grade);
+        SpannableStringBuilder gradeText = General.makeSectionOfTextBold(grade, ""+grade);
 
         sMistakeAmountValue.setText(dbHelper.getMistakeAmount(lektion) + "");
         sEndScoreValue.setText(endScoreText);
