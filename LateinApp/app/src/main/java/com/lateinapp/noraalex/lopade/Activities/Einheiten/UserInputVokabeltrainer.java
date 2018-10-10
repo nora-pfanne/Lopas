@@ -56,6 +56,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
          solution,
          titel,
          score,
+         highScore,
          combo;
     private EditText userInput;
     private ProgressBar progressBar;
@@ -110,6 +111,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
         request = findViewById(R.id.textUserInputLatein);
         solution = findViewById(R.id.textUserInputDeutsch);
+        highScore = findViewById(R.id.textUserInputHighScore);
         userInput = findViewById(R.id.textUserInputUserInput);
         progressBar = findViewById(R.id.progressBarUserInput);
         bestaetigung = findViewById(R.id.buttonUserInputEingabeBestätigt);
@@ -167,8 +169,9 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         progressBar.setMax(100);
         progressBar.setProgress((int)(dbHelper.getGelerntProzent(lektion) * 100));
 
-        combo.setText("Combo: " + Score.getCombo(lektion, sharedPref) + "x");
+        combo.setText(Score.getCombo(lektion, sharedPref) + "x");
         score.setText("Score: " + Score.getScoreVocabularyTrainer(lektion, sharedPref));
+        highScore.setText("High-Score: " + Score.getHighScoreVocabularyTrainer(sharedPref, lektion));
     }
 
     private void newRequest(){
@@ -242,8 +245,9 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         userInput.setBackgroundColor(color);
 
         popupScore(scoreDifference);
-        combo.setText("Combo: " + Score.getCombo(lektion, sharedPref) + 'x');
-        score.setText("Score: " + Score.getScoreVocabularyTrainer(lektion, sharedPref) + " | HS: " + Score.getHighScoreVocabularyTrainer(sharedPref,lektion));
+        combo.setText(Score.getCombo(lektion, sharedPref) + 'x');
+        score.setText("Score: " + Score.getScoreVocabularyTrainer(lektion, sharedPref));
+        highScore.setText("High-Score: " + Score.getHighScoreVocabularyTrainer(sharedPref, lektion));
 
 
         //Showing the correct translation
