@@ -9,7 +9,6 @@ import android.support.constraint.ConstraintSet;
 import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.Gravity;
@@ -27,7 +26,6 @@ import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
@@ -223,7 +221,6 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
             //Input was correct
 
             scoreDifference = Score.modifyScore(pointBaseline, true, lektion, sharedPref);
-            Log.d("______", dbHelper.getColumnFromId(currentVokabel.getId(), getVokabelTable(currentVokabel), AdverbDB.FeedEntry.COLUMN_AMOUNT_INCORRECT));
 
             //Checking the vocabulary as learned
             dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
@@ -236,7 +233,6 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
             scoreDifference = Score.modifyScore(pointBaseline, false, lektion, sharedPref);
 
             dbHelper.incrementValue(getVokabelTable(currentVokabel), AdverbDB.FeedEntry.COLUMN_AMOUNT_INCORRECT, currentVokabel.getId());
-            Log.d("______", dbHelper.getColumnFromId(currentVokabel.getId(), getVokabelTable(currentVokabel), AdverbDB.FeedEntry.COLUMN_AMOUNT_INCORRECT));
 
             color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
 
@@ -251,7 +247,17 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
 
 
         //Showing the correct translation
-        solution.setText(currentVokabel.getDeutsch());
+
+        int MAX_CHAR_AMOUNT = 50;
+        String translation = currentVokabel.getDeutsch();
+        while(translation.length() > MAX_CHAR_AMOUNT){
+            String[] substrings = translation.split(",", -1);
+            int lengthLastWord = substrings[substrings.length-1].length();
+
+            translation = translation.substring(0, translation.length() - lengthLastWord - 1);
+        }
+
+        solution.setText(translation);
 
     }
 
@@ -407,7 +413,6 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
 
         int score = Score.getScoreVocabularyTrainer(lektion, sharedPref);
         int scoreMax = Score.getMaxPossiblePoints(pointBaseline, vocabularyAmount);
-        float scorePercent = (float)score / (float)scoreMax;
         int highScore = Score.getHighScoreVocabularyTrainer(sharedPref, lektion);
         int grade = Score.getGrade(pointBaseline, vocabularyAmount, lektion, sharedPref);
 
