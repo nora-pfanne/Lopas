@@ -2,6 +2,8 @@ package com.lateinapp.noraalex.lopade;
 
 public class Global {
 
+    public static final int LEKTION_COUNT = 6;
+
     //#DEVELOPER
     public static boolean DEVELOPER = true;
     public static boolean DEV_CHEAT_MODE = true;
@@ -34,8 +36,21 @@ public class Global {
     //Example: High_Score_Vocabulary_Trainer_3
     public static final String KEY_SCORE_VOCAULARY =      "Score_Vocabulary_Trainer_";                               //Integer
     public static final String KEY_HIGH_SCORE_VOCAULARY = "High_Score_Vocabulary_Trainer_";                          //Integer
-    public static final String KEY_HIGH_COMBO_VOCAULARY = "High_Score_Vocabulary_Combo_";                            //Integer
+    public static final String KEY_COMBO_VOCABULARY =     "High_Score_Vocabulary_Combo_";                            //Integer
 
+    //States that describe if this iteration of the trainer
+    // -Is still the first playthrough of the trainer
+    // -Did not achieve a new highscore yet
+    // -Did just achieve a new highscore -> popup NOW
+    // -Did achieve a new highscore at an earlier point
+    //
+    //We need this information for a "new Highscore" popup that should be shows ONCE per run
+    //whenever a new highscore is achieved.
+    public static final int STATE_FIRST_PLAYTHROUGH = 0;
+    public static final int STATE_NO_HS_YET         = 1;
+    public static final int STATE_NEW_HS_NOW        = 2;
+    public static final int STATE_NEW_HS_EARLIER    = 3;
+    public static final String KEY_NEW_HIGHSCORE_VOKABELTRAINER = "New_Highscore_Vocabulary_";                       //Integer -> one of the above
 
     public static final String KEY_HIGH_SCORE_ALL_TRAINERS = "High_Score_All_Trainers";                              //Integer
 

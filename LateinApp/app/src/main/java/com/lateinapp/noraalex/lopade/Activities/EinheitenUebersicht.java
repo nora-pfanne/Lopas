@@ -15,13 +15,16 @@ import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputDeklinationse
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputEsseVelleNolle;
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputVokabeltrainer;
+import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
+import com.lateinapp.noraalex.lopade.Score;
 
 import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
 import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
 import static com.lateinapp.noraalex.lopade.Global.KEY_DEV_CHEAT_MODE;
 import static com.lateinapp.noraalex.lopade.Global.KEY_DEV_MODE;
+import static com.lateinapp.noraalex.lopade.Global.KEY_NOT_FIRST_STARTUP;
 
 public class EinheitenUebersicht extends LateinAppActivity {
 
@@ -45,6 +48,24 @@ public class EinheitenUebersicht extends LateinAppActivity {
         sharedPref = General.getSharedPrefrences(getApplicationContext());
         DEVELOPER = sharedPref.getBoolean(KEY_DEV_MODE, DEVELOPER);
         DEV_CHEAT_MODE = sharedPref.getBoolean(KEY_DEV_CHEAT_MODE, DEV_CHEAT_MODE);
+
+        //First startup settings
+        SharedPreferences sharedPreferences = General.getSharedPrefrences(this);
+        boolean notFirstStartup = sharedPreferences.getBoolean(KEY_NOT_FIRST_STARTUP, false);
+        if(!notFirstStartup){
+
+            //First setup of DBHelper
+            DBHelper dbHelper = new DBHelper(this);
+            dbHelper.firstStartup();
+            dbHelper.close();
+
+            //First setup of Scores
+            Score.firstStartup(sharedPreferences);
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(KEY_NOT_FIRST_STARTUP, true);
+            editor.apply();
+        }
     }
 
     public void uebersichtButtonClicked(View v) {

@@ -229,6 +229,11 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
             dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
 
             color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
+
+            if(Score.isNewHighscoreNow(lektion, sharedPref)){
+                General.showMessage("New Highscore!!!", this);
+            }
+
         }else {
 
             //Input was incorrect

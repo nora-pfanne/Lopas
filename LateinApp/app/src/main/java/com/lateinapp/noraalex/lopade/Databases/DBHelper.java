@@ -59,6 +59,15 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Database.db";
     private static String DATABASE_PATH = "";
 
+    public void firstStartup(){
+        SharedPreferences sharedPreferences = General.getSharedPrefrences(context);
+        copyDataBaseFromAssets();
+        //fillDatabaseFromCsv();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_NOT_FIRST_STARTUP, true);
+        editor.apply();
+    }
+
     /**
      * Used for the initialisation of the database: similar to a setup()/init() method.
      *
@@ -74,17 +83,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if (DATABASE_PATH.isEmpty()){
             DATABASE_PATH = context.getFilesDir().getPath();
-        }
-        //Copying the database from the assets folder on first startup of the app
-        SharedPreferences sharedPreferences = General.getSharedPrefrences(context);
-        boolean notFirstStartup = sharedPreferences.getBoolean(KEY_NOT_FIRST_STARTUP, false);
-
-        if(!notFirstStartup) {
-            copyDataBaseFromAssets();
-            //fillDatabaseFromCsv();
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(KEY_NOT_FIRST_STARTUP, true);
-            editor.apply();
         }
 
         openDb();
