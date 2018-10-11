@@ -491,8 +491,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 " SET " + column + " = " + column + " + 1" +
                 " WHERE _id = " + entryID;
 
-        Log.d("______", query);
-
         Cursor cursor = database.rawQuery(query, new String[]{});
         cursor.moveToFirst();
         cursor.close();

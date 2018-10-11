@@ -45,7 +45,7 @@ import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
 import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
 import static com.lateinapp.noraalex.lopade.Global.KEY_FINISHED_USERINPUT_VOKABELTRAINER;
 
-public class UserInputVokabeltrainer extends LateinAppActivity implements Animation.AnimationListener {
+public class UserInputVokabeltrainer extends LateinAppActivity{
 
     private static final String TAG = "UserInputVokabeltrainer";
 
@@ -136,10 +136,9 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
 
 
         animScore = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.score_move_fade);
-        animScore.setAnimationListener(this);
+        animScore.setFillAfter(true);
 
         animShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
-        animShake.setAnimationListener(this);
 
         //TODO: We dont have a score on other trainers yet.
         //This means that we have to hide the score/combo TextView originally
@@ -538,7 +537,6 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         dbHelper.close();
     }
 
-    private TextView tempScoreView;
     private void popupScore(int score){
 
 
@@ -560,45 +558,31 @@ public class UserInputVokabeltrainer extends LateinAppActivity implements Animat
         message += score;
 
 
-        tempScoreView = new TextView(this);
-        tempScoreView.setText(message);
-        tempScoreView.setTextColor(color);
-        tempScoreView.setTextSize(30);
-        tempScoreView.setTypeface(tempScoreView.getTypeface(), Typeface.BOLD);
-        tempScoreView.setId(View.generateViewId());
+        TextView tv = new TextView(this);
+        tv.setText(message);
+        tv.setTextColor(color);
+        tv.setTextSize(30);
+        tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+        tv.setId(View.generateViewId());
 
-        tempScoreView.setLayoutParams(new ViewGroup.LayoutParams(
+        tv.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
         ConstraintLayout layout = findViewById(R.id.constraint_Layout);
-        layout.addView(tempScoreView, tempScoreView.getLayoutParams());
+        layout.addView(tv, tv.getLayoutParams());
 
         ConstraintSet c = new ConstraintSet();
         c.clone(layout);
-        c.connect(tempScoreView.getId(), ConstraintSet.RIGHT, layout.getId(), ConstraintSet.RIGHT,0);
-        c.connect(tempScoreView.getId(), ConstraintSet.LEFT,   layout.getId(), ConstraintSet.LEFT,0);
-        c.connect(tempScoreView.getId(), ConstraintSet.TOP,   layout.getId(), ConstraintSet.TOP,0);
-        c.connect(tempScoreView.getId(), ConstraintSet.BOTTOM,   layout.getId(), ConstraintSet.BOTTOM,0);
+        c.connect(tv.getId(), ConstraintSet.RIGHT, layout.getId(), ConstraintSet.RIGHT,0);
+        c.connect(tv.getId(), ConstraintSet.LEFT,   layout.getId(), ConstraintSet.LEFT,0);
+        c.connect(tv.getId(), ConstraintSet.TOP,   layout.getId(), ConstraintSet.TOP,0);
+        c.connect(tv.getId(), ConstraintSet.BOTTOM,   layout.getId(), ConstraintSet.BOTTOM,0);
         c.applyTo(layout);
 
-        tempScoreView.startAnimation(animScore);
+        tv.startAnimation(animScore);
 
     }
-
-    @Override
-    public void onAnimationEnd(Animation animation) {
-        if(animation == animScore) {
-            tempScoreView.setVisibility(View.GONE);
-        }
-
-    }
-
-    @Override
-    public void onAnimationStart(Animation animation) {}
-    @Override
-    public void onAnimationRepeat(Animation animation) {}
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
