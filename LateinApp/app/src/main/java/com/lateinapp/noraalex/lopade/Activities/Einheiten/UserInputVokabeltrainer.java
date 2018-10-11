@@ -87,8 +87,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
 
     private static final int pointBaseline = 100;
 
-    Animation animScore,
-        animShake;
+    Animation animShake;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -133,10 +132,6 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         sGradeValue = findViewById(R.id.scoreGradeValue);
         sBack = findViewById(R.id.scoreButtonBack);
         sReset = findViewById(R.id.scoreButtonReset);
-
-
-        animScore = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.score_move_fade);
-        animScore.setFillAfter(true);
 
         animShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
 
@@ -481,7 +476,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
 
         new AlertDialog.Builder(this)
                 .setTitle("Lektion zurücksetzen?")
-                .setMessage("Willst du den Vokabeltrainer für die Lektion " + lektion + " wirklich neu starten?")
+                .setMessage("Willst du den Vokabeltrainer für die Lektion " + lektion + " wirklich neu starten?\nDein HighScore wird nicht gelöscht!")
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
 
@@ -582,7 +577,10 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         c.connect(tv.getId(), ConstraintSet.BOTTOM,   layout.getId(), ConstraintSet.BOTTOM,0);
         c.applyTo(layout);
 
-        tv.startAnimation(animScore);
+
+        Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.score_move_fade);
+        anim.setFillAfter(true);
+        tv.startAnimation(anim);
 
     }
 
