@@ -63,7 +63,11 @@
             android:parentActivityName=".Activities.EinheitenUebersicht"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.AndroidDatabaseManager"
+            android:name=".Activities.DevAndroidDatabaseManager"
+            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.DevSharedPrefManager"
             android:parentActivityName=".Activities.EinheitenUebersicht"
             android:screenOrientation="portrait" />
         <activity

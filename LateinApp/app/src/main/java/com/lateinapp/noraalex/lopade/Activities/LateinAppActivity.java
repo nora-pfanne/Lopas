@@ -16,7 +16,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
@@ -37,7 +36,8 @@ public abstract class LateinAppActivity extends AppCompatActivity{
     private MenuItem devDBHelper,
                     devVokCheat,
                     devReloadDatabaseAssets,
-                    devReloadDatabaseIterative;
+                    devReloadDatabaseIterative,
+                    devShowSharedPrefrences;
 
     //Make this accessible to all subclasses.
     protected SharedPreferences sharedPref;
@@ -77,7 +77,7 @@ public abstract class LateinAppActivity extends AppCompatActivity{
         devVokCheat = this.menu.findItem(R.id.action_dev_Vokabeltrainer_Cheat);
         devReloadDatabaseAssets = this.menu.findItem(R.id.action_dev_reload_database_from_assets);
         devReloadDatabaseIterative = this.menu.findItem(R.id.action_dev_reload_database_iterative);
-
+        devShowSharedPrefrences = this.menu.findItem(R.id.action_dev_show_sharedprefrences);
 
         sharedPref = General.getSharedPrefrences(getApplicationContext());
 
@@ -112,7 +112,7 @@ public abstract class LateinAppActivity extends AppCompatActivity{
             //#DEVELOPER
             //Opening the dbManager-activity
             case (R.id.action_dev_DB_Helper):
-                Intent dbManager = new Intent(this, AndroidDatabaseManager.class);
+                Intent dbManager = new Intent(this, DevAndroidDatabaseManager.class);
                 startActivity(dbManager);
                 break;
 
@@ -138,10 +138,20 @@ public abstract class LateinAppActivity extends AppCompatActivity{
                 dbHelper.close();
                 break;
 
+            //#DEVELOPER
+            //Reloading the database from the corresponding csv files
             case (R.id.action_dev_reload_database_iterative):
                 DBHelper dbHelper1 = new DBHelper(getApplicationContext());
                 dbHelper1.fillDatabaseFromCsv();
                 dbHelper1.close();
+
+                break;
+
+            //#DEVELOPER
+            //Opening an activity that shows all current SharedPreferences data
+            case (R.id.action_dev_show_sharedprefrences):
+                Intent intent = new Intent(this, DevSharedPrefManager.class);
+                startActivity(intent);
 
                 break;
         }
@@ -219,6 +229,7 @@ public abstract class LateinAppActivity extends AppCompatActivity{
                 devVokCheat.setVisible(true);
                 devReloadDatabaseAssets.setVisible(true);
                 devReloadDatabaseIterative.setVisible(true);
+                devShowSharedPrefrences.setVisible(true);
 
                 devVokCheat.setTitle("DEV: Cheat-Mode: " + (DEV_CHEAT_MODE ? "ON" : "OFF"));
 
@@ -227,6 +238,7 @@ public abstract class LateinAppActivity extends AppCompatActivity{
                 devVokCheat.setVisible(false);
                 devReloadDatabaseAssets.setVisible(false);
                 devReloadDatabaseIterative.setVisible(false);
+                devShowSharedPrefrences.setVisible(false);
             }
 
         }catch (Exception e){

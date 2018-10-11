@@ -1513,7 +1513,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     /**
-     * This method is for the class 'AndroidDatabaseManager'
+     * This method is for the class 'DevAndroidDatabaseManager'
      * Remove this before release
      * @param Query
      * @return

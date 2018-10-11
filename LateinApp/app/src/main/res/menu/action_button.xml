@@ -29,4 +29,10 @@
         android:orderInCategory="100"
         android:title="DEV: Reload Database iterativly?"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_dev_show_sharedprefrences"
+        android:orderInCategory="100"
+        android:title="DEV: Show SharedPrefrences"
+        app:showAsAction="never"/>
 </menu>
