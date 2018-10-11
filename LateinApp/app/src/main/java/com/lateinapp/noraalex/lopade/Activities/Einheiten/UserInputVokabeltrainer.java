@@ -417,6 +417,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         sBack.setVisibility(View.VISIBLE);
         sReset.setVisibility(View.VISIBLE);
 
+        Score.updateHighscore(lektion, sharedPref);
+
         sCurrentTrainer.setText("Du hast gerade Lektion " + lektion + " abgeschlossen!");
 
         int vocabularyAmount = dbHelper.countTableEntries(allVocabularyTables, lektion);

@@ -62,6 +62,9 @@ public class Score {
 
             if(newScore > getHighScoreVocabularyTrainer(sharedPreferences, lektion)){
 
+                //THE HIGHSCORE DOESNT GET UPDATED HERE YET
+                //This happens in updateHighscore() when the trainer is finished
+
                 int newHighscoreState = sharedPreferences.getInt(KEY_NEW_HIGHSCORE_VOKABELTRAINER + lektion, STATE_FIRST_PLAYTHROUGH);
                 if(newHighscoreState == STATE_NO_HS_YET){
                     editor.putInt(KEY_NEW_HIGHSCORE_VOKABELTRAINER + lektion, STATE_NEW_HS_NOW);
@@ -69,8 +72,6 @@ public class Score {
                     editor.putInt(KEY_NEW_HIGHSCORE_VOKABELTRAINER + lektion, STATE_NEW_HS_EARLIER);
                 }
 
-                editor.putInt(KEY_HIGH_SCORE_ALL_TRAINERS,        getScoreAll(sharedPreferences) + difference);
-                editor.putInt(KEY_HIGH_SCORE_VOCAULARY + lektion, newScore);
             }
 
         }
@@ -101,6 +102,23 @@ public class Score {
         editor.apply();
 
         resetCombo(lektion, sharedPreferences);
+    }
+
+    public static void updateHighscore(int lektion, SharedPreferences sharedPreferences){
+
+        int newHighScore = getScoreVocabularyTrainer(lektion, sharedPreferences);
+
+        if(newHighScore > getHighScoreVocabularyTrainer(sharedPreferences, lektion)) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            int oldHighscore = sharedPreferences.getInt(KEY_HIGH_SCORE_VOCAULARY + lektion, 0);
+            int delta = newHighScore - oldHighscore;
+
+            editor.putInt(KEY_HIGH_SCORE_ALL_TRAINERS, getScoreAll(sharedPreferences) + delta);
+            editor.putInt(KEY_HIGH_SCORE_VOCAULARY + lektion, newHighScore);
+
+            editor.apply();
+        }
     }
 
     //
