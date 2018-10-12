@@ -76,7 +76,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".Activities.Home"
+            android:name=".Activities.Home.Home"
             android:label="Home"
             android:screenOrientation="portrait">
             <intent-filter>
