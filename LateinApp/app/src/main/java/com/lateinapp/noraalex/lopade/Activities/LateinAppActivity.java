@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.lateinapp.noraalex.lopade.Activities.Home.Home;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
@@ -61,7 +62,7 @@ public abstract class LateinAppActivity extends AppCompatActivity{
         getMenuInflater().inflate(R.menu.action_button, menu);
 
         //If we aren't in the home activity we want to enable a back/up navigation button
-        if (!this.getClass().getName().equals(EinheitenUebersicht.class.getName())){
+        if (!this.getClass().getName().equals(Home.class.getName())){
             ActionBar ab = getSupportActionBar();
             // Enable the Up button
             if (ab != null) ab.setDisplayHomeAsUpEnabled(true);

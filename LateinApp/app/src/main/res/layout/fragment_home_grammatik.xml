@@ -3,13 +3,376 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Activities.Home.HomeVokabeltrainer">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Fragment 2"
-        android:textSize="30sp"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/pillarleftone"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_vector_pillar" />
+
+                <TextView
+                    android:id="@+id/titelGrammatikeins"
+                    style="@style/titelGrammatik"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Grundlagen"/>
+
+                <ImageView
+                    android:id="@+id/pillarlefteins"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_vector_pillar" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/uebersicht_kasus_fragen"
+                    style="@style/SubstantivGrammatikButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="navButtonClicked"
+                    android:text="Kasus" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/uebersicht_nominativ"
+                    style="@style/SubstantivGrammatikButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="navButtonClicked"
+                    android:text="Nominativ" />
+
+                <Button
+                    android:id="@+id/uebersicht_dritte_pers_praesens"
+                    style="@style/VerbGrammatikButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="navButtonClicked"
+                    android:text="3.Person Präsens" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    style="@style/SubstantivGrammatikButton"
+                    android:id="@+id/uebersicht_akkusativ"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="navButtonClicked"
+                    android:text="Akkusativ" />
+
+                <Button
+                    android:id="@+id/uebersicht_erste_zweite_pers_praesens"
+                    style="@style/VerbGrammatikButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:includeFontPadding="false"
+                    android:onClick="navButtonClicked"
+                    android:text="1. + 2. Person Präsens" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    style="@style/SubstantivGrammatikButton"
+                    android:id="@+id/uebersicht_dativ"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="navButtonClicked"
+                    android:text="Dativ" />
+
+                <Button
+                    style="@style/CheckpointGrammatikButton"
+                    android:id="@+id/uebersicht_checkpoint_praesens_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="navButtonClicked"
+                    android:text="Checkpoint" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    style="@style/SubstantivGrammatikButton"
+                    android:id="@+id/uebersicht_ablativ"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="navButtonClicked"
+                    android:text="Ablativ" />
+
+                <Button
+                    android:id="@+id/uebersicht_esse_velle_nolle"
+                    style="@style/VerbGrammatikButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="navButtonClicked"
+                    android:text="esse, velle, nolle" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    style="@style/SubstantivGrammatikButton"
+                    android:id="@+id/uebersicht_genitiv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="navButtonClicked"
+                    android:text="Genitiv" />
+
+                <Button
+                    style="@style/InactiveButton"
+                    android:id="@+id/uebersicht_kons_konjugation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="navButtonClicked"
+                    android:text="kons. Konjugation" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    style="@style/CheckpointGrammatikButton"
+                    android:id="@+id/uebersicht_checkpoint_deklinationsendung_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="navButtonClicked"
+                    android:text="Checkpoint" />
+
+                <Button
+                    style="@style/InactiveButton"
+                    android:id="@+id/uebersicht_checkpoint_praesens_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="navButtonClicked"
+                    android:text="Checkpoint" />
+
+            </LinearLayout>
+
+
+            <!--
+            Everything below here does not yet have a proper ID and
+            cannot be implemented
+            -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/pillarleftdrei"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_vector_pillar" />
+
+                <TextView
+                    android:id="@+id/titelGrammatikzwei"
+                    style="@style/titelGrammatik"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Satzglieder und Satzkonstruktionen"/>
+
+                <ImageView
+                    android:id="@+id/pillarleftvier"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_vector_pillar" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    style="@style/InactiveButton"
+                    android:id="@+id/uebersicht_praeposition_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="navButtonClicked"
+                    android:text="Präpositionen I" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    style="@style/InactiveButton"
+                    android:id="@+id/uebersicht_praeposition_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="navButtonClicked"
+                    android:layout_weight="1"
+                    android:text="Präpositionen II" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    style="@style/InactiveButton"
+                    android:id="@+id/uebersicht_dritte_deklination"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="navButtonClicked"
+                    android:layout_weight="1"
+                    android:text="3. Deklination" />
+
+                <Button
+                    style="@style/InactiveButton"
+                    android:id="@+id/uebersicht_i_erweiterung"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="navButtonClicked"
+                    android:layout_weight="1"
+                    android:text="i-Erweiterung" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    style="@style/AdjektivGrammatikButton"
+                    android:id="@+id/uebersicht_adjektiv_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="navButtonClicked"
+                    android:layout_weight="1"
+                    android:text="Adjektive I" />
+
+                <Button
+                    style="@style/SatzgliedGrammatikButton"
+                    android:id="@+id/uebersicht_satzglieder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="navButtonClicked"
+                    android:layout_weight="1"
+                    android:text="Satzglieder" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    style="@style/InactiveButton"
+                    android:id="@+id/uebersicht_adjektiv_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="navButtonClicked"
+                    android:layout_weight="1"
+                    android:text="Adjektive II" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    style="@style/InactiveButton"
+                    android:id="@+id/uebersicht_posse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="navButtonClicked"
+                    android:layout_weight="1"
+                    android:text="Posse" />
+
+                <Button
+                    style="@style/InactiveButton"
+                    android:id="@+id/uebersicht_aci_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="navButtonClicked"
+                    android:layout_weight="1"
+                    android:text="AcI I" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    style="@style/InactiveButton"
+                    android:id="@+id/uebersicht_aci_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="navButtonClicked"
+                    android:layout_weight="1"
+                    android:text="AcI II" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>

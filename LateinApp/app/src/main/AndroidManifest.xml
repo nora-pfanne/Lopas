@@ -13,62 +13,57 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".Activities.EinheitenUebersicht"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
             android:name=".Activities.Einheiten.UserInputVokabeltrainer"
-            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:parentActivityName=".Activities.Home.Home"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Woerterbuch"
-            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:parentActivityName=".Activities.Home.Home"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Einheiten.ClickDeklinationsendung"
-            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:parentActivityName=".Activities.Home.Home"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.SettingsActivity"
-            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:parentActivityName=".Activities.Home.Home"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Einheiten.ClickPersonalendung"
-            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:parentActivityName=".Activities.Home.Home"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Einheiten.UserInputDeklinationsendung"
-            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:parentActivityName=".Activities.Home.Home"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Einheiten.UserInputPersonalendung"
-            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:parentActivityName=".Activities.Home.Home"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Einheiten.Satzglieder"
-            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:parentActivityName=".Activities.Home.Home"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Einheiten.ClickKasusFragen"
-            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:parentActivityName=".Activities.Home.Home"
             android:screenOrientation="portrait"
             tools:ignore="InnerclassSeparator" />
         <activity
             android:name=".Activities.Einheiten.UserInputAdjektive"
-            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:parentActivityName=".Activities.Home.Home"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.DevAndroidDatabaseManager"
-            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:parentActivityName=".Activities.Home.Home"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.DevSharedPrefManager"
-            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:parentActivityName=".Activities.Home.Home"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Einheiten.UserInputEsseVelleNolle"
-            android:parentActivityName=".Activities.EinheitenUebersicht"
+            android:parentActivityName=".Activities.Home.Home"
             android:screenOrientation="portrait" />
 
         <meta-data
