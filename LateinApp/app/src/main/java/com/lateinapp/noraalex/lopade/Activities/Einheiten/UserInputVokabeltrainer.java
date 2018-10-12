@@ -432,9 +432,6 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         sHighScoreValue.setText(highScoreText);
         sGradeValue.setText(gradeText);
 
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean(KEY_FINISHED_USERINPUT_VOKABELTRAINER + lektion, true);
-        editor.apply();
     }
 
     /**
@@ -493,6 +490,29 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
                 .setNegativeButton(android.R.string.no, null).show();
 
     }
+
+    private void resetScore(){
+        new AlertDialog.Builder(this)
+                .setTitle("Score zurücksetzen?")
+                .setMessage("Willst du den Score des Vokabeltrainer für die Lektion " + lektion + " wirklich zurücksetzen?\nDein HighScore wird hier gelöscht!")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        General.showMessage("Score für lektion " + lektion + " zurückgesetzt!", getApplicationContext());
+
+
+                        dbHelper.resetLektion(lektion);
+                        Score.resetScoreVocabulary(lektion, sharedPref);
+                        Score.resetHighscoreVocabulary(lektion, sharedPref);
+                        finish();
+
+
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
+
+    }
+
 
     @Override
     public void onPause() {
@@ -601,7 +621,12 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
             case (R.id.action_reset_trainer):
 
                 resetCurrentLektion();
+                break;
 
+            //Opening a popup window
+            case (R.id.action_reset_score):
+
+                resetScore();
                 break;
 
         }

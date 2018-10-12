@@ -2,6 +2,7 @@ package com.lateinapp.noraalex.lopade;
 
 import android.content.SharedPreferences;
 
+import static com.lateinapp.noraalex.lopade.Global.KEY_FINISHED_USERINPUT_VOKABELTRAINER;
 import static com.lateinapp.noraalex.lopade.Global.KEY_NEW_HIGHSCORE_VOKABELTRAINER;
 import static com.lateinapp.noraalex.lopade.Global.KEY_SCORE_VOCAULARY;
 import static com.lateinapp.noraalex.lopade.Global.KEY_HIGH_SCORE_VOCAULARY;
@@ -99,17 +100,31 @@ public class Score {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(KEY_SCORE_VOCAULARY + lektion, 0);
         editor.putInt(KEY_NEW_HIGHSCORE_VOKABELTRAINER + lektion, STATE_NO_HS_YET);
+        editor.putBoolean(KEY_FINISHED_USERINPUT_VOKABELTRAINER + lektion, false);
         editor.apply();
 
         resetCombo(lektion, sharedPreferences);
     }
 
+    public static void resetHighscoreVocabulary(int lektion, SharedPreferences sharedPreferences){
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(KEY_HIGH_SCORE_VOCAULARY + lektion, 0);
+        editor.apply();
+    }
+
     public static void updateHighscore(int lektion, SharedPreferences sharedPreferences){
 
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        //Setting trainer to "done"
+        editor.putBoolean(KEY_FINISHED_USERINPUT_VOKABELTRAINER + lektion, true);
+
+        //Updating HighScore
         int newHighScore = getScoreVocabularyTrainer(lektion, sharedPreferences);
 
         if(newHighScore > getHighScoreVocabularyTrainer(sharedPreferences, lektion)) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
+
 
             int oldHighscore = sharedPreferences.getInt(KEY_HIGH_SCORE_VOCAULARY + lektion, 0);
             int delta = newHighScore - oldHighscore;
@@ -117,8 +132,9 @@ public class Score {
             editor.putInt(KEY_HIGH_SCORE_ALL_TRAINERS, getScoreAll(sharedPreferences) + delta);
             editor.putInt(KEY_HIGH_SCORE_VOCAULARY + lektion, newHighScore);
 
-            editor.apply();
         }
+
+        editor.apply();
     }
 
     //

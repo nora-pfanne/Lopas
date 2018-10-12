@@ -6,5 +6,10 @@
         android:orderInCategory="1"
         android:title="Trainer neu starten"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_reset_score"
+        android:orderInCategory="1"
+        android:title="High-Score zurücksetzen"
+        app:showAsAction="never"/>
 
 </menu>
