@@ -35,7 +35,7 @@
     </style>
 
     <!--TextView styles-->
-    <style name="titelGrammatik">
+    <style name="title">
         <item name="android:textSize">20sp</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textStyle">bold</item>

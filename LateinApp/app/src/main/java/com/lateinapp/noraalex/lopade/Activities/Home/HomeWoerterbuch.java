@@ -37,7 +37,7 @@ public class HomeWoerterbuch extends Fragment {
 
         switch (v.getId()) {
 
-            case R.id.uebersicht_woerterbuch:
+            case R.id.home_woerterbuch_button:
                 intent = new Intent(getActivity(), Woerterbuch.class);
                 startActivity(intent);
                 break;

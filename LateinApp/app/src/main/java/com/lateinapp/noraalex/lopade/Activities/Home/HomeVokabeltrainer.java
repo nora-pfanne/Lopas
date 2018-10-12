@@ -36,37 +36,37 @@ public class HomeVokabeltrainer extends Fragment {
 
         switch (v.getId()) {
 
-            case R.id.uebersicht_vokabel_1:
+            case R.id.home_voc_1:
                 intent = new Intent(getActivity(), UserInputVokabeltrainer.class);
                 intent.putExtra("lektion",1);
                 startActivity(intent);
                 break;
 
-            case R.id.uebersicht_vokabel_2:
+            case R.id.home_voc_2:
                 intent = new Intent(getActivity(), UserInputVokabeltrainer.class);
                 intent.putExtra("lektion", 2);
                 startActivity(intent);
                 break;
 
-            case R.id.uebersicht_vokabel_3:
+            case R.id.home_voc_3:
                 intent = new Intent(getActivity(), UserInputVokabeltrainer.class);
                 intent.putExtra("lektion", 3);
                 startActivity(intent);
                 break;
 
-            case R.id.uebersicht_vokabel_4:
+            case R.id.home_voc_4:
                 intent = new Intent(getActivity(), UserInputVokabeltrainer.class);
                 intent.putExtra("lektion", 4);
                 startActivity(intent);
                 break;
 
-            case R.id.uebersicht_vokabel_5:
+            case R.id.home_voc_5:
                 intent = new Intent(getActivity(), UserInputVokabeltrainer.class);
                 intent.putExtra("lektion", 5);
                 startActivity(intent);
                 break;
 
-            case R.id.uebersicht_vokabel_6:
+            case R.id.home_voc_6:
                 intent = new Intent(getActivity(), UserInputVokabeltrainer.class);
                 intent.putExtra("lektion", 6);
                 startActivity(intent);

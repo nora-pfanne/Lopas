@@ -45,48 +45,48 @@ public class HomeGrammatik extends Fragment {
 
         switch (v.getId()) {
 
-            case R.id.uebersicht_kasus_fragen:
+            case R.id.home_grammar_kasus_fragen:
 
                 intent = new Intent(getActivity(), ClickKasusFragen.class);
                 startActivity(intent);
                 break;
 
-            case R.id.uebersicht_nominativ:
+            case R.id.home_grammar_nominativ:
 
                 intent = new Intent(getActivity(), ClickDeklinationsendung.class);
                 intent.putExtra("ExtraClickDeklinationsendung", "NOMINATIV");
                 startActivity(intent);
                 break;
 
-            case R.id.uebersicht_akkusativ:
+            case R.id.home_grammar_akkusativ:
 
                 intent = new Intent(getActivity(), ClickDeklinationsendung.class);
                 intent.putExtra("ExtraClickDeklinationsendung", "AKKUSATIV");
                 startActivity(intent);
                 break;
 
-            case R.id.uebersicht_dativ:
+            case R.id.home_grammar_dativ:
 
                 intent = new Intent(getActivity(), ClickDeklinationsendung.class);
                 intent.putExtra("ExtraClickDeklinationsendung", "DATIV");
                 startActivity(intent);
                 break;
 
-            case R.id.uebersicht_ablativ:
+            case R.id.home_grammar_ablativ:
 
                 intent = new Intent(getActivity(), ClickDeklinationsendung.class);
                 intent.putExtra("ExtraClickDeklinationsendung", "ABLATIV");
                 startActivity(intent);
                 break;
 
-            case R.id.uebersicht_genitiv:
+            case R.id.home_grammar_genitiv:
 
                 intent = new Intent(getActivity(), ClickDeklinationsendung.class);
                 intent.putExtra("ExtraClickDeklinationsendung", "GENITIV");
                 startActivity(intent);
                 break;
 
-            case R.id.uebersicht_checkpoint_deklinationsendung_1:
+            case R.id.home_grammar_checkpoint_deklinationsendung:
 
                 intent = new Intent(getActivity(), UserInputDeklinationsendung.class);
                 intent.putExtra("ExtraInputDeklinationsendung", "ALLE");
@@ -94,40 +94,35 @@ public class HomeGrammatik extends Fragment {
 
                 break;
 
-            case R.id.uebersicht_dritte_pers_praesens:
+            case R.id.home_grammar_dritte_pers_praesens:
                 intent = new Intent(getActivity(), ClickPersonalendung.class);
                 intent.putExtra("ExtraClickPersonalendung", "DRITTE_PERSON");
                 startActivity(intent);
 
                 break;
 
-            case R.id.uebersicht_erste_zweite_pers_praesens:
+            case R.id.home_grammar_zweite_pers_praesens:
                 intent = new Intent(getActivity(), ClickPersonalendung.class);
                 intent.putExtra("ExtraClickPersonalendung", "ERSTE_ZWEITE_PERSON");
                 startActivity(intent);
 
                 break;
 
-            case R.id.uebersicht_checkpoint_praesens_1:
+            case R.id.home_grammar_checkpoint_praesens_1:
                 intent = new Intent(getActivity(), UserInputPersonalendung.class);
                 intent.putExtra("ExtraInputPersonalendung", "DEFAULT");
                 startActivity(intent);
                 break;
 
-            case R.id.uebersicht_esse_velle_nolle:
+            case R.id.home_grammar_esse_velle_nolle:
                 intent = new Intent(getActivity(), UserInputEsseVelleNolle.class);
                 startActivity(intent);
                 break;
 
-            case R.id.uebersicht_satzglieder:
+            case R.id.home_grammar_satzglieder:
                 intent = new Intent(getActivity(), Satzglieder.class);
                 startActivity(intent);
                 break;
-
-            case R.id.uebersicht_adjektiv_1:
-                intent = new Intent(getActivity(), UserInputAdjektive.class);
-                startActivity(intent);
-
 
             default:
                 Log.e(TAG, "The button that called 'navButtonClicked' was not" +
