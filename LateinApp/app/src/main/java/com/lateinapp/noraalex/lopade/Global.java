@@ -12,6 +12,12 @@ public class Global {
     //Public keys for accessing SharedPreferences values;
     //
 
+    //Saves where in which fragment of the home screen the user last was
+    public static final String KEY_HOME_FRAGMENT = "LAST_HOME_FRAGMENT";                                            //Integer
+    public static final int STATE_FRAGMENT_VOCABULARY =  0;
+    public static final int STATE_FRAGMENT_GRAMMAR =     1;
+    public static final int STATE_FRAGMENT_WOERTERBUCH = 2;
+
     //#DEVELOPER: the values indicate, whether the corresponding app mode was activated the last time the app was running
     public static final String KEY_DEV_MODE =       "DEVELOPER";                                                    //Boolean
     public static final String KEY_DEV_CHEAT_MODE = "DEV_CHEAT_MODE";                                               //Boolean

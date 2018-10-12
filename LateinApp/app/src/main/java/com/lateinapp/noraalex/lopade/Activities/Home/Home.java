@@ -20,7 +20,11 @@ import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
 import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
 import static com.lateinapp.noraalex.lopade.Global.KEY_DEV_CHEAT_MODE;
 import static com.lateinapp.noraalex.lopade.Global.KEY_DEV_MODE;
+import static com.lateinapp.noraalex.lopade.Global.KEY_HOME_FRAGMENT;
 import static com.lateinapp.noraalex.lopade.Global.KEY_NOT_FIRST_STARTUP;
+import static com.lateinapp.noraalex.lopade.Global.STATE_FRAGMENT_GRAMMAR;
+import static com.lateinapp.noraalex.lopade.Global.STATE_FRAGMENT_VOCABULARY;
+import static com.lateinapp.noraalex.lopade.Global.STATE_FRAGMENT_WOERTERBUCH;
 
 public class Home extends LateinAppActivity {
 
@@ -56,13 +60,38 @@ public class Home extends LateinAppActivity {
             editor.putBoolean(KEY_NOT_FIRST_STARTUP, true);
             editor.apply();
         }
+
+        //Manually displaying the first fragment - one time only
+        Fragment startFragment;
+        int lastFrag = sharedPref.getInt(KEY_HOME_FRAGMENT, 0);
+        if(lastFrag == STATE_FRAGMENT_GRAMMAR){
+
+            startFragment = HomeGrammatik.newInstance();
+            ((BottomNavigationView)findViewById(R.id.home_navigation)).setSelectedItemId(R.id.nav_grammatik);
+
+        }else if(lastFrag == STATE_FRAGMENT_WOERTERBUCH){
+
+            startFragment = HomeWoerterbuch.newInstance();
+            ((BottomNavigationView)findViewById(R.id.home_navigation)).setSelectedItemId(R.id.nav_wörterbuch);
+
+        }else{
+            //STATE_FRAGMENT_VOCABULARY
+
+            startFragment = HomeVokabeltrainer.newInstance();
+            ((BottomNavigationView)findViewById(R.id.home_navigation)).setSelectedItemId(R.id.nav_vokabeltrainer);
+
+        }
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, startFragment, sharedPref.getInt(KEY_HOME_FRAGMENT, 0) + "");
+        transaction.commit();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.home_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener
                 (new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -70,6 +99,7 @@ public class Home extends LateinAppActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         Fragment selectedFragment = null;
                         String fragmentTag = "";
+                        SharedPreferences sharedPref = General.getSharedPrefrences(getApplication());
 
                         switch (item.getItemId()) {
                             case R.id.nav_vokabeltrainer:
@@ -79,8 +109,11 @@ public class Home extends LateinAppActivity {
                                     sv.smoothScrollTo(0, 0);
                                     return true;
                                 }
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putInt(KEY_HOME_FRAGMENT, STATE_FRAGMENT_VOCABULARY);
+                                editor.apply();
                                 selectedFragment = HomeVokabeltrainer.newInstance();
-                                fragmentTag = FRAGMENT_VOCABULARY;
+                                fragmentTag += STATE_FRAGMENT_VOCABULARY;
                                 break;
 
                             case R.id.nav_grammatik:
@@ -90,8 +123,11 @@ public class Home extends LateinAppActivity {
                                     sv.smoothScrollTo(0, 0);
                                     return true;
                                 }
+                                SharedPreferences.Editor editor1 = sharedPref.edit();
+                                editor1.putInt(KEY_HOME_FRAGMENT, STATE_FRAGMENT_GRAMMAR);
+                                editor1.apply();
                                 selectedFragment = HomeGrammatik.newInstance();
-                                fragmentTag = FRAGMENT_GRAMMAR;
+                                fragmentTag += STATE_FRAGMENT_GRAMMAR;
                                 break;
 
                             case R.id.nav_wörterbuch:
@@ -100,8 +136,11 @@ public class Home extends LateinAppActivity {
                                     sv.smoothScrollTo(0, 0);
                                     return true;
                                 }
+                                SharedPreferences.Editor editor2 = sharedPref.edit();
+                                editor2.putInt(KEY_HOME_FRAGMENT, STATE_FRAGMENT_WOERTERBUCH);
+                                editor2.apply();
                                 selectedFragment = HomeWoerterbuch.newInstance();
-                                fragmentTag = FRAGMENT_WOERTERBUCH;
+                                fragmentTag += STATE_FRAGMENT_WOERTERBUCH;
                                 break;
                         }
 
@@ -111,13 +150,6 @@ public class Home extends LateinAppActivity {
                         return true;
                     }
                 });
-
-        //Manually displaying the first fragment - one time only
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, HomeVokabeltrainer.newInstance(), FRAGMENT_VOCABULARY);
-        transaction.commit();
-
-
 
         setup();
     }
