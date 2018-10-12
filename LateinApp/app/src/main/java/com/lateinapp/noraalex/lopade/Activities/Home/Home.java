@@ -1,15 +1,24 @@
 package com.lateinapp.noraalex.lopade.Activities.Home;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ScrollView;
 
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickDeklinationsendung;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickKasusFragen;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickPersonalendung;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.Satzglieder;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputDeklinationsendung;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputEsseVelleNolle;
+import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.General;
@@ -29,9 +38,6 @@ import static com.lateinapp.noraalex.lopade.Global.STATE_FRAGMENT_WOERTERBUCH;
 public class Home extends LateinAppActivity {
 
     private static final String TAG = "Home";
-    private static final String FRAGMENT_VOCABULARY = "Vocabulary";
-    private static final String FRAGMENT_GRAMMAR = "Grammar";
-    private static final String FRAGMENT_WOERTERBUCH = "Woerterbuch";
 
     private SharedPreferences sharedPref;
 
@@ -104,7 +110,7 @@ public class Home extends LateinAppActivity {
                         switch (item.getItemId()) {
                             case R.id.nav_vokabeltrainer:
 
-                                if(getSupportFragmentManager().findFragmentByTag(FRAGMENT_VOCABULARY) != null){
+                                if(getSupportFragmentManager().findFragmentByTag(STATE_FRAGMENT_VOCABULARY+"") != null){
                                     ScrollView sv = findViewById(R.id.homeScrollView);
                                     sv.smoothScrollTo(0, 0);
                                     return true;
@@ -118,7 +124,7 @@ public class Home extends LateinAppActivity {
 
                             case R.id.nav_grammatik:
 
-                                if(getSupportFragmentManager().findFragmentByTag(FRAGMENT_GRAMMAR) != null){
+                                if(getSupportFragmentManager().findFragmentByTag(STATE_FRAGMENT_GRAMMAR+"") != null){
                                     ScrollView sv = findViewById(R.id.homeScrollView);
                                     sv.smoothScrollTo(0, 0);
                                     return true;
@@ -131,7 +137,7 @@ public class Home extends LateinAppActivity {
                                 break;
 
                             case R.id.nav_wörterbuch:
-                                if(getSupportFragmentManager().findFragmentByTag(FRAGMENT_WOERTERBUCH) != null){
+                                if(getSupportFragmentManager().findFragmentByTag(STATE_FRAGMENT_WOERTERBUCH+"") != null){
                                     ScrollView sv = findViewById(R.id.homeScrollView);
                                     sv.smoothScrollTo(0, 0);
                                     return true;
@@ -156,20 +162,24 @@ public class Home extends LateinAppActivity {
 
     public void navButtonClicked(View v) {
 
-        HomeGrammatik fragGramm = (HomeGrammatik)getSupportFragmentManager().findFragmentByTag(FRAGMENT_GRAMMAR);
+        
+        HomeGrammatik fragGramm = (HomeGrammatik)getSupportFragmentManager().findFragmentByTag(STATE_FRAGMENT_GRAMMAR+"");
         if(fragGramm != null){
+
             fragGramm.navButtonClicked(v);
             return;
         }
 
-        HomeVokabeltrainer fragVoc = (HomeVokabeltrainer)getSupportFragmentManager().findFragmentByTag(FRAGMENT_VOCABULARY);
+        HomeVokabeltrainer fragVoc = (HomeVokabeltrainer)getSupportFragmentManager().findFragmentByTag(STATE_FRAGMENT_VOCABULARY+"");
         if(fragVoc != null){
+
             fragVoc.navButtonClicked(v);
             return;
         }
 
-        HomeWoerterbuch fragWoert = (HomeWoerterbuch)getSupportFragmentManager().findFragmentByTag(FRAGMENT_WOERTERBUCH);
+        HomeWoerterbuch fragWoert = (HomeWoerterbuch)getSupportFragmentManager().findFragmentByTag(STATE_FRAGMENT_WOERTERBUCH+"");
         if(fragWoert != null){
+
             fragWoert.navButtonClicked(v);
             return;
         }
