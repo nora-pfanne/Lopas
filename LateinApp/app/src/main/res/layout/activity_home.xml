@@ -7,13 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".Home">
 
-    <FrameLayout
-        android:id="@+id/frame_layout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/navigation"
-        android:animateLayoutChanges="true">
-    </FrameLayout>
+        android:layout_height="wrap_content"
+        android:id="@+id/homeScrollView">
+        <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/navigation"
+            android:animateLayoutChanges="true">
+        </FrameLayout>
+    </ScrollView>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"

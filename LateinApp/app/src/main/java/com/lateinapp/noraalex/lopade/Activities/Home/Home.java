@@ -8,6 +8,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ScrollView;
 
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
@@ -72,14 +73,33 @@ public class Home extends LateinAppActivity {
 
                         switch (item.getItemId()) {
                             case R.id.nav_vokabeltrainer:
+
+                                if(getSupportFragmentManager().findFragmentByTag(FRAGMENT_VOCABULARY) != null){
+                                    ScrollView sv = findViewById(R.id.homeScrollView);
+                                    sv.smoothScrollTo(0, 0);
+                                    return true;
+                                }
                                 selectedFragment = HomeVokabeltrainer.newInstance();
                                 fragmentTag = FRAGMENT_VOCABULARY;
                                 break;
+
                             case R.id.nav_grammatik:
+
+                                if(getSupportFragmentManager().findFragmentByTag(FRAGMENT_GRAMMAR) != null){
+                                    ScrollView sv = findViewById(R.id.homeScrollView);
+                                    sv.smoothScrollTo(0, 0);
+                                    return true;
+                                }
                                 selectedFragment = HomeGrammatik.newInstance();
                                 fragmentTag = FRAGMENT_GRAMMAR;
                                 break;
+
                             case R.id.nav_wörterbuch:
+                                if(getSupportFragmentManager().findFragmentByTag(FRAGMENT_WOERTERBUCH) != null){
+                                    ScrollView sv = findViewById(R.id.homeScrollView);
+                                    sv.smoothScrollTo(0, 0);
+                                    return true;
+                                }
                                 selectedFragment = HomeWoerterbuch.newInstance();
                                 fragmentTag = FRAGMENT_WOERTERBUCH;
                                 break;

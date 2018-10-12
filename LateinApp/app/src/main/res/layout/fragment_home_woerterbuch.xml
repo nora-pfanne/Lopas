@@ -5,58 +5,55 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Activities.Home.HomeVokabeltrainer">
-    <ScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/pillarleft0"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_vector_pillar" />
+
+            <TextView
+                android:id="@+id/titelGrammatik"
+                style="@style/titelGrammatik"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:text="Wörterbuch"/>
 
-                <ImageView
-                    android:id="@+id/pillarleft0"
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_vector_pillar" />
-
-                <TextView
-                    android:id="@+id/titelGrammatik"
-                    style="@style/titelGrammatik"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="Wörterbuch"/>
-
-                <ImageView
-                    android:id="@+id/pillarleft"
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_vector_pillar" />
-            </LinearLayout>
-
-            <LinearLayout
+            <ImageView
+                android:id="@+id/pillarleft"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_vector_pillar" />
+        </LinearLayout>
 
-                <Button
-                    android:id="@+id/uebersicht_woerterbuch"
-                    style="@style/PraepositionGrammatikButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="navButtonClicked"
-                    android:text="Wörterbuch" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-            </LinearLayout>
+            <Button
+                android:id="@+id/uebersicht_woerterbuch"
+                style="@style/PraepositionGrammatikButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Wörterbuch" />
 
         </LinearLayout>
-    </ScrollView>
+
+    </LinearLayout>
 </FrameLayout>
