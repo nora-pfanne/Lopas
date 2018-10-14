@@ -6,20 +6,23 @@
     <item android:state_enabled="false">
         <shape android:shape="rectangle">
             <solid android:color="@color/greyLight"/>
+            <corners android:radius="5dip"/>
         </shape>
     </item>
 
     <!--pressed state. -->
     <item android:state_enabled="true" android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/primaryLight"/>
+            <corners android:radius="5dip"/>
+            <gradient android:angle="-90" android:startColor="@color/primaryLight" android:endColor="@color/primary"/>
         </shape>
     </item>
 
     <!--released state. -->
     <item android:state_enabled="true" android:state_pressed="false">
         <shape android:shape="rectangle">
-            <solid android:color="@color/primary"/>
+            <corners android:radius="5dip"/>
+            <gradient android:angle="-90" android:startColor="@color/primary" android:endColor="@color/primaryDark"/>
         </shape>
     </item>
 

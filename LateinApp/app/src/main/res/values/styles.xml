@@ -118,7 +118,7 @@
     <style name="buttonStyle" parent="Widget.AppCompat.Button.Colored">
         <item name="android:background">@drawable/button_selector</item>
         <item name="android:textColor">@drawable/color_selector</item>
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">15sp</item>
 
     </style>
 
