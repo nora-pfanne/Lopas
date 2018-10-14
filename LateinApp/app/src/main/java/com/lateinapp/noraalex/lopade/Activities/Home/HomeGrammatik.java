@@ -13,7 +13,6 @@ import com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickDeklinationsendun
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickKasusFragen;
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickPersonalendung;
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.Satzglieder;
-import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputAdjektive;
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputDeklinationsendung;
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputEsseVelleNolle;
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputPersonalendung;
@@ -45,48 +44,20 @@ public class HomeGrammatik extends Fragment {
 
         switch (v.getId()) {
 
-            case R.id.home_grammar_kasus_fragen:
+            case R.id.home_grammar_button_kasus_fragen:
 
                 intent = new Intent(getActivity(), ClickKasusFragen.class);
                 startActivity(intent);
                 break;
 
-            case R.id.home_grammar_nominativ:
-
-                intent = new Intent(getActivity(), ClickDeklinationsendung.class);
-                intent.putExtra("ExtraClickDeklinationsendung", "NOMINATIV");
-                startActivity(intent);
-                break;
-
-            case R.id.home_grammar_akkusativ:
-
-                intent = new Intent(getActivity(), ClickDeklinationsendung.class);
-                intent.putExtra("ExtraClickDeklinationsendung", "AKKUSATIV");
-                startActivity(intent);
-                break;
-
-            case R.id.home_grammar_dativ:
-
-                intent = new Intent(getActivity(), ClickDeklinationsendung.class);
-                intent.putExtra("ExtraClickDeklinationsendung", "DATIV");
-                startActivity(intent);
-                break;
-
-            case R.id.home_grammar_ablativ:
-
-                intent = new Intent(getActivity(), ClickDeklinationsendung.class);
-                intent.putExtra("ExtraClickDeklinationsendung", "ABLATIV");
-                startActivity(intent);
-                break;
-
-            case R.id.home_grammar_genitiv:
+            case R.id.home_grammar_button_click_deklination:
 
                 intent = new Intent(getActivity(), ClickDeklinationsendung.class);
                 intent.putExtra("ExtraClickDeklinationsendung", "GENITIV");
                 startActivity(intent);
                 break;
 
-            case R.id.home_grammar_checkpoint_deklinationsendung:
+            case R.id.home_grammar_buttom_typing_deklinationsendung:
 
                 intent = new Intent(getActivity(), UserInputDeklinationsendung.class);
                 intent.putExtra("ExtraInputDeklinationsendung", "ALLE");
@@ -94,32 +65,25 @@ public class HomeGrammatik extends Fragment {
 
                 break;
 
-            case R.id.home_grammar_dritte_pers_praesens:
+            case R.id.home_grammar_button_click_konjugation:
                 intent = new Intent(getActivity(), ClickPersonalendung.class);
                 intent.putExtra("ExtraClickPersonalendung", "DRITTE_PERSON");
                 startActivity(intent);
 
                 break;
 
-            case R.id.home_grammar_zweite_pers_praesens:
-                intent = new Intent(getActivity(), ClickPersonalendung.class);
-                intent.putExtra("ExtraClickPersonalendung", "ERSTE_ZWEITE_PERSON");
-                startActivity(intent);
-
-                break;
-
-            case R.id.home_grammar_checkpoint_praesens_1:
+            case R.id.home_grammar_button_typing_konjugation:
                 intent = new Intent(getActivity(), UserInputPersonalendung.class);
                 intent.putExtra("ExtraInputPersonalendung", "DEFAULT");
                 startActivity(intent);
                 break;
 
-            case R.id.home_grammar_esse_velle_nolle:
+            case R.id.home_grammar_button_esse_velle_nolle:
                 intent = new Intent(getActivity(), UserInputEsseVelleNolle.class);
                 startActivity(intent);
                 break;
 
-            case R.id.home_grammar_satzglieder:
+            case R.id.home_grammar_button_satzglieder:
                 intent = new Intent(getActivity(), Satzglieder.class);
                 startActivity(intent);
                 break;

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -195,8 +196,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
             userInput.setBackgroundColor(backgroundColor);
             userInput.setFocusableInTouchMode(true);
 
-            userInput.setHintTextColor(getResources().getColor(R.color.greyLight));
-            userInput.setTextColor(getResources().getColor(R.color.black));
+            userInput.setHintTextColor(ContextCompat.getColor(this, R.color.greyLight));
+            userInput.setTextColor(ContextCompat.getColor(this, R.color.black));
 
             showKeyboard();
 
@@ -253,7 +254,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
 
             color = errorColor;
 
-            userInput.setHintTextColor(getResources().getColor(R.color.greyLight));
+            userInput.setHintTextColor(ContextCompat.getColor(this, R.color.greyLight));
             userInput.setTextColor(errorTextColor);
 
             weiter.startAnimation(animShake);

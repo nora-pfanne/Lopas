@@ -10,12 +10,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_margin="3dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
 
             <ImageView
                 android:id="@+id/home_grammar_pillar_left"
@@ -39,156 +41,174 @@
                 app:srcCompat="@drawable/ic_vector_pillar" />
         </LinearLayout>
 
+
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
 
             <Button
-                android:id="@+id/home_grammar_kasus_fragen"
-                android:layout_width="0dp"
+                android:id="@+id/home_grammar_button_click_deklination"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="navButtonClicked"
-                android:text="Kasus" />
+                android:text="Click: Deklinationsendung"
+                android:layout_margin="3dp"/>
+
+            <TextView
+                android:id="@+id/home_grammar_text_click_deklination"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
 
             <Button
-                android:id="@+id/home_grammar_nominativ"
+                android:id="@+id/home_grammar_buttom_typing_deklinationsendung"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="3dp"
                 android:layout_weight="1"
                 android:onClick="navButtonClicked"
-                android:text="Nominativ" />
+                android:text="Typing: Deklinationsendung" />
 
-            <Button
-                android:id="@+id/home_grammar_dritte_pers_praesens"
+            <TextView
+                android:id="@+id/home_grammar_text_typing_deklinationsendung"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="navButtonClicked"
-                android:text="3.Person Präsens" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/home_grammar_akkusativ"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="navButtonClicked"
-                android:text="Akkusativ" />
-
-            <Button
-                android:id="@+id/home_grammar_zweite_pers_praesens"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:includeFontPadding="false"
-                android:onClick="navButtonClicked"
-                android:text="1. + 2. Person Präsens" />
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
 
             <Button
-                android:id="@+id/home_grammar_dativ"
+                android:id="@+id/home_grammar_button_click_konjugation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Click: Personalendung" />
+
+            <TextView
+                android:id="@+id/home_grammar_text_click_konjugation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_grammar_button_typing_konjugation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Typing: Personalendung" />
+
+            <TextView
+                android:id="@+id/home_grammar_text_typing_konjugation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_grammar_button_kasus_fragen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="navButtonClicked"
-                android:text="Dativ" />
+                android:text="Kasus"
+                android:layout_margin="3dp" />
 
-            <Button
-                android:id="@+id/home_grammar_checkpoint_praesens_1"
+            <TextView
+                android:id="@+id/home_grammar_text_kasus_fragen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="navButtonClicked"
-                android:text="Checkpoint" />
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
 
             <Button
-                android:id="@+id/home_grammar_ablativ"
+                android:id="@+id/home_grammar_button_esse_velle_nolle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="navButtonClicked"
-                android:text="Ablativ" />
+                android:text="esse, velle, nolle"
+                android:layout_margin="3dp" />
 
-            <Button
-                android:id="@+id/home_grammar_esse_velle_nolle"
+            <TextView
+                android:id="@+id/home_grammar_text_esse_velle_nolle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="navButtonClicked"
-                android:text="esse, velle, nolle" />
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
 
             <Button
-                android:id="@+id/home_grammar_genitiv"
+                android:id="@+id/home_grammar_button_satzglieder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="navButtonClicked"
-                android:text="Genitiv" />
+                android:text="Satzglieder"
+                android:layout_margin="3dp"/>
 
-            <Button
-                android:id="@+id/home_grammar_kons_konj"
+            <TextView
+                android:id="@+id/home_grammar_text_satzglieder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="navButtonClicked"
-                android:text="kons. Konjugation" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/home_grammar_checkpoint_deklinationsendung"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="navButtonClicked"
-                android:text="Checkpoint" />
-
-            <Button
-                android:id="@+id/home_grammar_satzglieder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="navButtonClicked"
-                android:text="Satzglieder" />
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
 
         </LinearLayout>
 

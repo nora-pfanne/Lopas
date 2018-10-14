@@ -26,3 +26,6 @@ remove combo?
 other info on homescreen?
     Percent progress
     Best Grade
+Vokabeltrainer start userInput bit further right? so text isnt completly to left
+Clean up grammar trainers
+    -> no variations anymore
