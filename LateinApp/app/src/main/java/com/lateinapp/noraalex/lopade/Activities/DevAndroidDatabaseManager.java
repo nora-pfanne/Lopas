@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
+import com.lateinapp.noraalex.lopade.R;
 
 
 /**
@@ -428,7 +429,7 @@ public class DevAndroidDatabaseManager extends Activity implements OnItemClickLi
                                         public void run() {
                                             if(!isFinishing()){
 
-                                                new AlertDialog.Builder(DevAndroidDatabaseManager.this)
+                                                new AlertDialog.Builder(DevAndroidDatabaseManager.this, R.style.AlertDialogCustom)
                                                         .setTitle("Are you sure ?")
                                                         .setMessage("Pressing yes will remove "+indexInfo.table_name+" table from database")
                                                         .setPositiveButton("yes",
@@ -475,7 +476,7 @@ public class DevAndroidDatabaseManager extends Activity implements OnItemClickLi
                                         public void run() {
                                             if(!isFinishing()){
 
-                                                new AlertDialog.Builder(DevAndroidDatabaseManager.this)
+                                                new AlertDialog.Builder(DevAndroidDatabaseManager.this, R.style.AlertDialogCustom)
                                                         .setTitle("Are you sure?")
                                                         .setMessage("Clicking on yes will delete all the contents of "+indexInfo.table_name+" table from database")
                                                         .setPositiveButton("yes",
@@ -599,7 +600,7 @@ public class DevAndroidDatabaseManager extends Activity implements OnItemClickLi
                                         @Override
                                         public void run() {
                                             if(!isFinishing()){
-                                                new AlertDialog.Builder(DevAndroidDatabaseManager.this)
+                                                new AlertDialog.Builder(DevAndroidDatabaseManager.this, R.style.AlertDialogCustom)
                                                         .setTitle("values")
                                                         .setCancelable(false)
                                                         .setView(addrowsv)
@@ -893,7 +894,7 @@ public class DevAndroidDatabaseManager extends Activity implements OnItemClickLi
             @Override
             public void run() {
                 if(!isFinishing()){
-                    new AlertDialog.Builder(DevAndroidDatabaseManager.this)
+                    new AlertDialog.Builder(DevAndroidDatabaseManager.this, R.style.AlertDialogCustom)
                             .setTitle("values")
                             .setView(updaterowsv)
                             .setCancelable(false)

@@ -40,10 +40,10 @@ import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
 import com.lateinapp.noraalex.lopade.Score;
 
+import static android.app.AlertDialog.THEME_DEVICE_DEFAULT_DARK;
 import static com.lateinapp.noraalex.lopade.Databases.SQL_DUMP.allVocabularyTables;
 import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
 import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
-import static com.lateinapp.noraalex.lopade.Global.KEY_FINISHED_USERINPUT_VOKABELTRAINER;
 
 public class UserInputVokabeltrainer extends LateinAppActivity{
 
@@ -83,7 +83,11 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
     private Vokabel currentVokabel;
 
     private int lektion;
-    private int backgroundColor;
+    private int backgroundColor,
+                errorColor,
+                correctColor,
+                errorTextColor,
+                correctTextColor;
 
     private static final int pointBaseline = 100;
 
@@ -108,6 +112,12 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         dbHelper = new DBHelper(getApplicationContext());
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
+        errorColor = ResourcesCompat.getColor(getResources(), R.color.error, null);
+        errorTextColor = ResourcesCompat.getColor(getResources(), R.color.errorText, null);
+        correctColor = ResourcesCompat.getColor(getResources(), R.color.correct, null);
+        correctTextColor = ResourcesCompat.getColor(getResources(), R.color.correctText, null);
+
+
         request = findViewById(R.id.textUserInputLatein);
         solution = findViewById(R.id.textUserInputDeutsch);
         highScore = findViewById(R.id.textUserInputHighScore);
@@ -185,6 +195,9 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
             userInput.setBackgroundColor(backgroundColor);
             userInput.setFocusableInTouchMode(true);
 
+            userInput.setHintTextColor(getResources().getColor(R.color.greyLight));
+            userInput.setTextColor(getResources().getColor(R.color.black));
+
             showKeyboard();
 
             //Getting a new vocabulary.
@@ -222,7 +235,9 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
             //Checking the vocabulary as learned
             dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
 
-            color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
+            color = correctColor;
+
+            userInput.setTextColor(correctTextColor);
 
             if(Score.isNewHighscoreNow(lektion, sharedPref)){
                 General.showMessage("New Highscore!!!", this);
@@ -236,7 +251,10 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
 
             dbHelper.incrementValue(getVokabelTable(currentVokabel), AdverbDB.FeedEntry.COLUMN_AMOUNT_INCORRECT, currentVokabel.getId());
 
-            color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+            color = errorColor;
+
+            userInput.setHintTextColor(getResources().getColor(R.color.greyLight));
+            userInput.setTextColor(errorTextColor);
 
             weiter.startAnimation(animShake);
             userInput.startAnimation(animShake);
@@ -471,7 +489,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
     private void resetCurrentLektion(){
 
 
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this, R.style.AlertDialogCustom)
                 .setTitle("Lektion zurücksetzen?")
                 .setMessage("Willst du den Vokabeltrainer für die Lektion " + lektion + " wirklich neu starten?\nDein HighScore wird nicht gelöscht!")
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -489,10 +507,13 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
                     }})
                 .setNegativeButton(android.R.string.no, null).show();
 
+
+
     }
 
     private void resetScore(){
-        new AlertDialog.Builder(this)
+
+        new AlertDialog.Builder(this, R.style.AlertDialogCustom)
                 .setTitle("Score zurücksetzen?")
                 .setMessage("Willst du den Score des Vokabeltrainer für die Lektion " + lektion + " wirklich zurücksetzen?\nDein HighScore wird hier gelöscht!")
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -562,14 +583,14 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
 
         if(score > 0){
             message += "+";
-            color = ResourcesCompat.getColor(getResources(), R.color.green, null);
+            color = ResourcesCompat.getColor(getResources(), R.color.correct, null);
 
         }else if(score < 0){
             color = ResourcesCompat.getColor(getResources(), R.color.error, null);
 
         }else{
             //No score difference
-            color = ResourcesCompat.getColor(getResources(), R.color.gray, null);
+            color = ResourcesCompat.getColor(getResources(), R.color.grey, null);
 
         }
         message += score;

@@ -53,7 +53,7 @@ public class SettingsActivity extends LateinAppActivity {
 
                 //TODO: Find some way to do this automatically when we add a new trainer
 
-                new AlertDialog.Builder(this)
+                new AlertDialog.Builder(this, R.style.AlertDialogCustom)
                         .setTitle("Zurücksetzen?")
                         .setMessage("Willst du wirklich deinen ganzen Fortschritt zurücksetzen?\nDies beinhaltet auch alle Scores und High-Scores!")
                         .setIcon(android.R.drawable.ic_dialog_alert)

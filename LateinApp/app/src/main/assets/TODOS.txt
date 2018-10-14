@@ -13,3 +13,12 @@ remove adjekttive trainer
 save how much was scrolled for next startup? or even more info?
 "On a visited section, it returns the user to their previous scroll position there"
 ausmüllen des app-ordners
+
+
+
+
+
+
+wenn lektion beendet ist soll bei reset über das menu über der Highscore auch geupdated werden
+    ->schon bei beenden der lektion
+schöneren AlertDialog

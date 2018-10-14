@@ -109,17 +109,14 @@
     <style name="MainTheme" parent="AppTheme" />
     -->
 
-    <style name="borderlessButtonStyle" parent="@style/Widget.AppCompat.Button.Borderless">
-        <item name="android:background">@drawable/button_selector</item>
-        <item name="android:textColor">@drawable/color_selector</item>
-        <!-- other items here -->
+    <style name="AlertDialogCustom" parent="Base.Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="buttonStyle" parent="Widget.AppCompat.Button.Colored">
         <item name="android:background">@drawable/button_selector</item>
         <item name="android:textColor">@drawable/color_selector</item>
         <item name="android:textSize">15sp</item>
-
     </style>
 
     <style name="TextViewFont" parent="android:Widget.TextView">
@@ -127,25 +124,15 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="spinnerStyle" parent="android:Widget.Spinner"/>
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <item name="android:buttonStyle">@style/buttonStyle</item>
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/secondary</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="colorControlHighlight">@color/accent</item>
-        <item name="android:colorBackground">@color/background</item>
         <item name="android:statusBarColor">@color/primaryDark</item>
-        <item name="android:textColorPrimary">@color/primaryText</item>
-        <item name="android:textColorSecondary">@color/secondaryText</item>
-        <item name="android:windowBackground">@color/background</item>
-        <item name="android:textColorPrimaryInverse">@color/secondaryText</item>
-        <item name="android:textColorSecondaryInverse">@color/primaryText</item>
-        <item name="android:indeterminateProgressStyle">@android:style/Widget.ProgressBar.Inverse</item>
-        <item name="android:borderlessButtonStyle">@style/borderlessButtonStyle</item>
-        <item name="android:textViewStyle">@style/TextViewFont</item>
-        <item name="android:spinnerStyle">@style/spinnerStyle</item>
-        <item name="android:buttonStyle">@style/buttonStyle</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="android:textColorPrimary">@color/black</item>
+
     </style>
 </resources>

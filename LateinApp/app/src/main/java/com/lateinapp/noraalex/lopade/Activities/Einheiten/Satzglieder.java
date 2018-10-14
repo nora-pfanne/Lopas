@@ -251,7 +251,7 @@ public class Satzglieder extends LateinAppActivity {
         int vocID;
 
         for (String s : currentSentence) {
-            Button button = new Button(this, null, R.style.borderlessButtonStyle);
+            Button button = new Button(this, null, android.R.attr.borderlessButtonStyle);
 
             //Adding spaces between the words so that they aren't directly next to eachother
             String text = " ";

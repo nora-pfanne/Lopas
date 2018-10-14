@@ -43,10 +43,6 @@
     <color name="PrussianBlueLight">#000000</color>
     <color name="ButtonGrey">#000000</color>
 
-    <color name="green">#00FF00</color>
-    <color name="gray">#d3d3d3</color>
-
-
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
 
@@ -72,5 +68,8 @@
 
     <color name="error">#B00020</color>
     <color name="errorText">@color/white</color>
+    <color name="correct">#4CAF50</color>
+    <color name="correctText">@color/black</color>
+
 
 </resources>
