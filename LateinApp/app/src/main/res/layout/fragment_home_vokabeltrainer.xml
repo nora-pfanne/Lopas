@@ -9,12 +9,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_margin="3dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
 
             <ImageView
                 android:id="@+id/home_voc_pillar_left"
@@ -25,11 +27,10 @@
 
             <TextView
                 android:id="@+id/home_title_vocabulary"
-                style="@style/title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Vokabeln"/>
+                android:text="Vokabeln" />
 
             <ImageView
                 android:id="@+id/home_voc_pillar_right"
@@ -43,75 +44,84 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
 
             <Button
                 android:id="@+id/home_voc_1"
-                style="@style/PraepositionGrammatikButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="navButtonClicked"
-                android:text="Lektion 1" />
+                android:text="Lektion 1"
+                android:textAlignment="center"
+                android:layout_margin="3dp" />
 
             <Button
                 android:id="@+id/home_voc_2"
-                style="@style/PraepositionGrammatikButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="navButtonClicked"
-                android:text="Lektion 2" />
+                android:text="Lektion 2"
+                android:textAlignment="center"
+                android:layout_margin="3dp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
 
             <Button
                 android:id="@+id/home_voc_3"
-                style="@style/PraepositionGrammatikButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="navButtonClicked"
-                android:text="Lektion 3" />
+                android:text="Lektion 3"
+                android:textAlignment="center"
+                android:layout_margin="3dp"/>
 
             <Button
                 android:id="@+id/home_voc_4"
-                style="@style/PraepositionGrammatikButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="navButtonClicked"
-                android:text="Lektion 4" />
+                android:text="Lektion 4"
+                android:textAlignment="center"
+                android:layout_margin="3dp"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
 
             <Button
                 android:id="@+id/home_voc_5"
-                style="@style/PraepositionGrammatikButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="navButtonClicked"
-                android:text="Lektion 5" />
+                android:text="Lektion 5"
+                android:textAlignment="center"
+                android:layout_margin="3dp"/>
 
             <Button
                 android:id="@+id/home_voc_6"
-                style="@style/PraepositionGrammatikButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="3dp"
                 android:layout_weight="1"
                 android:onClick="navButtonClicked"
-                android:text="Lektion 6" />
+                android:text="Lektion 6"
+                android:textAlignment="center" />
 
         </LinearLayout>
 

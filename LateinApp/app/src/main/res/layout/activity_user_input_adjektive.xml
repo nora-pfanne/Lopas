@@ -102,7 +102,6 @@
         app:layout_constraintVertical_bias="0.068" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonUserInputEingabeBestätigt"
         android:layout_width="85dp"
         android:layout_height="56dp"
@@ -121,7 +120,6 @@
         app:layout_constraintVertical_bias="0.541" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonUserInputNächsteVokabel"
         android:layout_width="85dp"
         android:layout_height="56dp"
@@ -141,7 +139,6 @@
 
     <Button
         android:id="@+id/buttonUserInputFortschrittLöschen"
-        style="@style/BasicBlueButton"
         android:layout_width="153dp"
         android:layout_height="85dp"
         android:layout_marginBottom="8dp"
@@ -159,7 +156,6 @@
         app:layout_constraintVertical_bias="0.927" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonUserInputZurück"
         android:layout_width="253dp"
         android:layout_height="155dp"

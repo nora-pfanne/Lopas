@@ -97,7 +97,8 @@
 
     <Button
         android:id="@+id/settingsButtonResetAll"
-        style="@style/RedWarningButton"
+        android:backgroundTint="@color/error"
+        android:textColor="@color/errorText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

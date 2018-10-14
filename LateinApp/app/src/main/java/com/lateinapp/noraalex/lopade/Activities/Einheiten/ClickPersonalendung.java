@@ -86,7 +86,7 @@ public class ClickPersonalendung extends LateinAppActivity {
         colorButtonDefault = ResourcesCompat.getColor(getResources(), R.color.PrussianBlue, null);
         colorButtonGrey = ResourcesCompat.getColor(getResources(), R.color.ButtonGrey, null);
 
-        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
         latein = findViewById(R.id.textGrammatikPersonalendungLatein);
         ersteSg = findViewById(R.id.buttonGrammatikPersonalendung1PersSg);
         zweiteSg = findViewById(R.id.buttonGrammatikPersonalendung2PersSg);

@@ -71,7 +71,7 @@ public class ClickKasusFragen extends LateinAppActivity {
         colorButtonIncorrect = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
         colorButtonDefault = ResourcesCompat.getColor(getResources(), R.color.PrussianBlue, null);
 
-        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
         kasusText = findViewById(R.id.textGrammatikKasusLatein);
         kasusFrage1 = findViewById(R.id.buttonGrammatikKasusFrage1);
         kasusFrage2 = findViewById(R.id.buttonGrammatikKasusFrage2);

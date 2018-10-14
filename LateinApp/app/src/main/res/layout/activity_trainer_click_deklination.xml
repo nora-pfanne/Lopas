@@ -63,7 +63,6 @@
         app:layout_constraintVertical_bias="0.149" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikDeklinationNomSg"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -82,7 +81,6 @@
         app:layout_constraintVertical_bias="0.1" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikDeklinationNomPl"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -101,7 +99,6 @@
         app:layout_constraintVertical_bias="0.1" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikDeklinationGenSg"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -120,7 +117,6 @@
         app:layout_constraintVertical_bias="0.304" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikDeklinationGenPl"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -139,7 +135,6 @@
         app:layout_constraintVertical_bias="0.304" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikDeklinationDatSg"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -158,7 +153,6 @@
         app:layout_constraintVertical_bias="0.508" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikDeklinationDatPl"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -177,7 +171,6 @@
         app:layout_constraintVertical_bias="0.508" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikDeklinationAkkSg"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -196,7 +189,6 @@
         app:layout_constraintVertical_bias="0.712" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikDeklinationAkkPl"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -215,7 +207,6 @@
         app:layout_constraintVertical_bias="0.712" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikDeklinationAblSg"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -234,7 +225,6 @@
         app:layout_constraintVertical_bias="0.916" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikDeklinationAblPl"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -271,7 +261,6 @@
 
     <Button
         android:id="@+id/buttonGrammatikDeklinationReset"
-        style="@style/BasicBlueButton"
         android:visibility="invisible"
         android:layout_width="153dp"
         android:layout_height="85dp"
@@ -289,7 +278,6 @@
         app:layout_constraintVertical_bias="0.927" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikDeklinationZurück"
         android:layout_width="253dp"
         android:layout_height="155dp"
@@ -308,7 +296,6 @@
 
     <Button
         android:id="@+id/buttonGrammatikDeklinationWeiter"
-        style="@style/BasicBlueButton"
         android:layout_width="106dp"
         android:layout_height="54dp"
         android:layout_marginBottom="8dp"
@@ -325,7 +312,6 @@
         app:layout_constraintVertical_bias="0.418" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikDeklinationCheckInput"
         android:layout_width="106dp"
         android:layout_height="54dp"

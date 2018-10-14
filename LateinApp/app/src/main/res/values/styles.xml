@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/tools">
 
 
     <!--
@@ -110,21 +110,30 @@
     -->
 
     <style name="borderlessButtonStyle" parent="@style/Widget.AppCompat.Button.Borderless">
-        <item name="android:background">@color/surface</item>
-        <item name="android:textColor">@color/secondaryText</item>
+        <item name="android:background">@drawable/button_selector</item>
+        <item name="android:textColor">@drawable/color_selector</item>
         <!-- other items here -->
+    </style>
+
+    <style name="buttonStyle" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:background">@drawable/button_selector</item>
+        <item name="android:textColor">@drawable/color_selector</item>
+        <item name="android:textSize">30sp</item>
+
     </style>
 
     <style name="TextViewFont" parent="android:Widget.TextView">
         <item name="android:fontFamily">@font/hind_light</item>
+        <item name="android:textSize">20sp</item>
     </style>
+
+    <style name="spinnerStyle" parent="android:Widget.Spinner"/>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/secondary</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="colorButtonNormal">@color/primary</item>
         <item name="colorControlHighlight">@color/accent</item>
         <item name="android:colorBackground">@color/background</item>
         <item name="android:statusBarColor">@color/primaryDark</item>
@@ -136,5 +145,7 @@
         <item name="android:indeterminateProgressStyle">@android:style/Widget.ProgressBar.Inverse</item>
         <item name="android:borderlessButtonStyle">@style/borderlessButtonStyle</item>
         <item name="android:textViewStyle">@style/TextViewFont</item>
+        <item name="android:spinnerStyle">@style/spinnerStyle</item>
+        <item name="android:buttonStyle">@style/buttonStyle</item>
     </style>
 </resources>

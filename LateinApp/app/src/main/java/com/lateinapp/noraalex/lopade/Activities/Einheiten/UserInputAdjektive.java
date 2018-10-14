@@ -56,7 +56,7 @@ public class UserInputAdjektive extends LateinAppActivity {
 
         sharedPref = General.getSharedPrefrences(getApplicationContext());
 
-        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
         request = findViewById(R.id.textUserInputLatein);
         solution = findViewById(R.id.textUserInputDeutsch);
         userInput = findViewById(R.id.textUserInputUserInput);

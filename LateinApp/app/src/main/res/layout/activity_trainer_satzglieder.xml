@@ -7,7 +7,6 @@
     tools:context=".Activities.Einheiten.Satzglieder">
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/satzglieder_next_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +25,6 @@
 
     <Button
         android:id="@+id/satzglieder_progress_reset_button"
-        style="@style/BasicBlueButton"
         android:visibility="invisible"
         android:layout_width="153dp"
         android:layout_height="85dp"
@@ -44,7 +42,6 @@
         app:layout_constraintVertical_bias="0.927" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/satzglieder_back_button"
         android:layout_width="253dp"
         android:layout_height="155dp"

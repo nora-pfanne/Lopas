@@ -77,7 +77,8 @@
         android:ems="10"
         android:hint="Placeholder: UserInputHint"
         android:inputType="text"
-        android:textColorHighlight="#7A0028"
+        android:textColorHighlight="@color/accent"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.181"
@@ -102,7 +103,6 @@
         app:layout_constraintVertical_bias="0.068" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonUserInputEingabeBestätigt"
         android:layout_width="85dp"
         android:layout_height="56dp"
@@ -121,7 +121,6 @@
         app:layout_constraintVertical_bias="0.541" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonUserInputNächsteVokabel"
         android:layout_width="85dp"
         android:layout_height="56dp"

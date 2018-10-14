@@ -91,6 +91,7 @@ public class Home extends LateinAppActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, startFragment, sharedPref.getInt(KEY_HOME_FRAGMENT, 0) + "");
         transaction.commit();
+
     }
 
     @Override

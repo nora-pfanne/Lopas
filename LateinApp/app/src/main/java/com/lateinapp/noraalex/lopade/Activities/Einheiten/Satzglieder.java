@@ -98,7 +98,7 @@ public class Satzglieder extends LateinAppActivity {
      */
     private void setup(){
 
-        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
         colorButtonIncorrect = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
         colorButtonCorrect = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
 
@@ -251,7 +251,7 @@ public class Satzglieder extends LateinAppActivity {
         int vocID;
 
         for (String s : currentSentence) {
-            Button button = new Button(this, null, R.style.TransparentButton1);
+            Button button = new Button(this, null, R.style.borderlessButtonStyle);
 
             //Adding spaces between the words so that they aren't directly next to eachother
             String text = " ";

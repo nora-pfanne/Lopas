@@ -63,7 +63,6 @@
         app:layout_constraintVertical_bias="0.149" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikPersonalendung1PersSg"
         android:layout_width="143dp"
         android:layout_height="45dp"
@@ -82,7 +81,6 @@
         app:layout_constraintVertical_bias="0.1" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikPersonalendung1PersPl"
         android:layout_width="143dp"
         android:layout_height="45dp"
@@ -101,7 +99,6 @@
         app:layout_constraintVertical_bias="0.1" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikPersonalendung2PersSg"
         android:layout_width="143dp"
         android:layout_height="45dp"
@@ -120,7 +117,6 @@
         app:layout_constraintVertical_bias="0.404" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikPersonalendung2PersPl"
         android:layout_width="143dp"
         android:layout_height="45dp"
@@ -139,7 +135,6 @@
         app:layout_constraintVertical_bias="0.404" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikPersonalendung3PersSg"
         android:layout_width="143dp"
         android:layout_height="45dp"
@@ -158,7 +153,6 @@
         app:layout_constraintVertical_bias="0.708" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikPersonalendung3PersPl"
         android:layout_width="143dp"
         android:layout_height="45dp"
@@ -195,7 +189,6 @@
 
     <Button
         android:id="@+id/buttonGrammatikPersonalendungWeiter"
-        style="@style/BasicBlueButton"
         android:layout_width="94dp"
         android:layout_height="52dp"
         android:layout_marginBottom="8dp"
@@ -214,7 +207,6 @@
     <Button
         android:id="@+id/buttonGrammatikPersonalendungReset"
         android:visibility="invisible"
-        style="@style/BasicBlueButton"
         android:layout_width="153dp"
         android:layout_height="85dp"
         android:layout_marginBottom="8dp"
@@ -231,7 +223,6 @@
         app:layout_constraintHorizontal_bias="0.855"/>
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikPersonalendungZurück"
         android:layout_width="253dp"
         android:layout_height="155dp"

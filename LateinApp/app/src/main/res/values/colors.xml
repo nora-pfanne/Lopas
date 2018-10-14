@@ -35,24 +35,42 @@
 
     <!-- Google Material Design guidelines -->
 
+    <color name="InputRightGreen">#000000</color>
+    <color name="InputWrongRed">#000000</color>
+    <color name="PrussianBlue">#000000</color>
+    <color name="InputRightGreenLight">#000000</color>
+    <color name="InputWrongRedLight">#000000</color>
+    <color name="PrussianBlueLight">#000000</color>
+    <color name="ButtonGrey">#000000</color>
+
+    <color name="green">#00FF00</color>
+    <color name="gray">#d3d3d3</color>
+
+
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="grey">#818181</color>
+    <color name="greyLight">#b0b0b0</color>
+    <color name="greyDark">#555555</color>
+
+
     <color name="primary">#0f4b9e</color>
     <color name="primaryLight">#5476d0</color>
     <color name="primaryDark">#00256f</color>
-    <color name="primaryText">#FFFFFF</color>
+    <color name="primaryText">@color/white</color>
 
     <color name="secondary">#ffc01f</color>
     <color name="secondaryLight">#fff25a</color>
     <color name="secondaryDark">#c79000</color>
-    <color name="secondaryText">#000000</color>
+    <color name="secondaryText">@color/black</color>
 
     <color name="accent">#940a0a</color>
 
-    <color name="background">#FFFFFF</color>
-    <color name="surface">#FFFFFF</color>
+    <color name="background">@color/white</color>
+    <color name="surface">@color/white</color>
 
     <color name="error">#B00020</color>
-    <color name="errorText">#FFFFFF</color>
+    <color name="errorText">@color/white</color>
 
-
-    <!-- Theme Colors -->
 </resources>

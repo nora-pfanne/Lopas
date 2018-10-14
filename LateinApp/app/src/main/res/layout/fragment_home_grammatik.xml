@@ -26,7 +26,6 @@
 
             <TextView
                 android:id="@+id/home_title_grammar"
-                style="@style/title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -47,7 +46,6 @@
 
             <Button
                 android:id="@+id/home_grammar_kasus_fragen"
-                style="@style/SubstantivGrammatikButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -63,7 +61,6 @@
 
             <Button
                 android:id="@+id/home_grammar_nominativ"
-                style="@style/SubstantivGrammatikButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -72,7 +69,6 @@
 
             <Button
                 android:id="@+id/home_grammar_dritte_pers_praesens"
-                style="@style/VerbGrammatikButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -87,7 +83,6 @@
 
             <Button
                 android:id="@+id/home_grammar_akkusativ"
-                style="@style/SubstantivGrammatikButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -96,7 +91,6 @@
 
             <Button
                 android:id="@+id/home_grammar_zweite_pers_praesens"
-                style="@style/VerbGrammatikButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -113,7 +107,6 @@
 
             <Button
                 android:id="@+id/home_grammar_dativ"
-                style="@style/SubstantivGrammatikButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -122,7 +115,6 @@
 
             <Button
                 android:id="@+id/home_grammar_checkpoint_praesens_1"
-                style="@style/CheckpointGrammatikButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -138,7 +130,6 @@
 
             <Button
                 android:id="@+id/home_grammar_ablativ"
-                style="@style/SubstantivGrammatikButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -147,7 +138,6 @@
 
             <Button
                 android:id="@+id/home_grammar_esse_velle_nolle"
-                style="@style/VerbGrammatikButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -163,7 +153,6 @@
 
             <Button
                 android:id="@+id/home_grammar_genitiv"
-                style="@style/SubstantivGrammatikButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -172,7 +161,6 @@
 
             <Button
                 android:id="@+id/home_grammar_kons_konj"
-                style="@style/InactiveButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -188,7 +176,6 @@
 
             <Button
                 android:id="@+id/home_grammar_checkpoint_deklinationsendung"
-                style="@style/CheckpointGrammatikButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -197,7 +184,6 @@
 
             <Button
                 android:id="@+id/home_grammar_satzglieder"
-                style="@style/VerbGrammatikButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

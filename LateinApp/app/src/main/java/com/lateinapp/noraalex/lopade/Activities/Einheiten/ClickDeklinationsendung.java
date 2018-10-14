@@ -107,7 +107,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
 
         allCorrectCases = new ArrayList<>();
 
-        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
         lateinVokabel = findViewById(R.id.textGrammatikDeklinationLatein);
         weiter = findViewById(R.id.buttonGrammatikDeklinationWeiter);
         zurück = findViewById(R.id.buttonGrammatikDeklinationZurück);
@@ -409,7 +409,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
             progressBar.setProgress(maxProgress);
 
 
-            backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+            backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
 
 
             nom_sg.setVisibility(View.GONE);

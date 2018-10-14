@@ -107,7 +107,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         sharedPref = General.getSharedPrefrences(getApplicationContext());
         dbHelper = new DBHelper(getApplicationContext());
 
-        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
         request = findViewById(R.id.textUserInputLatein);
         solution = findViewById(R.id.textUserInputDeutsch);
         highScore = findViewById(R.id.textUserInputHighScore);
@@ -562,14 +562,14 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
 
         if(score > 0){
             message += "+";
-            color = ResourcesCompat.getColor(getResources(), R.color.fullGreen, null);
+            color = ResourcesCompat.getColor(getResources(), R.color.green, null);
 
         }else if(score < 0){
-            color = ResourcesCompat.getColor(getResources(), R.color.fullRed, null);
+            color = ResourcesCompat.getColor(getResources(), R.color.error, null);
 
         }else{
             //No score difference
-            color = ResourcesCompat.getColor(getResources(), R.color.fullGray, null);
+            color = ResourcesCompat.getColor(getResources(), R.color.gray, null);
 
         }
         message += score;
