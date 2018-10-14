@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <!--
     <color name="PrussianBlue">#002E54</color>
     <color name="PrussianBlueLight">#7F96A9</color>
     <color name="BurgundyLight">#BC7F93</color>
@@ -31,14 +31,27 @@
     <color name="fullGray">#FF707370</color>
     <color name="darkRed">#990000</color>
     <color name="blue">#253eff</color>
+    -->
 
     <!-- Google Material Design guidelines -->
 
-    <color name="themePrimary">#303F9F</color>
-    <color name="themeSecondary">#940a0a</color>
+    <color name="primary">#0f4b9e</color>
+    <color name="primaryLight">#5476d0</color>
+    <color name="primaryDark">#00256f</color>
+    <color name="primaryText">#FFFFFF</color>
 
-    <color name="googleBackground">#FFFFFF</color>
-    <color name="googleError">#B00020</color>
+    <color name="secondary">#ffc01f</color>
+    <color name="secondaryLight">#fff25a</color>
+    <color name="secondaryDark">#c79000</color>
+    <color name="secondaryText">#000000</color>
+
+    <color name="accent">#940a0a</color>
+
+    <color name="background">#FFFFFF</color>
+    <color name="surface">#FFFFFF</color>
+
+    <color name="error">#B00020</color>
+    <color name="errorText">#FFFFFF</color>
 
 
     <!-- Theme Colors -->
