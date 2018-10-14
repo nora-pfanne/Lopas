@@ -19,6 +19,10 @@ ausmüllen des app-ordners
 
 
 
-wenn lektion beendet ist soll bei reset über das menu über der Highscore auch geupdated werden
-    ->schon bei beenden der lektion
+highscore soll schon bei ende der lektion angezeit werden
 schöneren AlertDialog
+
+remove combo?
+other info on homescreen?
+    Percent progress
+    Best Grade
