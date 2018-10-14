@@ -1,0 +1,15 @@
+Collapse keys into groups and operate on them with bit operators
+modify combo with bitshift
+use already learned vocabularies for other trainers
+use @string resources
+Noten balance
+show grade on navScreen
+score for other trainers
+random crashes on grammar trainers
+there is already progress at the start -> grammar
+Do we have a non round icon? Do we need one?
+get rid of strings in java -> into Global.class
+remove adjekttive trainer
+save how much was scrolled for next startup? or even more info?
+"On a visited section, it returns the user to their previous scroll position there"
+ausmüllen des app-ordners

@@ -3,7 +3,6 @@
 
     <color name="PrussianBlue">#002E54</color>
     <color name="PrussianBlueLight">#7F96A9</color>
-    <color name="Burgundy">#940a0a</color>
     <color name="BurgundyLight">#BC7F93</color>
     <color name="GhostWhite">#FAFAFF</color>
     <color name="InputWrongRed">#FF4242</color>
@@ -13,17 +12,11 @@
     <color name="Gold">#f6b461</color>
     <color name="ButtonGrey">#515151</color>
 
-    <!--
-    ***********************************************************************************************
-    The following colors are part of the visual overhaul of the app
-    ***********************************************************************************************
-    -->
-
+    <color name="Burgundy">#940a0a</color>
     <color name="colorPrimary">#174061</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <!-- Main theme colors -->
     <color name="DarkImperialBlue">#174061</color>
     <color name="GoldenPoppy">#ffd752</color>
     <color name="WageningenGreen">#31B522</color>
@@ -39,5 +32,14 @@
     <color name="darkRed">#990000</color>
     <color name="blue">#253eff</color>
 
+    <!-- Google Material Design guidelines -->
 
+    <color name="themePrimary">#303F9F</color>
+    <color name="themeSecondary">#940a0a</color>
+
+    <color name="googleBackground">#FFFFFF</color>
+    <color name="googleError">#B00020</color>
+
+
+    <!-- Theme Colors -->
 </resources>
