@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
+import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
 
 import java.util.HashMap;
@@ -65,7 +66,7 @@ public class ClickKasusFragen extends LateinAppActivity {
 
     private void setup(){
 
-        sharedPreferences = getSharedPreferences("SharedPreferences", 0);
+        sharedPreferences = General.getSharedPrefrences(this);
 
         colorButtonCorrect = ResourcesCompat.getColor(getResources(), R.color.correct, null);
         colorButtonIncorrect = ResourcesCompat.getColor(getResources(), R.color.error, null);
@@ -83,7 +84,7 @@ public class ClickKasusFragen extends LateinAppActivity {
         zurück = findViewById(R.id.buttonGrammatikKasusFragenZurück);
         progressBar = findViewById(R.id.progressBarKasusFragen);
 
-        kasusToFrage = new HashMap<>();
+        kasusToFrage = new HashMap<>(5);
         kasusToFrage.put("Nominativ",   "Wer oder was?");
         kasusToFrage.put("Genitiv",     "Wessen?");
         kasusToFrage.put("Dativ",       "Wem oder für wen?");

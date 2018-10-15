@@ -14,6 +14,7 @@ import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Personalendung_PräsensDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
+import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
 
 import java.util.Random;
@@ -79,7 +80,7 @@ public class ClickPersonalendung extends LateinAppActivity {
 
         dbHelper = new DBHelper(getApplicationContext());
 
-        sharedPref = getSharedPreferences("SharedPreferences", 0);
+        sharedPref = General.getSharedPrefrences(this);
 
         colorButtonCorrect = ResourcesCompat.getColor(getResources(), R.color.correct, null);
         colorButtonIncorrect = ResourcesCompat.getColor(getResources(), R.color.error, null);
@@ -322,7 +323,7 @@ public class ClickPersonalendung extends LateinAppActivity {
 
         if(randomVocabulary == -1){
             //Something went wrong. Log error-message
-            Log.e(KEY_PROGRESS_CLICK_PERSONALENDUNG, "Getting a randomKonjugation failed! Returned -1 for " +
+            Log.e(TAG, "Getting a randomKonjugation failed! Returned -1 for " +
                     "\nrandomNumber: " + randomNumber +
                     "\nlektion: " + extraFromEinheitenUebersicht);
         }

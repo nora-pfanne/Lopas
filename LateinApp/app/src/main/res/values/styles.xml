@@ -119,6 +119,13 @@
         <item name="android:textSize">15sp</item>
     </style>
 
+    <style name="myToggleButtonStyle" parent="@android:style/Widget.Material.Light.Button.Toggle">
+        <!-- http://www.zoftino.com/android-toggle-button -->
+        <item name="android:background">@drawable/toggle_button_selector</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
     <style name="TextViewFont" parent="android:Widget.TextView">
         <item name="android:fontFamily">@font/hind_light</item>
         <item name="android:textSize">20sp</item>
@@ -133,6 +140,5 @@
         <item name="android:statusBarColor">@color/primaryDark</item>
         <item name="android:colorBackground">@color/background</item>
         <item name="android:textColorPrimary">@color/black</item>
-
     </style>
 </resources>

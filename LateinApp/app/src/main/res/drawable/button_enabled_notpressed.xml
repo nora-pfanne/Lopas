@@ -1,0 +1,14 @@
+<inset xmlns:android="http://schemas.android.com/apk/res/android">
+    <layer-list android:paddingMode="stack">
+        <item>
+            <ripple android:color="@color/primaryLight">
+                <item>
+                    <shape android:shape="rectangle">
+                        <corners android:radius="5dip"/>
+                        <gradient android:angle="-90" android:startColor="@color/primary" android:endColor="@color/primaryDark"/>
+                    </shape>
+                </item>
+            </ripple>
+        </item>
+    </layer-list>
+</inset>

@@ -1,29 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-
-    <!-- disable state. -->
-    <item android:state_enabled="false">
-        <shape android:shape="rectangle">
-            <solid android:color="@color/greyLight"/>
-            <corners android:radius="5dip"/>
-        </shape>
-    </item>
-
-    <!--pressed state. -->
-    <item android:state_enabled="true" android:state_pressed="true">
-        <shape android:shape="rectangle">
-            <corners android:radius="5dip"/>
-            <gradient android:angle="-90" android:startColor="@color/primaryLight" android:endColor="@color/primary"/>
-        </shape>
-    </item>
-
-    <!--released state. -->
-    <item android:state_enabled="true" android:state_pressed="false">
-        <shape android:shape="rectangle">
-            <corners android:radius="5dip"/>
-            <gradient android:angle="-90" android:startColor="@color/primary" android:endColor="@color/primaryDark"/>
-        </shape>
-    </item>
-
+    <item android:state_enabled="false" android:drawable="@drawable/button_disabled"/>
+    <item android:state_enabled="true" android:state_pressed="true" android:drawable="@drawable/button_enabled_pressed"/>
+    <item android:state_enabled="true" android:state_pressed="false" android:drawable="@drawable/button_enabled_notpressed"/>
 </selector>

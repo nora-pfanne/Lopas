@@ -83,7 +83,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
 
         dbHelper = new DBHelper(getApplicationContext());
 
-        sharedPref = getSharedPreferences("SharedPreferences", 0);
+        sharedPref = General.getSharedPrefrences(this);
 
         allCorrectCases = new ArrayList<>(10);
 
@@ -218,7 +218,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                 checkInput();
 
                 for (ToggleButton tb: buttons){
-                    tb.setEnabled(false);
+                    tb.setClickable(false);
                 }
 
                 break;
@@ -232,7 +232,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
 
                 for (ToggleButton tb: buttons){
                     tb.setChecked(false);
-                    tb.setEnabled(true);
+                    tb.setClickable(true);
                 }
 
                 break;
