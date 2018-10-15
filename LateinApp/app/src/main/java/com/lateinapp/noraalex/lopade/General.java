@@ -3,9 +3,12 @@ package com.lateinapp.noraalex.lopade;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -78,7 +81,6 @@ public class General {
 
         return sharedPreferences;
     }
-
 
     //TODO: Maybe use a different solution here? This might be overkill for where we acually need it
     //https://stackoverflow.com/questions/14371092/how-to-make-a-specific-text-on-textview-bold

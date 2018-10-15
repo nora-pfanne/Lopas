@@ -2,6 +2,7 @@ package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
 import android.util.Log;
@@ -233,6 +234,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
                 for (ToggleButton tb: buttons){
                     tb.setChecked(false);
                     tb.setClickable(true);
+                    tb.setBackground(ContextCompat.getDrawable(this, R.drawable.toggle_button_selector));
                 }
 
                 break;
@@ -265,7 +267,25 @@ public class ClickDeklinationsendung extends LateinAppActivity {
             }
         }
 
-        boolean correct = General.areUnorderedListsEqual(checkedButtons, allCorrectCases);
+
+        boolean correct = true;
+
+        for(int i = 0; i < faelle.length; i++){
+
+            boolean isCorrect = allCorrectCases.contains(faelle[i]);
+            boolean isChecked = checkedButtons.contains(faelle[i]);
+
+            //XOR
+            if(isChecked ^ isCorrect){
+                buttons[i].setBackground(ContextCompat.getDrawable(this, R.drawable.toggle_button_wrong_selector));
+                correct = false;
+            }else if(isChecked && isCorrect){
+                buttons[i].setBackground(ContextCompat.getDrawable(this, R.drawable.toggle_button_correct_selector));
+            }
+            //Dont change style if the buttons was not selected and that was correct
+
+        }
+
 
         SharedPreferences.Editor editor = sharedPref.edit();
         int color;
