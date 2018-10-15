@@ -142,7 +142,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
             //random number from 1 to 5 to choose, where the vocabulary comes from
             //Blueprint for randNum: int randomNum = rand.nextInt((max - min) + 1) + min;
             int rand = new Random().nextInt((5 - 1) + 1) + 1;
-            currentVokabel = dbHelper.getRandomSubstantiv(rand);
+            currentVokabel = dbHelper.getRandomSubstantiv();
             currentDeclination = getRandomDeklination();
 
             //FIXME Remove nom_sg

@@ -8,6 +8,8 @@ import android.text.style.StyleSpan;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 
@@ -113,6 +115,27 @@ public class General {
         }
 
         return builder;
+    }
+
+    public static boolean areUnorderedListsEqual(ArrayList<String> a, ArrayList<String> b){
+        if (a == null && b == null){
+            return true;
+        }
+
+        if((a == null && b != null)
+                || a != null && b == null
+                || a.size() != b.size()){
+            return false;
+        }
+
+        //to avoid messing the order of the lists we will use a copy
+        //as noted in comments by A. R. S.
+        a = new ArrayList<String>(a);
+        b = new ArrayList<String>(b);
+
+        Collections.sort(a);
+        Collections.sort(b);
+        return a.equals(b);
     }
 
 

@@ -62,7 +62,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.149" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/buttonGrammatikDeklinationNomSg"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -71,7 +71,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Nom. Sg."
+        android:textOn="Nom. Sg."
+        android:textOff="Nom. Sg."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +81,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.1" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/buttonGrammatikDeklinationNomPl"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -89,7 +90,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Nom. Pl."
+        android:textOn="Nom. Pl."
+        android:textOff="Nom. Pl."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +100,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.1" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/buttonGrammatikDeklinationGenSg"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -107,7 +109,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Gen. Sg."
+        android:textOn="Gen. Sg."
+        android:textOff="Gen. Sg."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -116,7 +119,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.304" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/buttonGrammatikDeklinationGenPl"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -125,7 +128,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Gen. Pl."
+        android:textOn="Gen. Pl."
+        android:textOff="Gen. Pl."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -134,7 +138,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.304" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/buttonGrammatikDeklinationDatSg"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -143,7 +147,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Dat. Sg."
+        android:textOn="Dat. Sg."
+        android:textOff="Dat. Sg."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -152,7 +157,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.508" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/buttonGrammatikDeklinationDatPl"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -161,7 +166,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Dat. Pl."
+        android:textOn="Dat. Pl."
+        android:textOff="Dat. Pl."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -170,7 +176,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.508" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/buttonGrammatikDeklinationAkkSg"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -179,7 +185,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Akk. Sg."
+        android:textOn="Akk. Sg."
+        android:textOff="Akk. Sg."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -188,7 +195,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.712" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/buttonGrammatikDeklinationAkkPl"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -197,7 +204,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Akk. Pl."
+        android:textOn="Akk. Pl."
+        android:textOff="Akk. Pl."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -206,7 +214,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.712" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/buttonGrammatikDeklinationAblSg"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -215,7 +223,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Abl. Sg."
+        android:textOn="Abl. Sg."
+        android:textOff="Abl. Sg."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -224,7 +233,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.916" />
 
-    <Button
+    <ToggleButton
         android:id="@+id/buttonGrammatikDeklinationAblPl"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -233,7 +242,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Abl. Pl."
+        android:textOn="Abl. Pl."
+        android:textOff="Abl. Pl."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -304,6 +314,7 @@
         android:layout_marginTop="8dp"
         android:onClick="deklinationstrainerButtonClicked"
         android:text="Weiter"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.969"
@@ -315,10 +326,10 @@
         android:id="@+id/buttonGrammatikDeklinationCheckInput"
         android:layout_width="106dp"
         android:layout_height="54dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:onClick="deklinationstrainerButtonClicked"
         android:text="Bestätigen"
         app:layout_constraintBottom_toBottomOf="parent"

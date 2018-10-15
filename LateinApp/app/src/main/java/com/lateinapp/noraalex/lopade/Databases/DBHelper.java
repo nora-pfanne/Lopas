@@ -633,8 +633,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private int getIdFromCount(int lektion, int count, boolean gelernt, String table){
 
         String query = "SELECT _ID FROM "+ table
-                      + " WHERE Gelernt = "+(gelernt ? 1 : 0)
-                       + " AND Lektion_ID = " + lektion;
+                + " WHERE Gelernt = "+(gelernt ? 1 : 0)
+                + " AND Lektion_ID = " + lektion;
         Cursor cursor = database.rawQuery(query, new String[]{});
 
         cursor.moveToPosition(count-1);
@@ -1146,32 +1146,27 @@ public class DBHelper extends SQLiteOpenHelper {
         return vokabelInstance;
     }
 
-    /**
-     * Returns a random 'Substantiv'-entry
-     * @param lektionNr lektion of the wanted entry
-     * @return a instance of the 'Substantiv'
-     */
-    public SubstantivDB getRandomSubstantiv(int lektionNr){
+    public SubstantivDB getRandomSubstantiv(){
 
-        int entryAmountSubstantiv = countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME, lektionNr, false);
+        //TODO: Only pick from learned words if enough are learned
+        int entryAmountSubstantiv = countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME);
 
-        Random rand = new Random();
-        int randomNumber = rand.nextInt(entryAmountSubstantiv);
+
+        SubstantivDB substantivInstance;
         String lateinVokabel;
-        String table;
-        int count;
         int vokabelID;
         String deutsch;
-        SubstantivDB substantivInstance;
 
-        //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
+
+        int randomNumber = new Random().nextInt(entryAmountSubstantiv);
+        //Incrementing count by 1 since id starts with 1 not 0
         randomNumber++;
 
-        //constructs a instance of Substantiv from the given randomNumber
-        count = randomNumber;
 
-        table = SubstantivDB.FeedEntry.TABLE_NAME;
-        vokabelID = getIdFromCount(lektionNr, count, false, table);
+        String table = SubstantivDB.FeedEntry.TABLE_NAME;
+
+        //FIXME: this might not be true if we have a more specialized search -> lektion/learned
+        vokabelID = randomNumber;
         lateinVokabel = getDekliniertenSubstantiv(vokabelID, DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG);
         deutsch = getColumnFromId(vokabelID, table, SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH);
 
