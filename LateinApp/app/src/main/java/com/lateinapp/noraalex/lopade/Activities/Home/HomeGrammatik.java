@@ -53,7 +53,6 @@ public class HomeGrammatik extends Fragment {
             case R.id.home_grammar_button_click_deklination:
 
                 intent = new Intent(getActivity(), ClickDeklinationsendung.class);
-                intent.putExtra("ExtraClickDeklinationsendung", "GENITIV");
                 startActivity(intent);
                 break;
 
@@ -67,7 +66,6 @@ public class HomeGrammatik extends Fragment {
 
             case R.id.home_grammar_button_click_konjugation:
                 intent = new Intent(getActivity(), ClickPersonalendung.class);
-                intent.putExtra("ExtraClickPersonalendung", "DRITTE_PERSON");
                 startActivity(intent);
 
                 break;

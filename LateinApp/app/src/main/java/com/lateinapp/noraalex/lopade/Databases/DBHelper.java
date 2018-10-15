@@ -1151,10 +1151,9 @@ public class DBHelper extends SQLiteOpenHelper {
         //TODO: Only pick from learned words if enough are learned
         int entryAmountSubstantiv = countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME);
 
-
         SubstantivDB substantivInstance;
+        String table = SubstantivDB.FeedEntry.TABLE_NAME;
         String lateinVokabel;
-        int vokabelID;
         String deutsch;
 
 
@@ -1163,10 +1162,9 @@ public class DBHelper extends SQLiteOpenHelper {
         randomNumber++;
 
 
-        String table = SubstantivDB.FeedEntry.TABLE_NAME;
 
         //FIXME: this might not be true if we have a more specialized search -> lektion/learned
-        vokabelID = randomNumber;
+        int vokabelID = randomNumber;
         lateinVokabel = getDekliniertenSubstantiv(vokabelID, DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG);
         deutsch = getColumnFromId(vokabelID, table, SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH);
 
@@ -1201,6 +1199,36 @@ public class DBHelper extends SQLiteOpenHelper {
 
         table = VerbDB.FeedEntry.TABLE_NAME;
         vokabelID = getIdFromCount(lektionNr, count, false, table);
+        lateinVokabel = getKonjugiertesVerb(vokabelID, "inf");
+        deutsch = getColumnFromId(vokabelID, table, VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH);
+
+        verbInstance = new VerbDB(vokabelID, lateinVokabel, deutsch);
+
+        return verbInstance;
+    }
+
+    /**
+     * Returns a instance of a random 'Verb'-entry with a specific 'lektion'
+     * @return a instance of the 'Verb'
+     */
+    public VerbDB getRandomVerb(){
+
+        int entryAmountVerb = countTableEntries(VerbDB.FeedEntry.TABLE_NAME);
+
+        String lateinVokabel;
+        String table = VerbDB.FeedEntry.TABLE_NAME;
+        String deutsch;
+        VerbDB verbInstance;
+
+        int randomNumber = new Random().nextInt(entryAmountVerb);
+        //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
+        randomNumber++;
+
+
+
+        //FIXME: this might not be true if we have a more specialized search -> lektion/learned
+        int vokabelID = randomNumber;
+
         lateinVokabel = getKonjugiertesVerb(vokabelID, "inf");
         deutsch = getColumnFromId(vokabelID, table, VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH);
 

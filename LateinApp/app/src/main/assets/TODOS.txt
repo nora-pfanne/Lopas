@@ -27,5 +27,5 @@ other info on homescreen?
     Percent progress
     Best Grade
 Vokabeltrainer start userInput bit further right? so text isnt completly to left
-Clean up grammar trainers
-    -> no variations anymore
+deklinationstrainer score? -> maybe just remove score from it alltogether
+reset buttons / toasts on resets  for grammar

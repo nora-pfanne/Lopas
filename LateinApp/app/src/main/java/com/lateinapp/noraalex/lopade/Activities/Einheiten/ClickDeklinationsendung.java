@@ -15,7 +15,7 @@ import android.widget.ToggleButton;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
-import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
+import com.lateinapp.noraalex.lopade.Databases.Tables.SubstantivDB;
 import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
 
@@ -34,11 +34,6 @@ public class ClickDeklinationsendung extends LateinAppActivity {
     private SharedPreferences sharedPref;
 
     private TextView lateinVokabel;
-    private ToggleButton nom_sg, nom_pl,
-            gen_sg, gen_pl,
-            dat_sg, dat_pl,
-            akk_sg, akk_pl,
-            abl_sg, abl_pl;
 
     private Button weiter,
             zurück,
@@ -68,8 +63,6 @@ public class ClickDeklinationsendung extends LateinAppActivity {
 
     private ArrayList<String> allCorrectCases;
 
-    private Vokabel currentVokabel;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,26 +76,23 @@ public class ClickDeklinationsendung extends LateinAppActivity {
     private void setup(){
 
         dbHelper = new DBHelper(getApplicationContext());
-
         sharedPref = General.getSharedPrefrences(this);
-
-        allCorrectCases = new ArrayList<>(10);
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
 
         lateinVokabel = findViewById(R.id.textGrammatikDeklinationLatein);
         progressBar = findViewById(R.id.progressBarGrammatikDeklination);
 
-        nom_sg = findViewById(R.id.buttonGrammatikDeklinationNomSg);
-        nom_pl = findViewById(R.id.buttonGrammatikDeklinationNomPl);
-        gen_sg = findViewById(R.id.buttonGrammatikDeklinationGenSg);
-        gen_pl = findViewById(R.id.buttonGrammatikDeklinationGenPl);
-        dat_sg = findViewById(R.id.buttonGrammatikDeklinationDatSg);
-        dat_pl = findViewById(R.id.buttonGrammatikDeklinationDatPl);
-        akk_sg = findViewById(R.id.buttonGrammatikDeklinationAkkSg);
-        akk_pl = findViewById(R.id.buttonGrammatikDeklinationAkkPl);
-        abl_sg = findViewById(R.id.buttonGrammatikDeklinationAblSg);
-        abl_pl = findViewById(R.id.buttonGrammatikDeklinationAblPl);
+        ToggleButton nom_sg = findViewById(R.id.buttonGrammatikDeklinationNomSg);
+        ToggleButton nom_pl = findViewById(R.id.buttonGrammatikDeklinationNomPl);
+        ToggleButton gen_sg = findViewById(R.id.buttonGrammatikDeklinationGenSg);
+        ToggleButton gen_pl = findViewById(R.id.buttonGrammatikDeklinationGenPl);
+        ToggleButton dat_sg = findViewById(R.id.buttonGrammatikDeklinationDatSg);
+        ToggleButton dat_pl = findViewById(R.id.buttonGrammatikDeklinationDatPl);
+        ToggleButton akk_sg = findViewById(R.id.buttonGrammatikDeklinationAkkSg);
+        ToggleButton akk_pl = findViewById(R.id.buttonGrammatikDeklinationAkkPl);
+        ToggleButton abl_sg = findViewById(R.id.buttonGrammatikDeklinationAblSg);
+        ToggleButton abl_pl = findViewById(R.id.buttonGrammatikDeklinationAblPl);
 
         reset = findViewById(R.id.buttonGrammatikDeklinationReset);
         checkInput = findViewById(R.id.buttonGrammatikDeklinationCheckInput);
@@ -119,12 +109,10 @@ public class ClickDeklinationsendung extends LateinAppActivity {
 
         progressBar.setMax(maxProgress);
         int progress = sharedPref.getInt(KEY_PROGRESS_CLICK_DEKLINATIONSENDUNG, 0);
-        if (progress > maxProgress){
-            progress = maxProgress;
-        }
-
+        if (progress > maxProgress) progress = maxProgress;
         progressBar.setProgress(progress);
 
+        allCorrectCases = new ArrayList<>(10);
     }
 
     /**
@@ -143,7 +131,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
             String declination = faelle[new Random().nextInt(faelle.length)];
 
             //TODO: Failproof this -> extended tests?
-            currentVokabel = dbHelper.getRandomSubstantiv();
+            SubstantivDB currentVokabel = dbHelper.getRandomSubstantiv();
 
             allCorrectCases.clear();
             allCorrectCases.add(declination);
@@ -186,10 +174,6 @@ public class ClickDeklinationsendung extends LateinAppActivity {
 
         }else {
             progressBar.setProgress(maxProgress);
-
-
-            backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
-
 
             for (ToggleButton b : buttons){
                 b.setVisibility(View.GONE);
@@ -287,11 +271,11 @@ public class ClickDeklinationsendung extends LateinAppActivity {
         }
 
 
-        SharedPreferences.Editor editor = sharedPref.edit();
         int color;
 
         int currentScore = sharedPref.getInt(KEY_PROGRESS_CLICK_DEKLINATIONSENDUNG, 0);
 
+        SharedPreferences.Editor editor = sharedPref.edit();
         if (correct) {
             color = ResourcesCompat.getColor(getResources(), R.color.correct, null);
 
