@@ -81,10 +81,10 @@ public class ClickPersonalendung extends LateinAppActivity {
 
         sharedPref = getSharedPreferences("SharedPreferences", 0);
 
-        colorButtonCorrect = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
-        colorButtonIncorrect = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
-        colorButtonDefault = ResourcesCompat.getColor(getResources(), R.color.PrussianBlue, null);
-        colorButtonGrey = ResourcesCompat.getColor(getResources(), R.color.ButtonGrey, null);
+        colorButtonCorrect = ResourcesCompat.getColor(getResources(), R.color.correct, null);
+        colorButtonIncorrect = ResourcesCompat.getColor(getResources(), R.color.error, null);
+        colorButtonDefault = ResourcesCompat.getColor(getResources(), R.color.primary, null);
+        colorButtonGrey = ResourcesCompat.getColor(getResources(), R.color.grey, null);
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
         latein = findViewById(R.id.textGrammatikPersonalendungLatein);

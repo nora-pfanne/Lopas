@@ -99,8 +99,8 @@ public class Satzglieder extends LateinAppActivity {
     private void setup(){
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
-        colorButtonIncorrect = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
-        colorButtonCorrect = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
+        colorButtonIncorrect = ResourcesCompat.getColor(getResources(), R.color.error, null);
+        colorButtonCorrect = ResourcesCompat.getColor(getResources(), R.color.correct, null);
 
         dbHelper = new DBHelper(this);
         buttonHashMap = new HashMap<>();

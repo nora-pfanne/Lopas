@@ -35,14 +35,6 @@
 
     <!-- Google Material Design guidelines -->
 
-    <color name="InputRightGreen">#000000</color>
-    <color name="InputWrongRed">#000000</color>
-    <color name="PrussianBlue">#000000</color>
-    <color name="InputRightGreenLight">#000000</color>
-    <color name="InputWrongRedLight">#000000</color>
-    <color name="PrussianBlueLight">#000000</color>
-    <color name="ButtonGrey">#000000</color>
-
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
 

@@ -1,12 +1,10 @@
 package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -175,7 +173,7 @@ public class UserInputAdjektive extends LateinAppActivity {
         //Checking the userInput against the translation
         int color;
         if(compareString(userInput.getText().toString(), lateinText)){
-            color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
+            color = ResourcesCompat.getColor(getResources(), R.color.correct, null);
 
             SharedPreferences.Editor editor = sharedPref.edit();
 
@@ -184,7 +182,7 @@ public class UserInputAdjektive extends LateinAppActivity {
                     sharedPref.getInt(KEY_PROGRESS_USERINPUT_ADJEKTIVE, 0) + 1);
             editor.apply();
         }else {
-            color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+            color = ResourcesCompat.getColor(getResources(), R.color.error, null);
 
             if (sharedPref.getInt(KEY_PROGRESS_USERINPUT_ADJEKTIVE, 0) > 0) {
                 SharedPreferences.Editor editor = sharedPref.edit();

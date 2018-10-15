@@ -357,7 +357,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
         //Checking the userInput against the translation
         int color;
         if(compareString(userInput.getText().toString(), dbHelper.getDekliniertenSubstantiv(currentVokabel.getId(), currentDeclination))){
-            color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
+            color = ResourcesCompat.getColor(getResources(), R.color.correct, null);
 
             SharedPreferences.Editor editor = sharedPref.edit();
 
@@ -366,7 +366,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
                     sharedPref.getInt(KEY_PROGRESS_USERINPUT_DEKLINATIONSENDUNG+extraFromEinheitenUebersicht, 0) + 1);
             editor.apply();
         }else {
-            color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+            color = ResourcesCompat.getColor(getResources(), R.color.error, null);
 
             if (sharedPref.getInt(KEY_PROGRESS_USERINPUT_DEKLINATIONSENDUNG+extraFromEinheitenUebersicht, 0) > 0) {
                 SharedPreferences.Editor editor = sharedPref.edit();
