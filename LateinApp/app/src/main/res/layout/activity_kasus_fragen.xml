@@ -62,7 +62,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.149" />
 
-    <Button
+    <ToggleButton
+        style="@style/myToggleButtonStyle"
         android:id="@+id/buttonGrammatikKasusFrage1"
         android:layout_width="333dp"
         android:layout_height="45dp"
@@ -71,8 +72,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:onClick="kasusFragenButtonClicked"
-        android:text="Frage 1"
-        android:textSize="16sp"
+        android:textOn="Frage 1"
+        android:textOff="Frage 1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -80,7 +81,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
+    <ToggleButton
+        style="@style/myToggleButtonStyle"
         android:id="@+id/buttonGrammatikKasusFrage2"
         android:layout_width="333dp"
         android:layout_height="45dp"
@@ -89,7 +91,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Frage 2"
+        android:textOn="Frage 2"
+        android:textOff="Frage 2"
         android:onClick="kasusFragenButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +101,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.24" />
 
-    <Button
+    <ToggleButton
+        style="@style/myToggleButtonStyle"
         android:id="@+id/buttonGrammatikKasusFrage3"
         android:layout_width="333dp"
         android:layout_height="45dp"
@@ -107,7 +111,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:onClick="kasusFragenButtonClicked"
-        android:text="Frage 3"
+        android:textOn="Frage 3"
+        android:textOff="Frage 3"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -116,7 +121,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.48" />
 
-    <Button
+    <ToggleButton
+        style="@style/myToggleButtonStyle"
         android:id="@+id/buttonGrammatikKasusFrage4"
         android:layout_width="333dp"
         android:layout_height="45dp"
@@ -125,7 +131,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:onClick="kasusFragenButtonClicked"
-        android:text="Frage 4"
+        android:textOn="Frage 4"
+        android:textOff="Frage 4"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -134,7 +141,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.72" />
 
-    <Button
+    <ToggleButton
+        style="@style/myToggleButtonStyle"
         android:id="@+id/buttonGrammatikKasusFrage5"
         android:layout_width="333dp"
         android:layout_height="45dp"
@@ -143,7 +151,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:onClick="kasusFragenButtonClicked"
-        android:text="Frage 5"
+        android:textOn="Frage 5"
+        android:textOff="Frage 5"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -172,6 +181,7 @@
 
     <Button
         android:id="@+id/buttonGrammatikKasusFragenWeiter"
+        android:visibility="gone"
         android:layout_width="94dp"
         android:layout_height="52dp"
         android:layout_marginBottom="8dp"

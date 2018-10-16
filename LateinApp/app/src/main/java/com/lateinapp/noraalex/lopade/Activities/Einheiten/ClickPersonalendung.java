@@ -148,6 +148,10 @@ public class ClickPersonalendung extends LateinAppActivity {
             if(tb.getId() == view.getId()){
                 checkInput(tb);
                 weiter.setVisibility(View.VISIBLE);
+
+                for(ToggleButton toggleButton: buttons){
+                    toggleButton.setClickable(false);
+                }
                 return;
             }
         }

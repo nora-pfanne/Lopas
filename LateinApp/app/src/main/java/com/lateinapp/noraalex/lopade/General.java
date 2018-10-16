@@ -14,6 +14,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class General {
@@ -80,6 +83,29 @@ public class General {
         }
 
         return sharedPreferences;
+    }
+
+    // Implementing Fisher–Yates shuffle
+    public static void shuffleArray(String[] ar) {
+        // If running on Java 6 or older, use `new Random()` on RHS here
+        Random rnd = ThreadLocalRandom.current();
+        for (int i = ar.length - 1; i > 0; i--)
+        {
+            int index = rnd.nextInt(i + 1);
+            // Simple swap
+            String a = ar[index];
+            ar[index] = ar[i];
+            ar[i] = a;
+        }
+    }
+
+    public static Object getKeyFromValue(Map hashMap, Object value){
+        for(Object o: hashMap.entrySet()){
+            if(hashMap.get(o).equals(value)){
+                return o;
+            }
+        }
+        return null;
     }
 
     //TODO: Maybe use a different solution here? This might be overkill for where we acually need it
