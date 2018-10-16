@@ -83,8 +83,8 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
         progressBar = findViewById(R.id.progressBarUserInput);
         bestaetigung = findViewById(R.id.buttonUserInputEingabeBestätigt);
         weiter = findViewById(R.id.buttonUserInputNächsteVokabel);
-        reset = findViewById(R.id.buttonUserInputFortschrittLöschen);
-        zurück = findViewById(R.id.buttonUserInputZurück);
+        reset = findViewById(R.id.scoreButtonReset);
+        zurück = findViewById(R.id.scoreButtonBack);
         titel = findViewById(R.id.textUserInputÜberschrift);
 
         userInput.setHint("Konjugiertes Verb");
@@ -270,7 +270,7 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
                 break;
 
             //Setting the 'learned' state of all vocabularies of the current lektion to false
-            case (R.id.buttonUserInputFortschrittLöschen):
+            case (R.id.scoreButtonReset):
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putInt(KEY_PROGRESS_USERINPUT_ESSEVELLENOLLE, 0);
                 editor.apply();
@@ -278,7 +278,7 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
                 break;
 
             //Returning to the previous activity
-            case (R.id.buttonUserInputZurück):
+            case (R.id.scoreButtonBack):
                 finish();
                 break;
         }
