@@ -31,7 +31,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Grundlagen"/>
+                android:text="Grammatik"
+                style="@style/textViewTitle"/>
 
             <ImageView
                 android:id="@+id/home_grammar_pillar_right"

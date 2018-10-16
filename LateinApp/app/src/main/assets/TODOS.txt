@@ -31,3 +31,8 @@ deklinationstrainer score? -> maybe just remove score from it alltogether
 reset buttons / toasts on resets  for grammar
 
 weiter button placement
+
+satzglieder ergibt keinen sinn
+    -> kein Inhalt bedeutet, dass man sich das richtige Wort nicht erschießen kann, wenn 2 Wörter gleich sind
+
+remove the animation between switching home-fragments
