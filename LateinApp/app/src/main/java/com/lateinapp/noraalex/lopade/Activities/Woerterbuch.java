@@ -18,6 +18,7 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.PräpositionDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.SprichwortDB;
+import com.lateinapp.noraalex.lopade.Databases.Tables.SubjunktionDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.SubstantivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
 import com.lateinapp.noraalex.lopade.R;
@@ -59,7 +60,11 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
                 "Lektion 3",
                 "Lektion 4",
                 "Lektion 5",
-                "Lektion 6"
+                "Lektion 6",
+                "Lektion 7",
+                "Lektion 8",
+                "Lektion 9",
+                "Lektion 10"
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
@@ -211,6 +216,9 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
 
             String[][] valuesSprichwort = dbHelper.getColumns(SprichwortDB.FeedEntry.TABLE_NAME, columns, pos + 1);
             addTableRows(tl, valuesSprichwort);
+
+            String[][] valuesSubjunktion = dbHelper.getColumns(SubjunktionDB.FeedEntry.TABLE_NAME, columns, pos + 1);
+            addTableRows(tl, valuesSubjunktion);
         }
     }
 

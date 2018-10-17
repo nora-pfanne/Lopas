@@ -34,6 +34,7 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.AdjektivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.PräpositionDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.SprichwortDB;
+import com.lateinapp.noraalex.lopade.Databases.Tables.SubjunktionDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.SubstantivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
@@ -393,11 +394,15 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
 
             return AdjektivDB.FeedEntry.TABLE_NAME;
 
-        }else{
+        }else if (vokabel instanceof SubjunktionDB) {
+
+            return SubjunktionDB.FeedEntry.TABLE_NAME;
+
+        }else {
 
             Log.e(TAG,"No VokabelTyp found");
 
-            return "";
+            return "NO_MATCH_GET_VOKABEL_TABLE()";
         }
     }
 

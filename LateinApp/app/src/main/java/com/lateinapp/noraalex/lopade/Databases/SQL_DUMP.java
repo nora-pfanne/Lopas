@@ -10,6 +10,7 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.PräpositionDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Sprechvokal_PräsensDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Sprechvokal_SubstantivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.SprichwortDB;
+import com.lateinapp.noraalex.lopade.Databases.Tables.SubjunktionDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.SubstantivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
 
@@ -306,7 +307,7 @@ public final class SQL_DUMP {
                     + ")"
                     + ")";
 
-     static final String SQL_CREATE_ENTRIES_SPRICHWORT =
+    static final String SQL_CREATE_ENTRIES_SPRICHWORT =
             "CREATE TABLE IF NOT EXISTS "
                     + SprichwortDB.FeedEntry.TABLE_NAME
                     + "( "
@@ -325,6 +326,32 @@ public final class SQL_DUMP {
 
                     + " FOREIGN KEY ("
                     + SprichwortDB.FeedEntry.COLUMN_LEKTION_ID
+                    + ") REFERENCES "
+                    + LektionDB.FeedEntry.TABLE_NAME
+                    + "("
+                    + LektionDB.FeedEntry._ID
+                    + ")"
+                    + ")";
+
+    static final String SQL_CREATE_ENTRIES_SUBJUNKTION =
+            "CREATE TABLE IF NOT EXISTS "
+                    + SubjunktionDB.FeedEntry.TABLE_NAME
+                    + "( "
+                    + SubjunktionDB.FeedEntry._ID
+                    + " INTEGER PRIMARY KEY, "
+                    + SubjunktionDB.FeedEntry.COLUMN_DEUTSCH
+                    + " TEXT, "
+                    + SubjunktionDB.FeedEntry.COLUMN_LATEIN
+                    + " TEXT, "
+                    + SubjunktionDB.FeedEntry.COLUMN_GELERNT
+                    + " INTEGER, "
+                    + SubjunktionDB.FeedEntry.COLUMN_AMOUNT_INCORRECT
+                    + " INTEGER, "
+                    + SubjunktionDB.FeedEntry.COLUMN_LEKTION_ID
+                    + " INTEGER, "
+
+                    + " FOREIGN KEY ("
+                    + SubjunktionDB.FeedEntry.COLUMN_LEKTION_ID
                     + ") REFERENCES "
                     + LektionDB.FeedEntry.TABLE_NAME
                     + "("
@@ -394,6 +421,8 @@ public final class SQL_DUMP {
 
                      + ")";
 
+
+
     //creating a String for quick access to a deletion command for all tables
     static final String SQL_DELETE_ENTRIES_ADVERB =
             "DROP TABLES IF EXISTS "
@@ -427,9 +456,13 @@ public final class SQL_DUMP {
             "DROP TABLES IF EXISTS "
                     + Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME;
 
-     static final String SQL_DELETE_ENTRIES_SPRICHWORT =
+    static final String SQL_DELETE_ENTRIES_SPRICHWORT =
             "DROP TABLES IF EXISTS "
                     + SprichwortDB.FeedEntry.TABLE_NAME;
+
+    static final String SQL_DELETE_ENTRIES_SUBJUNKTION =
+            "DROP TABLES IF EXISTS "
+                    + SubjunktionDB.FeedEntry.TABLE_NAME;
 
      static final String SQL_DELETE_ENTRIES_SUBSTANTIV =
             "DROP TABLES IF EXISTS "
@@ -455,7 +488,8 @@ public final class SQL_DUMP {
             SprichwortDB.FeedEntry.TABLE_NAME,
             SubstantivDB.FeedEntry.TABLE_NAME,
             VerbDB.FeedEntry.TABLE_NAME,
-            BeispielsatzDB.FeedEntry.TABLE_NAME
+            BeispielsatzDB.FeedEntry.TABLE_NAME,
+            SubjunktionDB.FeedEntry.TABLE_NAME
     };
 
      static final String[] allColumnsAdjektiv = {
@@ -583,14 +617,23 @@ public final class SQL_DUMP {
             VerbDB.FeedEntry.COLUMN_SPRECHVOKAL_ID
     };
 
-     static final String[] allColumnsBeispielsatz = {
-             BeispielsatzDB.FeedEntry._ID,
-             BeispielsatzDB.FeedEntry.COLUMN_SUBJEKT,
-             BeispielsatzDB.FeedEntry.COLUMN_PRAEDIKAT,
-             BeispielsatzDB.FeedEntry.COLUMN_GENITIV,
-             BeispielsatzDB.FeedEntry.COLUMN_DATIV,
-             BeispielsatzDB.FeedEntry.COLUMN_AKKUSATIV
-     };
+    static final String[] allColumnsBeispielsatz = {
+            BeispielsatzDB.FeedEntry._ID,
+            BeispielsatzDB.FeedEntry.COLUMN_SUBJEKT,
+            BeispielsatzDB.FeedEntry.COLUMN_PRAEDIKAT,
+            BeispielsatzDB.FeedEntry.COLUMN_GENITIV,
+            BeispielsatzDB.FeedEntry.COLUMN_DATIV,
+            BeispielsatzDB.FeedEntry.COLUMN_AKKUSATIV
+    };
+
+    static final String[] allColumnsSubjunktion = {
+            SubjunktionDB.FeedEntry._ID,
+            SubjunktionDB.FeedEntry.COLUMN_DEUTSCH,
+            SubjunktionDB.FeedEntry.COLUMN_LATEIN,
+            SubjunktionDB.FeedEntry.COLUMN_GELERNT,
+            SubjunktionDB.FeedEntry.COLUMN_AMOUNT_INCORRECT,
+            SubjunktionDB.FeedEntry.COLUMN_LEKTION_ID
+    };
 
      public static final String[] allVocabularyTables = {
             AdjektivDB.FeedEntry.TABLE_NAME,
@@ -598,6 +641,7 @@ public final class SQL_DUMP {
             PräpositionDB.FeedEntry.TABLE_NAME,
             SprichwortDB.FeedEntry.TABLE_NAME,
             SubstantivDB.FeedEntry.TABLE_NAME,
-            VerbDB.FeedEntry.TABLE_NAME
+            VerbDB.FeedEntry.TABLE_NAME,
+            SubjunktionDB.FeedEntry.TABLE_NAME
      };
 }

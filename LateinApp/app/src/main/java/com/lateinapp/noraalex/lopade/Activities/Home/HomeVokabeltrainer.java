@@ -109,6 +109,30 @@ public class HomeVokabeltrainer extends Fragment {
                 startActivity(intent);
                 break;
 
+            case R.id.home_voc_button_7:
+                intent = new Intent(getActivity(), UserInputVokabeltrainer.class);
+                intent.putExtra("lektion", 7);
+                startActivity(intent);
+                break;
+
+            case R.id.home_voc_button_8:
+                intent = new Intent(getActivity(), UserInputVokabeltrainer.class);
+                intent.putExtra("lektion", 8);
+                startActivity(intent);
+                break;
+
+            case R.id.home_voc_button_9:
+                intent = new Intent(getActivity(), UserInputVokabeltrainer.class);
+                intent.putExtra("lektion", 9);
+                startActivity(intent);
+                break;
+
+            case R.id.home_voc_button_10:
+                intent = new Intent(getActivity(), UserInputVokabeltrainer.class);
+                intent.putExtra("lektion", 10);
+                startActivity(intent);
+                break;
+
             default:
                 Log.e(TAG, "The button that called 'navButtonClicked' was not" +
                         " identified\nID: " + v.getId());
