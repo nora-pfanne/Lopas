@@ -255,7 +255,8 @@
                 android:layout_weight="1"
                 android:onClick="navButtonClicked"
                 android:text="Lektion 9"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:enabled="false"/>
 
             <TextView
                 android:id="@+id/home_voc_text_9"
@@ -280,7 +281,8 @@
                 android:layout_weight="1"
                 android:onClick="navButtonClicked"
                 android:text="Lektion 10"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:enabled="false"/>
 
             <TextView
                 android:id="@+id/home_voc_text_10"
@@ -290,6 +292,10 @@
                 android:text="[PLACEHOLDER: SCORE]" />
 
         </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
 
     </LinearLayout>
 

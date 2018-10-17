@@ -1114,13 +1114,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
             vokabelInstance = new AdverbDB(vokabelID, lateinVokabel, deutsch);
 
-        }else if(randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPraeposition-entryAmountSprichwort-entryAmountAdjektiv < entryAmountAdverb){
+        }else if(randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPraeposition-entryAmountSprichwort-entryAmountAdverb < entryAmountAdjektiv){
 
             //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
             randomNumber++;
 
             //constructs a instance of Adjektiv from the given randomNumber
-            count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPraeposition-entryAmountSprichwort;
+            count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPraeposition-entryAmountSprichwort-entryAmountAdverb;
 
             table = AdjektivDB.FeedEntry.TABLE_NAME;
             vokabelID = getIdFromCount(lektionNr, count, false, table);
@@ -1137,7 +1137,7 @@ public class DBHelper extends SQLiteOpenHelper {
             randomNumber++;
 
             //constructs a instance of Adjektiv from the given randomNumber
-            count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPraeposition-entryAmountSprichwort-entryAmountAdjektiv;
+            count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPraeposition-entryAmountSprichwort-entryAmountAdverb-entryAmountAdjektiv;
 
             table = SubjunktionDB.FeedEntry.TABLE_NAME;
             vokabelID = getIdFromCount(lektionNr, count, false, table);
