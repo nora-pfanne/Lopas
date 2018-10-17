@@ -86,7 +86,7 @@ loben;laud;a-Konjugation;6;;a-Konjugation
 sich beschäftigen, sich bemühen, streben nach;stude;e-Konjugation;8;;e-Konjugation
 liegen;iac;e-Konjugation;8;;e-Konjugation
 schweigen, verschweigen;tace;e-Konjugation;7;;e-Konjugation
-herbeikommen, hingehen, sich nähern; acced;kons-Konjugation;7;;kons-Konjugation
+herbeikommen, hingehen, sich nähern;acced;kons-Konjugation;7;;kons-Konjugation
 fliehen (vor), fliehen, fliehen vor, entfliehen, meiden;fug;kons-Konjugation;7;;kons-Konjugation
 fragen, suchen, erwerben wollen;quaer;kons-Konjugation;7;;kons-Konjugation
 verkaufen;vend;kons-Konjugation;7;;kons-Konjugation
@@ -102,7 +102,7 @@ fliegen, eilen;vol;a-Konjugation;7;;a-Konjugation
 werfen, schleudern;iact;a-Konjugation;7;;a-Konjugation
 glauben, meinen, halten für;put;a-kons;8;;a-Konjugation
 kämpfen;pugn;a-Konjugation;8;;a-Konjugation
-abwesend sein, nicht da sein, fehlen;ab;special;1;no;esse
-abwesend sein, fehlen, nicht da sein;de;special;1;no;esse
+abwesend sein, nicht da sein, fehlen;ab;special;7;no;esse
+abwesend sein, fehlen, nicht da sein;de;special;7;no;esse
 zusammenkommen, zusammenpassen, besuchen;conveni;i-Konjugation;7;;i-Konjugation
 entreißen;erip;i-Konjugation;8;;i-Konjugation
