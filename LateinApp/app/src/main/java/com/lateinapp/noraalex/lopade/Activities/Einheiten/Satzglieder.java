@@ -102,7 +102,7 @@ public class Satzglieder extends LateinAppActivity {
         colorButtonIncorrect = ResourcesCompat.getColor(getResources(), R.color.error, null);
         colorButtonCorrect = ResourcesCompat.getColor(getResources(), R.color.correct, null);
 
-        dbHelper = new DBHelper(this);
+        dbHelper = DBHelper.getInstance(this);
         buttonHashMap = new HashMap<>();
         sharedPref = General.getSharedPrefrences(getApplicationContext());
 
@@ -671,11 +671,5 @@ public class Satzglieder extends LateinAppActivity {
         back.setVisibility(View.VISIBLE);
 
         aufgabenstellung.setText("");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        dbHelper.close();
     }
 }

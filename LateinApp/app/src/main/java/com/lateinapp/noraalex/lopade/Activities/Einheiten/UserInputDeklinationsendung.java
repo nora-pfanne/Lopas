@@ -86,7 +86,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
         extraFromEinheitenUebersicht = intent.getStringExtra("ExtraInputDeklinationsendung");
 
         sharedPref = General.getSharedPrefrences(getApplicationContext());
-        dbHelper = new DBHelper(getApplicationContext());
+        dbHelper = DBHelper.getInstance(getApplicationContext());
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
         request = findViewById(R.id.textUserInputLatein);
@@ -473,11 +473,5 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
         super.onPause();
 
         hideKeyboard();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        dbHelper.close();
     }
 }

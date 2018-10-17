@@ -75,7 +75,7 @@ public class ClickDeklinationsendung extends LateinAppActivity {
 
     private void setup(){
 
-        dbHelper = new DBHelper(getApplicationContext());
+        dbHelper = DBHelper.getInstance(getApplicationContext());
         sharedPref = General.getSharedPrefrences(this);
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
@@ -290,11 +290,5 @@ public class ClickDeklinationsendung extends LateinAppActivity {
         editor.apply();
 
         lateinVokabel.setBackgroundColor(color);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        dbHelper.close();
     }
 }

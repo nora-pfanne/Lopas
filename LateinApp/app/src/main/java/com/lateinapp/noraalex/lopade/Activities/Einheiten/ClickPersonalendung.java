@@ -66,7 +66,7 @@ public class ClickPersonalendung extends LateinAppActivity {
 
     private void setup(){
 
-        dbHelper = new DBHelper(getApplicationContext());
+        dbHelper = DBHelper.getInstance(getApplicationContext());
 
         sharedPref = General.getSharedPrefrences(this);
 
@@ -219,12 +219,6 @@ public class ClickPersonalendung extends LateinAppActivity {
         editor.apply();
 
         latein.setBackgroundColor(color);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        dbHelper.close();
     }
 
 }

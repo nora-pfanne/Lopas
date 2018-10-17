@@ -48,21 +48,20 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DBHelper";
 
-    public SQLiteDatabase database;
+    private static DBHelper sInstance;
 
     //Version of the database. Currently of no use.
     private static final int DATABASE_VERSION = 1;
 
-    private final Context context;
+    //private final Context context;
 
     //Name of the database file on the target device.
     private static final String DATABASE_NAME = "Database.db";
-    private static String DATABASE_PATH = "";
 
-    public void firstStartup(){
+    public void firstStartup(Context context){
         SharedPreferences sharedPreferences = General.getSharedPrefrences(context);
-        copyDataBaseFromAssets();
-        //fillDatabaseFromCsv();
+        copyDataBaseFromAssets(context);
+        //fillDatabaseFromCsv(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_NOT_FIRST_STARTUP, true);
         editor.apply();
@@ -75,17 +74,8 @@ public class DBHelper extends SQLiteOpenHelper {
      *
      * @param context Application Context
      */
-    public DBHelper(Context context) {
+    private DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
-        this.context = context;
-
-
-        if (DATABASE_PATH.isEmpty()){
-            DATABASE_PATH = context.getFilesDir().getPath();
-        }
-
-        openDb();
     }
 
     /**
@@ -114,29 +104,14 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-
-    @Override
-    public synchronized void close() {
-        super.close();
-        closeDb();
-    }
-
-    /**
-     * Closes the connection to the database if it is open.
-     */
-    private void closeDb() {
-        if (!database.isOpen()) database.close();
-    }
-
-    /**
-     * open the connection to the database if it isn't open already.
-     */
-    private void openDb() throws SQLException {
-
-        String mPath = DATABASE_PATH + DATABASE_NAME;
-        //Log.v("mPath", mPath);
-        database = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.CREATE_IF_NECESSARY);
-
+    public static synchronized DBHelper getInstance(Context context) {
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // See this article for more information: http://bit.ly/6LRzfx
+        if (sInstance == null) {
+            sInstance = new DBHelper(context.getApplicationContext());
+        }
+        return sInstance;
     }
 
 
@@ -144,11 +119,12 @@ public class DBHelper extends SQLiteOpenHelper {
     // Methods for initializing the database
     //
 
-    public void copyDataBaseFromAssets() {
+    public void copyDataBaseFromAssets(Context context) {
 
         try {
             InputStream input = context.getAssets().open(DATABASE_NAME);
-            String outFileName = DATABASE_PATH + DATABASE_NAME;
+            String outFileName = context.getDatabasePath(DATABASE_NAME).toString();
+
             OutputStream output = new FileOutputStream(outFileName);
             byte[] buffer = new byte[1024];
             int length;
@@ -164,10 +140,10 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void fillDatabaseFromCsv(){
+    public void fillDatabaseFromCsv(Context context){
 
         //Clearing the database if it is still full
-        database = getWritableDatabase();
+        SQLiteDatabase database = getWritableDatabase();
 
         for (String table : allTables){
             Cursor cursor = database.rawQuery("DROP TABLE IF EXISTS " + table, null);
@@ -319,6 +295,8 @@ public class DBHelper extends SQLiteOpenHelper {
                                 String query = "SELECT " + DeklinationsendungDB.FeedEntry._ID +
                                         " FROM " + DeklinationsendungDB.FeedEntry.TABLE_NAME +
                                         " WHERE " + DeklinationsendungDB.FeedEntry.COLUMN_NAME + " = ?";
+
+                                SQLiteDatabase database = getWritableDatabase();
                                 Cursor cursor = database.rawQuery(query,
                                         new String[]{tokens[3]}
                                 );
@@ -347,7 +325,8 @@ public class DBHelper extends SQLiteOpenHelper {
                                 String sprechvokalQuery = "SELECT " + Sprechvokal_PräsensDB.FeedEntry._ID +
                                         " FROM " + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME +
                                         " WHERE " + Sprechvokal_PräsensDB.FeedEntry.COLUMN_TITLE + " = ?";
-                                Cursor sprechvokalCursor = database.rawQuery(sprechvokalQuery,
+                                SQLiteDatabase db = getWritableDatabase();
+                                Cursor sprechvokalCursor = db.rawQuery(sprechvokalQuery,
                                         new String[]{tokens[5]}
                                 );
                                 sprechvokalCursor.moveToNext();
@@ -477,7 +456,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 " SET Gelernt = ?" +
                 " WHERE _ID = ?";
 
-        Cursor cursor = database.rawQuery(query, new String [] {"" + (gelerntWert ? 1 : 0), "" + vokabelID});
+        Cursor cursor = getWritableDatabase().rawQuery(query, new String [] {"" + (gelerntWert ? 1 : 0), "" + vokabelID});
         //We need to call 'moveToFirst()' or 'moveToNext()' here for the database to properly update
         cursor.moveToFirst();
 
@@ -491,7 +470,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 " SET " + column + " = " + column + " + 1" +
                 " WHERE _id = " + entryID;
 
-        Cursor cursor = database.rawQuery(query, new String[]{});
+        Cursor cursor = getWritableDatabase().rawQuery(query, new String[]{});
         cursor.moveToFirst();
         cursor.close();
     }
@@ -507,7 +486,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     + table
                     + " SET Gelernt = 0, Amount_Incorrect = 0"
                     + " WHERE Lektion_ID = " + lektionNr;
-            Cursor cursor = database.rawQuery(query, new String[]{});
+            Cursor cursor = getWritableDatabase().rawQuery(query, new String[]{});
             cursor.moveToFirst();
             cursor.close();
         }
@@ -520,7 +499,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         for(String table: allVocabularyTables){
             String query = "SELECT SUM(Amount_Incorrect) FROM " + table + " WHERE Lektion_ID = " + lektion;
-            Cursor cursor = database.rawQuery(query, new String[]{});
+            Cursor cursor = getWritableDatabase().rawQuery(query, new String[]{});
             cursor.moveToFirst();
 
             count += cursor.getInt(0);
@@ -548,7 +527,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 " FROM " + table +
                 " WHERE _ID = ?";
 
-        Cursor cursor = database.rawQuery(query, new String[]{""+id});
+        Cursor cursor = getWritableDatabase().rawQuery(query, new String[]{""+id});
 
         cursor.moveToNext();
 
@@ -603,7 +582,7 @@ public class DBHelper extends SQLiteOpenHelper {
         query += "FROM " + table + " WHERE Lektion_ID = " + lektion;
 
         //Getting the result-cursor
-        Cursor cursor = database.rawQuery(query, new String[]{});
+        Cursor cursor = getWritableDatabase().rawQuery(query, new String[]{});
 
         //Putting the results in a 2-dimensional array
         //where the first dimension is the entryNr
@@ -635,7 +614,7 @@ public class DBHelper extends SQLiteOpenHelper {
         String query = "SELECT _ID FROM "+ table
                 + " WHERE Gelernt = "+(gelernt ? 1 : 0)
                 + " AND Lektion_ID = " + lektion;
-        Cursor cursor = database.rawQuery(query, new String[]{});
+        Cursor cursor = getWritableDatabase().rawQuery(query, new String[]{});
 
         cursor.moveToPosition(count-1);
 
@@ -695,6 +674,8 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public String getDekliniertenSubstantiv(int vokabelID, String deklinationsendungsName){
 
+        SQLiteDatabase database = getWritableDatabase();
+
         //Gets the first part of the word (wortstamm)
         String query = "SELECT " + SubstantivDB.FeedEntry.COLUMN_WORTSTAMM +
                 " FROM "+ SubstantivDB.FeedEntry.TABLE_NAME +
@@ -739,6 +720,8 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return the final word in the right declination
      */
     public String getDekliniertesAdjektiv(int vokabelID, String deklinationsendungName, String endungstype){
+
+        SQLiteDatabase database = getWritableDatabase();
 
         //Gets the first part of the word (wortstamm)
         String query = "SELECT " + AdjektivDB.FeedEntry.COLUMN_WORTSTAMM +
@@ -785,6 +768,9 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return the final word in the right declination
      */
     public String getKonjugiertesVerb(int vokabelID, String personalendung){
+
+        SQLiteDatabase database = getWritableDatabase();
+
         //TODO: add parameter for tenses
 
         //Gets the first part of the word (Wortstamm)
@@ -896,7 +882,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         query += ")";
 
-        Cursor cursor = database.rawQuery(query, null);
+        Cursor cursor = getWritableDatabase().rawQuery(query, null);
 
         cursor.moveToNext();
 
@@ -929,7 +915,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         query += ")";
 
-        Cursor cursor = database.rawQuery(query, null);
+        Cursor cursor = getWritableDatabase().rawQuery(query, null);
 
         cursor.moveToNext();
 
@@ -962,7 +948,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         query += ")";
 
-        Cursor cursor = database.rawQuery(query, null);
+        Cursor cursor = getWritableDatabase().rawQuery(query, null);
 
         cursor.moveToNext();
 
@@ -989,7 +975,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 + " WHERE Lektion_ID = ?" +
                 " AND Gelernt = ?";
 
-        Cursor cursor = database.rawQuery(query,
+        Cursor cursor = getWritableDatabase().rawQuery(query,
                 new String[] {""+lektionNr, ""+(gelernt ? 1 : 0)});
         cursor.moveToNext();
         int count = cursor.getInt(0);
@@ -1008,7 +994,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //Getting the total number of entries which were completed and adding it to 'complete'
         String query = "SELECT COUNT(*) FROM " + table;
-        Cursor cursor = database.rawQuery(query,
+        Cursor cursor = getWritableDatabase().rawQuery(query,
                 new String[] {});
         cursor.moveToNext();
         int result = cursor.getInt(0);
@@ -1257,7 +1243,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsAdverb[4], 0);
         values.put(allColumnsAdverb[5], lektion_id);
 
-        database.insert(AdverbDB.FeedEntry.TABLE_NAME, null, values);
+        getWritableDatabase().insert(AdverbDB.FeedEntry.TABLE_NAME, null, values);
     }
 
     /**
@@ -1277,7 +1263,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsAdjektiv[5], lektion_id);
         values.put(allColumnsAdjektiv[6], type);
 
-        database.insert(AdjektivDB.FeedEntry.TABLE_NAME, null, values);
+        getWritableDatabase().insert(AdjektivDB.FeedEntry.TABLE_NAME, null, values);
 
     }
 
@@ -1315,7 +1301,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsDeklinationsendung[10], abl_sg);
         values.put(allColumnsDeklinationsendung[11], abl_pl);
 
-        database.insert(DeklinationsendungDB.FeedEntry.TABLE_NAME, null, values);
+        getWritableDatabase().insert(DeklinationsendungDB.FeedEntry.TABLE_NAME, null, values);
     }
 
     /**
@@ -1330,7 +1316,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsLektion[2], titel);
         values.put(allColumnsLektion[3], thema);
 
-        database.insert(LektionDB.FeedEntry.TABLE_NAME, null, values);
+        getWritableDatabase().insert(LektionDB.FeedEntry.TABLE_NAME, null, values);
     }
 
     /**
@@ -1354,7 +1340,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsPersonalendung_Präsens[5], dritte_sg);
         values.put(allColumnsPersonalendung_Präsens[6], dritte_pl);
 
-        database.insert(Personalendung_PräsensDB.FeedEntry.TABLE_NAME, null, values);
+        getWritableDatabase().insert(Personalendung_PräsensDB.FeedEntry.TABLE_NAME, null, values);
     }
 
     /**
@@ -1373,7 +1359,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsPraeposition[4], 0);
         values.put(allColumnsPraeposition[5], lektion_id);
 
-        database.insert(PräpositionDB.FeedEntry.TABLE_NAME, null, values);
+        getWritableDatabase().insert(PräpositionDB.FeedEntry.TABLE_NAME, null, values);
     }
 
     /**
@@ -1400,7 +1386,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsSprechvokal_Präsens[7], zweite_pl);
         values.put(allColumnsSprechvokal_Präsens[8], dritte_pl);
 
-        database.insert(Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME, null, values);
+        getWritableDatabase().insert(Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME, null, values);
 
     }
 
@@ -1436,7 +1422,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsSprechvokal_Substantiv[9], abl_sg);
         values.put(allColumnsSprechvokal_Substantiv[10], abl_pl);
 
-        database.insert(Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME, null, values);
+        getWritableDatabase().insert(Sprechvokal_SubstantivDB.FeedEntry.TABLE_NAME, null, values);
     }
 
     /**
@@ -1455,7 +1441,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsSprichwort[4], 0);
         values.put(allColumnsSprichwort[5], lektion_id);
 
-        database.insert(SprichwortDB.FeedEntry.TABLE_NAME, null, values);
+        getWritableDatabase().insert(SprichwortDB.FeedEntry.TABLE_NAME, null, values);
     }
 
     /**
@@ -1478,7 +1464,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsSubstantiv[6], sprechvokal_id);
         values.put(allColumnsSubstantiv[7], deklinationsendung_id);
 
-        database.insert(SubstantivDB.FeedEntry.TABLE_NAME, null, values);
+        getWritableDatabase().insert(SubstantivDB.FeedEntry.TABLE_NAME, null, values);
     }
     /**
      * Adds a entry to the 'Verb' table in the database with given parameters.
@@ -1502,7 +1488,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsVerb[7], personalendung_id);
         values.put(allColumnsVerb[8], sprechvokal_id);
 
-        database.insert(VerbDB.FeedEntry.TABLE_NAME, null, values);
+        getWritableDatabase().insert(VerbDB.FeedEntry.TABLE_NAME, null, values);
     }
 
     private void addRowBeispielsatz(int subjekt_id, int praedikat_id, int genitiv_id, int dativ_id, int akkusativ_id){
@@ -1523,7 +1509,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(allColumnsBeispielsatz[4], dativ_id);
         values.put(allColumnsBeispielsatz[5], akkusativ_id);
 
-        database.insert(BeispielsatzDB.FeedEntry.TABLE_NAME, null, values);
+        getWritableDatabase().insert(BeispielsatzDB.FeedEntry.TABLE_NAME, null, values);
     }
 
 

@@ -74,7 +74,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
         extraFromEinheitenUebersicht = intent.getStringExtra("ExtraInputPersonalendung");
 
         sharedPref = General.getSharedPrefrences(getApplicationContext());
-        dbHelper = new DBHelper(getApplicationContext());
+        dbHelper = DBHelper.getInstance(getApplicationContext());
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
         request = findViewById(R.id.textUserInputLatein);
@@ -393,11 +393,5 @@ public class UserInputPersonalendung extends LateinAppActivity {
         super.onPause();
 
         hideKeyboard();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        dbHelper.close();
     }
 }

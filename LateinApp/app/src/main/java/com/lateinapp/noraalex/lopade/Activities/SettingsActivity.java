@@ -31,7 +31,7 @@ public class SettingsActivity extends LateinAppActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        dbHelper = new DBHelper(getApplicationContext());
+        dbHelper = DBHelper.getInstance(this);
         sharedPref = General.getSharedPrefrences(getApplicationContext());
 
         //#DEVELOPER
@@ -116,11 +116,5 @@ public class SettingsActivity extends LateinAppActivity {
                 break;
 
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        dbHelper.close();
     }
 }

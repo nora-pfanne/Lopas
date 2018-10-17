@@ -110,7 +110,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         lektion = intent.getIntExtra("lektion",0);
 
         sharedPref = General.getSharedPrefrences(getApplicationContext());
-        dbHelper = new DBHelper(getApplicationContext());
+        dbHelper = DBHelper.getInstance(getApplicationContext());
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
         errorColor = ResourcesCompat.getColor(getResources(), R.color.error, null);
@@ -568,12 +568,6 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         });
 
         popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        dbHelper.close();
     }
 
     private void popupScore(int score){

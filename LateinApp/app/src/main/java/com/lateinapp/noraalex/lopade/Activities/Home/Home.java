@@ -55,9 +55,8 @@ public class Home extends LateinAppActivity {
         if(!notFirstStartup){
 
             //First setup of DBHelper
-            DBHelper dbHelper = new DBHelper(this);
-            dbHelper.firstStartup();
-            dbHelper.close();
+            DBHelper dbHelper = DBHelper.getInstance(this);
+            dbHelper.firstStartup(this);
 
             //First setup of Scores
             Score.firstStartup(sharedPreferences);

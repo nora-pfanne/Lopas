@@ -132,19 +132,15 @@ public abstract class LateinAppActivity extends AppCompatActivity{
             //#DEVELOPER
             //Reloading the database -> copy from assets
             case (R.id.action_dev_reload_database_from_assets):
-                DBHelper dbHelper = new DBHelper(getApplicationContext());
-
-                dbHelper.copyDataBaseFromAssets();
-
-                dbHelper.close();
+                DBHelper dbHelper = DBHelper.getInstance(getApplicationContext());
+                dbHelper.copyDataBaseFromAssets(this);
                 break;
 
             //#DEVELOPER
             //Reloading the database from the corresponding csv files
             case (R.id.action_dev_reload_database_iterative):
-                DBHelper dbHelper1 = new DBHelper(getApplicationContext());
-                dbHelper1.fillDatabaseFromCsv();
-                dbHelper1.close();
+                DBHelper dbHelper1 = DBHelper.getInstance(this);
+                dbHelper1.fillDatabaseFromCsv(this);
 
                 break;
 

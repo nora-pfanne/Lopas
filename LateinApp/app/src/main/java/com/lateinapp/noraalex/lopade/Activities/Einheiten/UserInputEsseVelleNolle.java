@@ -74,7 +74,7 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
     private void setup(){
 
         sharedPref = General.getSharedPrefrences(getApplicationContext());
-        dbHelper = new DBHelper(getApplicationContext());
+        dbHelper = DBHelper.getInstance(getApplicationContext());
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
         request = findViewById(R.id.textUserInputLatein);
@@ -296,7 +296,7 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
      */
     private ArrayList<Vokabel> getViableVocabularies(){
 
-        DBHelper dbHelper = new DBHelper(this);
+        DBHelper dbHelper = DBHelper.getInstance(this);
 
         String query = "SELECT " + VerbDB.FeedEntry.TABLE_NAME + "." + VerbDB.FeedEntry._ID + ", " + VerbDB.FeedEntry.TABLE_NAME + "." + VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH +
                 " FROM " + VerbDB.FeedEntry.TABLE_NAME + ", " + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME +
@@ -305,7 +305,7 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
                 +  Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + "." + Sprechvokal_PräsensDB.FeedEntry.COLUMN_TITLE + " = 'esse' OR "
                 +  Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + "." + Sprechvokal_PräsensDB.FeedEntry.COLUMN_TITLE + " = 'velle' OR "
                 +  Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + "." + Sprechvokal_PräsensDB.FeedEntry.COLUMN_TITLE + " = 'nolle')";
-        Cursor cursor = dbHelper.database.rawQuery(query, null);
+        Cursor cursor = dbHelper.getWritableDatabase().rawQuery(query, null);
 
         ArrayList<Vokabel> vocabularies = new ArrayList<>();
         while (cursor.moveToNext()){
@@ -320,11 +320,5 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
         cursor.close();
 
         return vocabularies;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        dbHelper.close();
     }
 }

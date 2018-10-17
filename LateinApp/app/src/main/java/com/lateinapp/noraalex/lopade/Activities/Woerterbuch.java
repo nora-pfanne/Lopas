@@ -47,7 +47,7 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
 
         tl = findViewById(R.id.table_layout);
 
-        dbHelper = new DBHelper(getApplicationContext());
+        dbHelper = DBHelper.getInstance(getApplicationContext());
 
         //Configurating the spinner
         //TODO: Set spinner text color to something readable
@@ -217,13 +217,6 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        dbHelper.close();
     }
 }
 
