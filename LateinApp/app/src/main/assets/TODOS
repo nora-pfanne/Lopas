@@ -1,25 +1,50 @@
 TODO: Liste fehlender Vokabeln
 Lektion 6:
-puer, pueri -> der Junge    (NOM SG unregelmäßig)
-me -> mich
-num -> etwa?
-mihi -> mir, für mich
-ceteri -> die übrigen       (PL only)
-quam -> als, wie
-miser -> arm, erbärmlich    (NOM SG mask unregelmäßig)
-te -> dich
--ne -> ''Partikel im Fragesatz''
-modus, modi -> die Art, die Weise
-meus -> mea
-quoque -> ''nachgestellt'' auch
-quidem -> freilich, gewiss, wenigstens, zwar
-inter -> zwischen
-aput -> bei
-superi, superorum -> die Götter
-liberi, liberorum -> die Kinder
-vir, viri -> der Mann
+    puer, pueri -> der Junge    (NOM SG unregelmäßig)
+    me -> mich
+    num -> etwa?
+    mihi -> mir, für mich
+    ceteri -> die übrigen       (PL only)
+    quam -> als, wie
+    miser -> arm, erbärmlich    (NOM SG mask unregelmäßig)
+    te -> dich
+    -ne -> ''Partikel im Fragesatz''
+    modus, modi -> die Art, die Weise
+    meus -> mea
+    quoque -> ''nachgestellt'' auch
+    quidem -> freilich, gewiss, wenigstens, zwar
+    inter -> zwischen
+    aput -> bei
+    superi, superorum -> die Götter
+    liberi, liberorum -> die Kinder
+    vir, viri -> der Mann
+
+mehr Fehlende Vokabeln
+
+    [
+        mit sich, bei sich;secum;8
+        ihr;vos;8
+        uns, für uns;nobis;8
+
+        [arma 8]
+    ]
+
+            Substantiv
+    die Freiheit;libert;7;[neu -> libertatis];3. dekl
+    die Schnelligkeit;celerit;7;[neu -> libertatis];3. dekl
 
 
+            Verb
+    machen, tun, handeln;fac;kons-Konjugation;8;;[kons + i -> capere]
+    entreißen;erip;kons-Konjugation;7;;[kons + i -> wie capere]
+
+    die Stimme, die Äußerung, der Laut;vo;[VOX];8;;[VOX]
+    der Frieden;pa;[VOX];8;;[VOX]
+
+            Abjektiv
+
+    schön;pulch;dreiendung_er;7
+    einige, manche;nonnulli;einendig;8
 
 
     TODO: Erklärungsfolie vor allen Einheiten
