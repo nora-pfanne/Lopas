@@ -11,9 +11,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.lateinapp.noraalex.lopade.Activities.Einheiten.UserInputVokabeltrainer;
+import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
 import com.lateinapp.noraalex.lopade.Score;
+
+import static com.lateinapp.noraalex.lopade.Databases.SQL_DUMP.allVocabularyTables;
 
 public class HomeVokabeltrainer extends Fragment {
 
@@ -24,7 +27,11 @@ public class HomeVokabeltrainer extends Fragment {
             tvScore3,
             tvScore4,
             tvScore5,
-            tvScore6;
+            tvScore6,
+            tvScore7,
+            tvScore8,
+            tvScore9,
+            tvScore10;
     SharedPreferences sharedPrefrences;
 
     public static HomeVokabeltrainer newInstance() {
@@ -49,6 +56,10 @@ public class HomeVokabeltrainer extends Fragment {
         tvScore4 = view.findViewById(R.id.home_voc_text_4);
         tvScore5 = view.findViewById(R.id.home_voc_text_5);
         tvScore6 = view.findViewById(R.id.home_voc_text_6);
+        tvScore7 = view.findViewById(R.id.home_voc_text_7);
+        tvScore8 = view.findViewById(R.id.home_voc_text_8);
+        tvScore9 = view.findViewById(R.id.home_voc_text_9);
+        tvScore10 = view.findViewById(R.id.home_voc_text_10);
 
         sharedPrefrences = General.getSharedPrefrences(getActivity());
 
@@ -59,12 +70,40 @@ public class HomeVokabeltrainer extends Fragment {
     public void onResume() {
         super.onResume();
 
-        tvScore1.setText("HS: " + Score.getHighScoreVocabularyTrainer(sharedPrefrences,1) + "\nS: " + Score.getScoreVocabularyTrainer(1, sharedPrefrences));
-        tvScore2.setText("HS: " + Score.getHighScoreVocabularyTrainer(sharedPrefrences,2) + "\nS: " + Score.getScoreVocabularyTrainer(2, sharedPrefrences));
-        tvScore3.setText("HS: " + Score.getHighScoreVocabularyTrainer(sharedPrefrences,3) + "\nS: " + Score.getScoreVocabularyTrainer(3, sharedPrefrences));
-        tvScore4.setText("HS: " + Score.getHighScoreVocabularyTrainer(sharedPrefrences,4) + "\nS: " + Score.getScoreVocabularyTrainer(4, sharedPrefrences));
-        tvScore5.setText("HS: " + Score.getHighScoreVocabularyTrainer(sharedPrefrences,5) + "\nS: " + Score.getScoreVocabularyTrainer(5, sharedPrefrences));
-        tvScore6.setText("HS: " + Score.getHighScoreVocabularyTrainer(sharedPrefrences,6) + "\nS: " + Score.getScoreVocabularyTrainer(6, sharedPrefrences));
+        DBHelper dbhelper = DBHelper.getInstance(getActivity().getApplicationContext());
+
+        int progress1 = (int)(dbhelper.getGelerntProzent(1) * 100);
+        int progress2 = (int)(dbhelper.getGelerntProzent(2) * 100);
+        int progress3 = (int)(dbhelper.getGelerntProzent(3) * 100);
+        int progress4 = (int)(dbhelper.getGelerntProzent(4) * 100);
+        int progress5 = (int)(dbhelper.getGelerntProzent(5) * 100);
+        int progress6 = (int)(dbhelper.getGelerntProzent(6) * 100);
+        int progress7 = (int)(dbhelper.getGelerntProzent(7) * 100);
+        int progress8 = (int)(dbhelper.getGelerntProzent(8) * 100);
+        int progress9 = (int)(dbhelper.getGelerntProzent(9) * 100);
+
+        String bestGrade1 = Score.getGradeFromMistakeAmount(dbhelper.countTableEntries(allVocabularyTables, 1), Score.getLowestMistakesVoc(1, sharedPrefrences));
+        String bestGrade2 = Score.getGradeFromMistakeAmount(dbhelper.countTableEntries(allVocabularyTables, 2), Score.getLowestMistakesVoc(2, sharedPrefrences));
+        String bestGrade3 = Score.getGradeFromMistakeAmount(dbhelper.countTableEntries(allVocabularyTables, 3), Score.getLowestMistakesVoc(3, sharedPrefrences));
+        String bestGrade4 = Score.getGradeFromMistakeAmount(dbhelper.countTableEntries(allVocabularyTables, 4), Score.getLowestMistakesVoc(4, sharedPrefrences));
+        String bestGrade5 = Score.getGradeFromMistakeAmount(dbhelper.countTableEntries(allVocabularyTables, 5), Score.getLowestMistakesVoc(5, sharedPrefrences));
+        String bestGrade6 = Score.getGradeFromMistakeAmount(dbhelper.countTableEntries(allVocabularyTables, 6), Score.getLowestMistakesVoc(6, sharedPrefrences));
+        String bestGrade7 = Score.getGradeFromMistakeAmount(dbhelper.countTableEntries(allVocabularyTables, 7), Score.getLowestMistakesVoc(7, sharedPrefrences));
+        String bestGrade8 = Score.getGradeFromMistakeAmount(dbhelper.countTableEntries(allVocabularyTables, 8), Score.getLowestMistakesVoc(8, sharedPrefrences));
+        String bestGrade9 = Score.getGradeFromMistakeAmount(dbhelper.countTableEntries(allVocabularyTables, 9), Score.getLowestMistakesVoc(9, sharedPrefrences));
+
+        Log.d(TAG, dbhelper.countTableEntries(allVocabularyTables, 1) + ", " + dbhelper.getMistakeAmount(1));
+
+        tvScore1.setText("Fortschritt:  " + progress1 + "%\nBeste Note: " + bestGrade1);
+        tvScore2.setText("Fortschritt:  " + progress2 + "%\nBeste Note: " + bestGrade2);
+        tvScore3.setText("Fortschritt:  " + progress3 + "%\nBeste Note: " + bestGrade3);
+        tvScore4.setText("Fortschritt:  " + progress4 + "%\nBeste Note: " + bestGrade4);
+        tvScore5.setText("Fortschritt:  " + progress5 + "%\nBeste Note: " + bestGrade5);
+        tvScore6.setText("Fortschritt:  " + progress6 + "%\nBeste Note: " + bestGrade6);
+        tvScore7.setText("Fortschritt:  " + progress7 + "%\nBeste Note: " + bestGrade7);
+        tvScore8.setText("Fortschritt:  " + progress8 + "%\nBeste Note: " + bestGrade8);
+        tvScore9.setText("");
+        tvScore10.setText("");
 
     }
 

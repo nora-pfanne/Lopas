@@ -30,6 +30,9 @@ public class Global {
     public static final String KEY_PROGRESS_USERINPUT_ESSEVELLENOLLE = "Progress_UserInput_EsseVelleNolle";         //Integer
 
 
+
+    //@SCORE_CLEANUP
+
     //The trainers corresponding the SharedPrefrences values below have different modi. Append a number to the key to excess them.
     //Example: Progress_UserInput_Deklinationsendung_5
 
@@ -59,5 +62,13 @@ public class Global {
     public static final String KEY_NEW_HIGHSCORE_VOKABELTRAINER = "New_Highscore_Vocabulary_";                       //Integer -> one of the above
 
     public static final String KEY_HIGH_SCORE_ALL_TRAINERS = "High_Score_All_Trainers";                              //Integer
+
+
+
+
+
+    public static final String KEY_LOWEST_MISTAKE_AMOUNT_VOC = "Lowest_Mistakes_in_lektion_";
+
+    public static final int POINT_BASELINE = 100;
 
 }

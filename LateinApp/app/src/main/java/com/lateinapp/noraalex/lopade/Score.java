@@ -2,7 +2,10 @@ package com.lateinapp.noraalex.lopade;
 
 import android.content.SharedPreferences;
 
+import java.util.logging.SocketHandler;
+
 import static com.lateinapp.noraalex.lopade.Global.KEY_FINISHED_USERINPUT_VOKABELTRAINER;
+import static com.lateinapp.noraalex.lopade.Global.KEY_LOWEST_MISTAKE_AMOUNT_VOC;
 import static com.lateinapp.noraalex.lopade.Global.KEY_NEW_HIGHSCORE_VOKABELTRAINER;
 import static com.lateinapp.noraalex.lopade.Global.KEY_SCORE_VOCAULARY;
 import static com.lateinapp.noraalex.lopade.Global.KEY_HIGH_SCORE_VOCAULARY;
@@ -28,7 +31,7 @@ public class Score {
         editor.apply();
     }
 
-    public static int getMaxPossiblePoints(int pointBaseline, int inputAmount){
+    public static int getMaxPossiblePoints(int inputAmount){
 
         int score = 0;
 
@@ -36,7 +39,7 @@ public class Score {
 
         for(int i = 0; i < inputAmount; i++){
 
-            score += getScoreDifference(getComboMultiplier(combo), pointBaseline, true);;
+            score += getScoreDifference(getComboMultiplier(combo), true);;
 
             if(combo >= MIN_COMBO && combo < MAX_COMBO){
                 combo++;
@@ -46,11 +49,11 @@ public class Score {
         return score;
     }
 
-    public static int modifyScore(int pointBaseline, boolean inputCorrect, int lektion, SharedPreferences sharedPreferences){
+    public static int modifyScore(boolean inputCorrect, int lektion, SharedPreferences sharedPreferences){
 
 
         int oldScore = getScoreVocabularyTrainer(lektion, sharedPreferences);
-        int difference = getScoreDifference(getCombo(lektion, sharedPreferences), pointBaseline, inputCorrect);
+        int difference = getScoreDifference(getCombo(lektion, sharedPreferences), inputCorrect);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -137,6 +140,24 @@ public class Score {
         editor.apply();
     }
 
+    public static void updateLowestMistakesVoc(int mistakeAmount, int lektion, SharedPreferences sharedPreferences){
+
+        int oldMistakes = sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_VOC + lektion, Integer.MAX_VALUE);
+
+        if (mistakeAmount < oldMistakes){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putInt(KEY_LOWEST_MISTAKE_AMOUNT_VOC, mistakeAmount);
+
+            editor.apply();
+        }
+    }
+
+    public static int getLowestMistakesVoc(int lektion, SharedPreferences sharedPreferences){
+
+        return sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_VOC + lektion, -1);
+    }
+
     //
     //Private methods
     //
@@ -167,15 +188,15 @@ public class Score {
         editor.apply();
     }
 
-    private static int getScoreDifference(int combo, int pointBaseline, boolean inputCorrect){
+    private static int getScoreDifference(int combo, boolean inputCorrect){
 
         int amount;
 
         //Calculating final amount to increase the score by
         if(inputCorrect){
-            amount = combo * pointBaseline;
+            amount = combo *  Global.POINT_BASELINE;
         }else{
-            amount = -pointBaseline;
+            amount = - Global.POINT_BASELINE;
         }
         return (amount);
     }
@@ -273,22 +294,72 @@ public class Score {
     }
 
     private static int getComboMultiplier(int combo){
-        return (int)General.pow(2, combo);
+        //return (int)General.pow(2, combo);
+        return 1;
     }
 
     //
     //Public getters and setters
     //
 
+    public static String getGradeFromMistakeAmount(int totalAmount, int mistakeAmount){
+        float percentage = 1-((float)mistakeAmount/(float)totalAmount);
+
+        if(percentage < 0){
+            //This might happen when this is called from 'getGradeFromMistakeAmount()'
+            //because if a lektion wasnt completed yet the mistake amount will default to -1
+            //thus making the percentage negative
+            return "/";
+        }
+
+        String score;
+        if(percentage > 0.95f){
+            score = "1+";
+        }else if(percentage > 0.90f){
+            score = "1";
+        }else if(percentage > 0.85f){
+            score = "1-";
+        }else if(percentage > 0.80f){
+            score = "2+";
+        }else if(percentage > 0.75f){
+            score = "2";
+        }else if(percentage > 0.70f){
+            score = "2-";
+        }else if(percentage > 0.65f){
+            score = "3+";
+        }else if(percentage > 0.60f){
+            score = "3";
+        }else if(percentage > 0.55f){
+            score = "3-";
+        }else if(percentage > 0.50f){
+            score = "4+";
+        }else if(percentage > 0.45f){
+            score = "4";
+        }else if(percentage > 0.40f){
+            score = "4-";
+        }else if(percentage > 0.33f){
+            score = "5+";
+        }else if(percentage > 0.26f){
+            score = "5";
+        }else if(percentage > 0.19f){
+            score = "5-";
+        }else{
+            score = "6";
+        }
+
+        return score;
+
+    }
+
     public static int getCombo(int lektion, SharedPreferences sharedPreferences){
         int combo = sharedPreferences.getInt(KEY_COMBO_VOCABULARY + lektion, MIN_COMBO);
         return getComboMultiplier(combo);
     }
 
-    public static String getGrade(int pointBaseline, int entryAmount, int lektion, SharedPreferences sharedPreferences){
+    public static String getGrade(int entryAmount, int lektion, SharedPreferences sharedPreferences){
 
         int points = getScoreVocabularyTrainer(lektion, sharedPreferences);
-        int maxPoints = getMaxPossiblePoints(pointBaseline, entryAmount);
+        int maxPoints = getMaxPossiblePoints(entryAmount);
 
         float percentage = (float)points / (float)maxPoints;
 

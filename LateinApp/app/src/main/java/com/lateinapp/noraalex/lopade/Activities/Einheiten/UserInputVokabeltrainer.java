@@ -42,7 +42,6 @@ import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
 import com.lateinapp.noraalex.lopade.Score;
 
-import static android.app.AlertDialog.THEME_DEVICE_DEFAULT_DARK;
 import static com.lateinapp.noraalex.lopade.Databases.SQL_DUMP.allVocabularyTables;
 import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
 import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
@@ -57,6 +56,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
     private TextView request,
          solution,
          titel,
+         mistakeAmount,
          score,
          highScore,
          combo;
@@ -91,8 +91,6 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
                 errorTextColor,
                 correctTextColor;
 
-    private static final int pointBaseline = 100;
-
     Animation animShake;
 
     @Override
@@ -119,7 +117,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         correctColor = ResourcesCompat.getColor(getResources(), R.color.correct, null);
         correctTextColor = ResourcesCompat.getColor(getResources(), R.color.correctText, null);
 
-
+        mistakeAmount = findViewById(R.id.textUserInputMistakes);
         request = findViewById(R.id.textUserInputLatein);
         solution = findViewById(R.id.textUserInputDeutsch);
         highScore = findViewById(R.id.textUserInputHighScore);
@@ -151,7 +149,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         //This means that we have to hide the score/combo TextView originally
         //and only make it visible here in this trainer
         score.setVisibility(View.VISIBLE);
-        combo.setVisibility(View.VISIBLE);
+        combo.setVisibility(View.GONE);
 
         userInput.setHint("Übersetzung");
         //Makes it possible to move to the next vocabulary by pressing "enter"
@@ -159,7 +157,6 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
             public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
                 //If the keyevent is a key-down event on the "enter" button
                 if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-
 
                     userInputButtonClicked(findViewById(R.id.buttonUserInputEingabeBestätigt));
                     return true;
@@ -174,6 +171,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
 
         progressBar.setMax(100);
         progressBar.setProgress((int)(dbHelper.getGelerntProzent(lektion) * 100));
+
+        mistakeAmount.setText("Fehler: " + dbHelper.getMistakeAmount(lektion));
 
         combo.setText(Score.getCombo(lektion, sharedPref) + "x");
         score.setText("Score: " + Score.getScoreVocabularyTrainer(lektion, sharedPref));
@@ -232,7 +231,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
 
             //Input was correct
 
-            scoreDifference = Score.modifyScore(pointBaseline, true, lektion, sharedPref);
+            //@SCORE_CLEANUP
+            scoreDifference = Score.modifyScore(true, lektion, sharedPref);
 
             //Checking the vocabulary as learned
             dbHelper.setGelernt(getVokabelTable(currentVokabel), currentVokabel.getId(), true);
@@ -241,6 +241,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
 
             userInput.setTextColor(correctTextColor);
 
+            //@SCORE_CLEANUP
             if(Score.isNewHighscoreNow(lektion, sharedPref)){
                 General.showMessage("New Highscore!!!", this);
             }
@@ -249,7 +250,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
 
             //Input was incorrect
 
-            scoreDifference = Score.modifyScore(pointBaseline, false, lektion, sharedPref);
+            //@SCORE_CLEANUP
+            scoreDifference = Score.modifyScore(false, lektion, sharedPref);
 
             dbHelper.incrementValue(getVokabelTable(currentVokabel), AdverbDB.FeedEntry.COLUMN_AMOUNT_INCORRECT, currentVokabel.getId());
 
@@ -264,7 +266,10 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         userInput.setBackgroundColor(color);
 
         popupScore(scoreDifference);
-        combo.setText(Score.getCombo(lektion, sharedPref) + "x");
+
+        //@SCORE_CLEANUP
+        // Currently non visible textView because we dont use combo right now
+        // combo.setText(Score.getCombo(lektion, sharedPref) + "x");
         score.setText("Score: " + Score.getScoreVocabularyTrainer(lektion, sharedPref));
         highScore.setText("High-Score: " + Score.getHighScoreVocabularyTrainer(sharedPref, lektion));
 
@@ -281,6 +286,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         }
 
         solution.setText(translation);
+        mistakeAmount.setText("Fehler: " + dbHelper.getMistakeAmount(lektion));
+
 
     }
 
@@ -417,12 +424,17 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         bestaetigung.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
+
+        //@SCORE_CLEANUP
         score.setVisibility(View.GONE);
-        combo.setVisibility(View.GONE);
+        //combo.setVisibility(View.GONE);
         highScore.setVisibility(View.GONE);
+
+
         titel.setVisibility(View.GONE);
 
         //Score screen
+        //@SCORE_CLEANUP
         sCongratulations.setVisibility(View.VISIBLE);
         sCurrentTrainer.setVisibility(View.VISIBLE);
         sMistakeAmount.setVisibility(View.VISIBLE);
@@ -436,22 +448,30 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         sBack.setVisibility(View.VISIBLE);
         sReset.setVisibility(View.VISIBLE);
 
+        int mistakeAmount = dbHelper.getMistakeAmount(lektion);
+        int vocabularyAmount = dbHelper.countTableEntries(allVocabularyTables, lektion);
+
         Score.updateHighscore(lektion, sharedPref);
+        Score.updateLowestMistakesVoc(mistakeAmount, lektion, sharedPref);
 
         sCurrentTrainer.setText("Du hast gerade Lektion " + lektion + " abgeschlossen!");
 
-        int vocabularyAmount = dbHelper.countTableEntries(allVocabularyTables, lektion);
 
+        //@SCORE_CLEANUP
         int score = Score.getScoreVocabularyTrainer(lektion, sharedPref);
-        int scoreMax = Score.getMaxPossiblePoints(pointBaseline, vocabularyAmount);
+        int scoreMax = Score.getMaxPossiblePoints(vocabularyAmount);
         int highScore = Score.getHighScoreVocabularyTrainer(sharedPref, lektion);
-        String grade = Score.getGrade(pointBaseline, vocabularyAmount, lektion, sharedPref);
+        String grade = Score.getGradeFromMistakeAmount(vocabularyAmount, mistakeAmount);
 
         SpannableStringBuilder endScoreText = General.makeSectionOfTextBold(score+"/"+scoreMax,""+score);
         SpannableStringBuilder highScoreText = General.makeSectionOfTextBold(highScore + "/" + scoreMax, ""+highScore);
         SpannableStringBuilder gradeText = General.makeSectionOfTextBold(grade, ""+grade);
 
-        sMistakeAmountValue.setText(dbHelper.getMistakeAmount(lektion) + "");
+        if(mistakeAmount != -1){
+            sMistakeAmountValue.setText(Integer.toString(mistakeAmount) + "");
+        }else{
+            sMistakeAmountValue.setText("N/A");
+        }
         sEndScoreValue.setText(endScoreText);
         sHighScoreValue.setText(highScoreText);
         sGradeValue.setText(gradeText);
@@ -492,6 +512,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         }
     }
 
+    //@SCORE_CLEANUP
     private void resetCurrentLektion(){
 
 
@@ -517,6 +538,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
 
     }
 
+    //@SCORE_CLEANUP
     private void resetScore(){
 
         new AlertDialog.Builder(this, R.style.AlertDialogCustom)
