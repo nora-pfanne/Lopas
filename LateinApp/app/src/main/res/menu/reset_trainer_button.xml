@@ -9,7 +9,7 @@
     <item
         android:id="@+id/action_reset_score"
         android:orderInCategory="1"
-        android:title="High-Score zurücksetzen"
+        android:title="Note zurücksetzen"
         app:showAsAction="never"/>
 
 </menu>

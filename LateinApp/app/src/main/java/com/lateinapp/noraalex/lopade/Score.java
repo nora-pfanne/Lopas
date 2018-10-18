@@ -1,9 +1,11 @@
 package com.lateinapp.noraalex.lopade;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.util.logging.SocketHandler;
 
+import static android.support.constraint.Constraints.TAG;
 import static com.lateinapp.noraalex.lopade.Global.KEY_FINISHED_USERINPUT_VOKABELTRAINER;
 import static com.lateinapp.noraalex.lopade.Global.KEY_LOWEST_MISTAKE_AMOUNT_VOC;
 import static com.lateinapp.noraalex.lopade.Global.KEY_NEW_HIGHSCORE_VOKABELTRAINER;
@@ -116,6 +118,12 @@ public class Score {
         editor.apply();
     }
 
+    public static void resetLowestMistakes(int lektion, SharedPreferences sharedPreferences){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_LOWEST_MISTAKE_AMOUNT_VOC + lektion);
+        editor.apply();
+    }
+
     public static void updateHighscore(int lektion, SharedPreferences sharedPreferences){
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -142,12 +150,12 @@ public class Score {
 
     public static void updateLowestMistakesVoc(int mistakeAmount, int lektion, SharedPreferences sharedPreferences){
 
-        int oldMistakes = sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_VOC + lektion, Integer.MAX_VALUE);
+        int oldMistakes = sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_VOC + lektion, 100000);
 
         if (mistakeAmount < oldMistakes){
             SharedPreferences.Editor editor = sharedPreferences.edit();
 
-            editor.putInt(KEY_LOWEST_MISTAKE_AMOUNT_VOC, mistakeAmount);
+            editor.putInt(KEY_LOWEST_MISTAKE_AMOUNT_VOC + lektion, mistakeAmount);
 
             editor.apply();
         }
@@ -305,7 +313,12 @@ public class Score {
     public static String getGradeFromMistakeAmount(int totalAmount, int mistakeAmount){
         float percentage = 1-((float)mistakeAmount/(float)totalAmount);
 
-        if(percentage < 0){
+        if(mistakeAmount == 0){
+            return "1+";
+        }
+
+        Log.d(TAG, "mistakeAmount: "+ mistakeAmount + ", totalAmount: " + totalAmount + ", percentage: " + percentage);
+        if(percentage >= 1){
             //This might happen when this is called from 'getGradeFromMistakeAmount()'
             //because if a lektion wasnt completed yet the mistake amount will default to -1
             //thus making the percentage negative

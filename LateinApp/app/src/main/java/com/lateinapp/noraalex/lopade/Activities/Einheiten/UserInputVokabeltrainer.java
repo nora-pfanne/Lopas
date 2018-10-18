@@ -71,8 +71,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         sCurrentTrainer,
         sMistakeAmount,
         sMistakeAmountValue,
-        sEndScore,
-        sEndScoreValue,
+        sBestTry,
+        sBestTryValue,
         sHighScore,
         sHighScoreValue,
         sGrade,
@@ -134,8 +134,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         sCurrentTrainer = findViewById(R.id.scoreCurrentTrainer);
         sMistakeAmount = findViewById(R.id.scoreMistakes);
         sMistakeAmountValue = findViewById(R.id.scoreMistakeValue);
-        sEndScore = findViewById(R.id.scoreEndScore);
-        sEndScoreValue = findViewById(R.id.scoreEndScoreValue);
+        sBestTry = findViewById(R.id.scoreBestRunMistakeAmount);
+        sBestTryValue = findViewById(R.id.scoreEndScoreValue);
         sHighScore = findViewById(R.id.scoreHighScore);
         sHighScoreValue = findViewById(R.id.scoreHighScoreValue);
         sGrade = findViewById(R.id.scoreGrade);
@@ -429,6 +429,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         score.setVisibility(View.GONE);
         //combo.setVisibility(View.GONE);
         highScore.setVisibility(View.GONE);
+        mistakeAmount.setVisibility(View.GONE);
 
 
         titel.setVisibility(View.GONE);
@@ -439,8 +440,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         sCurrentTrainer.setVisibility(View.VISIBLE);
         sMistakeAmount.setVisibility(View.VISIBLE);
         sMistakeAmountValue.setVisibility(View.VISIBLE);
-        sEndScore.setVisibility(View.VISIBLE);
-        sEndScoreValue.setVisibility(View.VISIBLE);
+        sBestTry.setVisibility(View.VISIBLE);
+        sBestTryValue.setVisibility(View.VISIBLE);
         sHighScore.setVisibility(View.VISIBLE);
         sHighScoreValue.setVisibility(View.VISIBLE);
         sGrade.setVisibility(View.VISIBLE);
@@ -463,7 +464,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         int highScore = Score.getHighScoreVocabularyTrainer(sharedPref, lektion);
         String grade = Score.getGradeFromMistakeAmount(vocabularyAmount, mistakeAmount);
 
-        SpannableStringBuilder endScoreText = General.makeSectionOfTextBold(score+"/"+scoreMax,""+score);
+        String endScoreText = Score.getLowestMistakesVoc(lektion, sharedPref) + "";
         SpannableStringBuilder highScoreText = General.makeSectionOfTextBold(highScore + "/" + scoreMax, ""+highScore);
         SpannableStringBuilder gradeText = General.makeSectionOfTextBold(grade, ""+grade);
 
@@ -472,7 +473,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         }else{
             sMistakeAmountValue.setText("N/A");
         }
-        sEndScoreValue.setText(endScoreText);
+        sBestTryValue.setText(endScoreText);
         sHighScoreValue.setText(highScoreText);
         sGradeValue.setText(gradeText);
 
@@ -518,7 +519,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
 
         new AlertDialog.Builder(this, R.style.AlertDialogCustom)
                 .setTitle("Lektion zurücksetzen?")
-                .setMessage("Willst du den Vokabeltrainer für die Lektion " + lektion + " wirklich neu starten?\nDein HighScore wird nicht gelöscht!")
+                .setMessage("Willst du den Vokabeltrainer für die Lektion " + lektion + " wirklich neu starten?\nDeine beste Note wird beibehalten!")
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
 
@@ -542,8 +543,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
     private void resetScore(){
 
         new AlertDialog.Builder(this, R.style.AlertDialogCustom)
-                .setTitle("Score zurücksetzen?")
-                .setMessage("Willst du den Score des Vokabeltrainer für die Lektion " + lektion + " wirklich zurücksetzen?\nDein HighScore wird hier gelöscht!")
+                .setTitle("Note zurücksetzen?")
+                .setMessage("Willst du die Note des Vokabeltrainer für die Lektion " + lektion + " wirklich zurücksetzen?\nDeine beste Note wird hier gelöscht!")
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
 
@@ -554,6 +555,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
                         dbHelper.resetLektion(lektion);
                         Score.resetScoreVocabulary(lektion, sharedPref);
                         Score.resetHighscoreVocabulary(lektion, sharedPref);
+                        Score.resetLowestMistakes(lektion, sharedPref);
                         finish();
 
 

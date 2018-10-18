@@ -92,8 +92,6 @@ public class HomeVokabeltrainer extends Fragment {
         String bestGrade8 = Score.getGradeFromMistakeAmount(dbhelper.countTableEntries(allVocabularyTables, 8), Score.getLowestMistakesVoc(8, sharedPrefrences));
         String bestGrade9 = Score.getGradeFromMistakeAmount(dbhelper.countTableEntries(allVocabularyTables, 9), Score.getLowestMistakesVoc(9, sharedPrefrences));
 
-        Log.d(TAG, dbhelper.countTableEntries(allVocabularyTables, 1) + ", " + dbhelper.getMistakeAmount(1));
-
         tvScore1.setText("Fortschritt:  " + progress1 + "%\nBeste Note: " + bestGrade1);
         tvScore2.setText("Fortschritt:  " + progress2 + "%\nBeste Note: " + bestGrade2);
         tvScore3.setText("Fortschritt:  " + progress3 + "%\nBeste Note: " + bestGrade3);
@@ -102,8 +100,8 @@ public class HomeVokabeltrainer extends Fragment {
         tvScore6.setText("Fortschritt:  " + progress6 + "%\nBeste Note: " + bestGrade6);
         tvScore7.setText("Fortschritt:  " + progress7 + "%\nBeste Note: " + bestGrade7);
         tvScore8.setText("Fortschritt:  " + progress8 + "%\nBeste Note: " + bestGrade8);
-        tvScore9.setText("");
-        tvScore10.setText("");
+        tvScore9.setText("aaa");
+        tvScore10.setText("aaa");
 
     }
 

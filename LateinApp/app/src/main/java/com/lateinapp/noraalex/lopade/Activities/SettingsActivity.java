@@ -66,6 +66,8 @@ public class SettingsActivity extends LateinAppActivity {
                                 for(int lektion = 1; lektion <= 6; lektion++){
                                     dbHelper.resetLektion(lektion);
                                     Score.resetScoreVocabulary(lektion, sharedPref);
+                                    Score.resetHighscoreVocabulary(lektion, sharedPref);
+                                    Score.resetLowestMistakes(lektion, sharedPref);
                                 }
 
 
