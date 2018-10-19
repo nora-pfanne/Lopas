@@ -255,8 +255,7 @@
                 android:layout_weight="1"
                 android:onClick="navButtonClicked"
                 android:text="Lektion 9"
-                android:textAlignment="center"
-                android:enabled="false"/>
+                android:textAlignment="center"/>
 
             <TextView
                 android:id="@+id/home_voc_text_9"

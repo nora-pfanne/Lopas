@@ -100,8 +100,8 @@ public class HomeVokabeltrainer extends Fragment {
         tvScore6.setText("Fortschritt:  " + progress6 + "%\nBeste Note: " + bestGrade6);
         tvScore7.setText("Fortschritt:  " + progress7 + "%\nBeste Note: " + bestGrade7);
         tvScore8.setText("Fortschritt:  " + progress8 + "%\nBeste Note: " + bestGrade8);
-        tvScore9.setText("aaa");
-        tvScore10.setText("aaa");
+        tvScore9.setText("Fortschritt:  " + progress9 + "%\nBeste Note: " + bestGrade9);
+        tvScore10.setText("-/-");
 
     }
 
