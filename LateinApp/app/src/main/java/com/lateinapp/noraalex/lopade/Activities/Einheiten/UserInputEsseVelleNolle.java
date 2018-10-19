@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -19,6 +21,7 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
 import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
+import com.lateinapp.noraalex.lopade.Score;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
@@ -38,7 +41,7 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
 
     private TextView request,
             solution,
-            titel;
+            titel, amountWrong;
     private EditText userInput;
     private ProgressBar progressBar;
     //FIXME: Remove button elevation to make it align with 'userInput'-EditText
@@ -60,6 +63,8 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
 
     private int backgroundColor;
     private final int maxProgress = 20;
+
+    Animation animShake;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +92,10 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
         zurück = findViewById(R.id.scoreButtonBack);
         titel = findViewById(R.id.textUserInputÜberschrift);
 
+        animShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+
+        amountWrong = findViewById(R.id.textUserInputMistakes);
+
         userInput.setHint("Konjugiertes Verb");
         //Makes it possible to move to the next vocabulary by pressing "enter"
         userInput.setOnKeyListener(new View.OnKeyListener() {
@@ -103,12 +112,22 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
         });
         titel.setText("Esse & Velle & Nolle");
 
+        TextView score = findViewById(R.id.textUserInputScore);
+        score.setVisibility(View.GONE);
+
         solution.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
 
         progressBar.setMax(maxProgress);
 
         viableVocabularies = getViableVocabularies();
+
+        int wrong = Score.getCurrentMistakesKasus(sharedPref);
+        if (wrong == -1){
+            wrong = 0;
+        }
+        amountWrong.setText("Fehler: " + wrong);
+
 
     }
 
@@ -191,6 +210,17 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
                         sharedPref.getInt(KEY_PROGRESS_USERINPUT_ESSEVELLENOLLE, 0) - 1);
                 editor.apply();
             }
+
+            weiter.startAnimation(animShake);
+            userInput.startAnimation(animShake);
+            Score.incrementCurrentMistakesEsseVelleNolle(sharedPref);
+
+            int wrong = Score.getCurrentMistakesEsseVelleNolle(sharedPref);
+            if (wrong == -1){
+                wrong = 0;
+            }
+            amountWrong.setText("Fehler: " + wrong);
+
         }
         userInput.setBackgroundColor(color);
 
@@ -200,6 +230,7 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
         bestaetigung.setVisibility(View.GONE);
         weiter.setVisibility(View.VISIBLE);
         solution.setVisibility(View.VISIBLE);
+
     }
 
     /**

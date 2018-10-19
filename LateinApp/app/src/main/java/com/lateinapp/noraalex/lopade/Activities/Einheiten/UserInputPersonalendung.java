@@ -7,6 +7,8 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -18,6 +20,7 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.Personalendung_PräsensDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
 import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
+import com.lateinapp.noraalex.lopade.Score;
 
 import java.util.Random;
 
@@ -34,7 +37,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
 
     private TextView request,
             solution,
-            titel;
+            titel, amountWrong;
     private EditText userInput;
     private ProgressBar progressBar;
     //FIXME: Remove button elevation to make it align with 'userInput'-EditText
@@ -58,6 +61,8 @@ public class UserInputPersonalendung extends LateinAppActivity {
     private String extraFromEinheitenUebersicht;
     private int backgroundColor;
     private final int maxProgress = 20;
+
+    Animation animShake;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +92,13 @@ public class UserInputPersonalendung extends LateinAppActivity {
         zurück = findViewById(R.id.scoreButtonBack);
         titel = findViewById(R.id.textUserInputÜberschrift);
 
+        amountWrong = findViewById(R.id.textUserInputMistakes);
+
+        TextView score = findViewById(R.id.textUserInputScore);
+        score.setVisibility(View.GONE);
+
+        animShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+
         userInput.setHint("Konjugiertes Verb");
         //Makes it possible to move to the next vocabulary by pressing "enter"
         userInput.setOnKeyListener(new View.OnKeyListener() {
@@ -109,6 +121,12 @@ public class UserInputPersonalendung extends LateinAppActivity {
         weightSubjects(extraFromEinheitenUebersicht);
 
         progressBar.setMax(maxProgress);
+
+        int wrong = Score.getCurrentMistakesPersInput(sharedPref);
+        if (wrong == -1){
+            wrong = 0;
+        }
+        amountWrong.setText("Fehler: " + wrong);
 
     }
 
@@ -194,6 +212,18 @@ public class UserInputPersonalendung extends LateinAppActivity {
                         sharedPref.getInt(KEY_PROGRESS_USERINPUT_PERSONALENDUNG + extraFromEinheitenUebersicht, 0) - 1);
                 editor.apply();
             }
+
+            weiter.startAnimation(animShake);
+            userInput.startAnimation(animShake);
+
+            Score.incrementCurrentMistakesPersInput(sharedPref);
+
+            int wrong = Score.getCurrentMistakesPersInput(sharedPref);
+            if (wrong == -1){
+                wrong = 0;
+            }
+            amountWrong.setText("Fehler: " + wrong);
+
         }
         userInput.setBackgroundColor(color);
 
@@ -203,6 +233,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
         bestaetigung.setVisibility(View.GONE);
         weiter.setVisibility(View.VISIBLE);
         solution.setVisibility(View.VISIBLE);
+
     }
 
     /**

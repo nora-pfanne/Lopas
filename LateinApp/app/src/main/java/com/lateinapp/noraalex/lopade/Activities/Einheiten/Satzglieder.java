@@ -6,6 +6,7 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -19,6 +20,7 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Personalendung_PräsensDB;
 import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
+import com.lateinapp.noraalex.lopade.Score;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,6 +56,7 @@ public class Satzglieder extends LateinAppActivity {
     private int sentenceCount;
     private int sentenceID;
 
+    private TextView amountWrong;
 
     private final String
             NUM_SG = "Singular",
@@ -115,9 +118,18 @@ public class Satzglieder extends LateinAppActivity {
         weiterButton.setVisibility(View.GONE);
         progressBar.setMax(maxProgress);
 
+        amountWrong = findViewById(R.id.textUserInputMistakes5);
+
         sentenceCount = dbHelper.countTableEntries(BeispielsatzDB.FeedEntry.TABLE_NAME);
 
         newSentence();
+
+        int wrong = Score.getCurrentMistakesSatzglieder(sharedPref);
+        if (wrong == -1){
+            wrong = 0;
+        }
+        amountWrong.setText("Fehler: " + wrong);
+
 
     }
 
@@ -621,6 +633,15 @@ public class Satzglieder extends LateinAppActivity {
                 editor.putInt(KEY_PROGRESS_SATZGLIEDER,
                         currentProgress - 1);
             }
+
+            Score.incrementCurrentMistakesSatzglieder(sharedPref);
+
+            int wrong = Score.getCurrentMistakesSatzglieder(sharedPref);
+            if (wrong == -1){
+                wrong = 0;
+            }
+            amountWrong.setText("Fehler: " + wrong);
+
         }
 
         editor.apply();
@@ -632,6 +653,7 @@ public class Satzglieder extends LateinAppActivity {
         }
 
         weiterButton.setVisibility(View.VISIBLE);
+
     }
 
     /**

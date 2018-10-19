@@ -3,10 +3,22 @@ package com.lateinapp.noraalex.lopade;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import java.util.logging.SocketHandler;
-
 import static android.support.constraint.Constraints.TAG;
+import static com.lateinapp.noraalex.lopade.Global.KEY_CURRENT_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_CLICK;
+import static com.lateinapp.noraalex.lopade.Global.KEY_CURRENT_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_INPUT;
+import static com.lateinapp.noraalex.lopade.Global.KEY_CURRENT_MISTAKE_AMOUNT_ESSE_VELLE_NOLLE;
+import static com.lateinapp.noraalex.lopade.Global.KEY_CURRENT_MISTAKE_AMOUNT_KASUS;
+import static com.lateinapp.noraalex.lopade.Global.KEY_CURRENT_MISTAKE_AMOUNT_PERSONALENDUNG_CLICK;
+import static com.lateinapp.noraalex.lopade.Global.KEY_CURRENT_MISTAKE_AMOUNT_PERSONALENDUNG_INPUT;
+import static com.lateinapp.noraalex.lopade.Global.KEY_CURRENT_MISTAKE_AMOUNT_SATZGLIEDER;
 import static com.lateinapp.noraalex.lopade.Global.KEY_FINISHED_USERINPUT_VOKABELTRAINER;
+import static com.lateinapp.noraalex.lopade.Global.KEY_LOWEST_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_CLICK;
+import static com.lateinapp.noraalex.lopade.Global.KEY_LOWEST_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_INPUT;
+import static com.lateinapp.noraalex.lopade.Global.KEY_LOWEST_MISTAKE_AMOUNT_ESSE_VELLE_NOLLE;
+import static com.lateinapp.noraalex.lopade.Global.KEY_LOWEST_MISTAKE_AMOUNT_KASUS;
+import static com.lateinapp.noraalex.lopade.Global.KEY_LOWEST_MISTAKE_AMOUNT_PERSONALENDUNG_CLICK;
+import static com.lateinapp.noraalex.lopade.Global.KEY_LOWEST_MISTAKE_AMOUNT_PERSONALENDUNG_INPUT;
+import static com.lateinapp.noraalex.lopade.Global.KEY_LOWEST_MISTAKE_AMOUNT_SATZGLIEDER;
 import static com.lateinapp.noraalex.lopade.Global.KEY_LOWEST_MISTAKE_AMOUNT_VOC;
 import static com.lateinapp.noraalex.lopade.Global.KEY_NEW_HIGHSCORE_VOKABELTRAINER;
 import static com.lateinapp.noraalex.lopade.Global.KEY_SCORE_VOCAULARY;
@@ -118,12 +130,6 @@ public class Score {
         editor.apply();
     }
 
-    public static void resetLowestMistakes(int lektion, SharedPreferences sharedPreferences){
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.remove(KEY_LOWEST_MISTAKE_AMOUNT_VOC + lektion);
-        editor.apply();
-    }
-
     public static void updateHighscore(int lektion, SharedPreferences sharedPreferences){
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -146,24 +152,6 @@ public class Score {
         }
 
         editor.apply();
-    }
-
-    public static void updateLowestMistakesVoc(int mistakeAmount, int lektion, SharedPreferences sharedPreferences){
-
-        int oldMistakes = sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_VOC + lektion, 100000);
-
-        if (mistakeAmount < oldMistakes){
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-
-            editor.putInt(KEY_LOWEST_MISTAKE_AMOUNT_VOC + lektion, mistakeAmount);
-
-            editor.apply();
-        }
-    }
-
-    public static int getLowestMistakesVoc(int lektion, SharedPreferences sharedPreferences){
-
-        return sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_VOC + lektion, -1);
     }
 
     //
@@ -390,5 +378,366 @@ public class Score {
 
     public static int getScoreAll(SharedPreferences sharedPreferences){
         return sharedPreferences.getInt(KEY_HIGH_SCORE_ALL_TRAINERS, 0);
+    }
+    
+    
+    
+    
+    //Voc
+    public static void resetLowestMistakesVoc(int lektion, SharedPreferences sharedPreferences){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_LOWEST_MISTAKE_AMOUNT_VOC + lektion);
+        editor.apply();
+    }
+
+    public static void updateLowestMistakesVoc(int mistakeAmount, int lektion, SharedPreferences sharedPreferences){
+
+        int oldMistakes = sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_VOC + lektion, 100000);
+
+        if (mistakeAmount < oldMistakes){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putInt(KEY_LOWEST_MISTAKE_AMOUNT_VOC + lektion, mistakeAmount);
+
+            editor.apply();
+        }
+    }
+
+    public static int getLowestMistakesVoc(int lektion, SharedPreferences sharedPreferences){
+
+        return sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_VOC + lektion, -1);
+    }
+    
+    //
+    //Personalendung Click
+    //
+
+    public static void resetLowestMistakesPersClick(SharedPreferences sharedPreferences){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_LOWEST_MISTAKE_AMOUNT_PERSONALENDUNG_CLICK);
+        editor.apply();
+    }
+    public static void updateLowestMistakesPersClick(int mistakeAmount, SharedPreferences sharedPreferences){
+
+        int oldMistakes = sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_PERSONALENDUNG_CLICK, 100000);
+
+        if (mistakeAmount < oldMistakes){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putInt(KEY_LOWEST_MISTAKE_AMOUNT_PERSONALENDUNG_CLICK, mistakeAmount);
+
+            editor.apply();
+        }
+    }
+    public static int getLowestMistakesPersClick(SharedPreferences sharedPreferences){
+
+        return sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_PERSONALENDUNG_CLICK, -1);
+    }
+    public static void resetCurrentMistakesPersClick(SharedPreferences sharedPreferences){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_CURRENT_MISTAKE_AMOUNT_PERSONALENDUNG_CLICK);
+        editor.apply();
+    }
+    public static void incrementCurrentMistakesPersClick(SharedPreferences sharedPreferences){
+
+        int oldMistakes = sharedPreferences.getInt(KEY_CURRENT_MISTAKE_AMOUNT_PERSONALENDUNG_CLICK, 0);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt(KEY_CURRENT_MISTAKE_AMOUNT_PERSONALENDUNG_CLICK, oldMistakes + 1);
+
+        editor.apply();
+    }
+    public static int getCurrentMistakesPersClick(SharedPreferences sharedPreferences){
+
+        return sharedPreferences.getInt(KEY_CURRENT_MISTAKE_AMOUNT_PERSONALENDUNG_CLICK, -1);
+    }
+
+
+    //
+    //Personalendung UserInput
+    //
+
+    public static void resetLowestMistakesPersInput(SharedPreferences sharedPreferences){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_LOWEST_MISTAKE_AMOUNT_PERSONALENDUNG_INPUT);
+        editor.apply();
+    }
+    public static void updateLowestMistakesPersInput(int mistakeAmount, SharedPreferences sharedPreferences){
+
+        int oldMistakes = sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_PERSONALENDUNG_INPUT, 100000);
+
+        if (mistakeAmount < oldMistakes){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putInt(KEY_LOWEST_MISTAKE_AMOUNT_PERSONALENDUNG_INPUT, mistakeAmount);
+
+            editor.apply();
+        }
+    }
+    public static int getLowestMistakesPersInput(SharedPreferences sharedPreferences){
+
+        return sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_PERSONALENDUNG_INPUT, -1);
+    }
+    public static void resetCurrentMistakesPersInput(SharedPreferences sharedPreferences){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_CURRENT_MISTAKE_AMOUNT_PERSONALENDUNG_INPUT);
+        editor.apply();
+    }
+    public static void incrementCurrentMistakesPersInput(SharedPreferences sharedPreferences){
+
+        int oldMistakes = sharedPreferences.getInt(KEY_CURRENT_MISTAKE_AMOUNT_PERSONALENDUNG_INPUT, 0);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt(KEY_CURRENT_MISTAKE_AMOUNT_PERSONALENDUNG_INPUT, oldMistakes + 1);
+
+        editor.apply();
+    }
+    public static int getCurrentMistakesPersInput(SharedPreferences sharedPreferences){
+
+        return sharedPreferences.getInt(KEY_CURRENT_MISTAKE_AMOUNT_PERSONALENDUNG_INPUT, -1);
+    }
+
+    //
+    //Deklinationsendung Click
+    //
+    
+    public static void resetLowestMistakesDeklClick(SharedPreferences sharedPreferences){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_LOWEST_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_CLICK);
+        editor.apply();
+    }
+    public static void updateLowestMistakesDeklClick(int mistakeAmount, SharedPreferences sharedPreferences){
+
+        int oldMistakes = sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_CLICK, 100000);
+
+        if (mistakeAmount < oldMistakes){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putInt(KEY_LOWEST_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_CLICK, mistakeAmount);
+
+            editor.apply();
+        }
+    }
+    public static int getLowestMistakesDeklClick(SharedPreferences sharedPreferences){
+
+        return sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_CLICK, -1);
+    }
+    public static void resetCurrentMistakesDeklClick(SharedPreferences sharedPreferences){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_CURRENT_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_CLICK);
+        editor.apply();
+    }
+    public static void incrementCurrentMistakesDeklClick(SharedPreferences sharedPreferences){
+
+        int oldMistakes = sharedPreferences.getInt(KEY_CURRENT_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_CLICK, 0);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt(KEY_CURRENT_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_CLICK, oldMistakes + 1);
+
+        editor.apply();
+    }
+    public static int getCurrentMistakesDeklClick(SharedPreferences sharedPreferences){
+
+        return sharedPreferences.getInt(KEY_CURRENT_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_CLICK, -1);
+    }
+
+    //
+    //Deklinationsendung Click
+    //
+
+    public static void resetLowestMistakesDeklInput(SharedPreferences sharedPreferences){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_LOWEST_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_INPUT);
+        editor.apply();
+    }
+    public static void updateLowestMistakesDeklInput(int mistakeAmount, SharedPreferences sharedPreferences){
+
+        int oldMistakes = sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_INPUT, 100000);
+
+        if (mistakeAmount < oldMistakes){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putInt(KEY_LOWEST_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_INPUT, mistakeAmount);
+
+            editor.apply();
+        }
+    }
+    public static int getLowestMistakesDeklInput(SharedPreferences sharedPreferences){
+
+        return sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_INPUT, -1);
+    }
+    public static void resetCurrentMistakesDeklInput(SharedPreferences sharedPreferences){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_CURRENT_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_INPUT);
+        editor.apply();
+    }
+    public static void incrementCurrentMistakesDeklInput(SharedPreferences sharedPreferences){
+
+        int oldMistakes = sharedPreferences.getInt(KEY_CURRENT_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_INPUT, 0);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt(KEY_CURRENT_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_INPUT, oldMistakes + 1);
+
+        editor.apply();
+    }
+    public static int getCurrentMistakesDeklInput(SharedPreferences sharedPreferences){
+
+        return sharedPreferences.getInt(KEY_CURRENT_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_INPUT, -1);
+    }
+
+
+    //
+    //Kasus
+    //
+
+    public static void resetLowestMistakesKasus(SharedPreferences sharedPreferences){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_LOWEST_MISTAKE_AMOUNT_KASUS);
+        editor.apply();
+    }
+    public static void updateLowestMistakesKasus(int mistakeAmount, SharedPreferences sharedPreferences){
+
+        int oldMistakes = sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_KASUS, 100000);
+
+        if (mistakeAmount < oldMistakes){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putInt(KEY_LOWEST_MISTAKE_AMOUNT_KASUS, mistakeAmount);
+
+            editor.apply();
+        }
+    }
+    public static int getLowestMistakesKasus(SharedPreferences sharedPreferences){
+
+        return sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_KASUS, -1);
+    }
+    public static void resetCurrentMistakesKasus(SharedPreferences sharedPreferences){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_CURRENT_MISTAKE_AMOUNT_KASUS);
+        editor.apply();
+    }
+    public static void incrementCurrentMistakesKasus(SharedPreferences sharedPreferences){
+
+        int oldMistakes = sharedPreferences.getInt(KEY_CURRENT_MISTAKE_AMOUNT_KASUS, 0);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt(KEY_CURRENT_MISTAKE_AMOUNT_KASUS, oldMistakes + 1);
+
+        editor.apply();
+    }
+    public static int getCurrentMistakesKasus(SharedPreferences sharedPreferences){
+
+        int result;
+
+
+        //FIXME
+        //AAAAAAAAAAAA https://stackoverflow.com/questions/5991289/nullpointerexception-in-sharedpreferences-android
+        //Creash in KasusClick
+        try{
+
+            result = sharedPreferences.getInt(KEY_CURRENT_MISTAKE_AMOUNT_KASUS, -1);
+        }catch (NullPointerException npe){
+            result = 0;
+        }
+
+        return result;
+    }
+
+
+
+    //
+    //Esse Velle Nolle
+    //
+
+    public static void resetLowestMistakesEsseVelleNolle(SharedPreferences sharedPreferences){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_LOWEST_MISTAKE_AMOUNT_ESSE_VELLE_NOLLE);
+        editor.apply();
+    }
+    public static void updateLowestMistakesEsseVelleNolle(int mistakeAmount, SharedPreferences sharedPreferences){
+
+        int oldMistakes = sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_ESSE_VELLE_NOLLE, 100000);
+
+        if (mistakeAmount < oldMistakes){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putInt(KEY_LOWEST_MISTAKE_AMOUNT_ESSE_VELLE_NOLLE, mistakeAmount);
+
+            editor.apply();
+        }
+    }
+    public static int getLowestMistakesEsseVelleNolle(SharedPreferences sharedPreferences){
+
+        return sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_ESSE_VELLE_NOLLE, -1);
+    }
+    public static void resetCurrentMistakesEsseVelleNolle(SharedPreferences sharedPreferences){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_CURRENT_MISTAKE_AMOUNT_ESSE_VELLE_NOLLE);
+        editor.apply();
+    }
+    public static void incrementCurrentMistakesEsseVelleNolle(SharedPreferences sharedPreferences){
+
+        int oldMistakes = sharedPreferences.getInt(KEY_CURRENT_MISTAKE_AMOUNT_ESSE_VELLE_NOLLE, 0);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt(KEY_CURRENT_MISTAKE_AMOUNT_ESSE_VELLE_NOLLE, oldMistakes + 1);
+
+        editor.apply();
+    }
+    public static int getCurrentMistakesEsseVelleNolle(SharedPreferences sharedPreferences){
+
+        return sharedPreferences.getInt(KEY_CURRENT_MISTAKE_AMOUNT_ESSE_VELLE_NOLLE, -1);
+    }
+
+
+    //
+    //Satzglieder
+    //
+
+    public static void resetLowestMistakesSatzglieder(SharedPreferences sharedPreferences){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_LOWEST_MISTAKE_AMOUNT_SATZGLIEDER);
+        editor.apply();
+    }
+    public static void updateLowestMistakesSatzglieder(int mistakeAmount, SharedPreferences sharedPreferences){
+
+        int oldMistakes = sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_SATZGLIEDER, 100000);
+
+        if (mistakeAmount < oldMistakes){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            editor.putInt(KEY_LOWEST_MISTAKE_AMOUNT_SATZGLIEDER, mistakeAmount);
+
+            editor.apply();
+        }
+    }
+    public static int getLowestMistakesSatzglieder(SharedPreferences sharedPreferences){
+
+        return sharedPreferences.getInt(KEY_LOWEST_MISTAKE_AMOUNT_SATZGLIEDER, -1);
+    }
+    public static void resetCurrentMistakesSatzglieder(SharedPreferences sharedPreferences){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_CURRENT_MISTAKE_AMOUNT_SATZGLIEDER);
+        editor.apply();
+    }
+    public static void incrementCurrentMistakesSatzglieder(SharedPreferences sharedPreferences){
+
+        int oldMistakes = sharedPreferences.getInt(KEY_CURRENT_MISTAKE_AMOUNT_SATZGLIEDER, 0);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putInt(KEY_CURRENT_MISTAKE_AMOUNT_SATZGLIEDER, oldMistakes + 1);
+
+        editor.apply();
+    }
+    public static int getCurrentMistakesSatzglieder(SharedPreferences sharedPreferences){
+
+        return sharedPreferences.getInt(KEY_CURRENT_MISTAKE_AMOUNT_SATZGLIEDER, -1);
     }
 }

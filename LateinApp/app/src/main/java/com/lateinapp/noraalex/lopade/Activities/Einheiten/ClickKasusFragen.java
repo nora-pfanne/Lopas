@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ import android.widget.ToggleButton;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
+import com.lateinapp.noraalex.lopade.Score;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -38,13 +41,14 @@ public class ClickKasusFragen extends LateinAppActivity {
     private HashMap<String, String> kasusToFrage;
     private HashMap<ToggleButton, String> buttonToKasus;
 
+    Animation animShake;
 
     private ToggleButton[] buttons;
 
     private ProgressBar progressBar;
     private static final int maxProgress = 10;
 
-    private TextView kasusText;
+    private TextView kasusText, amountWrong;
 
     private int backgroundColor;
 
@@ -59,7 +63,7 @@ public class ClickKasusFragen extends LateinAppActivity {
 
     private void setup(){
 
-        sharedPreferences = General.getSharedPrefrences(this);
+        sharedPreferences = General.getSharedPrefrences(getApplicationContext());
 
         backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
 
@@ -83,7 +87,11 @@ public class ClickKasusFragen extends LateinAppActivity {
         kasusToFrage.put(kasusName[3], "Wen oder was?");
         kasusToFrage.put(kasusName[4], "Womit oder wodurch?");
 
+        amountWrong = findViewById(R.id.textUserInputMistakes3);
+
         buttonToKasus = new HashMap<>(5);
+
+        animShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
 
         buttons = new ToggleButton[]{
                 kasusFrage1,
@@ -97,6 +105,13 @@ public class ClickKasusFragen extends LateinAppActivity {
         int progress = sharedPreferences.getInt(KEY_PROGRESS_CLICK_KASUSFRAGEN, 0);
         if (progress > maxProgress) progress = maxProgress;
         progressBar.setProgress(progress);
+
+        int wrong = Score.getCurrentMistakesKasus(sharedPref);
+        if (wrong == -1){
+            wrong = 0;
+        }
+        amountWrong.setText("Fehler: " + wrong);
+
     }
 
     private void newKasus(){
@@ -226,10 +241,21 @@ public class ClickKasusFragen extends LateinAppActivity {
                 editor.putInt(KEY_PROGRESS_CLICK_KASUSFRAGEN, currentScore - 1);
             }
 
+            Score.incrementCurrentMistakesKasus(sharedPreferences);
+
+
+
         }
         editor.apply();
 
         kasusText.setBackgroundColor(color);
+
+        int wrong = Score.getCurrentMistakesKasus(sharedPref);
+        if (wrong == -1){
+            wrong = 0;
+        }
+        amountWrong.setText("Fehler: " + wrong);
+
     }
 
 }

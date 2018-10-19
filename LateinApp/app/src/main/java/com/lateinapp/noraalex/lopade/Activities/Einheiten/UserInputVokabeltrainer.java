@@ -555,7 +555,7 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
                         dbHelper.resetLektion(lektion);
                         Score.resetScoreVocabulary(lektion, sharedPref);
                         Score.resetHighscoreVocabulary(lektion, sharedPref);
-                        Score.resetLowestMistakes(lektion, sharedPref);
+                        Score.resetLowestMistakesVoc(lektion, sharedPref);
                         finish();
 
 

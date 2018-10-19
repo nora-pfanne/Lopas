@@ -7,6 +7,8 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -18,6 +20,7 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
 import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
+import com.lateinapp.noraalex.lopade.Score;
 
 import java.util.Random;
 
@@ -40,7 +43,8 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
 
     private TextView request,
             solution,
-            titel;
+            titel,
+            amountWrong;
     private EditText userInput;
     private ProgressBar progressBar;
     //FIXME: Remove button elevation to make it align with 'userInput'-EditText
@@ -51,6 +55,8 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
 
     private Vokabel currentVokabel;
     private String currentDeclination;
+
+    Animation animShake;
 
     private int[] weights;
     private final String[] faelle = {
@@ -99,6 +105,13 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
         zurück = findViewById(R.id.scoreButtonBack);
         titel = findViewById(R.id.textUserInputÜberschrift);
 
+        amountWrong = findViewById(R.id.textUserInputMistakes);
+
+        animShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+
+        TextView score = findViewById(R.id.textUserInputScore);
+        score.setVisibility(View.GONE);
+
         userInput.setHint("Deklinierter Substantiv");        //Makes it possible to move to the next vocabulary by pressing "enter"
         userInput.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
@@ -120,6 +133,14 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
         weightSubjects(extraFromEinheitenUebersicht);
 
         progressBar.setMax(maxProgress);
+
+
+        int wrong = Score.getCurrentMistakesKasus(sharedPref);
+        if (wrong == -1){
+            wrong = 0;
+        }
+        amountWrong.setText("Fehler: " + wrong);
+
     }
 
     private void newVocabulary(){
@@ -375,6 +396,18 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
                         sharedPref.getInt(KEY_PROGRESS_USERINPUT_DEKLINATIONSENDUNG + extraFromEinheitenUebersicht, 0) - 1);
                 editor.apply();
             }
+
+            weiter.startAnimation(animShake);
+            userInput.startAnimation(animShake);
+
+            Score.incrementCurrentMistakesDeklInput(sharedPref);
+
+            int wrong = Score.getCurrentMistakesKasus(sharedPref);
+            if (wrong == -1){
+                wrong = 0;
+            }
+            amountWrong.setText("Fehler: " + wrong);
+
         }
         userInput.setBackgroundColor(color);
 
@@ -384,6 +417,7 @@ public class UserInputDeklinationsendung extends LateinAppActivity {
         bestaetigung.setVisibility(View.GONE);
         weiter.setVisibility(View.VISIBLE);
         solution.setVisibility(View.VISIBLE);
+
     }
 
     /**

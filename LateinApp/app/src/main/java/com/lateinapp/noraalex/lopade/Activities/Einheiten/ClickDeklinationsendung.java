@@ -7,6 +7,8 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.SubstantivDB;
 import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
+import com.lateinapp.noraalex.lopade.Score;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -33,7 +36,8 @@ public class ClickDeklinationsendung extends LateinAppActivity {
     private DBHelper dbHelper;
     private SharedPreferences sharedPref;
 
-    private TextView lateinVokabel;
+    private TextView lateinVokabel,
+            amountWrong;
 
     private Button weiter,
             zurück,
@@ -58,6 +62,8 @@ public class ClickDeklinationsendung extends LateinAppActivity {
     private ToggleButton[] buttons;
 
     private int backgroundColor;
+
+    Animation animShake;
 
     private static final int maxProgress = 20;
 
@@ -99,6 +105,10 @@ public class ClickDeklinationsendung extends LateinAppActivity {
         weiter = findViewById(R.id.buttonGrammatikDeklinationWeiter);
         zurück = findViewById(R.id.buttonGrammatikDeklinationZurück);
 
+        amountWrong = findViewById(R.id.textUserInputMistakes4);
+
+        animShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+
         buttons = new ToggleButton[]{
                 nom_sg, nom_pl,
                 gen_sg, gen_pl,
@@ -113,6 +123,13 @@ public class ClickDeklinationsendung extends LateinAppActivity {
         progressBar.setProgress(progress);
 
         allCorrectCases = new ArrayList<>(10);
+
+        int wrong = Score.getCurrentMistakesDeklClick(sharedPref);
+        if (wrong == -1){
+            wrong = 0;
+        }
+        amountWrong.setText("Fehler: " + wrong);
+
     }
 
     /**
@@ -286,9 +303,18 @@ public class ClickDeklinationsendung extends LateinAppActivity {
             if (currentScore > 0) {
                 editor.putInt(KEY_PROGRESS_CLICK_DEKLINATIONSENDUNG, currentScore - 1);
             }
+
+            Score.incrementCurrentMistakesDeklClick(sharedPref);
+
+            int wrong = Score.getCurrentMistakesDeklClick(sharedPref);
+            if (wrong == -1){
+                wrong = 0;
+            }
+            amountWrong.setText("Fehler: " + wrong);
         }
         editor.apply();
 
         lateinVokabel.setBackgroundColor(color);
+
     }
 }

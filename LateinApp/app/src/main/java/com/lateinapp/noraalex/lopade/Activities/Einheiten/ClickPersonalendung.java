@@ -7,6 +7,8 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.Personalendung_PräsensDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
 import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
+import com.lateinapp.noraalex.lopade.Score;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -38,7 +41,7 @@ public class ClickPersonalendung extends LateinAppActivity {
             zurück,
             reset;
     private ProgressBar progressBar;
-    private TextView latein;
+    private TextView latein, amountWrong;
 
     private final String[] faelle = {
             Personalendung_PräsensDB.FeedEntry.COLUMN_1_SG,
@@ -52,6 +55,8 @@ public class ClickPersonalendung extends LateinAppActivity {
     private String konjugation;
     private int backgroundColor;
     private static final int maxProgress = 20;
+
+    Animation animShake;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +91,10 @@ public class ClickPersonalendung extends LateinAppActivity {
         weiter = findViewById(R.id.buttonGrammatikPersonalendungWeiter);
         zurück = findViewById(R.id.buttonGrammatikPersonalendungZurück);
 
+        amountWrong = findViewById(R.id.textUserInputMistakes2);
+
+        animShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+
         buttons = new ToggleButton[]{
                 ersteSg, zweiteSg,
                 dritteSg, erstePl,
@@ -96,6 +105,13 @@ public class ClickPersonalendung extends LateinAppActivity {
         int progress = sharedPref.getInt(KEY_PROGRESS_CLICK_PERSONALENDUNG, 0);
         if (progress > maxProgress) progress = maxProgress;
         progressBar.setProgress(progress);
+
+        int wrong = Score.getCurrentMistakesKasus(sharedPref);
+        if (wrong == -1){
+            wrong = 0;
+        }
+        amountWrong.setText("Fehler: " + wrong);
+
     }
 
     /**
@@ -215,10 +231,20 @@ public class ClickPersonalendung extends LateinAppActivity {
             if (currentScore > 0) {
                 editor.putInt(KEY_PROGRESS_CLICK_PERSONALENDUNG, currentScore - 1);
             }
+
+            Score.incrementCurrentMistakesPersClick(sharedPref);
+
+            int wrong = Score.getCurrentMistakesPersClick(sharedPref);
+            if (wrong == -1){
+                wrong = 0;
+            }
+            amountWrong.setText("Fehler: " + wrong);
+
         }
         editor.apply();
 
         latein.setBackgroundColor(color);
+
     }
 
 }

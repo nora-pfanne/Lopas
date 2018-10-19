@@ -69,6 +69,27 @@ public class Global {
 
     public static final String KEY_LOWEST_MISTAKE_AMOUNT_VOC = "Lowest_Mistakes_in_lektion_";
 
+    public static final String KEY_LOWEST_MISTAKE_AMOUNT_PERSONALENDUNG_CLICK = "Lowest_Mistakes_Personalendung_Click";
+    public static final String KEY_CURRENT_MISTAKE_AMOUNT_PERSONALENDUNG_CLICK = "Current_Mistakes_Personalendung_Click";
+
+    public static final String KEY_LOWEST_MISTAKE_AMOUNT_PERSONALENDUNG_INPUT = "Lowest_Mistakes_Personalendung_Input";
+    public static final String KEY_CURRENT_MISTAKE_AMOUNT_PERSONALENDUNG_INPUT = "Current_Mistakes_Personalendung_Input";
+
+    public static final String KEY_LOWEST_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_CLICK = "Lowest_Mistakes_Deklinationsendung_Click";
+    public static final String KEY_CURRENT_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_CLICK = "Current_Mistakes_Deklinationsendung_Click";
+
+    public static final String KEY_LOWEST_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_INPUT = "Lowest_Mistakes_Deklinationsendung_Input";
+    public static final String KEY_CURRENT_MISTAKE_AMOUNT_DEKLINATIONSENDUNG_INPUT = "Current_Mistakes_Deklinationsendung_Input";
+
+    public static final String KEY_LOWEST_MISTAKE_AMOUNT_KASUS = "Lowest_Mistakes_Kasus";
+    public static final String KEY_CURRENT_MISTAKE_AMOUNT_KASUS = "Current_Mistakes_Kasus";
+
+    public static final String KEY_LOWEST_MISTAKE_AMOUNT_ESSE_VELLE_NOLLE = "Lowest_Mistakes_esse_velle_nolle";
+    public static final String KEY_CURRENT_MISTAKE_AMOUNT_ESSE_VELLE_NOLLE = "Current_Mistakes_esse_velle_nolle";
+
+    public static final String KEY_LOWEST_MISTAKE_AMOUNT_SATZGLIEDER = "Lowest_Mistakes_Satzglieder";
+    public static final String KEY_CURRENT_MISTAKE_AMOUNT_SATZGLIEDER = "Current_Mistakes_Satzglieder";
+
     public static final int POINT_BASELINE = 100;
 
 }

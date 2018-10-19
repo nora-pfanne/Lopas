@@ -7,6 +7,23 @@
     tools:context="com.lateinapp.noraalex.lopade.Activities.Einheiten.ClickKasusFragen">
 
     <TextView
+        android:id="@+id/textUserInputMistakes3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="placeholder: mistakeAmount"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.946"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.119" />
+
+    <TextView
         android:id="@+id/textGrammatikKasusFragenÜberschrift"
         android:layout_width="288dp"
         android:layout_height="35dp"
@@ -49,18 +66,18 @@
         android:id="@+id/textGrammatikKasusFragenAufgabe"
         android:layout_width="341dp"
         android:layout_height="52dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Wie kann nach diesem Kasus gefragt werden?"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.149" />
+        app:layout_constraintVertical_bias="0.194" />
 
     <ToggleButton
         style="@style/myToggleButtonStyle"
