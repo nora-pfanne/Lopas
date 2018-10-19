@@ -1,9 +1,12 @@
 package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AlertDialog;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -23,6 +26,7 @@ import java.util.Random;
 import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
 import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
 import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_CLICK_KASUSFRAGEN;
+import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_USERINPUT_ESSEVELLENOLLE;
 
 public class ClickKasusFragen extends LateinAppActivity {
 
@@ -40,6 +44,21 @@ public class ClickKasusFragen extends LateinAppActivity {
 
     private HashMap<String, String> kasusToFrage;
     private HashMap<ToggleButton, String> buttonToKasus;
+
+    //Score stuff
+    private TextView sCongratulations,
+            sCurrentTrainer,
+            sMistakeAmount,
+            sMistakeAmountValue,
+            sBestTry,
+            sBestTryValue,
+            sHighScore,
+            sHighScoreValue,
+            sGrade,
+            sGradeValue;
+    private Button sBack,
+            sReset;
+
 
     Animation animShake;
 
@@ -86,6 +105,21 @@ public class ClickKasusFragen extends LateinAppActivity {
         kasusToFrage.put(kasusName[2], "Wem oder für wen?");
         kasusToFrage.put(kasusName[3], "Wen oder was?");
         kasusToFrage.put(kasusName[4], "Womit oder wodurch?");
+
+
+        //Score stuff
+        sCongratulations = findViewById(R.id.scoreCongratulations);
+        sCurrentTrainer = findViewById(R.id.scoreCurrentTrainer);
+        sMistakeAmount = findViewById(R.id.scoreMistakes);
+        sMistakeAmountValue = findViewById(R.id.scoreMistakeValue);
+        sBestTry = findViewById(R.id.scoreBestRunMistakeAmount);
+        sBestTryValue = findViewById(R.id.scoreEndScoreValue);
+        sHighScore = findViewById(R.id.scoreHighScore);
+        sHighScoreValue = findViewById(R.id.scoreHighScoreValue);
+        sGrade = findViewById(R.id.scoreGrade);
+        sGradeValue = findViewById(R.id.scoreGradeValue);
+        sBack = findViewById(R.id.scoreButtonBack);
+        sReset = findViewById(R.id.scoreButtonReset);
 
         amountWrong = findViewById(R.id.textUserInputMistakes3);
 
@@ -144,16 +178,7 @@ public class ClickKasusFragen extends LateinAppActivity {
             }
 
         }else {
-            progressBar.setProgress(progress);
-
-            for(ToggleButton tb: buttons){
-                tb.setVisibility(View.GONE);
-            }
-
-            weiter.setVisibility(View.GONE);
-            kasusText.setVisibility(View.GONE);
-            reset.setVisibility(View.VISIBLE);
-            zurück.setVisibility(View.VISIBLE);
+            endTrainer();
         }
     }
 
@@ -187,19 +212,44 @@ public class ClickKasusFragen extends LateinAppActivity {
                 }
                 break;
 
-            case (R.id.buttonGrammatikKasusFragenReset):
 
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt(KEY_PROGRESS_CLICK_KASUSFRAGEN, 0);
-                editor.apply();
+            case (R.id.scoreButtonReset):
 
-                finish();
+                resetCurrentLektion();
+                break;
 
-            case (R.id.buttonGrammatikKasusFragenZurück):
-
+            //Returning to the previous activity
+            case (R.id.scoreButtonBack):
                 finish();
                 break;
         }
+    }
+
+    private void resetCurrentLektion(){
+
+
+        new AlertDialog.Builder(this, R.style.AlertDialogCustom)
+                .setTitle("Trainer zurücksetzen?")
+                .setMessage("Willst du den Kasus-Trainer wirklich neu starten?\nDeine beste Note wird beibehalten!")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        General.showMessage("Kasus-Trainer zurückgesetzt!", getApplicationContext());
+
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putInt(KEY_PROGRESS_CLICK_KASUSFRAGEN, 0);
+                        editor.apply();
+
+                        Score.resetCurrentMistakesKasus(sharedPref);
+                        finish();
+
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
+
+
+
     }
 
     private void kasusChosen(ToggleButton tb){
@@ -258,4 +308,63 @@ public class ClickKasusFragen extends LateinAppActivity {
 
     }
 
+
+    private void endTrainer(){
+
+        for(ToggleButton tb: buttons){
+            tb.setVisibility(View.GONE);
+        }
+
+        weiter.setVisibility(View.GONE);
+        kasusText.setVisibility(View.GONE);
+        reset.setVisibility(View.GONE);
+        zurück.setVisibility(View.GONE);
+
+        progressBar.setVisibility(View.GONE);
+
+        ((TextView)findViewById(R.id.textGrammatikKasusFragenAufgabe)).setVisibility(View.GONE);
+
+        sCongratulations.setVisibility(View.VISIBLE);
+        sCurrentTrainer.setVisibility(View.VISIBLE);
+        sMistakeAmount.setVisibility(View.VISIBLE);
+        sMistakeAmountValue.setVisibility(View.VISIBLE);
+        sBestTry.setVisibility(View.VISIBLE);
+        sBestTryValue.setVisibility(View.VISIBLE);
+        sHighScore.setVisibility(View.GONE);
+        sHighScoreValue.setVisibility(View.GONE);
+        sGrade.setVisibility(View.VISIBLE);
+        sGradeValue.setVisibility(View.VISIBLE);
+
+        sBack.setVisibility(View.VISIBLE);
+        sReset.setVisibility(View.VISIBLE);
+
+        progressBar.setVisibility(View.GONE);
+
+        amountWrong.setVisibility(View.GONE);
+
+        //FIXME
+        try {
+            int mistakeAmount = Score.getCurrentMistakesPersClick(sharedPref);
+
+
+            Score.updateLowestMistakesKasus(mistakeAmount, sharedPref);
+
+            sCurrentTrainer.setText("Du hast gerade den Kasus-Fragen-Trainer abgeschlossen!");
+
+            String grade = Score.getGradeFromMistakeAmount(maxProgress + 2 * mistakeAmount, mistakeAmount);
+
+            String lowestEverText = Score.getLowestMistakesKasus(sharedPref) + "";
+            SpannableStringBuilder gradeText = General.makeSectionOfTextBold(grade, "" + grade);
+
+            if (mistakeAmount != -1) {
+                sMistakeAmountValue.setText(Integer.toString(mistakeAmount) + "");
+            } else {
+                sMistakeAmountValue.setText("N/A");
+            }
+            sBestTryValue.setText(lowestEverText);
+            sGradeValue.setText(gradeText);
+        }catch(Exception e){
+
+        }
+    }
 }

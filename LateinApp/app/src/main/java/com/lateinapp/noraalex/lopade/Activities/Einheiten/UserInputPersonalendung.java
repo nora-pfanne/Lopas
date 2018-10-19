@@ -1,9 +1,12 @@
 package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AlertDialog;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,8 +27,10 @@ import com.lateinapp.noraalex.lopade.Score;
 
 import java.util.Random;
 
+import static com.lateinapp.noraalex.lopade.Databases.SQL_DUMP.allVocabularyTables;
 import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
 import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
+import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_USERINPUT_ESSEVELLENOLLE;
 import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_USERINPUT_PERSONALENDUNG;
 
 public class UserInputPersonalendung extends LateinAppActivity {
@@ -45,6 +50,20 @@ public class UserInputPersonalendung extends LateinAppActivity {
             weiter,
             reset,
             zurück;
+
+    //Score stuff
+    private TextView sCongratulations,
+            sCurrentTrainer,
+            sMistakeAmount,
+            sMistakeAmountValue,
+            sBestTry,
+            sBestTryValue,
+            sHighScore,
+            sHighScoreValue,
+            sGrade,
+            sGradeValue;
+    private Button sBack,
+            sReset;
 
     private Vokabel currentVokabel;
     private String currentPersonalendung;
@@ -91,6 +110,20 @@ public class UserInputPersonalendung extends LateinAppActivity {
         reset = findViewById(R.id.scoreButtonReset);
         zurück = findViewById(R.id.scoreButtonBack);
         titel = findViewById(R.id.textUserInputÜberschrift);
+
+        //Score stuff
+        sCongratulations = findViewById(R.id.scoreCongratulations);
+        sCurrentTrainer = findViewById(R.id.scoreCurrentTrainer);
+        sMistakeAmount = findViewById(R.id.scoreMistakes);
+        sMistakeAmountValue = findViewById(R.id.scoreMistakeValue);
+        sBestTry = findViewById(R.id.scoreBestRunMistakeAmount);
+        sBestTryValue = findViewById(R.id.scoreEndScoreValue);
+        sHighScore = findViewById(R.id.scoreHighScore);
+        sHighScoreValue = findViewById(R.id.scoreHighScoreValue);
+        sGrade = findViewById(R.id.scoreGrade);
+        sGradeValue = findViewById(R.id.scoreGradeValue);
+        sBack = findViewById(R.id.scoreButtonBack);
+        sReset = findViewById(R.id.scoreButtonReset);
 
         amountWrong = findViewById(R.id.textUserInputMistakes);
 
@@ -146,12 +179,7 @@ public class UserInputPersonalendung extends LateinAppActivity {
             userInput.setBackgroundColor(backgroundColor);
             userInput.setFocusableInTouchMode(true);
 
-            //Getting a new vocabulary.
-            //FIXME: Don't return a random number but one according to the progress (nom->1 /...)
-            //random number from 1 to 5 to choose, where the vocabulary comes from
-            //Blueprint for randNum: int randomNum = rand.nextInt((max - min) + 1) + min;
-            int rand = new Random().nextInt((5 - 1) + 1) + 1;
-            currentVokabel = dbHelper.getRandomVocabulary(rand);
+            currentVokabel = dbHelper.getRandomVocabulary();
             currentPersonalendung = getRandomPersonalendung();
 
             String lateinText = dbHelper.getKonjugiertesVerb(currentVokabel.getId(), "Inf");
@@ -380,8 +408,45 @@ public class UserInputPersonalendung extends LateinAppActivity {
         userInput.setVisibility(View.GONE);
         bestaetigung.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
-        reset.setVisibility(View.VISIBLE);
-        zurück.setVisibility(View.VISIBLE);
+
+
+
+
+        sCongratulations.setVisibility(View.VISIBLE);
+        sCurrentTrainer.setVisibility(View.VISIBLE);
+        sMistakeAmount.setVisibility(View.VISIBLE);
+        sMistakeAmountValue.setVisibility(View.VISIBLE);
+        sBestTry.setVisibility(View.VISIBLE);
+        sBestTryValue.setVisibility(View.VISIBLE);
+        sHighScore.setVisibility(View.GONE);
+        sHighScoreValue.setVisibility(View.GONE);
+        sGrade.setVisibility(View.VISIBLE);
+        sGradeValue.setVisibility(View.VISIBLE);
+        sBack.setVisibility(View.VISIBLE);
+        sReset.setVisibility(View.VISIBLE);
+
+        progressBar.setVisibility(View.GONE);
+
+        amountWrong.setVisibility(View.GONE);
+
+        int mistakeAmount = Score.getCurrentMistakesPersInput(sharedPref);
+
+        Score.updateLowestMistakesPersInput(mistakeAmount, sharedPref);
+
+        sCurrentTrainer.setText("Du hast gerade den Personalendung-Trainer abgeschlossen!");
+
+        String grade = Score.getGradeFromMistakeAmount(maxProgress + 2*mistakeAmount, mistakeAmount);
+
+        String lowestEverText = Score.getLowestMistakesPersInput(sharedPref) + "";
+        SpannableStringBuilder gradeText = General.makeSectionOfTextBold(grade, ""+grade);
+
+        if(mistakeAmount != -1){
+            sMistakeAmountValue.setText(Integer.toString(mistakeAmount) + "");
+        }else{
+            sMistakeAmountValue.setText("N/A");
+        }
+        sBestTryValue.setText(lowestEverText);
+        sGradeValue.setText(gradeText);
     }
 
     /**
@@ -404,12 +469,9 @@ public class UserInputPersonalendung extends LateinAppActivity {
                 checkInput();
                 break;
 
-            //Setting the 'learned' state of all vocabularies of the current lektion to false
             case (R.id.scoreButtonReset):
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt(KEY_PROGRESS_USERINPUT_PERSONALENDUNG + extraFromEinheitenUebersicht, 0);
-                editor.apply();
-                finish();
+
+                resetCurrentLektion();
                 break;
 
             //Returning to the previous activity
@@ -417,6 +479,33 @@ public class UserInputPersonalendung extends LateinAppActivity {
                 finish();
                 break;
         }
+    }
+
+    private void resetCurrentLektion(){
+
+
+        new AlertDialog.Builder(this, R.style.AlertDialogCustom)
+                .setTitle("Trainer zurücksetzen?")
+                .setMessage("Willst du den Personalendungs-Trainer wirklich neu starten?\nDeine beste Note wird beibehalten!")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        General.showMessage("Personalendungs-Trainer zurückgesetzt!", getApplicationContext());
+
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putInt(KEY_PROGRESS_USERINPUT_PERSONALENDUNG, 0);
+                        editor.apply();
+
+                        Score.resetCurrentMistakesPersInput(sharedPref);
+                        finish();
+
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
+
+
+
     }
 
     @Override

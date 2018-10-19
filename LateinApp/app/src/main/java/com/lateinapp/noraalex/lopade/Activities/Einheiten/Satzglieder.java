@@ -1,8 +1,11 @@
 package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AlertDialog;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -29,6 +32,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
 import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_SATZGLIEDER;
+import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_USERINPUT_ESSEVELLENOLLE;
 
 public class Satzglieder extends LateinAppActivity {
 
@@ -57,6 +61,20 @@ public class Satzglieder extends LateinAppActivity {
     private int sentenceID;
 
     private TextView amountWrong;
+
+    //Score stuff
+    private TextView sCongratulations,
+            sCurrentTrainer,
+            sMistakeAmount,
+            sMistakeAmountValue,
+            sBestTry,
+            sBestTryValue,
+            sHighScore,
+            sHighScoreValue,
+            sGrade,
+            sGradeValue;
+    private Button sBack,
+            sReset;
 
     private final String
             NUM_SG = "Singular",
@@ -114,6 +132,20 @@ public class Satzglieder extends LateinAppActivity {
         progressBar = findViewById(R.id.satzglieder_progress_bar);
         aufgabenstellung = findViewById(R.id.satzglieder_aufgabenstellung);
         space = findViewById(R.id.satzglieder_space);
+
+        //Score stuff
+        sCongratulations = findViewById(R.id.scoreCongratulations);
+        sCurrentTrainer = findViewById(R.id.scoreCurrentTrainer);
+        sMistakeAmount = findViewById(R.id.scoreMistakes);
+        sMistakeAmountValue = findViewById(R.id.scoreMistakeValue);
+        sBestTry = findViewById(R.id.scoreBestRunMistakeAmount);
+        sBestTryValue = findViewById(R.id.scoreEndScoreValue);
+        sHighScore = findViewById(R.id.scoreHighScore);
+        sHighScoreValue = findViewById(R.id.scoreHighScoreValue);
+        sGrade = findViewById(R.id.scoreGrade);
+        sGradeValue = findViewById(R.id.scoreGradeValue);
+        sBack = findViewById(R.id.scoreButtonBack);
+        sReset = findViewById(R.id.scoreButtonReset);
 
         weiterButton.setVisibility(View.GONE);
         progressBar.setMax(maxProgress);
@@ -681,7 +713,44 @@ public class Satzglieder extends LateinAppActivity {
                 editor.apply();
                 finish();
                 break;
+
+            case (R.id.scoreButtonReset):
+
+                resetCurrentLektion();
+                break;
+
+            //Returning to the previous activity
+            case (R.id.scoreButtonBack):
+                finish();
+                break;
         }
+    }
+
+    private void resetCurrentLektion(){
+
+
+        new AlertDialog.Builder(this, R.style.AlertDialogCustom)
+                .setTitle("Trainer zurücksetzen?")
+                .setMessage("Willst du den Satzglieder-Trainer wirklich neu starten?\nDeine beste Note wird beibehalten!")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        General.showMessage("Satzglieder-Trainer zurückgesetzt!", getApplicationContext());
+
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putInt(KEY_PROGRESS_SATZGLIEDER, 0);
+                        editor.apply();
+
+                        Score.resetCurrentMistakesSatzglieder(sharedPref);
+                        finish();
+
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
+
+
+
     }
 
     private void endGame(){
@@ -689,9 +758,49 @@ public class Satzglieder extends LateinAppActivity {
         Button resetProgress = findViewById(R.id.satzglieder_progress_reset_button);
         Button back = findViewById(R.id.satzglieder_back_button);
 
-        resetProgress.setVisibility(View.VISIBLE);
-        back.setVisibility(View.VISIBLE);
+        resetProgress.setVisibility(View.GONE);
+        back.setVisibility(View.GONE);
 
         aufgabenstellung.setText("");
+
+
+
+        sCongratulations.setVisibility(View.VISIBLE);
+        sCurrentTrainer.setVisibility(View.VISIBLE);
+        sMistakeAmount.setVisibility(View.VISIBLE);
+        sMistakeAmountValue.setVisibility(View.VISIBLE);
+        sBestTry.setVisibility(View.VISIBLE);
+        sBestTryValue.setVisibility(View.VISIBLE);
+        sHighScore.setVisibility(View.GONE);
+        sHighScoreValue.setVisibility(View.GONE);
+        sGrade.setVisibility(View.VISIBLE);
+        sGradeValue.setVisibility(View.VISIBLE);
+
+        sBack.setVisibility(View.VISIBLE);
+        sReset.setVisibility(View.VISIBLE);
+
+        progressBar.setVisibility(View.GONE);
+
+        amountWrong.setVisibility(View.GONE);
+
+        int mistakeAmount = Score.getCurrentMistakesSatzglieder(sharedPref);
+
+        Score.updateLowestMistakesSatzglieder(mistakeAmount, sharedPref);
+
+        sCurrentTrainer.setText("Du hast gerade den Satzglieder-Trainer abgeschlossen!");
+
+        String grade = Score.getGradeFromMistakeAmount(maxProgress + 2*mistakeAmount, mistakeAmount);
+
+        String lowestEverText = Score.getLowestMistakesSatzglieder(sharedPref) + "";
+        SpannableStringBuilder gradeText = General.makeSectionOfTextBold(grade, ""+grade);
+
+        if(mistakeAmount != -1){
+            sMistakeAmountValue.setText(Integer.toString(mistakeAmount) + "");
+        }else{
+            sMistakeAmountValue.setText("N/A");
+        }
+        sBestTryValue.setText(lowestEverText);
+        sGradeValue.setText(gradeText);
+
     }
 }

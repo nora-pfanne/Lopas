@@ -442,8 +442,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
         sMistakeAmountValue.setVisibility(View.VISIBLE);
         sBestTry.setVisibility(View.VISIBLE);
         sBestTryValue.setVisibility(View.VISIBLE);
-        sHighScore.setVisibility(View.VISIBLE);
-        sHighScoreValue.setVisibility(View.VISIBLE);
+        sHighScore.setVisibility(View.GONE);
+        sHighScoreValue.setVisibility(View.GONE);
         sGrade.setVisibility(View.VISIBLE);
         sGradeValue.setVisibility(View.VISIBLE);
         sBack.setVisibility(View.VISIBLE);

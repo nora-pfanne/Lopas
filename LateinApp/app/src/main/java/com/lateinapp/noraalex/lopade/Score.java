@@ -450,6 +450,7 @@ public class Score {
     }
     public static int getCurrentMistakesPersClick(SharedPreferences sharedPreferences){
 
+
         return sharedPreferences.getInt(KEY_CURRENT_MISTAKE_AMOUNT_PERSONALENDUNG_CLICK, -1);
     }
 

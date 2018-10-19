@@ -1,10 +1,13 @@
 package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -27,12 +30,28 @@ import java.util.Random;
 
 import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
 import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
+import static com.lateinapp.noraalex.lopade.Global.KEY_CURRENT_MISTAKE_AMOUNT_PERSONALENDUNG_CLICK;
 import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_CLICK_DEKLINATIONSENDUNG;
 import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_CLICK_PERSONALENDUNG;
+import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_USERINPUT_ESSEVELLENOLLE;
 
 public class ClickPersonalendung extends LateinAppActivity {
 
     private static final String TAG = "ClickPersonalendung";
+
+    //Score stuff
+    private TextView sCongratulations,
+            sCurrentTrainer,
+            sMistakeAmount,
+            sMistakeAmountValue,
+            sBestTry,
+            sBestTryValue,
+            sHighScore,
+            sHighScoreValue,
+            sGrade,
+            sGradeValue;
+    private Button sBack,
+            sReset;
 
     private DBHelper dbHelper;
     private SharedPreferences sharedPref;
@@ -87,6 +106,20 @@ public class ClickPersonalendung extends LateinAppActivity {
         ToggleButton zweitePl = findViewById(R.id.buttonGrammatikPersonalendung2PersPl);
         ToggleButton drittePl = findViewById(R.id.buttonGrammatikPersonalendung3PersPl);
 
+        //Score stuff
+        sCongratulations = findViewById(R.id.scoreCongratulations);
+        sCurrentTrainer = findViewById(R.id.scoreCurrentTrainer);
+        sMistakeAmount = findViewById(R.id.scoreMistakes);
+        sMistakeAmountValue = findViewById(R.id.scoreMistakeValue);
+        sBestTry = findViewById(R.id.scoreBestRunMistakeAmount);
+        sBestTryValue = findViewById(R.id.scoreEndScoreValue);
+        sHighScore = findViewById(R.id.scoreHighScore);
+        sHighScoreValue = findViewById(R.id.scoreHighScoreValue);
+        sGrade = findViewById(R.id.scoreGrade);
+        sGradeValue = findViewById(R.id.scoreGradeValue);
+        sBack = findViewById(R.id.scoreButtonBack);
+        sReset = findViewById(R.id.scoreButtonReset);
+
         reset = findViewById(R.id.buttonGrammatikPersonalendungReset);
         weiter = findViewById(R.id.buttonGrammatikPersonalendungWeiter);
         zurück = findViewById(R.id.buttonGrammatikPersonalendungZurück);
@@ -106,7 +139,7 @@ public class ClickPersonalendung extends LateinAppActivity {
         if (progress > maxProgress) progress = maxProgress;
         progressBar.setProgress(progress);
 
-        int wrong = Score.getCurrentMistakesKasus(sharedPref);
+        int wrong = Score.getCurrentMistakesPersClick(sharedPref);
         if (wrong == -1){
             wrong = 0;
         }
@@ -138,16 +171,7 @@ public class ClickPersonalendung extends LateinAppActivity {
             latein.setText(lateinText);
             
         }else {
-            progressBar.setProgress(progress);
-
-            for (ToggleButton b : buttons){
-                b.setVisibility(View.GONE);
-            }
-
-            weiter.setVisibility(View.GONE);
-            latein.setVisibility(View.GONE);
-            reset.setVisibility(View.VISIBLE);
-            zurück.setVisibility(View.VISIBLE);
+            allLearned();
 
         }
 
@@ -201,6 +225,16 @@ public class ClickPersonalendung extends LateinAppActivity {
 
                 finish();
                 break;
+
+            case (R.id.scoreButtonReset):
+
+                resetCurrentLektion();
+                break;
+
+            //Returning to the previous activity
+            case (R.id.scoreButtonBack):
+                finish();
+                break;
         }
     }
 
@@ -245,6 +279,86 @@ public class ClickPersonalendung extends LateinAppActivity {
 
         latein.setBackgroundColor(color);
 
+    }
+
+    private void resetCurrentLektion(){
+
+
+        new AlertDialog.Builder(this, R.style.AlertDialogCustom)
+                .setTitle("Trainer zurücksetzen?")
+                .setMessage("Willst du den Personalendung-Trainer wirklich neu starten?\nDeine beste Note wird beibehalten!")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        General.showMessage("Personalendung-Trainer zurückgesetzt!", getApplicationContext());
+
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putInt(KEY_PROGRESS_CLICK_PERSONALENDUNG, 0);
+                        editor.apply();
+
+                        Score.resetCurrentMistakesPersClick(sharedPref);
+                        finish();
+
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
+
+
+
+    }
+
+    private void allLearned(){
+
+        for (ToggleButton b : buttons){
+            b.setVisibility(View.GONE);
+        }
+
+        weiter.setVisibility(View.GONE);
+        latein.setVisibility(View.GONE);
+        reset.setVisibility(View.GONE);
+        zurück.setVisibility(View.GONE);
+
+        ((TextView)findViewById(R.id.textGrammatikPersonalendungAufgabe)).setVisibility(View.GONE);
+
+        progressBar.setVisibility(View.GONE);
+
+        sCongratulations.setVisibility(View.VISIBLE);
+        sCurrentTrainer.setVisibility(View.VISIBLE);
+        sMistakeAmount.setVisibility(View.VISIBLE);
+        sMistakeAmountValue.setVisibility(View.VISIBLE);
+        sBestTry.setVisibility(View.VISIBLE);
+        sBestTryValue.setVisibility(View.VISIBLE);
+        sHighScore.setVisibility(View.GONE);
+        sHighScoreValue.setVisibility(View.GONE);
+        sGrade.setVisibility(View.VISIBLE);
+        sGradeValue.setVisibility(View.VISIBLE);
+
+        sBack.setVisibility(View.VISIBLE);
+        sReset.setVisibility(View.VISIBLE);
+
+        progressBar.setVisibility(View.GONE);
+
+        amountWrong.setVisibility(View.GONE);
+
+        int mistakeAmount = Score.getCurrentMistakesPersClick(sharedPref);
+
+        Score.updateLowestMistakesPersClick(mistakeAmount, sharedPref);
+
+        sCurrentTrainer.setText("Du hast gerade den Personalendung-Trainer abgeschlossen!");
+
+        String grade = Score.getGradeFromMistakeAmount(maxProgress + 2*mistakeAmount, mistakeAmount);
+
+        String lowestEverText = Score.getLowestMistakesPersClick(sharedPref) + "";
+        SpannableStringBuilder gradeText = General.makeSectionOfTextBold(grade, ""+grade);
+
+        if(mistakeAmount != -1){
+            sMistakeAmountValue.setText(Integer.toString(mistakeAmount) + "");
+        }else{
+            sMistakeAmountValue.setText("N/A");
+        }
+        sBestTryValue.setText(lowestEverText);
+        sGradeValue.setText(gradeText);
     }
 
 }

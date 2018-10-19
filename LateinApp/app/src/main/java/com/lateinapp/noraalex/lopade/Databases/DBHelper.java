@@ -634,6 +634,26 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * Gets a vocabulary at the 'count'-position in a table with a specific 'gelernt'-value
+     * @param count the amount of vocabularies previous to this one - 1
+     * @param table table of the wanted vocabulary
+     * @return the _ID of the selected vocabulary
+     */
+    private int getIdFromCount(int count, String table){
+
+        String query = "SELECT _ID FROM "+ table;
+        Cursor cursor = getWritableDatabase().rawQuery(query, new String[]{});
+
+        cursor.moveToPosition(count-1);
+
+        int id = cursor.getInt(0);
+
+        cursor.close();
+
+        return id;
+    }
+
+    /**
      * Searches through a table to find the _ID value of a vocabulary
      *
      * TODO: Currently only VerbDB and SubstantivDB can be targeted
@@ -1141,6 +1161,145 @@ public class DBHelper extends SQLiteOpenHelper {
 
             table = SubjunktionDB.FeedEntry.TABLE_NAME;
             vokabelID = getIdFromCount(lektionNr, count, false, table);
+            lateinVokabel = getColumnFromId(vokabelID, table, SubjunktionDB.FeedEntry.COLUMN_LATEIN);
+            deutsch = getColumnFromId(vokabelID, table, SubjunktionDB.FeedEntry.COLUMN_DEUTSCH);
+
+            vokabelInstance = new SubjunktionDB(vokabelID, lateinVokabel, deutsch);
+
+        }else {
+            Log.e(DBHelper.class.getName(), "entry_id given by the randomNumber is out of bounds -> bigger than the amount of all entries combined");
+            return null;
+        }
+
+        return vokabelInstance;
+    }
+
+    /**
+     * Choses a random vocabulary from a lektion
+     * @return a instance of the chosen vocabulary as object
+     */
+    public Vokabel getRandomVocabulary(){
+
+        //Get the amount of entries with a matching lektionNr
+        int entryAmountVerb = countTableEntries(VerbDB.FeedEntry.TABLE_NAME);
+        int entryAmountAdjektiv = countTableEntries(AdjektivDB.FeedEntry.TABLE_NAME);
+        int entryAmountSubstantiv = countTableEntries(SubstantivDB.FeedEntry.TABLE_NAME);
+        int entryAmountPraeposition = countTableEntries(PräpositionDB.FeedEntry.TABLE_NAME);
+        int entryAmountSprichwort = countTableEntries(SprichwortDB.FeedEntry.TABLE_NAME);
+        int entryAmountAdverb = countTableEntries(AdverbDB.FeedEntry.TABLE_NAME);
+        int entryAmountSubjunktion = countTableEntries(SubjunktionDB.FeedEntry.TABLE_NAME);
+        int entryAmountTotal = entryAmountSubstantiv + entryAmountAdjektiv + entryAmountVerb + entryAmountPraeposition + entryAmountSprichwort + entryAmountAdverb + entryAmountSubjunktion;
+
+        Random rand = new Random();
+        int randomNumber = rand.nextInt(entryAmountTotal);
+        String lateinVokabel;
+        String table;
+        int count;
+        int vokabelID;
+        String deutsch;
+        Vokabel vokabelInstance;
+
+        if(randomNumber < entryAmountSubstantiv){
+
+            //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
+            randomNumber++;
+
+            //constructs a instance of Substantiv from the given randomNumber
+            count = randomNumber;
+
+            table = SubstantivDB.FeedEntry.TABLE_NAME;
+            vokabelID = getIdFromCount(count, table);
+            lateinVokabel = getDekliniertenSubstantiv(vokabelID, DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG);
+            deutsch = getColumnFromId(vokabelID, table, SubstantivDB.FeedEntry.COLUMN_NOM_SG_DEUTSCH);
+
+            vokabelInstance = new SubstantivDB(vokabelID, lateinVokabel, deutsch);
+
+        } else if (randomNumber-entryAmountSubstantiv < entryAmountVerb){
+
+            //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
+            randomNumber++;
+
+            //constructs a instance of Verb from the given randomNumber
+            count = randomNumber-entryAmountSubstantiv;
+
+            table = VerbDB.FeedEntry.TABLE_NAME;
+            vokabelID = getIdFromCount(count, table);
+            lateinVokabel = getKonjugiertesVerb(vokabelID,"inf");
+            deutsch = getColumnFromId(vokabelID, table, VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH);
+
+            vokabelInstance = new VerbDB(vokabelID, lateinVokabel, deutsch);
+
+        }else if (randomNumber-entryAmountSubstantiv-entryAmountVerb < entryAmountPraeposition){
+            //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
+            randomNumber++;
+
+            //constructs a instance of Präposition from the given randomNumber
+            count = randomNumber-entryAmountSubstantiv-entryAmountVerb;
+            table = PräpositionDB.FeedEntry.TABLE_NAME;
+            vokabelID = getIdFromCount(count, table);
+            lateinVokabel = getColumnFromId(vokabelID, table, PräpositionDB.FeedEntry.COLUMN_LATEIN);
+            deutsch = getColumnFromId(vokabelID, table, PräpositionDB.FeedEntry.COLUMN_DEUTSCH);
+
+            vokabelInstance = new PräpositionDB(vokabelID, lateinVokabel, deutsch);
+
+        }else if (randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPraeposition < entryAmountSprichwort){
+
+            //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
+            randomNumber++;
+
+            //constructs a instance of Sprichwort from the given randomNumber
+            count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPraeposition;
+
+            table = SprichwortDB.FeedEntry.TABLE_NAME;
+            vokabelID = getIdFromCount(count, table);
+            lateinVokabel = getColumnFromId(vokabelID, table, SprichwortDB.FeedEntry.COLUMN_LATEIN);
+            deutsch = getColumnFromId(vokabelID, table, SprichwortDB.FeedEntry.COLUMN_DEUTSCH);
+
+            vokabelInstance = new SprichwortDB(vokabelID, lateinVokabel, deutsch);
+
+        }else if(randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPraeposition-entryAmountSprichwort < entryAmountAdverb){
+
+            //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
+            randomNumber++;
+
+
+            //constructs a instance of Adverb from the given randomNumber
+            count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPraeposition-entryAmountSprichwort;
+
+            table = AdverbDB.FeedEntry.TABLE_NAME;
+            vokabelID = getIdFromCount(count, table);
+            lateinVokabel = getColumnFromId(vokabelID, table, AdverbDB.FeedEntry.COLUMN_LATEIN);
+            deutsch = getColumnFromId(vokabelID, table, AdverbDB.FeedEntry.COLUMN_DEUTSCH);
+
+            vokabelInstance = new AdverbDB(vokabelID, lateinVokabel, deutsch);
+
+        }else if(randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPraeposition-entryAmountSprichwort-entryAmountAdverb < entryAmountAdjektiv){
+
+            //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
+            randomNumber++;
+
+            //constructs a instance of Adjektiv from the given randomNumber
+            count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPraeposition-entryAmountSprichwort-entryAmountAdverb;
+
+            table = AdjektivDB.FeedEntry.TABLE_NAME;
+            vokabelID = getIdFromCount(count, table);
+            lateinVokabel = getDekliniertesAdjektiv(vokabelID,
+                    DeklinationsendungDB.FeedEntry.COLUMN_NOM_SG,
+                    "o-Deklination_m") + ", a, um";
+            deutsch = getColumnFromId(vokabelID, table, AdjektivDB.FeedEntry.COLUMN_DEUTSCH);
+
+            vokabelInstance = new AdjektivDB(vokabelID, lateinVokabel, deutsch);
+
+        }else if (randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPraeposition-entryAmountSprichwort-entryAmountAdjektiv - entryAmountAdverb < entryAmountSubjunktion){
+
+            //increments randomNumber by 1 because _ID in the tables starts with '1' not '0'
+            randomNumber++;
+
+            //constructs a instance of Adjektiv from the given randomNumber
+            count = randomNumber-entryAmountSubstantiv-entryAmountVerb-entryAmountPraeposition-entryAmountSprichwort-entryAmountAdverb-entryAmountAdjektiv;
+
+            table = SubjunktionDB.FeedEntry.TABLE_NAME;
+            vokabelID = getIdFromCount(count, table);
             lateinVokabel = getColumnFromId(vokabelID, table, SubjunktionDB.FeedEntry.COLUMN_LATEIN);
             deutsch = getColumnFromId(vokabelID, table, SubjunktionDB.FeedEntry.COLUMN_DEUTSCH);
 
