@@ -13,6 +13,14 @@ import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.Score;
 
 import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
+import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_CLICK_DEKLINATIONSENDUNG;
+import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_CLICK_KASUSFRAGEN;
+import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_CLICK_PERSONALENDUNG;
+import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_SATZGLIEDER;
+import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_USERINPUT_DEKLINATIONSENDUNG;
+import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_USERINPUT_ESSEVELLENOLLE;
+import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_USERINPUT_PERSONALENDUNG;
+
 public class SettingsActivity extends LateinAppActivity {
 
     private static final String TAG = "SettingsActivity";
@@ -55,7 +63,7 @@ public class SettingsActivity extends LateinAppActivity {
 
                 new AlertDialog.Builder(this, R.style.AlertDialogCustom)
                         .setTitle("Zurücksetzen?")
-                        .setMessage("Willst du wirklich deinen ganzen Fortschritt zurücksetzen?\nDies beinhaltet auch alle Scores und High-Scores!")
+                        .setMessage("Willst du wirklich deinen ganzen Fortschritt zurücksetzen?\nDies beinhaltet auch alle Noten aus Vokabel- und Grammatiktrainern!")
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
 
@@ -63,12 +71,40 @@ public class SettingsActivity extends LateinAppActivity {
 
                                 General.showMessage("Fortschritt zurückgesetzt!", getApplicationContext());
 
+                                SharedPreferences.Editor editor = sharedPref.edit();
+
                                 for(int lektion = 1; lektion <= 6; lektion++){
                                     dbHelper.resetLektion(lektion);
                                     Score.resetScoreVocabulary(lektion, sharedPref);
                                     Score.resetHighscoreVocabulary(lektion, sharedPref);
                                     Score.resetLowestMistakesVoc(lektion, sharedPref);
                                 }
+
+
+                                editor.putInt(KEY_PROGRESS_CLICK_DEKLINATIONSENDUNG, 0);
+                                Score.resetCurrentMistakesDeklClick(sharedPref);
+                                Score.resetLowestMistakesDeklClick(sharedPref);
+                                editor.putInt(KEY_PROGRESS_CLICK_KASUSFRAGEN, 0);
+                                Score.resetCurrentMistakesKasus(sharedPref);
+                                Score.resetLowestMistakesKasus(sharedPref);
+                                editor.putInt(KEY_PROGRESS_CLICK_PERSONALENDUNG, 0);
+                                Score.resetCurrentMistakesPersClick(sharedPref);
+                                Score.resetLowestMistakesPersClick(sharedPref);
+                                editor.putInt(KEY_PROGRESS_SATZGLIEDER, 0);
+                                Score.resetCurrentMistakesSatzglieder(sharedPref);
+                                Score.resetLowestMistakesSatzglieder(sharedPref);
+                                editor.putInt(KEY_PROGRESS_USERINPUT_DEKLINATIONSENDUNG, 0);
+                                Score.resetCurrentMistakesDeklInput(sharedPref);
+                                Score.resetLowestMistakesDeklInput(sharedPref);
+                                editor.putInt(KEY_PROGRESS_USERINPUT_ESSEVELLENOLLE, 0);
+                                Score.resetCurrentMistakesEsseVelleNolle(sharedPref);
+                                Score.resetLowestMistakesEsseVelleNolle(sharedPref);
+                                editor.putInt(KEY_PROGRESS_USERINPUT_PERSONALENDUNG, 0);
+                                Score.resetCurrentMistakesPersInput(sharedPref);
+                                Score.resetLowestMistakesPersInput(sharedPref);
+
+
+                                editor.apply();
 
 
                             }})
