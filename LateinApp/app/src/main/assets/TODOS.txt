@@ -1,0 +1,38 @@
+Collapse keys into groups and operate on them with bit operators
+modify combo with bitshift
+use already learned vocabularies for other trainers
+use @string resources
+Noten balance
+show grade on navScreen
+score for other trainers
+random crashes on grammar trainers
+there is already progress at the start -> grammar
+Do we have a non round icon? Do we need one?
+get rid of strings in java -> into Global.class
+remove adjekttive trainer
+save how much was scrolled for next startup? or even more info?
+"On a visited section, it returns the user to their previous scroll position there"
+ausmüllen des app-ordners in github
+
+@SCORE_CLEANUP
+
+
+
+
+highscore soll schon bei ende der lektion angezeit werden
+schöneren AlertDialog
+
+remove combo?
+other info on homescreen?
+    Percent progress
+    Best Grade
+Vokabeltrainer start userInput bit further right? so text isnt completly to left
+deklinationstrainer score? -> maybe just remove score from it alltogether
+reset buttons / toasts on resets  for grammar
+
+weiter button placement
+
+satzglieder ergibt keinen sinn
+    -> kein Inhalt bedeutet, dass man sich das richtige Wort nicht erschießen kann, wenn 2 Wörter gleich sind
+
+remove the animation between switching home-fragments

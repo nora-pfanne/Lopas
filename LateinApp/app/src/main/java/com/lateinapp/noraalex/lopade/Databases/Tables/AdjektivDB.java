@@ -17,6 +17,7 @@ public class AdjektivDB extends Vokabel{
         public static final String COLUMN_DEUTSCH = "Deutsch",
                                     COLUMN_WORTSTAMM = "Wortstamm",
                                     COLUMN_GELERNT = "Gelernt",
+                                    COLUMN_AMOUNT_INCORRECT = "Amount_Incorrect",
                                     COLUMN_LEKTION_ID = "Lektion_ID",
                                     COLUMN_TYPE = "Type";
     }

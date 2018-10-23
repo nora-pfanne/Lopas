@@ -1,0 +1,39 @@
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetLeft="4dp"
+    android:insetTop="4dp"
+    android:insetRight="4dp"
+    android:insetBottom="4dp">
+    <layer-list android:paddingMode="stack">
+        <item>
+            <ripple android:color="@color/primaryLight">
+                <item>
+                    <shape android:shape="rectangle">
+                        <corners android:radius="8dp"/>
+                        <solid android:color="@color/primary" />
+                        <padding android:left="8dp"
+                            android:top="6dp"
+                            android:right="8dp"
+                            android:bottom="6dp" />
+                        <gradient android:angle="-90" android:startColor="@color/primary" android:endColor="@color/primaryDark"/>
+                    </shape>
+                </item>
+            </ripple>
+        </item>
+
+        <item android:gravity="left|fill_vertical">
+            <shape android:shape="rectangle">
+                <corners android:radius="4dp"/>
+                <size android:width="8dp" />
+                <solid android:color="@color/error" />
+            </shape>
+        </item>
+        <item android:gravity="right|fill_vertical">
+            <shape android:shape="rectangle">
+                <corners android:radius="4dp"/>
+                <size android:width="8dp" />
+                <solid android:color="@color/error" />
+            </shape>
+        </item>
+
+    </layer-list>
+</inset>

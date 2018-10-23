@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Activities.Home.HomeVokabeltrainer">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="3dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <ImageView
+                android:id="@+id/home_voc_pillar_left"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_vector_pillar" />
+
+            <TextView
+                android:id="@+id/home_title_vocabulary"
+                style="@style/textViewTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Vokabeln" />
+
+            <ImageView
+                android:id="@+id/home_voc_pillar_right"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_vector_pillar" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_voc_button_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Lektion 1"
+                android:layout_margin="3dp" />
+
+            <TextView
+                android:id="@+id/home_voc_text_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_voc_button_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Lektion 2"
+                android:textAlignment="center"
+                android:layout_margin="3dp" />
+
+            <TextView
+                android:id="@+id/home_voc_text_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_voc_button_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Lektion 3"
+                android:textAlignment="center"
+                android:layout_margin="3dp"/>
+
+            <TextView
+                android:id="@+id/home_voc_text_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_voc_button_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Lektion 4"
+                android:textAlignment="center"
+                android:layout_margin="3dp"/>
+
+            <TextView
+                android:id="@+id/home_voc_text_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_voc_button_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Lektion 5"
+                android:textAlignment="center"
+                android:layout_margin="3dp"/>
+
+            <TextView
+                android:id="@+id/home_voc_text_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_voc_button_6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Lektion 6"
+                android:textAlignment="center"/>
+
+            <TextView
+                android:id="@+id/home_voc_text_6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_voc_button_7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Lektion 7"
+                android:textAlignment="center"/>
+
+            <TextView
+                android:id="@+id/home_voc_text_7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_voc_button_8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Lektion 8"
+                android:textAlignment="center"/>
+
+            <TextView
+                android:id="@+id/home_voc_text_8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_voc_button_9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Lektion 9"
+                android:textAlignment="center"
+                android:enabled="false"/>
+
+            <TextView
+                android:id="@+id/home_voc_text_9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_voc_button_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Lektion 10"
+                android:textAlignment="center"
+                android:enabled="false"/>
+
+            <TextView
+                android:id="@+id/home_voc_text_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
+
+</FrameLayout>

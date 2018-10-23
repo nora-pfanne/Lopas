@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <!--
     <color name="PrussianBlue">#002E54</color>
     <color name="PrussianBlueLight">#7F96A9</color>
-    <color name="Burgundy">#940a0a</color>
     <color name="BurgundyLight">#BC7F93</color>
     <color name="GhostWhite">#FAFAFF</color>
     <color name="InputWrongRed">#FF4242</color>
@@ -13,17 +12,11 @@
     <color name="Gold">#f6b461</color>
     <color name="ButtonGrey">#515151</color>
 
-    <!--
-    ***********************************************************************************************
-    The following colors are part of the visual overhaul of the app
-    ***********************************************************************************************
-    -->
-
+    <color name="Burgundy">#940a0a</color>
     <color name="colorPrimary">#174061</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <!-- Main theme colors -->
     <color name="DarkImperialBlue">#174061</color>
     <color name="GoldenPoppy">#ffd752</color>
     <color name="WageningenGreen">#31B522</color>
@@ -31,5 +24,44 @@
     <color name="AirSuperiorityBlue">#6EA4BF</color>
     <color name="TangerineOrange">#ff6a33</color>
     <color name="SoftViolett">#df6dff</color>
+
+
+    <color name="fullRed">#FF0000</color>
+    <color name="fullGreen">#00FF00</color>
+    <color name="fullGray">#FF707370</color>
+    <color name="darkRed">#990000</color>
+    <color name="blue">#253eff</color>
+    -->
+
+    <!-- Google Material Design guidelines -->
+
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="grey">#818181</color>
+    <color name="greyLight">#b0b0b0</color>
+    <color name="greyDark">#555555</color>
+
+
+    <color name="primary">#0f4b9e</color>
+    <color name="primaryLight">#5476d0</color>
+    <color name="primaryDark">#00256f</color>
+    <color name="primaryText">@color/white</color>
+
+    <color name="secondary">#ffc01f</color>
+    <color name="secondaryLight">#fff25a</color>
+    <color name="secondaryDark">#c79000</color>
+    <color name="secondaryText">@color/black</color>
+
+    <color name="accent">#940a0a</color>
+
+    <color name="background">@color/white</color>
+    <color name="surface">@color/white</color>
+
+    <color name="error">#B00020</color>
+    <color name="errorText">@color/white</color>
+    <color name="correct">#4CAF50</color>
+    <color name="correctText">@color/black</color>
+
 
 </resources>

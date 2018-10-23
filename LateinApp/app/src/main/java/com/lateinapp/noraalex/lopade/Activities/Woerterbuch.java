@@ -2,7 +2,6 @@ package com.lateinapp.noraalex.lopade.Activities;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,6 +18,7 @@ import com.lateinapp.noraalex.lopade.Databases.Tables.AdverbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.DeklinationsendungDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.PräpositionDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.SprichwortDB;
+import com.lateinapp.noraalex.lopade.Databases.Tables.SubjunktionDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.SubstantivDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
 import com.lateinapp.noraalex.lopade.R;
@@ -48,7 +48,7 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
 
         tl = findViewById(R.id.table_layout);
 
-        dbHelper = new DBHelper(getApplicationContext());
+        dbHelper = DBHelper.getInstance(getApplicationContext());
 
         //Configurating the spinner
         //TODO: Set spinner text color to something readable
@@ -60,7 +60,11 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
                 "Lektion 3",
                 "Lektion 4",
                 "Lektion 5",
-                "Lektion 6"
+                "Lektion 6",
+                "Lektion 7",
+                "Lektion 8",
+                "Lektion 9",
+                "Lektion 10"
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
@@ -212,19 +216,15 @@ public class Woerterbuch extends LateinAppActivity implements AdapterView.OnItem
 
             String[][] valuesSprichwort = dbHelper.getColumns(SprichwortDB.FeedEntry.TABLE_NAME, columns, pos + 1);
             addTableRows(tl, valuesSprichwort);
+
+            String[][] valuesSubjunktion = dbHelper.getColumns(SubjunktionDB.FeedEntry.TABLE_NAME, columns, pos + 1);
+            addTableRows(tl, valuesSubjunktion);
         }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        dbHelper.close();
     }
 }
 

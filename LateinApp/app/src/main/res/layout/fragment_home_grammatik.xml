@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Activities.Home.HomeGrammatik">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="3dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <ImageView
+                android:id="@+id/home_grammar_pillar_left"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_vector_pillar" />
+
+            <TextView
+                android:id="@+id/home_title_grammar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Grammatik"
+                style="@style/textViewTitle"/>
+
+            <ImageView
+                android:id="@+id/home_grammar_pillar_right"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_vector_pillar" />
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_grammar_button_click_deklination"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Click: Deklinationsendung"
+                android:layout_margin="3dp"/>
+
+            <TextView
+                android:id="@+id/home_grammar_text_click_deklination"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_grammar_buttom_typing_deklinationsendung"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Typing: Deklinationsendung" />
+
+            <TextView
+                android:id="@+id/home_grammar_text_typing_deklinationsendung"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_grammar_button_click_konjugation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Click: Personalendung" />
+
+            <TextView
+                android:id="@+id/home_grammar_text_click_konjugation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_grammar_button_typing_konjugation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Typing: Personalendung" />
+
+            <TextView
+                android:id="@+id/home_grammar_text_typing_konjugation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_grammar_button_kasus_fragen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Kasus"
+                android:layout_margin="3dp" />
+
+            <TextView
+                android:id="@+id/home_grammar_text_kasus_fragen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_grammar_button_esse_velle_nolle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="esse, velle, nolle"
+                android:layout_margin="3dp" />
+
+            <TextView
+                android:id="@+id/home_grammar_text_esse_velle_nolle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="3dp">
+
+            <Button
+                android:id="@+id/home_grammar_button_satzglieder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="navButtonClicked"
+                android:text="Satzglieder"
+                android:layout_margin="3dp"/>
+
+            <TextView
+                android:id="@+id/home_grammar_text_satzglieder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="[PLACEHOLDER: SCORE]" />
+
+        </LinearLayout>
+
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
+
+</FrameLayout>

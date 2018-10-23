@@ -7,6 +7,23 @@
     tools:context=".Activities.Einheiten.ClickDeklinationsendung">
 
     <TextView
+        android:id="@+id/textUserInputMistakes4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="placeholder: mistakeAmount"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.946"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.119" />
+
+    <TextView
         android:id="@+id/textGrammatikDeklinationÜberschrift"
         android:layout_width="288dp"
         android:layout_height="35dp"
@@ -49,21 +66,21 @@
         android:id="@+id/textGrammatikDeklinationAufgabe"
         android:layout_width="341dp"
         android:layout_height="52dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Bestimme den Kasus und den Numerus!"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.149" />
+        app:layout_constraintVertical_bias="0.189" />
 
-    <Button
-        style="@style/BasicBlueButton"
+    <ToggleButton
+        style="@style/myToggleButtonStyle"
         android:id="@+id/buttonGrammatikDeklinationNomSg"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -72,7 +89,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Nom. Sg."
+        android:textOn="Nom. Sg."
+        android:textOff="Nom. Sg."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -81,8 +99,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.1" />
 
-    <Button
-        style="@style/BasicBlueButton"
+    <ToggleButton
+        style="@style/myToggleButtonStyle"
         android:id="@+id/buttonGrammatikDeklinationNomPl"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -91,7 +109,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Nom. Pl."
+        android:textOn="Nom. Pl."
+        android:textOff="Nom. Pl."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -100,8 +119,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.1" />
 
-    <Button
-        style="@style/BasicBlueButton"
+    <ToggleButton
+        style="@style/myToggleButtonStyle"
         android:id="@+id/buttonGrammatikDeklinationGenSg"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -110,7 +129,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Gen. Sg."
+        android:textOn="Gen. Sg."
+        android:textOff="Gen. Sg."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -119,8 +139,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.304" />
 
-    <Button
-        style="@style/BasicBlueButton"
+    <ToggleButton
+        style="@style/myToggleButtonStyle"
         android:id="@+id/buttonGrammatikDeklinationGenPl"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -129,7 +149,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Gen. Pl."
+        android:textOn="Gen. Pl."
+        android:textOff="Gen. Pl."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -138,8 +159,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.304" />
 
-    <Button
-        style="@style/BasicBlueButton"
+    <ToggleButton
+        style="@style/myToggleButtonStyle"
         android:id="@+id/buttonGrammatikDeklinationDatSg"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -148,7 +169,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Dat. Sg."
+        android:textOn="Dat. Sg."
+        android:textOff="Dat. Sg."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -157,8 +179,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.508" />
 
-    <Button
-        style="@style/BasicBlueButton"
+    <ToggleButton
+        style="@style/myToggleButtonStyle"
         android:id="@+id/buttonGrammatikDeklinationDatPl"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -167,7 +189,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Dat. Pl."
+        android:textOn="Dat. Pl."
+        android:textOff="Dat. Pl."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -176,8 +199,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.508" />
 
-    <Button
-        style="@style/BasicBlueButton"
+    <ToggleButton
+        style="@style/myToggleButtonStyle"
         android:id="@+id/buttonGrammatikDeklinationAkkSg"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -186,7 +209,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Akk. Sg."
+        android:textOn="Akk. Sg."
+        android:textOff="Akk. Sg."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -195,8 +219,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.712" />
 
-    <Button
-        style="@style/BasicBlueButton"
+    <ToggleButton
+        style="@style/myToggleButtonStyle"
         android:id="@+id/buttonGrammatikDeklinationAkkPl"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -205,7 +229,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Akk. Pl."
+        android:textOn="Akk. Pl."
+        android:textOff="Akk. Pl."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -214,8 +239,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.712" />
 
-    <Button
-        style="@style/BasicBlueButton"
+    <ToggleButton
+        style="@style/myToggleButtonStyle"
         android:id="@+id/buttonGrammatikDeklinationAblSg"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -224,7 +249,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Abl. Sg."
+        android:textOn="Abl. Sg."
+        android:textOff="Abl. Sg."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -233,8 +259,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.916" />
 
-    <Button
-        style="@style/BasicBlueButton"
+    <ToggleButton
+        style="@style/myToggleButtonStyle"
         android:id="@+id/buttonGrammatikDeklinationAblPl"
         android:layout_width="143dp"
         android:layout_height="35dp"
@@ -243,7 +269,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
         android:textSize="16sp"
-        android:text="Abl. Pl."
+        android:textOn="Abl. Pl."
+        android:textOff="Abl. Pl."
         android:onClick="deklinationstrainerButtonClicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -271,7 +298,6 @@
 
     <Button
         android:id="@+id/buttonGrammatikDeklinationReset"
-        style="@style/BasicBlueButton"
         android:visibility="invisible"
         android:layout_width="153dp"
         android:layout_height="85dp"
@@ -289,7 +315,6 @@
         app:layout_constraintVertical_bias="0.927" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikDeklinationZurück"
         android:layout_width="253dp"
         android:layout_height="155dp"
@@ -308,7 +333,6 @@
 
     <Button
         android:id="@+id/buttonGrammatikDeklinationWeiter"
-        style="@style/BasicBlueButton"
         android:layout_width="106dp"
         android:layout_height="54dp"
         android:layout_marginBottom="8dp"
@@ -317,6 +341,7 @@
         android:layout_marginTop="8dp"
         android:onClick="deklinationstrainerButtonClicked"
         android:text="Weiter"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.969"
@@ -325,14 +350,13 @@
         app:layout_constraintVertical_bias="0.418" />
 
     <Button
-        style="@style/BasicBlueButton"
         android:id="@+id/buttonGrammatikDeklinationCheckInput"
         android:layout_width="106dp"
         android:layout_height="54dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:onClick="deklinationstrainerButtonClicked"
         android:text="Bestätigen"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -341,4 +365,180 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.418" />
+
+
+    <!-- ######################################################################################## -->
+    <!-- ##################################### Score System ##################################### -->
+    <!-- ######################################################################################## -->
+
+    <TextView
+        android:id="@+id/scoreCongratulations"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Congratulations"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.066" />
+
+    <TextView
+        android:id="@+id/scoreCurrentTrainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Abgeschlossen: [PLACEHOLDER]"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.184" />
+
+    <TextView
+        android:id="@+id/scoreMistakes"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Fehler:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.136"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.443" />
+
+    <TextView
+        android:id="@+id/scoreBestRunMistakeAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bester Versuch:"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.182"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.528" />
+
+    <TextView
+        android:id="@+id/scoreGrade"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Note:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.149"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.697" />
+
+    <TextView
+        android:id="@+id/scoreHighScore"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="High Score"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.161"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.611" />
+
+    <TextView
+        android:id="@+id/scoreGradeValue"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="[PLACEHOLDER]"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.811"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.697" />
+
+    <TextView
+        android:id="@+id/scoreHighScoreValue"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="[PLACEHOLDER]"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.811"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.611" />
+
+    <TextView
+        android:id="@+id/scoreEndScoreValue"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="[PLACEHOLDER]"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.809"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.526" />
+
+    <TextView
+        android:id="@+id/scoreMistakeValue"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="[PLACEHOLDER]"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.809"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.445" />
+
+    <Button
+        android:id="@+id/scoreButtonBack"
+        android:onClick="deklinationstrainerButtonClicked"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.182"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.859" />
+
+    <Button
+        android:id="@+id/scoreButtonReset"
+        android:onClick="deklinationstrainerButtonClicked"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.859" />
+
 </android.support.constraint.ConstraintLayout>

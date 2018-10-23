@@ -1,5 +1,6 @@
 package com.lateinapp.noraalex.lopade.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,13 +12,20 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.lateinapp.noraalex.lopade.Activities.Home.Home;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
+
+import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
+import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
 
 public abstract class LateinAppActivity extends AppCompatActivity{
 
@@ -29,7 +37,8 @@ public abstract class LateinAppActivity extends AppCompatActivity{
     private MenuItem devDBHelper,
                     devVokCheat,
                     devReloadDatabaseAssets,
-                    devReloadDatabaseIterative;
+                    devReloadDatabaseIterative,
+                    devShowSharedPrefrences;
 
     //Make this accessible to all subclasses.
     protected SharedPreferences sharedPref;
@@ -53,7 +62,7 @@ public abstract class LateinAppActivity extends AppCompatActivity{
         getMenuInflater().inflate(R.menu.action_button, menu);
 
         //If we aren't in the home activity we want to enable a back/up navigation button
-        if (!this.getClass().getName().equals(EinheitenUebersicht.class.getName())){
+        if (!this.getClass().getName().equals(Home.class.getName())){
             ActionBar ab = getSupportActionBar();
             // Enable the Up button
             if (ab != null) ab.setDisplayHomeAsUpEnabled(true);
@@ -69,9 +78,9 @@ public abstract class LateinAppActivity extends AppCompatActivity{
         devVokCheat = this.menu.findItem(R.id.action_dev_Vokabeltrainer_Cheat);
         devReloadDatabaseAssets = this.menu.findItem(R.id.action_dev_reload_database_from_assets);
         devReloadDatabaseIterative = this.menu.findItem(R.id.action_dev_reload_database_iterative);
+        devShowSharedPrefrences = this.menu.findItem(R.id.action_dev_show_sharedprefrences);
 
-
-        sharedPref = getSharedPreferences("SharedPreferences", 0);
+        sharedPref = General.getSharedPrefrences(getApplicationContext());
 
         adjustSettings();
 
@@ -104,7 +113,7 @@ public abstract class LateinAppActivity extends AppCompatActivity{
             //#DEVELOPER
             //Opening the dbManager-activity
             case (R.id.action_dev_DB_Helper):
-                Intent dbManager = new Intent(this, AndroidDatabaseManager.class);
+                Intent dbManager = new Intent(this, DevAndroidDatabaseManager.class);
                 startActivity(dbManager);
                 break;
 
@@ -112,28 +121,34 @@ public abstract class LateinAppActivity extends AppCompatActivity{
             //toggles the DevCheatMode
             case (R.id.action_dev_Vokabeltrainer_Cheat):
                 SharedPreferences.Editor editor = sharedPref.edit();
-                EinheitenUebersicht.DEV_CHEAT_MODE = !EinheitenUebersicht.DEV_CHEAT_MODE;
-                editor.putBoolean("DEV_CHEAT_MODE", EinheitenUebersicht.DEV_CHEAT_MODE);
+                DEV_CHEAT_MODE = !DEV_CHEAT_MODE;
+                editor.putBoolean("DEV_CHEAT_MODE", DEV_CHEAT_MODE);
                 editor.apply();
                 adjustSettings();
 
-                General.showMessage("Cheat Mode " + (EinheitenUebersicht.DEV_CHEAT_MODE ? "Activated" : "Deactivated"), getApplicationContext());
+                General.showMessage("Cheat Mode " + (DEV_CHEAT_MODE ? "Activated" : "Deactivated"), getApplicationContext());
                 break;
 
             //#DEVELOPER
             //Reloading the database -> copy from assets
             case (R.id.action_dev_reload_database_from_assets):
-                DBHelper dbHelper = new DBHelper(getApplicationContext());
-
-                dbHelper.reloadDatabaseFromAssets();
-
-                dbHelper.close();
+                DBHelper dbHelper = DBHelper.getInstance(getApplicationContext());
+                dbHelper.copyDataBaseFromAssets(this);
                 break;
 
+            //#DEVELOPER
+            //Reloading the database from the corresponding csv files
             case (R.id.action_dev_reload_database_iterative):
-                DBHelper dbHelper1 = new DBHelper(getApplicationContext());
-                dbHelper1.fillDatabaseFromCsv();
-                dbHelper1.close();
+                DBHelper dbHelper1 = DBHelper.getInstance(this);
+                dbHelper1.fillDatabaseFromCsv(this);
+
+                break;
+
+            //#DEVELOPER
+            //Opening an activity that shows all current SharedPreferences data
+            case (R.id.action_dev_show_sharedprefrences):
+                Intent intent = new Intent(this, DevSharedPrefManager.class);
+                startActivity(intent);
 
                 break;
         }
@@ -206,19 +221,21 @@ public abstract class LateinAppActivity extends AppCompatActivity{
         //FIXME: Why does this sometimes crash with "couldnt invoke method on null object"?
         try {
             //#DEVELOPER
-            if (EinheitenUebersicht.DEVELOPER) {
+            if (DEVELOPER) {
                 devDBHelper.setVisible(true);
                 devVokCheat.setVisible(true);
                 devReloadDatabaseAssets.setVisible(true);
                 devReloadDatabaseIterative.setVisible(true);
+                devShowSharedPrefrences.setVisible(true);
 
-                devVokCheat.setTitle("DEV: Cheat-Mode: " + (EinheitenUebersicht.DEV_CHEAT_MODE ? "ON" : "OFF"));
+                devVokCheat.setTitle("DEV: Cheat-Mode: " + (DEV_CHEAT_MODE ? "ON" : "OFF"));
 
             } else {
                 devDBHelper.setVisible(false);
                 devVokCheat.setVisible(false);
                 devReloadDatabaseAssets.setVisible(false);
                 devReloadDatabaseIterative.setVisible(false);
+                devShowSharedPrefrences.setVisible(false);
             }
 
         }catch (Exception e){
@@ -227,5 +244,35 @@ public abstract class LateinAppActivity extends AppCompatActivity{
 
     }
 
+    public void hideKeyboard(){
+        try {
+            //Hiding the Keyboard.
+            View v = getWindow().getDecorView().getRootView();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }catch (NullPointerException npe){
+            npe.printStackTrace();
+        }
+    }
 
+    public void showKeyboard(){
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+
+    public void animationFadeOut(View view){
+        Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
+        view.startAnimation(anim);
+    }
+
+    public void animationFadeIn(View view){
+        Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
+        view.startAnimation(anim);
+    }
+
+    public void animationMove(View view){
+        Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.move);
+        view.startAnimation(anim);
+    }
 }

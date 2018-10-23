@@ -1,29 +1,38 @@
 package com.lateinapp.noraalex.lopade.Activities.Einheiten;
 
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AlertDialog;
+import android.text.SpannableStringBuilder;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.lateinapp.noraalex.lopade.Activities.EinheitenUebersicht;
 import com.lateinapp.noraalex.lopade.Activities.LateinAppActivity;
 import com.lateinapp.noraalex.lopade.Databases.DBHelper;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Personalendung_PräsensDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Sprechvokal_PräsensDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.VerbDB;
 import com.lateinapp.noraalex.lopade.Databases.Tables.Vokabel;
+import com.lateinapp.noraalex.lopade.General;
 import com.lateinapp.noraalex.lopade.R;
+import com.lateinapp.noraalex.lopade.Score;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static com.lateinapp.noraalex.lopade.Global.DEVELOPER;
+import static com.lateinapp.noraalex.lopade.Global.DEV_CHEAT_MODE;
+import static com.lateinapp.noraalex.lopade.Global.KEY_CURRENT_MISTAKE_AMOUNT_KASUS;
+import static com.lateinapp.noraalex.lopade.Global.KEY_PROGRESS_USERINPUT_ESSEVELLENOLLE;
 
 public class UserInputEsseVelleNolle extends LateinAppActivity {
 
@@ -34,9 +43,23 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
     private SharedPreferences sharedPref;
     private DBHelper dbHelper;
 
+    //Score stuff
+    private TextView sCongratulations,
+            sCurrentTrainer,
+            sMistakeAmount,
+            sMistakeAmountValue,
+            sBestTry,
+            sBestTryValue,
+            sHighScore,
+            sHighScoreValue,
+            sGrade,
+            sGradeValue;
+    private Button sBack,
+            sReset;
+
     private TextView request,
             solution,
-            titel;
+            titel, amountWrong;
     private EditText userInput;
     private ProgressBar progressBar;
     //FIXME: Remove button elevation to make it align with 'userInput'-EditText
@@ -59,6 +82,8 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
     private int backgroundColor;
     private final int maxProgress = 20;
 
+    Animation animShake;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,19 +96,37 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
 
     private void setup(){
 
-        sharedPref = getSharedPreferences("SharedPreferences", 0);
-        dbHelper = new DBHelper(getApplicationContext());
+        sharedPref = General.getSharedPrefrences(getApplicationContext());
+        dbHelper = DBHelper.getInstance(getApplicationContext());
 
-        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.GhostWhite, null);
+        backgroundColor = ResourcesCompat.getColor(getResources(), R.color.background, null);
         request = findViewById(R.id.textUserInputLatein);
         solution = findViewById(R.id.textUserInputDeutsch);
         userInput = findViewById(R.id.textUserInputUserInput);
         progressBar = findViewById(R.id.progressBarUserInput);
         bestaetigung = findViewById(R.id.buttonUserInputEingabeBestätigt);
         weiter = findViewById(R.id.buttonUserInputNächsteVokabel);
-        reset = findViewById(R.id.buttonUserInputFortschrittLöschen);
-        zurück = findViewById(R.id.buttonUserInputZurück);
+        reset = findViewById(R.id.scoreButtonReset);
+        zurück = findViewById(R.id.scoreButtonBack);
         titel = findViewById(R.id.textUserInputÜberschrift);
+
+        //Score stuff
+        sCongratulations = findViewById(R.id.scoreCongratulations);
+        sCurrentTrainer = findViewById(R.id.scoreCurrentTrainer);
+        sMistakeAmount = findViewById(R.id.scoreMistakes);
+        sMistakeAmountValue = findViewById(R.id.scoreMistakeValue);
+        sBestTry = findViewById(R.id.scoreBestRunMistakeAmount);
+        sBestTryValue = findViewById(R.id.scoreEndScoreValue);
+        sHighScore = findViewById(R.id.scoreHighScore);
+        sHighScoreValue = findViewById(R.id.scoreHighScoreValue);
+        sGrade = findViewById(R.id.scoreGrade);
+        sGradeValue = findViewById(R.id.scoreGradeValue);
+        sBack = findViewById(R.id.scoreButtonBack);
+        sReset = findViewById(R.id.scoreButtonReset);
+
+        animShake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+
+        amountWrong = findViewById(R.id.textUserInputMistakes);
 
         userInput.setHint("Konjugiertes Verb");
         //Makes it possible to move to the next vocabulary by pressing "enter"
@@ -101,6 +144,9 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
         });
         titel.setText("Esse & Velle & Nolle");
 
+        TextView score = findViewById(R.id.textUserInputScore);
+        score.setVisibility(View.GONE);
+
         solution.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
 
@@ -108,18 +154,23 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
 
         viableVocabularies = getViableVocabularies();
 
+        int wrong = Score.getCurrentMistakesEsseVelleNolle(sharedPref);
+        if (wrong == -1){
+            wrong = 0;
+        }
+        amountWrong.setText("Fehler: " + wrong);
+
+
     }
 
     private void newVocabulary(){
 
-        int progress = sharedPref.getInt("UserInputEsseVelleNolle", 0);
+        int progress = sharedPref.getInt(KEY_PROGRESS_USERINPUT_ESSEVELLENOLLE, 0);
         if (progress < maxProgress) {
 
             progressBar.setProgress(progress);
 
-            //Showing the Keyboard.
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+            showKeyboard();
 
 
             //Resetting the userInput.
@@ -141,7 +192,7 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
             personalendungUser = personalendungUser.replace("Pl", "Pers. Pl.");
             lateinText += "\n" + personalendungUser + " Präsens";
             //#DEVELOPER
-            if (EinheitenUebersicht.DEVELOPER && EinheitenUebersicht.DEV_CHEAT_MODE){
+            if (DEVELOPER && DEV_CHEAT_MODE){
                 lateinText += "\n" + dbHelper.getKonjugiertesVerb(currentVokabel.getId(), currentPersonalendung);
             }
             request.setText(lateinText);
@@ -155,10 +206,7 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
 
             progressBar.setProgress(maxProgress);
 
-            //Hiding the keyboard.
-            InputMethodManager imm = (InputMethodManager)getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
-            if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
+            hideKeyboard();
 
             allLearned();
         }
@@ -169,38 +217,42 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
     private void checkInput(){
         userInput.setFocusable(false);
 
-        //Hiding the keyboard
-        try {
-            View v = getWindow().getDecorView().getRootView();
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        }catch (NullPointerException npe){
-            npe.printStackTrace();
-        }
+        hideKeyboard();
 
 
         //Checking the userInput against the translation
         int color;
         if(compareString(userInput.getText().toString(), dbHelper.getKonjugiertesVerb(currentVokabel.getId(), currentPersonalendung))){
-            color = ResourcesCompat.getColor(getResources(), R.color.InputRightGreen, null);
+            color = ResourcesCompat.getColor(getResources(), R.color.correct, null);
 
             SharedPreferences.Editor editor = sharedPref.edit();
 
             //Increasing the counter by 1
-            editor.putInt("UserInputEsseVelleNolle",
-                    sharedPref.getInt("UserInputEsseVelleNolle", 0) + 1);
+            editor.putInt(KEY_PROGRESS_USERINPUT_ESSEVELLENOLLE,
+                    sharedPref.getInt(KEY_PROGRESS_USERINPUT_ESSEVELLENOLLE, 0) + 1);
             editor.apply();
         }else {
-            color = ResourcesCompat.getColor(getResources(), R.color.InputWrongRed, null);
+            color = ResourcesCompat.getColor(getResources(), R.color.error, null);
 
 
             //Decreasing the counter by 1
-            if (sharedPref.getInt("UserInputEsseVelleNolle", 0) > 0) {
+            if (sharedPref.getInt(KEY_PROGRESS_USERINPUT_ESSEVELLENOLLE, 0) > 0) {
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("UserInputEsseVelleNolle",
-                        sharedPref.getInt("UserInputEsseVelleNolle", 0) - 1);
+                editor.putInt(KEY_PROGRESS_USERINPUT_ESSEVELLENOLLE,
+                        sharedPref.getInt(KEY_PROGRESS_USERINPUT_ESSEVELLENOLLE, 0) - 1);
                 editor.apply();
             }
+
+            weiter.startAnimation(animShake);
+            userInput.startAnimation(animShake);
+            Score.incrementCurrentMistakesEsseVelleNolle(sharedPref);
+
+            int wrong = Score.getCurrentMistakesEsseVelleNolle(sharedPref);
+            if (wrong == -1){
+                wrong = 0;
+            }
+            amountWrong.setText("Fehler: " + wrong);
+
         }
         userInput.setBackgroundColor(color);
 
@@ -210,6 +262,7 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
         bestaetigung.setVisibility(View.GONE);
         weiter.setVisibility(View.VISIBLE);
         solution.setVisibility(View.VISIBLE);
+
     }
 
     /**
@@ -255,8 +308,46 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
         userInput.setVisibility(View.GONE);
         bestaetigung.setVisibility(View.GONE);
         weiter.setVisibility(View.GONE);
-        reset.setVisibility(View.VISIBLE);
-        zurück.setVisibility(View.VISIBLE);
+        reset.setVisibility(View.GONE);
+        zurück.setVisibility(View.GONE);
+        titel.setVisibility(View.GONE);
+
+
+        sCongratulations.setVisibility(View.VISIBLE);
+        sCurrentTrainer.setVisibility(View.VISIBLE);
+        sMistakeAmount.setVisibility(View.VISIBLE);
+        sMistakeAmountValue.setVisibility(View.VISIBLE);
+        sBestTry.setVisibility(View.VISIBLE);
+        sBestTryValue.setVisibility(View.VISIBLE);
+        sHighScore.setVisibility(View.GONE);
+        sHighScoreValue.setVisibility(View.GONE);
+        sGrade.setVisibility(View.VISIBLE);
+        sGradeValue.setVisibility(View.VISIBLE);
+        sBack.setVisibility(View.VISIBLE);
+        sReset.setVisibility(View.VISIBLE);
+
+        progressBar.setVisibility(View.GONE);
+
+        amountWrong.setVisibility(View.GONE);
+
+        int mistakeAmount = Score.getCurrentMistakesPersInput(sharedPref);
+
+        Score.updateLowestMistakesEsseVelleNolle(mistakeAmount, sharedPref);
+
+        sCurrentTrainer.setText("Du hast gerade den Personalendung-Trainer abgeschlossen!");
+
+        String grade = Score.getGradeFromMistakeAmount(maxProgress + 2*mistakeAmount, mistakeAmount);
+
+        String lowestEverText = Score.getLowestMistakesEsseVelleNolle(sharedPref) + "";
+        SpannableStringBuilder gradeText = General.makeSectionOfTextBold(grade, ""+grade);
+
+        if(mistakeAmount != -1){
+            sMistakeAmountValue.setText(Integer.toString(mistakeAmount) + "");
+        }else{
+            sMistakeAmountValue.setText("N/A");
+        }
+        sBestTryValue.setText(lowestEverText);
+        sGradeValue.setText(gradeText);
     }
 
     /**
@@ -279,16 +370,13 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
                 checkInput();
                 break;
 
-            //Setting the 'learned' state of all vocabularies of the current lektion to false
-            case (R.id.buttonUserInputFortschrittLöschen):
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("UserInputEsseVelleNolle", 0);
-                editor.apply();
-                finish();
+            case (R.id.scoreButtonReset):
+
+                resetCurrentLektion();
                 break;
 
             //Returning to the previous activity
-            case (R.id.buttonUserInputZurück):
+            case (R.id.scoreButtonBack):
                 finish();
                 break;
         }
@@ -298,14 +386,7 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
     public void onPause() {
         super.onPause();
 
-        try{
-            //Hiding the keyboard.
-            InputMethodManager imm = (InputMethodManager)getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
-            if (imm != null) imm.hideSoftInputFromWindow(userInput.getWindowToken(), 0);
-        }catch (Exception e){
-            //do nothing
-        }
+        hideKeyboard();
     }
 
     /**
@@ -313,7 +394,7 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
      */
     private ArrayList<Vokabel> getViableVocabularies(){
 
-        DBHelper dbHelper = new DBHelper(this);
+        DBHelper dbHelper = DBHelper.getInstance(this);
 
         String query = "SELECT " + VerbDB.FeedEntry.TABLE_NAME + "." + VerbDB.FeedEntry._ID + ", " + VerbDB.FeedEntry.TABLE_NAME + "." + VerbDB.FeedEntry.COLUMN_INFINITIV_DEUTSCH +
                 " FROM " + VerbDB.FeedEntry.TABLE_NAME + ", " + Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME +
@@ -322,7 +403,7 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
                 +  Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + "." + Sprechvokal_PräsensDB.FeedEntry.COLUMN_TITLE + " = 'esse' OR "
                 +  Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + "." + Sprechvokal_PräsensDB.FeedEntry.COLUMN_TITLE + " = 'velle' OR "
                 +  Sprechvokal_PräsensDB.FeedEntry.TABLE_NAME + "." + Sprechvokal_PräsensDB.FeedEntry.COLUMN_TITLE + " = 'nolle')";
-        Cursor cursor = dbHelper.database.rawQuery(query, null);
+        Cursor cursor = dbHelper.getWritableDatabase().rawQuery(query, null);
 
         ArrayList<Vokabel> vocabularies = new ArrayList<>();
         while (cursor.moveToNext()){
@@ -339,9 +420,30 @@ public class UserInputEsseVelleNolle extends LateinAppActivity {
         return vocabularies;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        dbHelper.close();
+    private void resetCurrentLektion(){
+
+
+        new AlertDialog.Builder(this, R.style.AlertDialogCustom)
+                .setTitle("Trainer zurücksetzen?")
+                .setMessage("Willst du den Esse-Velle-Nolle-Trainer wirklich neu starten?\nDeine beste Note wird beibehalten!")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        General.showMessage("Esse-Velle-Nolle-Trainer zurückgesetzt!", getApplicationContext());
+
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putInt(KEY_PROGRESS_USERINPUT_ESSEVELLENOLLE, 0);
+                        editor.apply();
+
+                        Score.resetCurrentMistakesEsseVelleNolle(sharedPref);
+                        finish();
+
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
+
+
+
     }
 }
