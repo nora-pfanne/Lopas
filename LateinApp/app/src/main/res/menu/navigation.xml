@@ -3,17 +3,14 @@
 
     <item
         android:id="@+id/nav_vokabeltrainer"
-        android:icon="@drawable/ic_translate"
         android:title="Vokabeltrainer" />
 
     <item
         android:id="@+id/nav_grammatik"
-        android:icon="@drawable/ic_grammar"
         android:title="Grammatik" />
 
     <item
         android:id="@+id/nav_wörterbuch"
-        android:icon="@drawable/ic_woerterbuch"
         android:title="Wörterbuch" />
 
 </menu>

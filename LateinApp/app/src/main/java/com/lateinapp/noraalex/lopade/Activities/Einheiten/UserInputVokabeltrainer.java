@@ -434,6 +434,8 @@ public class UserInputVokabeltrainer extends LateinAppActivity{
 
         titel.setVisibility(View.GONE);
 
+        mistakeAmount.setVisibility(View.GONE);
+
         //Score screen
         //@SCORE_CLEANUP
         sCongratulations.setVisibility(View.VISIBLE);

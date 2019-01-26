@@ -344,6 +344,7 @@ public class ClickPersonalendung extends LateinAppActivity {
         int mistakeAmount = Score.getCurrentMistakesPersClick(sharedPref);
 
         Score.updateLowestMistakesPersClick(mistakeAmount, sharedPref);
+        Log.d(TAG, "allLearned: " + mistakeAmount);
 
         sCurrentTrainer.setText("Du hast gerade den Personalendung-Trainer abgeschlossen!");
 

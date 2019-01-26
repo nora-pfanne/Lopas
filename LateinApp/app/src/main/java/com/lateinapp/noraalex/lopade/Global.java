@@ -5,8 +5,8 @@ public class Global {
     public static final int LEKTION_COUNT = 6;
 
     //#DEVELOPER
-    public static boolean DEVELOPER = true;
-    public static boolean DEV_CHEAT_MODE = true;
+    public static boolean DEVELOPER = false;
+    public static boolean DEV_CHEAT_MODE = false;
 
     //
     //Public keys for accessing SharedPreferences values;
